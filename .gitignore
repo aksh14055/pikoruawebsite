@@ -47,3 +47,5 @@ next-env.d.ts
 # large asset directories — use Git LFS or a CDN instead
 /WEB/
 /public/videos/
+
+.vercel
