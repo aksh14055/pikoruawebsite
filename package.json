@@ -28,6 +28,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.15.12",
     "@sanity/client": "^7.22.1",
     "@sanity/vision": "^5.30.0",
     "@tailwindcss/postcss": "^4",
