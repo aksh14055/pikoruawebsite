@@ -1,0 +1,180 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
+import { getSupabaseBlogs, getSupabaseBlogBySlug } from "@/lib/supabase/queries";
+import { renderFormattedText } from "@/lib/utils";
+
+interface BlogPostPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const dbBlogs = await getSupabaseBlogs(true);
+  const allBlogs = dbBlogs.length > 0 ? dbBlogs : STATIC_BLOG_POSTS;
+  return allBlogs.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  let post = await getSupabaseBlogBySlug(slug);
+  if (!post) {
+    post = STATIC_BLOG_POSTS.find((p) => p.slug === slug) || null;
+  }
+  if (!post) return {};
+
+  return {
+    title: post.seoTitle || `${post.title} | PIKORUA Realty Insights`,
+    description: post.seoDescription || post.excerpt,
+    alternates: { canonical: `https://pikorua.in/blog/${post.slug}` },
+  };
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  let post = await getSupabaseBlogBySlug(slug);
+  if (!post) {
+    post = STATIC_BLOG_POSTS.find((p) => p.slug === slug) || null;
+  }
+
+  if (!post) {
+    notFound();
+  }
+
+
+  // Get reading time and date
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  return (
+    <>
+      <Header alwaysSolid />
+      <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
+        <article className="pt-32 pb-24 lg:pt-36 lg:pb-32">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            
+            {/* Back button */}
+            <div className="mb-10">
+              <Link
+                href="/blog"
+                className="group inline-flex items-center gap-2 text-xs font-sans uppercase tracking-[0.2em] text-champagne-gold/70 hover:text-champagne-gold transition-colors duration-150"
+              >
+                <span className="transform group-hover:-translate-x-1 transition-transform duration-300">←</span>
+                Back to Blog
+              </Link>
+            </div>
+
+            {/* Header info */}
+            <header className="mb-10">
+
+
+              <h1 className="font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-normal text-ivory leading-[1.15] mb-8 uppercase tracking-wide">
+                {post.title}
+              </h1>
+
+              {/* Metadata */}
+              <div className="flex items-center justify-between border-y border-white/[0.06] py-5">
+                <time dateTime={post.publishedAt} className="text-xs font-sans text-ivory/60">
+                  {formattedDate}
+                </time>
+                <span className="text-xs font-sans tracking-wide text-ivory/40">
+                  {post.readTime}
+                </span>
+              </div>
+            </header>
+
+            {/* Cover image */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden border border-white/[0.06] rounded-sm bg-soft-black/20 mb-12">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 800px"
+                className="object-cover object-center"
+              />
+            </div>
+
+            {/* Content body */}
+            <div className="font-sans text-ivory/60 text-[15px] sm:text-base leading-[1.8] max-w-3xl mx-auto space-y-6 sm:space-y-8">
+              {post.content.map((paragraph, index) => {
+                const isHeading = paragraph.startsWith("### ");
+                const isListItem = paragraph.startsWith("- ") || paragraph.startsWith("* ");
+
+                if (isHeading) {
+                  return (
+                    <h3 
+                      key={index}
+                      className="font-display text-lg sm:text-xl text-white uppercase tracking-wider mt-10 mb-4 font-normal"
+                      dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(4)) }}
+                    />
+                  );
+                }
+
+                if (isListItem) {
+                  return (
+                    <div key={index} className="flex items-start gap-2.5 my-2 pl-4 text-ivory/70">
+                      <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold/75 mt-2 flex-shrink-0 animate-pulse" />
+                      <span dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(2)) }} />
+                    </div>
+                  );
+                }
+
+                // Style the first paragraph slightly larger as an intro
+                if (index === 0) {
+                  return (
+                    <p 
+                      key={index} 
+                      className="text-ivory/80 text-[17px] sm:text-lg leading-[1.7] font-normal font-sans border-l-2 border-champagne-gold/40 pl-5 italic mb-8"
+                      dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
+                    />
+                  );
+                }
+                return (
+                  <p 
+                    key={index} 
+                    dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Bottom CTA block */}
+            <div className="mt-16 lg:mt-24 border border-champagne-gold/15 bg-white/[0.01] backdrop-blur-md p-8 lg:p-10 rounded-sm text-center relative overflow-hidden max-w-3xl mx-auto">
+              <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-champagne-gold/5 blur-[50px] pointer-events-none" />
+              <div className="w-8 h-px bg-champagne-gold/40 mx-auto mb-6" aria-hidden="true" />
+              
+              <h3 className="font-display text-lg sm:text-xl text-ivory mb-3 uppercase tracking-wider">
+                Begin a Private Conversation
+              </h3>
+              
+              <p className="text-xs font-sans text-ivory/45 max-w-md mx-auto leading-relaxed mb-8">
+                Whether you are exploring luxury investments, seeking a signature penthouses, or require private representation for a high-value sale, our advisory desk responds personally.
+              </p>
+
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 text-xs font-sans uppercase tracking-[0.2em] text-champagne-gold border border-champagne-gold/30 hover:border-champagne-gold/65 hover:bg-champagne-gold/[0.04] transition-all duration-300 min-h-[48px]"
+              >
+                Discuss Privately
+                <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+              </Link>
+            </div>
+
+          </div>
+        </article>
+      </main>
+      <Footer />
+    </>
+  );
+}

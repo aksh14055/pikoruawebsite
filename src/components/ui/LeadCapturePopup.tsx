@@ -1,0 +1,422 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, CheckCircle, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const STORAGE_KEY = "pikorua_popup_dismissed";
+
+type FormState = "idle" | "submitting" | "success" | "error";
+
+interface FieldError {
+  name?: string[];
+  phone?: string[];
+  email?: string[];
+  category?: string[];
+  budgetBand?: string[];
+}
+
+const CATEGORIES = [
+  { value: "apartment", label: "Apartment" },
+  { value: "penthouse", label: "Penthouse" },
+  { value: "villa", label: "Villa" },
+  { value: "bungalow", label: "Bungalow" },
+  { value: "plot", label: "Premium Plot" },
+  { value: "residential-investment", label: "Residential Investment" },
+];
+
+const BUDGETS = [
+  { value: "1-2cr", label: "₹1 Cr – ₹2 Cr" },
+  { value: "2-3cr", label: "₹2 Cr – ₹3 Cr" },
+  { value: "3-5cr", label: "₹3 Cr – ₹5 Cr" },
+  { value: "5-10cr", label: "₹5 Cr – ₹10 Cr" },
+  { value: "10cr-plus", label: "₹10 Cr and above" },
+  { value: "custom", label: "Custom / Not decided" },
+];
+
+const selectBase =
+  "w-full appearance-none bg-[#2a2a2a] border border-white/10 text-ivory text-sm font-sans px-4 py-3.5 pr-10 rounded focus:outline-none focus:border-champagne-gold/50 transition-colors duration-150 cursor-pointer";
+
+const inputBase =
+  "w-full bg-[#2a2a2a] border border-white/10 text-ivory text-sm font-sans px-4 py-3.5 rounded placeholder:text-ivory/30 focus:outline-none focus:border-champagne-gold/50 transition-colors duration-150";
+
+export function LeadCapturePopup() {
+  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  // Form state
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [category, setCategory] = useState("");
+  const [budgetBand, setBudgetBand] = useState("");
+  const [formState, setFormState] = useState<FormState>("idle");
+  const [fieldErrors, setFieldErrors] = useState<FieldError>({});
+  const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+    if (
+      typeof window !== "undefined" &&
+      localStorage.getItem(STORAGE_KEY)
+    ) {
+      return;
+    }
+
+    let triggered = false;
+
+    const trigger = () => {
+      if (triggered) return;
+      triggered = true;
+      setVisible(true);
+      // Clean up all listeners at once
+      cleanup(); // eslint-disable-line @typescript-eslint/no-use-before-define
+    };
+
+    const opts = { passive: true, once: true } as AddEventListenerOptions;
+
+    // Attach to every plausible scroll target + gesture events
+    window.addEventListener("scroll", trigger, opts);
+    document.addEventListener("scroll", trigger, opts);
+    document.documentElement.addEventListener("scroll", trigger, opts);
+    window.addEventListener("wheel", trigger, opts);
+    window.addEventListener("touchstart", trigger, opts);
+    window.addEventListener("touchmove", trigger, opts);
+
+    function cleanup() {
+      window.removeEventListener("scroll", trigger);
+      document.removeEventListener("scroll", trigger);
+      document.documentElement.removeEventListener("scroll", trigger);
+      window.removeEventListener("wheel", trigger);
+      window.removeEventListener("touchstart", trigger);
+      window.removeEventListener("touchmove", trigger);
+    }
+
+    return cleanup;
+  }, []);
+
+
+  const dismiss = () => {
+    setVisible(false);
+    localStorage.setItem(STORAGE_KEY, "dismissed");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFieldErrors({});
+    setErrorMsg("");
+    setFormState("submitting");
+
+    const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(" ");
+
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "contact",
+          name: fullName,
+          phone,
+          email,
+          interest: category ? CATEGORIES.find((c) => c.value === category)?.label : undefined,
+          message: budgetBand ? `Budget: ${BUDGETS.find((b) => b.value === budgetBand)?.label}` : undefined,
+          consent: true,
+          honeypot: "",
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 422 && json.fields) {
+          setFieldErrors(json.fields as FieldError);
+          setFormState("idle");
+          return;
+        }
+        throw new Error(json.error ?? "Submission failed");
+      }
+
+      setFormState("success");
+      localStorage.setItem(STORAGE_KEY, "submitted");
+
+      setTimeout(() => {
+        setVisible(false);
+      }, 3200);
+    } catch (err) {
+      setErrorMsg(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+      setFormState("error");
+    }
+  };
+
+  if (!mounted) return null;
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            key="popup-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[8000] bg-black/75 backdrop-blur-sm"
+            onClick={dismiss}
+            aria-hidden="true"
+          />
+
+          {/* Panel */}
+          <motion.div
+            key="popup-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="popup-title"
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[8001] flex items-center justify-center p-4 pointer-events-none"
+          >
+            <div
+              className="relative w-full max-w-[420px] pointer-events-auto rounded-2xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
+              style={{ background: "linear-gradient(160deg, #1c1c1c 0%, #111111 100%)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                onClick={dismiss}
+                aria-label="Close"
+                id="popup-close-btn"
+                className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-champagne-gold"
+              >
+                <X size={15} strokeWidth={2} className="text-ivory/70" />
+              </button>
+
+              <div className="px-7 pt-9 pb-8">
+                {formState === "success" ? (
+                  // ── Success State ────────────────────────────────────────
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="flex flex-col items-center text-center gap-4 py-8"
+                  >
+                    <CheckCircle
+                      size={44}
+                      strokeWidth={1.2}
+                      className="text-champagne-gold"
+                    />
+                    <h2 className="font-display text-2xl text-ivory font-normal">
+                      Thank you!
+                    </h2>
+                    <p className="text-ivory/50 font-sans text-sm leading-relaxed max-w-[260px]">
+                      Our advisory team will reach out to you personally, shortly.
+                    </p>
+                  </motion.div>
+                ) : (
+                  // ── Form State ───────────────────────────────────────────
+                  <>
+                    {/* Title */}
+                    <div className="text-center mb-6">
+                      <h2
+                        id="popup-title"
+                        className="font-display text-[1.6rem] leading-tight font-normal"
+                        style={{ color: "#C8A45D" }}
+                      >
+                        Welcome to a World of<br />Luxury Living ✨
+                      </h2>
+                      {/* Gold underline */}
+                      <div className="mx-auto mt-3 w-12 h-[2px] rounded-full" style={{ background: "#C8A45D" }} />
+                    </div>
+
+                    <form
+                      id="lead-capture-form"
+                      onSubmit={handleSubmit}
+                      noValidate
+                      className="flex flex-col gap-3"
+                    >
+                      {/* Honeypot */}
+                      <input
+                        type="text"
+                        name="honeypot"
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        className="hidden"
+                        autoComplete="off"
+                      />
+
+                      {/* Dropdown — Category */}
+                      <div className="relative">
+                        <select
+                          id="popup-category"
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className={cn(
+                            selectBase,
+                            !category ? "text-ivory/40" : "text-ivory"
+                          )}
+                        >
+                          <option value="" disabled>What are you looking for?</option>
+                          {CATEGORIES.map((c) => (
+                            <option key={c.value} value={c.value}>{c.label}</option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          size={14}
+                          strokeWidth={2}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-champagne-gold pointer-events-none"
+                        />
+                      </div>
+
+                      {/* Dropdown — Budget */}
+                      <div className="relative">
+                        <select
+                          id="popup-budget"
+                          value={budgetBand}
+                          onChange={(e) => setBudgetBand(e.target.value)}
+                          className={cn(
+                            selectBase,
+                            !budgetBand ? "text-ivory/40" : "text-ivory"
+                          )}
+                        >
+                          <option value="" disabled>What budget are you comfortable with? (INR)</option>
+                          {BUDGETS.map((b) => (
+                            <option key={b.value} value={b.value}>{b.label}</option>
+                          ))}
+                        </select>
+                        <ChevronDown
+                          size={14}
+                          strokeWidth={2}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-champagne-gold pointer-events-none"
+                        />
+                      </div>
+
+                      {/* First + Last Name */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <input
+                            id="popup-first-name"
+                            type="text"
+                            autoComplete="given-name"
+                            required
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="First Name"
+                            className={cn(
+                              inputBase,
+                              fieldErrors.name ? "border-red-500/60" : ""
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            id="popup-last-name"
+                            type="text"
+                            autoComplete="family-name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Last Name"
+                            className={inputBase}
+                          />
+                        </div>
+                      </div>
+                      {fieldErrors.name && (
+                        <p className="text-[10px] text-red-400 font-sans -mt-1">
+                          {fieldErrors.name[0]}
+                        </p>
+                      )}
+
+                      {/* Email + Phone */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <input
+                            id="popup-email"
+                            type="email"
+                            autoComplete="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Your Email"
+                            className={cn(
+                              inputBase,
+                              fieldErrors.email ? "border-red-500/60" : ""
+                            )}
+                          />
+                          {fieldErrors.email && (
+                            <p className="text-[10px] text-red-400 font-sans mt-1">
+                              {fieldErrors.email[0]}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <input
+                            id="popup-phone"
+                            type="tel"
+                            autoComplete="tel"
+                            required
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="+1234567890"
+                            className={cn(
+                              inputBase,
+                              fieldErrors.phone ? "border-red-500/60" : ""
+                            )}
+                          />
+                          {fieldErrors.phone && (
+                            <p className="text-[10px] text-red-400 font-sans mt-1">
+                              {fieldErrors.phone[0]}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Global error */}
+                      {formState === "error" && errorMsg && (
+                        <p className="text-[10px] text-red-400 font-sans">
+                          {errorMsg}
+                        </p>
+                      )}
+
+                      {/* Submit */}
+                      <button
+                        type="submit"
+                        id="popup-submit-btn"
+                        disabled={formState === "submitting"}
+                        className="mt-1 w-full rounded py-3.5 text-sm font-sans font-semibold tracking-wide text-lux-black transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-champagne-gold disabled:opacity-60 disabled:cursor-not-allowed"
+                        style={{
+                          background: "linear-gradient(90deg, #b8963e 0%, #e8c96b 50%, #b8963e 100%)",
+                        }}
+                      >
+                        {formState === "submitting" ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <span className="w-3.5 h-3.5 border-2 border-lux-black/30 border-t-lux-black rounded-full animate-spin" />
+                            Sending…
+                          </span>
+                        ) : (
+                          "Submit"
+                        )}
+                      </button>
+
+                      {/* Dismiss */}
+                      <button
+                        type="button"
+                        onClick={dismiss}
+                        className="text-[9px] uppercase tracking-[0.15em] text-ivory/20 font-sans hover:text-ivory/40 transition-colors duration-150 text-center pt-1"
+                      >
+                        Not now
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}

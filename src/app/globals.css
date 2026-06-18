@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+
+:root {
+  /* ── PIKORUA brand tokens ──────────────────────────────── */
+  --lux-black: #121416;
+  --soft-black: #1C1E22;
+  --white: #FFFFFF;
+  --ivory: #F7F3EA;
+  --champagne-gold: #C8A45D;
+  --antique-gold: #9B7A36;
+  --muted-gold: #D8C28A;
+
+  /* ── shadcn/ui semantic layer (mapped to PIKORUA tokens) ── */
+  --background: var(--lux-black);
+  --foreground: var(--ivory);
+  --primary: var(--champagne-gold);
+  --primary-foreground: var(--lux-black);
+  --secondary: var(--soft-black);
+  --secondary-foreground: var(--white);
+  --muted: #1e1e1e;
+  --muted-foreground: rgba(247, 243, 234, 0.45);
+  --accent: rgba(200, 164, 93, 0.1);
+  --accent-foreground: var(--ivory);
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(247, 243, 234, 0.08);
+  --input: rgba(247, 243, 234, 0.12);
+  --ring: var(--champagne-gold);
+  --popover: var(--soft-black);
+  --popover-foreground: var(--ivory);
+  --card: var(--soft-black);
+  --card-foreground: var(--ivory);
+}
+
+/* Expose tokens to Tailwind v4 @theme */
+@theme inline {
+  --color-lux-black: var(--lux-black);
+  --color-soft-black: var(--soft-black);
+  --color-white: var(--white);
+  --color-ivory: var(--ivory);
+  --color-champagne-gold: var(--champagne-gold);
+  --color-antique-gold: var(--antique-gold);
+  --color-muted-gold: var(--muted-gold);
+
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Type scale — desktop / mobile set via clamp */
+  --text-hero: clamp(2rem, 5vw, 4.5rem);
+  --text-h2: clamp(1.5rem, 3vw, 2.75rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --text-body: 1rem;
+  --text-label: 0.75rem;
+
+  /* Letter spacing for eyebrow labels */
+  --tracking-eyebrow: 0.15em;
+
+  /* Border radius — luxury reads crisp */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* shadcn semantic colors — Tailwind v4 resolves bg-background etc. via --color-* */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  /* Motion — slow, eased, purposeful */
+  --ease-luxury: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 600ms;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────────────────── */
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--lux-black);
+  color: var(--ivory);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Force standard lining numbers globally for headers and display fonts */
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-variant-numeric: lining-nums;
+}
+
+/* ─── Focus ring — visible champagne gold, consistent everywhere ─────────── */
+
+:focus-visible {
+  outline: 2px solid var(--champagne-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Reduced motion — honor user preference across the entire site ──────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Skip-to-content link (accessibility) ───────────────────────────────── */
+
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--champagne-gold);
+  color: var(--lux-black);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.skip-to-content:focus {
+  left: 1rem;
+}
+
+/* ─── Gold discipline — never a large fill ───────────────────────────────── */
+
+.gold-hairline {
+  border-color: var(--muted-gold);
+  border-width: 1px;
+}
+
+.gold-underline {
+  position: relative;
+}
+
+.gold-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--champagne-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-fast) var(--ease-luxury);
+}
+
+.gold-underline:hover::after,
+.gold-underline[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* ─── Custom keyframes ───────────────────────────────────────────────────── */
+
+@keyframes scrollCue {
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50%       { opacity: 0;   transform: translateY(6px); }
+}
+
+/* ─── Utility: visually hidden (screen reader only) ─────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── Scrollbar adjustments & styling ──────────────────────────────────── */
+
+/* Completely hide scrollbars globally across the entire website for all browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* ─── Continuous Marquee Animation ───────────────────────────────────────── */
+
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 45s linear infinite;
+}
+
+.animate-marquee:hover,
+.marquee-container:hover .animate-marquee {
+  animation-play-state: paused !important;
+}
+
+/* Same animation, but never pauses on hover. */
+.animate-marquee-continuous {
+  animation: marquee 45s linear infinite;
+}
