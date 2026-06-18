@@ -5,10 +5,10 @@ export const MEDIA = {
   logoIcon: "/logo-icon.png",
   founder: `${BASE}/images/founder_v2.jpg`,
   videos: {
-    hero: "/videos/hero.mp4",
-    hero2: "/videos/hero2.mp4",
+    hero: `${BASE}/videos/hero.mp4`,
+    hero2: `${BASE}/videos/hero2.mp4`,
     bg: `${BASE}/videos/bg.mp4`,
-    bg1: "/videos/bg_1.mp4",
+    bg1: `${BASE}/videos/bg_1.mp4`,
     heroPoster: `${BASE}/videos/hero-poster.jpg`,
   },
 } as const;
