@@ -3,18 +3,19 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { getSupabaseAllTestimonials, getPageSeoData } from "@/lib/supabase/queries";
+import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import type { Testimonial } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("testimonials");
-  const defaultTitle = "Client Testimonials — PIKORUA Realty";
+  const defaultTitle = "Client Testimonials";
   const defaultDesc = "Read what PIKORUA Realty's clients say about their experience — HNI buyers, NRI investors, and sellers who chose a private advisory over a public portal.";
 
-  return {
+  return createMetadata({
     title: seo?.seoTitle || defaultTitle,
     description: seo?.seoDescription || defaultDesc,
-    alternates: { canonical: "https://pikorua.in/testimonials" },
-  };
+    path: "/testimonials",
+  });
 }
 
 export const dynamic = "force-dynamic";
@@ -104,9 +105,39 @@ export default async function TestimonialsPage() {
 
   const testimonials = liveTestimonials.length > 0 ? liveTestimonials : STATIC_TESTIMONIALS;
 
+  const testimonialsPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": absoluteUrl("/testimonials#webpage"),
+    url: absoluteUrl("/testimonials"),
+    name: "Client Testimonials",
+    about: {
+      "@id": `${SITE_URL}#real-estate-agent`,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: testimonials.map((testimonial, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: `Client experience from ${testimonial.clientName}`,
+          text: testimonial.quote,
+          author: {
+            "@type": "Person",
+            name: testimonial.clientName,
+          },
+        },
+      })),
+    },
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(testimonialsPageSchema) }}
+      />
       <Header alwaysSolid />
       <main id="main-content">
         <section className="bg-lux-black pt-24 pb-8 lg:pt-32 lg:pb-10">

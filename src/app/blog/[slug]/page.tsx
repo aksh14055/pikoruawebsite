@@ -7,6 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { getSupabaseBlogs, getSupabaseBlogBySlug } from "@/lib/supabase/queries";
 import { renderFormattedText } from "@/lib/utils";
+import { absoluteUrl, createMetadata, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { getLandingPagesBySlugs, getRelatedLandingPagesForText } from "@/lib/data/geo";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -30,11 +32,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
   if (!post) return {};
 
-  return {
-    title: post.seoTitle || `${post.title} | PIKORUA Realty Insights`,
+  return createMetadata({
+    title: post.seoTitle || post.title,
     description: post.seoDescription || post.excerpt,
-    alternates: { canonical: `https://pikorua.in/blog/${post.slug}` },
-  };
+    path: `/blog/${post.slug}`,
+    image: post.coverImage,
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -56,8 +60,69 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     year: "numeric",
   });
 
+  const relatedLandingPages = post.relatedLandingSlugs?.length
+    ? getLandingPagesBySlugs(post.relatedLandingSlugs)
+    : getRelatedLandingPagesForText(`${post.title} ${post.excerpt} ${post.content.join(" ")}`);
+
+  const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${canonicalUrl}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    image: absoluteUrl(post.coverImage),
+    datePublished: post.publishedAt,
+    author: {
+      "@type": "Person",
+      name: post.author.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#real-estate-agent`,
+      name: SITE_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/logo.png"),
+      },
+    },
+    mainEntityOfPage: canonicalUrl,
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Insights",
+        item: absoluteUrl("/blog"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogPostingSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
+      />
       <Header alwaysSolid />
       <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
         <article className="pt-32 pb-24 lg:pt-36 lg:pb-32">
@@ -170,6 +235,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
               </Link>
             </div>
+
+            {/* Related landing-page guides */}
+            {relatedLandingPages.length > 0 && (
+              <div className="mt-16 lg:mt-20 max-w-3xl mx-auto">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-6">
+                  Related Guides
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {relatedLandingPages.map((related) => (
+                    <Link
+                      key={related.href}
+                      href={related.href}
+                      className="group border border-white/[0.07] rounded-sm p-5 hover:border-champagne-gold/35 transition-colors"
+                    >
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-ivory/35 font-sans">
+                        {related.eyebrow}
+                      </span>
+                      <h3 className="mt-3 font-display text-lg uppercase tracking-wide text-ivory group-hover:text-champagne-gold transition-colors">
+                        {related.label}
+                      </h3>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
         </article>

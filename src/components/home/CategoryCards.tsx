@@ -14,6 +14,7 @@ interface Category {
   cta: string;
   imageUrl: string;
   location: string;
+  href: string;
 }
 
 const CATEGORIES: Category[] = [
@@ -23,7 +24,8 @@ const CATEGORIES: Category[] = [
     tagline: "Curated tower residences in prime city corridors",
     cta: "Explore Apartments",
     imageUrl: "/properties/anamika/anamika.jpg",
-    location: "Iskon-Ambli Road"
+    location: "Iskon-Ambli Road",
+    href: "/property-types/luxury-apartments-ahmedabad"
   },
   { 
     slug: "penthouse", 
@@ -31,7 +33,8 @@ const CATEGORIES: Category[] = [
     tagline: "Elevated homes with skyline scale and privacy",
     cta: "Explore Penthouses",
     imageUrl: "/properties/belrosa/belrosa-3-view.jpg",
-    location: "Sindhu Bhavan"
+    location: "Sindhu Bhavan",
+    href: "/property-types/penthouses-duplexes-ahmedabad"
   },
   { 
     slug: "duplex", 
@@ -39,7 +42,8 @@ const CATEGORIES: Category[] = [
     tagline: "Multi-level residences with space, volume, and distinction",
     cta: "Explore Duplex Homes",
     imageUrl: "/properties/ikebana/ikebana1.png",
-    location: "Science City"
+    location: "Science City",
+    href: "/property-types/penthouses-duplexes-ahmedabad"
   },
   { 
     slug: "villa", 
@@ -47,7 +51,8 @@ const CATEGORIES: Category[] = [
     tagline: "Independent luxury living with privacy, land, and presence",
     cta: "Explore Villas",
     imageUrl: "/properties/belagio/belagio-pool.jpg",
-    location: "Shilaj"
+    location: "Shilaj",
+    href: "/property-types/villas-bungalows-ahmedabad"
   },
   { 
     slug: "plot", 
@@ -55,7 +60,8 @@ const CATEGORIES: Category[] = [
     tagline: "Rare land parcels for homes and assets built with intention",
     cta: "Discuss Land Opportunities",
     imageUrl: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
-    location: "Bhadaj"
+    location: "Bhadaj",
+    href: "/property-types/residential-plots-ahmedabad"
   },
   { 
     slug: "investment", 
@@ -63,7 +69,8 @@ const CATEGORIES: Category[] = [
     tagline: "Strategic real estate assets selected for long-term value",
     cta: "Explore Investment Properties",
     imageUrl: "/properties/eminence-96/eminence-96-3-pool.webp",
-    location: "Thaltej"
+    location: "Thaltej",
+    href: "/property-types/luxury-residential-investment-ahmedabad"
   },
 ];
 
@@ -108,7 +115,7 @@ export function CategoryCards() {
                 return (
                   <Link
                     key={cat.slug}
-                    href={`/properties?category=${cat.slug}`}
+                    href={cat.href}
                     onMouseEnter={() => setActiveCategory(i)}
                     className="border-b border-black/[0.06] relative block group/row"
                   >
@@ -257,7 +264,7 @@ export function CategoryCards() {
                         </p>
 
                         <Link
-                          href={`/properties?category=${cat.slug}`}
+                          href={cat.href}
                           className="mt-5 inline-flex items-center justify-center w-full py-3.5 text-xs font-sans uppercase tracking-[0.15em] text-white bg-[#0B0B0B] hover:bg-[#C8A45D] transition-colors duration-300 min-h-[44px] rounded-sm font-semibold"
                         >
                           {cat.cta} →

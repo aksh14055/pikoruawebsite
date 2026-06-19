@@ -7,8 +7,6 @@ import { Footer } from "@/components/layout/Footer";
 
 // Home sections
 import { HeroSection } from "@/components/home/HeroSection";
-import { PositioningStatement } from "@/components/home/PositioningStatement";
-import { CategoryCards } from "@/components/home/CategoryCards";
 import { FeaturedResidences } from "@/components/home/FeaturedResidences";
 import { FounderTeaser } from "@/components/home/FounderTeaser";
 import { TestimonialsTeaser } from "@/components/home/TestimonialsTeaser";
@@ -19,23 +17,18 @@ import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { getFirstSentence } from "@/lib/utils";
+import { createMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
-  const defaultTitle = "PIKORUA Realty — Private Luxury Real Estate Advisory | Ahmedabad";
+  const defaultTitle = "Private Luxury Real Estate Advisory in Ahmedabad";
   const defaultDesc = "PIKORUA Realty is Ahmedabad's private luxury real estate advisory with a strong residential-first focus. We curate exclusive apartments, penthouses, duplexes, villas, and bungalows for HNI and NRI buyers across Sindhu Bhavan, Iskon-Ambli, Thaltej, SG Highway, and Shilaj.";
 
-  return {
+  return createMetadata({
     title: seo?.seoTitle || defaultTitle,
     description: seo?.seoDescription || defaultDesc,
-    alternates: { canonical: "https://pikorua.in" },
-    openGraph: {
-      title: seo?.seoTitle || "PIKORUA Realty — Ahmedabad's Finest Luxury Real Estate",
-      description: seo?.seoDescription || "A private gateway to Ahmedabad's finest luxury real estate — curated, never listed.",
-      type: "website",
-      url: "https://pikorua.in",
-    },
-  };
+    path: "/",
+  });
 }
 
 export const dynamic = "force-dynamic";

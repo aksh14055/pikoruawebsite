@@ -18,13 +18,13 @@ const NAV_LINKS = [
 ];
 
 const PROPERTY_CATEGORIES = [
-  { slug: "apartment", label: "Apartments" },
-  { slug: "penthouse", label: "Penthouses" },
-  { slug: "duplex", label: "Duplexes" },
-  { slug: "villa", label: "Villas" },
-  { slug: "bungalow", label: "Bungalows" },
-  { slug: "plot", label: "Plots / Land" },
-  { slug: "investment", label: "Investment Properties" },
+  { slug: "apartment", label: "Apartments", href: "/property-types/luxury-apartments-ahmedabad" },
+  { slug: "penthouse", label: "Penthouses", href: "/property-types/penthouses-duplexes-ahmedabad" },
+  { slug: "duplex", label: "Duplexes", href: "/property-types/penthouses-duplexes-ahmedabad" },
+  { slug: "villa", label: "Villas", href: "/property-types/villas-bungalows-ahmedabad" },
+  { slug: "bungalow", label: "Bungalows", href: "/property-types/villas-bungalows-ahmedabad" },
+  { slug: "plot", label: "Plots / Land", href: "/property-types/residential-plots-ahmedabad" },
+  { slug: "investment", label: "Investment Properties", href: "/property-types/luxury-residential-investment-ahmedabad" },
 ];
 
 interface HeaderProps {
@@ -56,8 +56,12 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
   }, [alwaysSolid]);
 
   useEffect(() => {
-    setDrawerOpen(false);
-    setDropdownOpen(false);
+    const frame = window.requestAnimationFrame(() => {
+      setDrawerOpen(false);
+      setDropdownOpen(false);
+      setMobileDropdownOpen(false);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
   useEffect(() => {
@@ -118,7 +122,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                 )}
               >
               {NAV_LINKS.map(({ href, label }) => {
-                const active = pathname === href || (label === "Properties" && pathname.startsWith("/properties"));
+                const active = pathname === href || (label === "Properties" && (pathname.startsWith("/properties") || pathname.startsWith("/property-types") || pathname.startsWith("/locations")));
 
                 if (label === "Properties") {
                   return (
@@ -160,19 +164,19 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                             </h4>
                             <div className="flex flex-col gap-2">
                               <Link
-                                href="/properties?category=apartment"
+                                href="/property-types/luxury-apartments-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Apartments
                               </Link>
                               <Link
-                                href="/properties?category=penthouse"
+                                href="/property-types/penthouses-duplexes-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Penthouses
                               </Link>
                               <Link
-                                href="/properties?category=duplex"
+                                href="/property-types/penthouses-duplexes-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Duplexes
@@ -187,19 +191,19 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                             </h4>
                             <div className="flex flex-col gap-2">
                               <Link
-                                href="/properties?category=villa"
+                                href="/property-types/villas-bungalows-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Villas
                               </Link>
                               <Link
-                                href="/properties?category=bungalow"
+                                href="/property-types/villas-bungalows-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Bungalows
                               </Link>
                               <Link
-                                href="/properties?category=plot"
+                                href="/property-types/residential-plots-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Plots / Land
@@ -214,7 +218,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                             </h4>
                             <div className="flex flex-col gap-2">
                               <Link
-                                href="/properties?category=investment"
+                                href="/property-types/luxury-residential-investment-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Investment Properties
@@ -350,7 +354,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
 
         <nav aria-label="Mobile navigation" className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-1">
           {NAV_LINKS.map(({ href, label }) => {
-            const active = pathname === href || (label === "Properties" && pathname.startsWith("/properties"));
+            const active = pathname === href || (label === "Properties" && (pathname.startsWith("/properties") || pathname.startsWith("/property-types") || pathname.startsWith("/locations")));
 
             if (label === "Properties") {
               return (
@@ -376,7 +380,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                     {PROPERTY_CATEGORIES.map((cat) => (
                       <Link
                         key={cat.slug}
-                        href={`/properties?category=${cat.slug}`}
+                        href={cat.href}
                         className="block py-2 text-sm font-sans text-ivory/50 hover:text-champagne-gold transition-colors"
                       >
                         {cat.label}

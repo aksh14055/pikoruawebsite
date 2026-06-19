@@ -186,7 +186,8 @@ export async function getSupabaseAllPropertySlugs(): Promise<string[]> {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
       .from("properties")
-      .select("slug");
+      .select("slug")
+      .eq("is_active", true);
 
     if (error) {
       console.error("Error fetching property slugs from Supabase:", error);
@@ -196,6 +197,28 @@ export async function getSupabaseAllPropertySlugs(): Promise<string[]> {
     return (data || []).map((r) => r.slug);
   } catch (err) {
     console.error("Unhandled error in getSupabaseAllPropertySlugs:", err);
+    return [];
+  }
+}
+
+export async function getSupabaseAllPropertySlugsWithDates(): Promise<
+  { slug: string; updatedAt: string }[]
+> {
+  try {
+    const supabase = getSupabasePublicClient();
+    const { data, error } = await supabase
+      .from("properties")
+      .select("slug, updated_at")
+      .eq("is_active", true);
+
+    if (error) {
+      console.error("Error fetching property slugs/dates from Supabase:", error);
+      return [];
+    }
+
+    return (data || []).map((r) => ({ slug: r.slug, updatedAt: r.updated_at }));
+  } catch (err) {
+    console.error("Unhandled error in getSupabaseAllPropertySlugsWithDates:", err);
     return [];
   }
 }
@@ -385,4 +408,3 @@ export async function getSupabaseHomePageContent(): Promise<any | null> {
     return null;
   }
 }
-

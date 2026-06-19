@@ -3,21 +3,51 @@
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn, formatLiningNumbers } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { StaticProperty } from "@/lib/data/properties";
-import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
-import type { ResidentialCategory } from "@/types";
+import { LOCATION_LABELS, LOCATION_SLUGS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
+import type { LocationSlug, ResidentialCategory } from "@/types";
+import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
 import { ExpandedDetailPanel } from "@/components/home/FeaturedResidencesGrid";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const FILTERS: { label: string; value: "" | ResidentialCategory }[] = [
   { label: "All", value: "" },
   { label: "Apartments", value: "apartment" },
+  { label: "Penthouses", value: "penthouse" },
+  { label: "Duplexes", value: "duplex" },
   { label: "Villas", value: "villa" },
   { label: "Bungalows", value: "bungalow" },
   { label: "Plots", value: "plot" },
+  { label: "Investment", value: "investment" },
 ];
+
+const FILTER_VALUES = new Set<ResidentialCategory>(
+  FILTERS.map((filter) => filter.value).filter((value): value is ResidentialCategory => Boolean(value))
+);
+const LOCATION_VALUES = new Set<LocationSlug>(LOCATION_SLUGS);
+
+function getFilterFromUrl(): "" | ResidentialCategory {
+  if (typeof window === "undefined") return "";
+  const category = new URLSearchParams(window.location.search).get("category");
+  return category && FILTER_VALUES.has(category as ResidentialCategory) ? (category as ResidentialCategory) : "";
+}
+
+function getLocationFromUrl(): "" | LocationSlug {
+  if (typeof window === "undefined") return "";
+  const location = new URLSearchParams(window.location.search).get("location");
+  return location && LOCATION_VALUES.has(location as LocationSlug) ? (location as LocationSlug) : "";
+}
+
+function getCollectionUrl(filter: "" | ResidentialCategory, location: "" | LocationSlug): string {
+  const params = new URLSearchParams();
+  if (filter) params.set("category", filter);
+  if (location) params.set("location", location);
+  const query = params.toString();
+  return query ? `/properties?${query}` : "/properties";
+}
 
 interface PropertiesGridProps {
   properties: StaticProperty[];
@@ -25,11 +55,15 @@ interface PropertiesGridProps {
 
 export function PropertiesGrid({ properties: currentProperties }: PropertiesGridProps) {
   const [activeFilter, setActiveFilter] = useState<"" | ResidentialCategory>("");
+  const [activeLocation, setActiveLocation] = useState<"" | LocationSlug>("");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   // Sync expanded property from URL path or query on load & listen to popstate
   useEffect(() => {
     const handleUrlSync = () => {
+      setActiveFilter(getFilterFromUrl());
+      setActiveLocation(getLocationFromUrl());
+
       const pathParts = window.location.pathname.split("/").filter(Boolean);
       // Path format: /properties/[slug]
       if (pathParts[0] === "properties" && pathParts[1]) {
@@ -77,17 +111,17 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setExpandedSlug(null);
-        window.history.pushState(null, "", "/properties");
+        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [activeFilter, activeLocation]);
 
   const handleToggleExpand = (slug: string) => {
     if (expandedSlug === slug) {
       setExpandedSlug(null);
-      window.history.pushState(null, "", "/properties");
+      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
     } else {
       setExpandedSlug(slug);
       window.history.pushState(null, "", `/properties/${slug}`);
@@ -96,12 +130,26 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
 
   const handleCloseProperty = () => {
     setExpandedSlug(null);
-    window.history.pushState(null, "", "/properties");
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
   };
 
-  const filtered = activeFilter
-    ? currentProperties.filter((p) => p.category === activeFilter)
-    : currentProperties;
+  const handleFilterChange = (filter: "" | ResidentialCategory) => {
+    setActiveFilter(filter);
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation));
+  };
+
+  const handleLocationClear = () => {
+    setActiveLocation("");
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, ""));
+  };
+
+  const filtered = currentProperties.filter((property) => {
+    const matchesCategory = activeFilter ? propertyMatchesCategoryIntent(property, activeFilter) : true;
+    const matchesLocation = activeLocation ? property.location === activeLocation : true;
+    return matchesCategory && matchesLocation;
+  });
 
   const activeProperty = currentProperties.find((p) => p.slug === expandedSlug);
 
@@ -114,7 +162,7 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
             {FILTERS.map((f) => (
               <button
                 key={f.value}
-                onClick={() => setActiveFilter(f.value)}
+                onClick={() => handleFilterChange(f.value)}
                 className={cn(
                   "flex-shrink-0 px-5 py-2 text-[11px] font-sans uppercase tracking-[0.15em] border transition-all duration-150 rounded-sm",
                   activeFilter === f.value
@@ -126,6 +174,20 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
               </button>
             ))}
           </div>
+          {activeLocation && (
+            <div className="pb-4 flex items-center gap-3">
+              <span className="text-[10px] font-sans uppercase tracking-[0.18em] text-ivory/45">
+                Corridor: <span className="text-champagne-gold">{LOCATION_LABELS[activeLocation]}</span>
+              </span>
+              <button
+                type="button"
+                onClick={handleLocationClear}
+                className="text-[10px] font-sans uppercase tracking-[0.16em] text-ivory/35 hover:text-ivory transition-colors"
+              >
+                Clear
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -142,6 +204,19 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
               />
             ))}
           </div>
+          {filtered.length === 0 && (
+            <div className="border border-white/[0.07] bg-soft-black/40 rounded-sm p-8 text-center">
+              <p className="text-sm text-ivory/55 font-sans">
+                No public matches for this filter. Request private advisory for off-market options.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-5 inline-flex items-center justify-center px-6 py-3 text-xs font-sans uppercase tracking-[0.18em] text-champagne-gold border border-champagne-gold/35 hover:border-champagne-gold transition-colors rounded-sm"
+              >
+                Start Private Search
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
@@ -185,13 +260,6 @@ interface PropertyCardProps {
   onToggle: () => void;
 }
 
-const STATUS_PULSE_COLORS: Record<string, string> = {
-  "ready-to-move":       "bg-emerald-400 shadow-emerald-400/50",
-  "near-possession":     "bg-champagne-gold shadow-[#C8A45D]/50",
-  "under-construction":  "bg-sky-400 shadow-sky-400/50",
-  "pre-launch":          "bg-amber-500 shadow-amber-500/50",
-};
-
 function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
   const [currentImgIdx, setCurrentImgIdx] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -199,17 +267,19 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
   const images = property.images && property.images.length > 0 ? property.images : [property.coverImage];
 
   useEffect(() => {
-    if (!isHovered || images.length <= 1) {
-      setCurrentImgIdx(0);
-      setDirection(1);
-      return;
-    }
+    if (!isHovered || images.length <= 1) return;
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentImgIdx((prev) => (prev + 1) % images.length);
     }, 2500);
     return () => clearInterval(interval);
   }, [isHovered, images.length]);
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCurrentImgIdx(0);
+    setDirection(1);
+  };
 
   const handlePrevImg = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -251,13 +321,11 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
     }),
   };
 
-  const priceDisplay = property.priceOnRequest ? "Price on Request" : (property.price || "Price on Request");
-
   return (
     <motion.div
       onClick={onToggle}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.025 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
@@ -362,10 +430,14 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
           <span className="text-xs font-sans text-ivory/50">
             {RESIDENTIAL_CATEGORY_LABELS[property.category]}
           </span>
-          <span className="text-xs font-sans uppercase tracking-[0.12em] text-ivory/40 group-hover:text-champagne-gold/80 flex items-center gap-1 transition-all duration-300">
+          <Link
+            href={`/properties/${property.slug}`}
+            onClick={(event) => event.stopPropagation()}
+            className="text-xs font-sans uppercase tracking-[0.12em] text-ivory/40 group-hover:text-champagne-gold/80 flex items-center gap-1 transition-all duration-300"
+          >
             Details
             <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </span>
+          </Link>
         </div>
       </div>
     </motion.div>

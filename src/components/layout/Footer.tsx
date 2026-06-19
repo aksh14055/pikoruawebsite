@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -8,6 +9,9 @@ const NAV_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
+
+const FOOTER_LOCATION_LINKS = LOCATION_LANDING_PAGES.slice(0, 6);
+const FOOTER_TYPE_LINKS = PROPERTY_TYPE_LANDING_PAGES.slice(0, 5);
 
 interface FooterProps {
   googleMapsUrl?: string;
@@ -34,9 +38,9 @@ export function Footer({
   return (
     <footer className="bg-lux-black border-t border-white/[0.06]" role="contentinfo">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="py-10 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div>
             <div className="mb-2.5">
               <span className="font-display text-2xl tracking-[0.12em] text-ivory block">PIKORUA</span>
               <span className="text-[10px] tracking-[0.25em] text-champagne-gold uppercase font-sans">Realty</span>
@@ -85,6 +89,32 @@ export function Footer({
                 <li key={href}>
                   <Link href={href} className="text-sm font-sans text-ivory/55 hover:text-ivory transition-colors duration-150">
                     {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-sans mb-3">Corridors</h2>
+            <ul className="space-y-2">
+              {FOOTER_LOCATION_LINKS.map((page) => (
+                <li key={page.href}>
+                  <Link href={page.href} className="text-sm font-sans text-ivory/55 hover:text-ivory transition-colors duration-150">
+                    {page.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-sans mb-3">Property Types</h2>
+            <ul className="space-y-2">
+              {FOOTER_TYPE_LINKS.map((page) => (
+                <li key={page.href}>
+                  <Link href={page.href} className="text-sm font-sans text-ivory/55 hover:text-ivory transition-colors duration-150">
+                    {page.label}
                   </Link>
                 </li>
               ))}

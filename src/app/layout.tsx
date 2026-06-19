@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { Preloader } from "@/components/ui/Preloader";
 import { LeadCapturePopup } from "@/components/ui/LeadCapturePopup";
+import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
+import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
+import { env } from "@/lib/env";
+import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,34 +24,79 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "PIKORUA Realty — Ahmedabad's Finest Luxury Residences",
-    template: "%s | PIKORUA Realty",
+    default: `${SITE_NAME} - Ahmedabad's Finest Luxury Residences`,
+    template: `%s | ${SITE_NAME}`,
   },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
   },
   description:
-    "A private gateway to Ahmedabad's finest luxury residences — curated, never listed. Apartments, penthouses, villas, bungalows, and premium plots for discerning buyers, NRIs, and investors.",
-  metadataBase: new URL("https://pikorua.in"),
+    "A private gateway to Ahmedabad's finest luxury residences, curated privately for buyers, NRIs, investors, and sellers.",
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://pikorua.in",
-    siteName: "PIKORUA Realty",
-    title: "PIKORUA Realty — Ahmedabad's Finest Luxury Residences",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} - Ahmedabad's Finest Luxury Residences`,
     description:
-      "A private gateway to Ahmedabad's finest luxury residences — curated, never listed.",
+      "A private gateway to Ahmedabad's finest luxury residences, curated privately for discerning buyers.",
+    images: [{ url: absoluteUrl("/logo.png") }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PIKORUA Realty",
+    title: SITE_NAME,
     description: "A private gateway to Ahmedabad's finest luxury residences.",
+    images: [absoluteUrl("/logo.png")],
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true },
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "@id": `${SITE_URL}#real-estate-agent`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: absoluteUrl("/logo.png"),
+  image: absoluteUrl("/logo.png"),
+  description:
+    "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
+  sameAs: [
+    "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
+    "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
+  ],
+  areaServed: {
+    "@type": "City",
+    name: "Ahmedabad",
+    addressRegion: "Gujarat",
+    addressCountry: "IN",
+  },
+  knowsAbout: [
+    "Luxury apartments in Ahmedabad",
+    "Penthouses in Ahmedabad",
+    "Villas and bungalows in Ahmedabad",
+    "NRI property purchase in Gujarat",
+    "Private residential real estate advisory",
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Ahmedabad",
+    addressRegion: "Gujarat",
+    addressCountry: "IN",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: `+${env.WHATSAPP_NUMBER}`,
+    contactType: "sales",
   },
 };
 
@@ -63,6 +112,12 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
+        <GoogleTagManager />
+        <WebVitalsReporter />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }}
+        />
         <Preloader />
         <LeadCapturePopup />
         <a href="#main-content" className="skip-to-content">

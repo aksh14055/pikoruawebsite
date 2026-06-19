@@ -5,22 +5,17 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { getSupabaseBlogs } from "@/lib/supabase/queries";
+import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Blog & Insights — PIKORUA Realty",
+export const metadata: Metadata = createMetadata({
+  title: "Luxury Real Estate Insights",
   description:
     "Expert perspectives on Ahmedabad's luxury residential corridors, off-market advisory reports, and HNI/NRI real estate guides.",
-  alternates: { canonical: "https://pikorua.in/blog" },
-};
+  path: "/blog",
+  image: "/blog/blog-pikorua-consulting-cover.png",
+});
 
 export const dynamic = "force-dynamic";
-
-const CATEGORY_LABELS: Record<string, string> = {
-  "corridor-spotlight": "Corridor",
-  advisory: "Advisory",
-  "market-report": "Market Report",
-  "nri-insights": "NRI",
-};
 
 export default async function BlogListingPage() {
   let posts = await getSupabaseBlogs(true);

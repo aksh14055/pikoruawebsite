@@ -7,17 +7,19 @@ import { StatsStrip } from "@/components/ui/StatsStrip";
 import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_HERO_TITLE, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
+import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("about");
-  const defaultTitle = "About — PIKORUA Realty";
+  const defaultTitle = "About the Private Luxury Advisory";
   const defaultDesc = "PIKORUA Realty is Ahmedabad's private luxury real estate advisory with a strong residential-first focus, founded on discretion, deep location intelligence, and the belief that the finest properties deserve a quieter way to be found.";
 
-  return {
+  return createMetadata({
     title: seo?.seoTitle || defaultTitle,
     description: seo?.seoDescription || defaultDesc,
-    alternates: { canonical: "https://pikorua.in/about" },
-  };
+    path: "/about",
+    image: MEDIA.founder,
+  });
 }
 
 export const dynamic = "force-dynamic";
@@ -60,9 +62,10 @@ export default async function AboutPage() {
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
+    "@id": `${SITE_URL}#real-estate-agent`,
     "name": "PIKORUA Realty",
-    "url": "https://pikorua.in/about",
-    "image": founderAvatar,
+    "url": SITE_URL,
+    "image": absoluteUrl(founderAvatar),
     "areaServed": {
       "@type": "City",
       "name": "Ahmedabad",
@@ -83,7 +86,7 @@ export default async function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(aboutSchema) }}
       />
       <Header alwaysSolid />
       <main id="main-content" className="relative bg-lux-black overflow-hidden">
@@ -217,4 +220,3 @@ export default async function AboutPage() {
     </>
   );
 }
-

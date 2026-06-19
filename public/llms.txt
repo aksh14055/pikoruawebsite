@@ -1,0 +1,34 @@
+# PIKORUA Realty
+
+PIKORUA Realty is a private luxury real estate advisory based in Ahmedabad, India. It deals exclusively in residential properties — luxury apartments, penthouses, villas, bungalows, and premium plots — for discerning buyers, NRIs, and investors. Properties are curated and shared privately with qualified buyers rather than published on public listing portals.
+
+## Key pages
+
+- Home: https://pikorua.in/
+- Properties: https://pikorua.in/properties
+- About: https://pikorua.in/about
+- Testimonials: https://pikorua.in/testimonials
+- Contact: https://pikorua.in/contact
+- Blog (market insights & NRI advisory): https://pikorua.in/blog
+- Sindhu Bhavan Road luxury properties: https://pikorua.in/locations/sindhu-bhavan
+- Iskon-Ambli Road luxury properties: https://pikorua.in/locations/iskon-ambli
+- Thaltej luxury properties: https://pikorua.in/locations/thaltej
+- Shilaj villas and plots: https://pikorua.in/locations/shilaj
+- Vaishno Devi luxury properties: https://pikorua.in/locations/vaishno-devi
+- SG Highway luxury properties: https://pikorua.in/locations/sg-highway
+- Luxury apartments in Ahmedabad: https://pikorua.in/property-types/luxury-apartments-ahmedabad
+- Penthouses and duplex homes in Ahmedabad: https://pikorua.in/property-types/penthouses-duplexes-ahmedabad
+- Villas and bungalows in Ahmedabad: https://pikorua.in/property-types/villas-bungalows-ahmedabad
+- Premium residential plots in Ahmedabad: https://pikorua.in/property-types/residential-plots-ahmedabad
+- Luxury residential investment properties in Ahmedabad: https://pikorua.in/property-types/luxury-residential-investment-ahmedabad
+- Privacy policy: https://pikorua.in/privacy
+- Terms of use: https://pikorua.in/terms
+
+## Contact
+
+For inquiries, use the contact form at https://pikorua.in/contact.
+
+## Notes for automated access
+
+- Do not crawl or index /admin, /studio, or /api — these are operational and have no public content.
+- Property availability and pricing change frequently; treat /properties as the source of truth rather than caching it long-term.

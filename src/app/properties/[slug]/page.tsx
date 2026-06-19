@@ -8,8 +8,10 @@ import { PropertyEnquiryForm } from "@/components/property/PropertyEnquiryForm";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabasePropertyBySlug, getSupabaseAllPropertySlugs } from "@/lib/supabase/queries";
 import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
-import { MapPin, ArrowLeft, ShieldCheck, Clock, Building } from "lucide-react";
+import type { ResidentialCategory } from "@/types";
+import { MapPin, ArrowLeft, ShieldCheck } from "lucide-react";
 import { renderFormattedText } from "@/lib/utils";
+import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 const LOCATION_COORDINATES: Record<string, { latitude: string; longitude: string }> = {
   "iskon-ambli": { latitude: "23.0246", longitude: "72.5074" },
@@ -21,6 +23,13 @@ const LOCATION_COORDINATES: Record<string, { latitude: string; longitude: string
 };
 
 const DEFAULT_COORDINATES = { latitude: "23.0225", longitude: "72.5714" }; // Ahmedabad center
+
+function getResidenceSchemaType(category: ResidentialCategory): string {
+  if (category === "plot") return "Landform";
+  if (category === "villa" || category === "bungalow") return "SingleFamilyResidence";
+  if (category === "apartment" || category === "penthouse" || category === "duplex") return "Apartment";
+  return "Residence";
+}
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -34,7 +43,7 @@ export async function generateStaticParams() {
     console.error("Error fetching slugs for static params:", err);
   }
   const staticSlugs = STATIC_PROPERTIES.map((property) => property.slug);
-  const allSlugs = Array.from(new Set([...dbSlugs, ...staticSlugs]));
+  const allSlugs = Array.from(new Set(dbSlugs.length > 0 ? dbSlugs : staticSlugs));
   return allSlugs.map((slug) => ({ slug }));
 }
 
@@ -46,24 +55,16 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
   }
   if (!property) return {};
 
-  const title = property.seoTitle || `${property.configuration} · ${property.sizeRange} in ${property.locationLabel} | PIKORUA Realty`;
+  const title = property.seoTitle || `${property.configuration} ${property.sizeRange} in ${property.locationLabel}`;
   const description = property.seoDescription || property.description?.[0] || 
     `Explore this exclusive ${property.configuration} · ${property.sizeRange} located in ${property.locationLabel}, Ahmedabad. Request private details from PIKORUA Realty.`;
 
-  return {
+  return createMetadata({
     title,
     description,
-    alternates: {
-      canonical: `https://pikorua.in/properties/${property.slug}`,
-    },
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      url: `https://pikorua.in/properties/${property.slug}`,
-      images: property.coverImage ? [{ url: property.coverImage }] : [],
-    },
-  };
+    path: `/properties/${property.slug}`,
+    image: property.coverImage || "/logo.png",
+  });
 }
 
 export default async function PropertyDetailPage({ params }: PropertyPageProps) {
@@ -84,25 +85,50 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
 
   const coords = LOCATION_COORDINATES[property.location] || DEFAULT_COORDINATES;
   const priceDisplay = property.priceOnRequest ? "Price on Request" : (property.price || "Price on Request");
+  const canonicalUrl = absoluteUrl(`/properties/${property.slug}`);
+  const propertyName = `${property.configuration} · ${property.sizeRange} in ${property.locationLabel}`;
 
-  // Schema: SingleFamilyResidence
-  const residenceSchema = {
+  const listingSchema = {
     "@context": "https://schema.org",
-    "@type": "SingleFamilyResidence",
-    "name": `${property.configuration} · ${property.sizeRange} in ${property.locationLabel}`,
-    "description": property.description?.[0] || "",
-    "image": property.coverImage,
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Ahmedabad",
-      "addressRegion": "Gujarat",
-      "addressCountry": "IN"
+    "@type": "RealEstateListing",
+    "@id": `${canonicalUrl}#listing`,
+    url: canonicalUrl,
+    name: propertyName,
+    description: property.description?.[0] || "",
+    image: allImages.filter(Boolean).map((image) => absoluteUrl(image)),
+    about: {
+      "@type": getResidenceSchemaType(property.category),
+      "@id": `${canonicalUrl}#residence`,
+      name: propertyName,
+      description: property.description?.[0] || "",
+      image: property.coverImage ? absoluteUrl(property.coverImage) : undefined,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ahmedabad",
+        addressRegion: "Gujarat",
+        addressCountry: "IN",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      },
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": coords.latitude,
-      "longitude": coords.longitude
-    }
+    offers: {
+      "@type": "Offer",
+      availability:
+        property.status === "ready-to-move"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/LimitedAvailability",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "INR",
+        description: priceDisplay,
+      },
+      seller: {
+        "@id": `${SITE_URL}#real-estate-agent`,
+      },
+    },
   };
 
   // Schema: BreadcrumbList
@@ -114,19 +140,19 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://pikorua.in"
+        "item": SITE_URL
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Properties",
-        "item": "https://pikorua.in/properties"
+        "item": absoluteUrl("/properties")
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": property.name,
-        "item": `https://pikorua.in/properties/${property.slug}`
+        "item": canonicalUrl
       }
     ]
   };
@@ -136,11 +162,11 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
       {/* Dynamic JSON-LD Schemas */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(residenceSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(listingSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
 
       <Header alwaysSolid />
