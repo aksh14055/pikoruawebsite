@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, ChevronDown } from "lucide-react";
 import { cn, extractUtm } from "@/lib/utils";
@@ -214,6 +215,17 @@ export function LeadCapturePopup() {
               className="relative w-full max-w-[420px] pointer-events-auto bg-soft-black border border-white/[0.06] rounded-md overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Logo */}
+              <div className="absolute top-4 left-5 z-10">
+                <Image
+                  src="/logo.png"
+                  alt="PIKORUA Realty"
+                  width={224}
+                  height={48}
+                  className="h-6 w-auto object-contain"
+                />
+              </div>
+
               {/* Close button */}
               <button
                 onClick={dismiss}
