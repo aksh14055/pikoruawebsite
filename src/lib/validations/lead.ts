@@ -141,6 +141,19 @@ export const contactSchema = z.object({
   preferredCallbackTime: z.string().max(100).optional(),
   consent: consentSchema,
   utm: utmSchema,
+  category: z
+    .enum([
+      "apartment",
+      "penthouse",
+      "villa",
+      "bungalow",
+      "plot",
+      "residential-investment",
+    ])
+    .optional(),
+  budgetBand: z
+    .enum(["1-2cr", "2-3cr", "3-5cr", "5-10cr", "10cr-plus", "custom"])
+    .optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

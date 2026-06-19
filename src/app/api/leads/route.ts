@@ -148,63 +148,131 @@ async function notifyTeamEmail(
   data: Record<string, unknown>
 ) {
   const subject = `New ${source} lead — ${data.name ?? "Unknown"}`;
-  
-  // Format details beautifully for email
+
+  // Format labels nicely
+  const BUDGET_LABELS: Record<string, string> = {
+    "1-2cr": "₹1 Cr – ₹2 Cr",
+    "2-3cr": "₹2 Cr – ₹3 Cr",
+    "3-5cr": "₹3 Cr – ₹5 Cr",
+    "5-10cr": "₹5 Cr – ₹10 Cr",
+    "10cr-plus": "₹10 Cr and above",
+    "custom": "Custom / Not decided",
+  };
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    "apartment": "Apartment",
+    "penthouse": "Penthouse",
+    "villa": "Villa",
+    "bungalow": "Bungalow",
+    "plot": "Premium Plot",
+    "residential-investment": "Residential Investment",
+  };
+
+  const LOCATION_LABELS: Record<string, string> = {
+    "iskon-ambli": "Iskon–Ambli",
+    "sindhu-bhavan": "Sindhu Bhavan",
+    "thaltej": "Thaltej",
+    "shilaj": "Shilaj",
+    "vaishno-devi": "Vaishno Devi",
+    "sg-highway": "SG Highway",
+    "other": "Open to suggestions",
+  };
+
+  const rawBudget = (data.budgetBand || data.budget_band) as string | undefined;
+  const formattedBudget = rawBudget ? (BUDGET_LABELS[rawBudget] || rawBudget) : undefined;
+
+  const rawCategory = data.category as string | undefined;
+  const formattedCategory = rawCategory ? (CATEGORY_LABELS[rawCategory] || rawCategory) : undefined;
+
+  let formattedLocation: string | undefined = undefined;
+  const rawLocation = data.locations || data.location;
+  if (rawLocation) {
+    if (Array.isArray(rawLocation)) {
+      formattedLocation = rawLocation.map((loc) => LOCATION_LABELS[loc] || loc).join(", ");
+    } else {
+      formattedLocation = LOCATION_LABELS[rawLocation as string] || (rawLocation as string);
+    }
+  }
+
+  const preferredCallbackTime = (data.preferredCallbackTime || data.preferred_callback_time) as string | undefined;
+  const propertyRef = (data.propertyRef || data.property_ref) as string | undefined;
+  const preferredDate = (data.preferredDate || data.preferred_date) as string | undefined;
+  const preferredTimeSlot = (data.preferredTimeSlot || data.preferred_time_slot) as string | undefined;
+  const notes = (data.notes || data.notes) as string | undefined;
+
+  // Build rows dynamically to only display populated details
+  const rows: { label: string; value: string; capitalize?: boolean }[] = [
+    { label: "Lead ID", value: leadId },
+    { label: "Source", value: source, capitalize: true },
+    { label: "Name", value: (data.name as string) || "Unknown" },
+    { label: "Phone", value: (data.phone as string) || "N/A" },
+  ];
+
+  if (data.whatsapp) {
+    rows.push({ label: "WhatsApp", value: data.whatsapp as string });
+  }
+  if (data.email) {
+    rows.push({ label: "Email", value: data.email as string });
+  }
+  if (formattedCategory) {
+    rows.push({ label: "Category", value: formattedCategory });
+  }
+  if (formattedBudget) {
+    rows.push({ label: "Budget", value: formattedBudget });
+  }
+  if (formattedLocation) {
+    rows.push({ label: "Location Pref", value: formattedLocation, capitalize: true });
+  }
+  if (data.purpose) {
+    rows.push({ label: "Purpose", value: data.purpose as string, capitalize: true });
+  }
+  if (data.timeline) {
+    rows.push({ label: "Timeline", value: data.timeline as string, capitalize: true });
+  }
+  if (preferredCallbackTime) {
+    rows.push({ label: "Preferred Callback Time", value: preferredCallbackTime });
+  }
+  if (propertyRef) {
+    rows.push({ label: "Property Reference", value: propertyRef });
+  }
+  if (preferredDate) {
+    rows.push({ label: "Preferred Date", value: preferredDate });
+  }
+  if (preferredTimeSlot) {
+    rows.push({ label: "Preferred Time Slot", value: preferredTimeSlot });
+  }
+  if (data.message) {
+    rows.push({ label: "Message", value: data.message as string });
+  } else if (notes) {
+    rows.push({ label: "Message / Notes", value: notes });
+  }
+
+  const tableRowsHtml = rows
+    .map((row, index) => {
+      const isEven = index % 2 === 0;
+      const bg = isEven ? "background-color: #f9f9f9;" : "background-color: #ffffff;";
+      const textStyle = row.capitalize ? "text-transform: capitalize;" : "";
+      return `
+        <tr style="${bg}">
+          <td style="padding: 10px 12px; font-weight: bold; width: 180px; font-size: 13px; border-bottom: 1px solid #eeeeee; color: #555555; font-family: sans-serif;">${row.label}:</td>
+          <td style="padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #eeeeee; color: #111111; font-family: sans-serif; ${textStyle}">${row.value}</td>
+        </tr>
+      `;
+    })
+    .join("");
+
   const htmlContent = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px; background-color: #fafafa;">
-      <h2 style="color: #c5a880; border-bottom: 2px solid #c5a880; padding-bottom: 10px; margin-top: 0;">New Lead Submission — PIKORUA Realty</h2>
-      <p style="font-size: 14px; color: #333;">A new lead has been submitted on the website.</p>
+      <h2 style="color: #c5a880; border-bottom: 2px solid #c5a880; padding-bottom: 10px; margin-top: 0; font-family: sans-serif;">New Lead Submission — PIKORUA Realty</h2>
+      <p style="font-size: 14px; color: #333333; font-family: sans-serif;">A new lead has been submitted on the website.</p>
       
-      <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; width: 150px; font-size: 13px;">Lead ID:</td>
-          <td style="padding: 8px; font-size: 13px;">${leadId}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Source:</td>
-          <td style="padding: 8px; font-size: 13px; text-transform: capitalize;">${source}</td>
-        </tr>
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Name:</td>
-          <td style="padding: 8px; font-size: 13px;">${data.name ?? "N/A"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Phone:</td>
-          <td style="padding: 8px; font-size: 13px; font-family: monospace;">${data.phone ?? "N/A"}</td>
-        </tr>
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">WhatsApp:</td>
-          <td style="padding: 8px; font-size: 13px; font-family: monospace;">${data.whatsapp ?? "N/A"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Email:</td>
-          <td style="padding: 8px; font-size: 13px;">${data.email ?? "N/A"}</td>
-        </tr>
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Budget:</td>
-          <td style="padding: 8px; font-size: 13px;">${data.budget_band ?? "N/A"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Location Pref:</td>
-          <td style="padding: 8px; font-size: 13px; text-transform: capitalize;">${data.location ?? "N/A"}</td>
-        </tr>
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Purpose:</td>
-          <td style="padding: 8px; font-size: 13px; text-transform: capitalize;">${data.purpose ?? "N/A"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Timeline:</td>
-          <td style="padding: 8px; font-size: 13px; text-transform: capitalize;">${data.timeline ?? "N/A"}</td>
-        </tr>
-        <tr style="background-color: #f2f2f2;">
-          <td style="padding: 8px; font-weight: bold; font-size: 13px;">Message:</td>
-          <td style="padding: 8px; font-size: 13px; white-space: pre-wrap;">${data.message ?? "N/A"}</td>
-        </tr>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 15px; border: 1px solid #eeeeee;">
+        ${tableRowsHtml}
       </table>
       
-      <div style="margin-top: 25px; padding: 15px; background-color: #1a1a1a; color: #fff; border-radius: 4px; font-size: 11px;">
+      <div style="margin-top: 25px; padding: 15px; background-color: #1a1a1a; color: #ffffff; border-radius: 4px; font-size: 11px; font-family: sans-serif;">
         <strong>Full Lead JSON Payload:</strong>
-        <pre style="margin-top: 10px; font-family: monospace; white-space: pre-wrap; overflow-x: auto; color: #a5e1ad; background: #000; padding: 10px; border-radius: 3px;">${JSON.stringify(data, null, 2)}</pre>
+        <pre style="margin-top: 10px; font-family: monospace; white-space: pre-wrap; overflow-x: auto; color: #a5e1ad; background: #000000; padding: 10px; border-radius: 3px;">${JSON.stringify(data, null, 2)}</pre>
       </div>
     </div>
   `;

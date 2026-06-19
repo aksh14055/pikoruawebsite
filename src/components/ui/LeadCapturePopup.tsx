@@ -1,11 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, extractUtm } from "@/lib/utils";
 
-const STORAGE_KEY = "pikorua_popup_dismissed";
+// Once a visitor actually submits the form, never bother them again.
+// Until then, the popup resurfaces every visit and keeps nagging every
+// RESHOW_DELAY_MS if they dismiss without submitting.
+const SUBMITTED_KEY = "pikorua_popup_submitted";
+const RESHOW_DELAY_MS = 2 * 60 * 1000; // 2 minutes
+
+function hasSubmittedBefore(): boolean {
+  return localStorage.getItem(SUBMITTED_KEY) !== null;
+}
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -36,10 +44,10 @@ const BUDGETS = [
 ];
 
 const selectBase =
-  "w-full appearance-none bg-[#2a2a2a] border border-white/10 text-ivory text-sm font-sans px-4 py-3.5 pr-10 rounded focus:outline-none focus:border-champagne-gold/50 transition-colors duration-150 cursor-pointer";
+  "w-full appearance-none bg-lux-black border border-white/[0.08] text-ivory text-xs font-sans px-4 py-3 pr-10 rounded-sm focus:outline-none focus:border-champagne-gold/50 transition-colors duration-200 cursor-pointer";
 
 const inputBase =
-  "w-full bg-[#2a2a2a] border border-white/10 text-ivory text-sm font-sans px-4 py-3.5 rounded placeholder:text-ivory/30 focus:outline-none focus:border-champagne-gold/50 transition-colors duration-150";
+  "w-full bg-lux-black border border-white/[0.08] text-ivory text-xs font-sans px-4 py-3 rounded-sm placeholder:text-ivory/20 focus:outline-none focus:border-champagne-gold/50 transition-colors duration-200";
 
 export function LeadCapturePopup() {
   const [visible, setVisible] = useState(false);
@@ -54,14 +62,19 @@ export function LeadCapturePopup() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [fieldErrors, setFieldErrors] = useState<FieldError>({});
   const [errorMsg, setErrorMsg] = useState("");
+  const reshowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function clearReshowTimer() {
+    if (reshowTimerRef.current) {
+      clearTimeout(reshowTimerRef.current);
+      reshowTimerRef.current = null;
+    }
+  }
 
   useEffect(() => {
-    setMounted(true);
-    if (
-      typeof window !== "undefined" &&
-      localStorage.getItem(STORAGE_KEY)
-    ) {
-      return;
+    const frame = requestAnimationFrame(() => setMounted(true));
+    if (typeof window !== "undefined" && hasSubmittedBefore()) {
+      return () => cancelAnimationFrame(frame);
     }
 
     let triggered = false;
@@ -71,7 +84,7 @@ export function LeadCapturePopup() {
       triggered = true;
       setVisible(true);
       // Clean up all listeners at once
-      cleanup(); // eslint-disable-line @typescript-eslint/no-use-before-define
+      cleanup();
     };
 
     const opts = { passive: true, once: true } as AddEventListenerOptions;
@@ -93,13 +106,21 @@ export function LeadCapturePopup() {
       window.removeEventListener("touchmove", trigger);
     }
 
-    return cleanup;
+    return () => {
+      cancelAnimationFrame(frame);
+      cleanup();
+      clearReshowTimer();
+    };
   }, []);
 
 
   const dismiss = () => {
     setVisible(false);
-    localStorage.setItem(STORAGE_KEY, "dismissed");
+    // Keep nagging every couple of minutes until they either submit or leave.
+    clearReshowTimer();
+    reshowTimerRef.current = setTimeout(() => {
+      if (!hasSubmittedBefore()) setVisible(true);
+    }, RESHOW_DELAY_MS);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,6 +131,12 @@ export function LeadCapturePopup() {
 
     const fullName = [firstName.trim(), lastName.trim()].filter(Boolean).join(" ");
 
+    let utmParams = {};
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      utmParams = extractUtm(searchParams);
+    }
+
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
@@ -119,10 +146,11 @@ export function LeadCapturePopup() {
           name: fullName,
           phone,
           email,
-          interest: category ? CATEGORIES.find((c) => c.value === category)?.label : undefined,
-          message: budgetBand ? `Budget: ${BUDGETS.find((b) => b.value === budgetBand)?.label}` : undefined,
+          category: category || undefined,
+          budgetBand: budgetBand || undefined,
           consent: true,
           honeypot: "",
+          utm: utmParams,
         }),
       });
 
@@ -138,7 +166,8 @@ export function LeadCapturePopup() {
       }
 
       setFormState("success");
-      localStorage.setItem(STORAGE_KEY, "submitted");
+      clearReshowTimer();
+      localStorage.setItem(SUBMITTED_KEY, String(Date.now()));
 
       setTimeout(() => {
         setVisible(false);
@@ -182,8 +211,7 @@ export function LeadCapturePopup() {
             className="fixed inset-0 z-[8001] flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="relative w-full max-w-[420px] pointer-events-auto rounded-2xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
-              style={{ background: "linear-gradient(160deg, #1c1c1c 0%, #111111 100%)" }}
+              className="relative w-full max-w-[420px] pointer-events-auto bg-soft-black border border-white/[0.06] rounded-md overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
@@ -210,10 +238,10 @@ export function LeadCapturePopup() {
                       strokeWidth={1.2}
                       className="text-champagne-gold"
                     />
-                    <h2 className="font-display text-2xl text-ivory font-normal">
-                      Thank you!
+                    <h2 className="font-display text-2xl text-white font-normal uppercase tracking-wide">
+                      Thank You
                     </h2>
-                    <p className="text-ivory/50 font-sans text-sm leading-relaxed max-w-[260px]">
+                    <p className="text-ivory/50 font-sans text-xs leading-relaxed max-w-[260px]">
                       Our advisory team will reach out to you personally, shortly.
                     </p>
                   </motion.div>
@@ -222,15 +250,17 @@ export function LeadCapturePopup() {
                   <>
                     {/* Title */}
                     <div className="text-center mb-6">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-sans font-medium mb-2">
+                        Private Access
+                      </p>
                       <h2
                         id="popup-title"
-                        className="font-display text-[1.6rem] leading-tight font-normal"
-                        style={{ color: "#C8A45D" }}
+                        className="font-display text-2xl text-white font-normal leading-tight uppercase tracking-wide"
                       >
-                        Welcome to a World of<br />Luxury Living ✨
+                        A World of<br />Luxury Living
                       </h2>
                       {/* Gold underline */}
-                      <div className="mx-auto mt-3 w-12 h-[2px] rounded-full" style={{ background: "#C8A45D" }} />
+                      <div className="mx-auto mt-4 w-10 h-px bg-champagne-gold/50" aria-hidden="true" />
                     </div>
 
                     <form
@@ -308,7 +338,7 @@ export function LeadCapturePopup() {
                             placeholder="First Name"
                             className={cn(
                               inputBase,
-                              fieldErrors.name ? "border-red-500/60" : ""
+                              fieldErrors.name ? "border-red-400" : ""
                             )}
                           />
                         </div>
@@ -343,7 +373,7 @@ export function LeadCapturePopup() {
                             placeholder="Your Email"
                             className={cn(
                               inputBase,
-                              fieldErrors.email ? "border-red-500/60" : ""
+                              fieldErrors.email ? "border-red-400" : ""
                             )}
                           />
                           {fieldErrors.email && (
@@ -363,7 +393,7 @@ export function LeadCapturePopup() {
                             placeholder="+1234567890"
                             className={cn(
                               inputBase,
-                              fieldErrors.phone ? "border-red-500/60" : ""
+                              fieldErrors.phone ? "border-red-400" : ""
                             )}
                           />
                           {fieldErrors.phone && (
@@ -386,14 +416,16 @@ export function LeadCapturePopup() {
                         type="submit"
                         id="popup-submit-btn"
                         disabled={formState === "submitting"}
-                        className="mt-1 w-full rounded py-3.5 text-sm font-sans font-semibold tracking-wide text-lux-black transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-champagne-gold disabled:opacity-60 disabled:cursor-not-allowed"
-                        style={{
-                          background: "linear-gradient(90deg, #b8963e 0%, #e8c96b 50%, #b8963e 100%)",
-                        }}
+                        className={cn(
+                          "mt-1 w-full px-6 py-3.5 text-[10px] font-sans uppercase tracking-[0.2em] transition-all duration-300 rounded-sm border focus-visible:outline-2 focus-visible:outline-champagne-gold",
+                          formState === "submitting"
+                            ? "border-champagne-gold/15 text-champagne-gold/30 cursor-not-allowed bg-transparent"
+                            : "text-lux-black bg-champagne-gold border-champagne-gold hover:bg-antique-gold hover:border-antique-gold"
+                        )}
                       >
                         {formState === "submitting" ? (
                           <span className="flex items-center justify-center gap-2">
-                            <span className="w-3.5 h-3.5 border-2 border-lux-black/30 border-t-lux-black rounded-full animate-spin" />
+                            <span className="w-3.5 h-3.5 border-2 border-champagne-gold/30 border-t-champagne-gold rounded-full animate-spin" />
                             Sending…
                           </span>
                         ) : (
