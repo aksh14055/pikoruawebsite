@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { trackLeadSubmit } from "@/lib/analytics";
 
 interface PropertyEnquiryFormProps {
   propertySlug: string;
@@ -87,6 +88,7 @@ export function PropertyEnquiryForm({
         return;
       }
 
+      trackLeadSubmit("enquiry", { property_ref: propertySlug });
       router.push(`/thank-you?source=enquiry&property=${propertySlug}`);
     } catch {
       setServerError("Could not send your enquiry. Please reach us via WhatsApp directly.");

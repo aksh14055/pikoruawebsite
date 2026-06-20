@@ -52,7 +52,6 @@ export default async function HomePage() {
     ? [homeContent.heroHeadline1, homeContent.heroHeadline2, homeContent.heroHeadline3].filter(Boolean)
     : ["Trust what", "most luxury buyers", "have trusted."];
 
-  const heroSubhead = homeContent?.heroSubhead || "A private advisory for those who seek address over algorithm — buying, selling, or investing in Ahmedabad.";
   const heroVideo = homeContent?.heroVideoUrl || undefined;
   const heroPoster = homeContent?.heroPosterUrl || undefined;
   const stats = homeContent?.stats || undefined;
@@ -66,7 +65,6 @@ export default async function HomePage() {
         {/* bg video */}
         <HeroSection
           headlineLines={heroLines}
-          subhead={heroSubhead}
           videoUrl={heroVideo}
           posterUrl={heroPoster}
         />

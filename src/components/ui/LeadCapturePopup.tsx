@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, ChevronDown } from "lucide-react";
 import { cn, extractUtm } from "@/lib/utils";
+import { trackLeadSubmit } from "@/lib/analytics";
 
 // Once a visitor actually submits the form, never bother them again.
 // Until then, the popup resurfaces every visit and keeps nagging every
@@ -37,11 +38,10 @@ const CATEGORIES = [
 
 const BUDGETS = [
   { value: "1-2cr", label: "₹1 Cr – ₹2 Cr" },
-  { value: "2-3cr", label: "₹2 Cr – ₹3 Cr" },
-  { value: "3-5cr", label: "₹3 Cr – ₹5 Cr" },
-  { value: "5-10cr", label: "₹5 Cr – ₹10 Cr" },
+  { value: "3-4cr", label: "₹3 Cr – ₹4 Cr" },
+  { value: "5-7cr", label: "₹5 Cr – ₹7 Cr" },
+  { value: "8-10cr", label: "₹8 Cr – ₹10 Cr" },
   { value: "10cr-plus", label: "₹10 Cr and above" },
-  { value: "custom", label: "Custom / Not decided" },
 ];
 
 const selectBase =
@@ -167,6 +167,7 @@ export function LeadCapturePopup() {
       }
 
       setFormState("success");
+      trackLeadSubmit("popup");
       clearReshowTimer();
       localStorage.setItem(SUBMITTED_KEY, String(Date.now()));
 
@@ -222,6 +223,7 @@ export function LeadCapturePopup() {
                   alt="PIKORUA Realty"
                   width={224}
                   height={48}
+                  quality={90}
                   className="h-6 w-auto object-contain"
                 />
               </div>

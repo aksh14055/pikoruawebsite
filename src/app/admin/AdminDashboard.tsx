@@ -2437,6 +2437,8 @@ export default function AdminDashboard({
                     onChange={(e) => setEditingProperty((p: any) => ({ ...p, status: e.target.value }))}
                     className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-sm px-3 py-2 rounded-sm focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 transition-all cursor-pointer"
                   >
+                    <option value="newly-launched">Newly Launched</option>
+                    <option value="sample-ready">Sample Ready</option>
                     <option value="ready-to-move">Ready to Move</option>
                     <option value="near-possession">Near Possession</option>
                     <option value="under-construction">Under Construction</option>

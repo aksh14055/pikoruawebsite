@@ -248,6 +248,7 @@ export function CategoryCards() {
                             src={cat.imageUrl}
                             alt={cat.label}
                             fill
+                            quality={90}
                             sizes="(max-width: 768px) 95vw, 40vw"
                             className="object-cover object-center"
                           />
@@ -296,6 +297,7 @@ export function CategoryCards() {
                     src={cat.imageUrl}
                     alt={cat.label}
                     fill
+                    quality={90}
                     sizes="40vw"
                     className={cn(
                       "object-cover object-center transition-transform duration-[1000ms] ease-out",

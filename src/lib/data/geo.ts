@@ -117,7 +117,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Luxury Properties in Thaltej",
     description:
       "Private advisory for luxury apartments, duplexes, and penthouses in Thaltej, Ahmedabad's mature western residential market.",
-    heroImage: "/properties/capstone/castone1.png",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
     locationSlug: "thaltej",
     intro:
       "Thaltej offers a mature luxury-residential environment with access to SG Highway, established neighborhoods, and a quieter rhythm than denser commercial-adjacent corridors.",

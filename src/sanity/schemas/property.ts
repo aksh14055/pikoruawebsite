@@ -93,6 +93,8 @@ export const propertySchema = defineType({
       group: "details",
       options: {
         list: [
+          { title: "Newly Launched", value: "newly-launched" },
+          { title: "Sample Ready", value: "sample-ready" },
           { title: "Pre-Launch", value: "pre-launch" },
           { title: "Under Construction", value: "under-construction" },
           { title: "Near Possession", value: "near-possession" },

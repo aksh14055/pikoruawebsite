@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { trackLeadSubmit } from "@/lib/analytics";
 
 interface FormState {
   name: string;
@@ -66,6 +67,7 @@ export function QuickEnquiryForm() {
         setServerError(body.error ?? "Something went wrong. Please try again.");
         return;
       }
+      trackLeadSubmit("contact");
       router.push("/thank-you?source=contact");
     } catch {
       setServerError("Could not send your message. Please call or WhatsApp us directly.");

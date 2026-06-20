@@ -67,11 +67,10 @@ export function buildPropertyWhatsAppMessage(property: Property): string {
 
 export const BUDGET_BAND_LABELS: Record<BudgetBand, string> = {
   "1-2cr": "₹1 – 2 Cr",
-  "2-3cr": "₹2 – 3 Cr",
-  "3-5cr": "₹3 – 5 Cr",
-  "5-10cr": "₹5 – 10 Cr",
+  "3-4cr": "₹3 – 4 Cr",
+  "5-7cr": "₹5 – 7 Cr",
+  "8-10cr": "₹8 – 10 Cr",
   "10cr-plus": "₹10 Cr+",
-  custom: "Custom / Discuss",
 };
 
 // ─── Category display labels ───────────────────────────────────────────────

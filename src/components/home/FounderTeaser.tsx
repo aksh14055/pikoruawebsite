@@ -40,6 +40,7 @@ export function FounderTeaser({
                 src={founderImageUrl}
                 alt={founderName}
                 fill
+                quality={90}
                 className="object-cover object-top"
                 sizes="(max-width: 1024px) 80vw, 40vw"
                 {...(founderImageBlur ? { placeholder: "blur", blurDataURL: founderImageBlur } : {})}

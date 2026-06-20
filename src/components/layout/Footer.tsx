@@ -25,7 +25,7 @@ export function Footer({
   googleMapsUrl,
   instagramUrl = "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
   facebookUrl = "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
-  linkedinUrl,
+  linkedinUrl = "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
   youtubeUrl = "https://youtube.com/@pikorua_realty_official?si=M3r65vxOcgUvdGfi",
 }: FooterProps) {
   const socialLinks = [
@@ -129,11 +129,11 @@ export function Footer({
           </p>
           <div className="flex items-center gap-6">
             {socialLinks.length > 0 && (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 {socialLinks.map(({ href, label, icon }) => (
                   <a key={label} href={href!} target="_blank" rel="noopener noreferrer" aria-label={label}
-                    className="text-ivory/30 hover:text-champagne-gold transition-colors duration-150">
-                    <span className="w-4 h-4 block">{icon}</span>
+                    className="opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200">
+                    <span className="w-7 h-7 block">{icon}</span>
                   </a>
                 ))}
               </div>
@@ -150,14 +150,29 @@ export function Footer({
 }
 
 function InstagramIcon() {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" className="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>;
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5" aria-hidden="true" className="w-full h-full">
+      <defs>
+        <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#FEDA75" />
+          <stop offset="30%" stopColor="#FA7E1E" />
+          <stop offset="60%" stopColor="#D62976" />
+          <stop offset="85%" stopColor="#962FBF" />
+          <stop offset="100%" stopColor="#4F5BD5" />
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig-gradient)" />
+      <circle cx="12" cy="12" r="4" stroke="url(#ig-gradient)" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="#D62976" stroke="none" />
+    </svg>
+  );
 }
 function FacebookIcon() {
-  return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-4 h-4"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>;
+  return <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true" className="w-full h-full"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>;
 }
 function LinkedInIcon() {
-  return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-4 h-4"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
+  return <svg viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true" className="w-full h-full"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
 }
 function YouTubeIcon() {
-  return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-4 h-4"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
+  return <svg viewBox="0 0 24 24" fill="#FF0000" aria-hidden="true" className="w-full h-full"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
 }

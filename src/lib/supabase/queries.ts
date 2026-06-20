@@ -84,6 +84,7 @@ function mapDbPropertyToStatic(db: any): StaticProperty {
     plotArea: db.plot_area || staticProp?.plotArea || undefined,
     floor: db.floor || staticProp?.floor || undefined,
     suitableFor: db.suitable_for || staticProp?.suitableFor || undefined,
+    amenitiesSummary: db.amenities_summary || staticProp?.amenitiesSummary || undefined,
     seoTitle: db.seo_title || staticProp?.seoTitle || undefined,
     seoDescription: db.seo_description || staticProp?.seoDescription || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,

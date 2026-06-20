@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { MEDIA } from "@/lib/media";
 
 interface HeroSectionProps {
   headlineLines?: string[];
-  subhead?: string;
   videoUrl?: string;
   posterUrl?: string;
   posterBlur?: string;
@@ -15,7 +13,6 @@ interface HeroSectionProps {
 
 export function HeroSection({
   headlineLines = ["Private luxury", "residences,", "quietly curated."],
-  subhead = "A private advisory for those who seek address over algorithm — buying, selling, or investing in Ahmedabad.",
   videoUrl = MEDIA.videos.bg,
   posterUrl,
   posterBlur,
@@ -23,11 +20,68 @@ export function HeroSection({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [typedLineIndex, setTypedLineIndex] = useState(0);
+  const [typedCharIndex, setTypedCharIndex] = useState(0);
+  const [typingDone, setTypingDone] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    const lines = headlineLines.length > 0 ? headlineLines : [""];
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setTypedLineIndex(lines.length - 1);
+      setTypedCharIndex(lines[lines.length - 1]?.length ?? 0);
+      setTypingDone(true);
+      return;
+    }
+
+    let timeout: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+    let line = 0;
+    let char = 0;
+
+    setTypedLineIndex(0);
+    setTypedCharIndex(0);
+    setTypingDone(false);
+
+    const tick = () => {
+      if (cancelled) return;
+
+      const currentLine = lines[line] ?? "";
+      if (char < currentLine.length) {
+        char += 1;
+        setTypedLineIndex(line);
+        setTypedCharIndex(char);
+        const typedChar = currentLine[char - 1];
+        timeout = setTimeout(tick, typedChar === " " ? 24 : 52);
+        return;
+      }
+
+      if (line < lines.length - 1) {
+        line += 1;
+        char = 0;
+        setTypedLineIndex(line);
+        setTypedCharIndex(0);
+        timeout = setTimeout(tick, 220);
+        return;
+      }
+
+      setTypingDone(true);
+    };
+
+    timeout = setTimeout(tick, 260);
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
+  }, [headlineLines]);
 
   useEffect(() => {
     if (!videoUrl || !videoRef.current) return;
@@ -96,17 +150,29 @@ export function HeroSection({
         <h1 className="font-display font-normal tracking-wide text-ivory leading-[1.15] text-[clamp(1.75rem,3.8vw,3.25rem)] mb-5 max-w-3xl">
           {headlineLines.map((line, i) => {
             const isGold = line.toLowerCase().includes("most luxury buyers");
+            const visibleText =
+              i < typedLineIndex
+                ? line
+                : i === typedLineIndex
+                  ? line.slice(0, typedCharIndex)
+                  : "";
+            const showCursor = !typingDone && i === typedLineIndex;
             return (
               <span
                 key={i}
                 className={cn(
-                  "block transition-all duration-700 ease-out",
-                  isGold ? "text-champagne-gold" : "text-ivory",
-                  mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                  "block min-h-[1.15em]",
+                  isGold ? "text-champagne-gold" : "text-ivory"
                 )}
-                style={{ transitionDelay: `${200 + i * 120}ms` }}
               >
-                {line}
+                <span
+                  className={cn(
+                    "inline",
+                    showCursor && "after:content-[''] after:inline-block after:w-px after:h-[0.82em] after:ml-1 after:bg-champagne-gold after:align-[-0.05em] after:animate-pulse"
+                  )}
+                >
+                  {visibleText}
+                </span>
               </span>
             );
           })}

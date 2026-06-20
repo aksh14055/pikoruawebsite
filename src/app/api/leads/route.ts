@@ -152,11 +152,10 @@ async function notifyTeamEmail(
   // Format labels nicely
   const BUDGET_LABELS: Record<string, string> = {
     "1-2cr": "₹1 Cr – ₹2 Cr",
-    "2-3cr": "₹2 Cr – ₹3 Cr",
-    "3-5cr": "₹3 Cr – ₹5 Cr",
-    "5-10cr": "₹5 Cr – ₹10 Cr",
+    "3-4cr": "₹3 Cr – ₹4 Cr",
+    "5-7cr": "₹5 Cr – ₹7 Cr",
+    "8-10cr": "₹8 Cr – ₹10 Cr",
     "10cr-plus": "₹10 Cr and above",
-    "custom": "Custom / Not decided",
   };
 
   const CATEGORY_LABELS: Record<string, string> = {

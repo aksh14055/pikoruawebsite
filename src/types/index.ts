@@ -68,12 +68,16 @@ export const LOCATION_LABELS: Record<LocationSlug, string> = {
 // ─── Property Status ──────────────────────────────────────────────────────
 
 export type PropertyStatus =
+  | "newly-launched"
+  | "sample-ready"
   | "pre-launch"
   | "under-construction"
   | "near-possession"
   | "ready-to-move";
 
 export const PROPERTY_STATUS_LABELS: Record<PropertyStatus, string> = {
+  "newly-launched": "Newly Launched",
+  "sample-ready": "Sample Ready",
   "pre-launch": "Pre-Launch",
   "under-construction": "Under Construction",
   "near-possession": "Near Possession",
@@ -178,11 +182,10 @@ export type LeadPurpose =
 
 export type BudgetBand =
   | "1-2cr"
-  | "2-3cr"
-  | "3-5cr"
-  | "5-10cr"
-  | "10cr-plus"
-  | "custom";
+  | "3-4cr"
+  | "5-7cr"
+  | "8-10cr"
+  | "10cr-plus";
 
 export type Timeline =
   | "immediately"

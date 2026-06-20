@@ -92,6 +92,7 @@ export default async function BlogListingPage() {
                     src={featuredPost.coverImage}
                     alt={featuredPost.title}
                     fill
+                    quality={90}
                     priority
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover object-center"
@@ -168,6 +169,7 @@ export default async function BlogListingPage() {
                           src={post.coverImage}
                           alt={post.title}
                           fill
+                          quality={90}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover object-center"
                         />

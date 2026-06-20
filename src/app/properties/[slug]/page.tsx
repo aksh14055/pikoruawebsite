@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
+import { PropertyQuickFacts } from "@/components/property/PropertyQuickFacts";
 import { PropertyEnquiryForm } from "@/components/property/PropertyEnquiryForm";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabasePropertyBySlug, getSupabaseAllPropertySlugs } from "@/lib/supabase/queries";
@@ -81,7 +82,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
 
   const categoryLabel = RESIDENTIAL_CATEGORY_LABELS[property.category] || "Luxury Residence";
   const statusLabel = PROPERTY_STATUS_LABELS[property.status];
-  const allImages = property.images && property.images.length > 0 ? property.images : [property.coverImage];
+  const allImages = property.images && property.images.length > 0 ? property.images.filter(Boolean) : [property.coverImage].filter(Boolean);
 
   const coords = LOCATION_COORDINATES[property.location] || DEFAULT_COORDINATES;
   const priceDisplay = property.priceOnRequest ? "Price on Request" : (property.price || "Price on Request");
@@ -219,6 +220,19 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
                 </p>
               </div>
 
+              {/* Quick Facts */}
+              <PropertyQuickFacts
+                facts={[
+                  { label: "Configuration", value: property.configuration },
+                  { label: property.id === "kalrav-alpines" ? "Plot Area" : "Carpet Area", value: property.sizeRange },
+                  { label: "Location", value: property.locationLabel },
+                  ...(property.amenitiesSummary
+                    ? [{ label: "Amenities", value: property.amenitiesSummary }]
+                    : []),
+                ]}
+                note={property.id === "belrosa" ? "Listed as RERA carpet area plus exclusive area." : undefined}
+              />
+
               {/* Image Gallery */}
               <PropertyGallery images={allImages} name={property.configuration} />
 
@@ -333,9 +347,18 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
                     <span className="block text-[9px] uppercase tracking-[0.15em] text-ivory/45 font-sans mb-1.5">
                       Price Guide
                     </span>
-                    <span className="text-sm font-sans text-champagne-gold font-medium uppercase tracking-wider">
-                      {priceDisplay}
-                    </span>
+                    {property.priceOnRequest ? (
+                      <a
+                        href="#enquiry-form"
+                        className="text-sm font-sans text-champagne-gold font-medium uppercase tracking-wider underline decoration-champagne-gold/40 hover:decoration-champagne-gold transition-colors"
+                      >
+                        {priceDisplay}
+                      </a>
+                    ) : (
+                      <span className="text-sm font-sans text-champagne-gold font-medium uppercase tracking-wider">
+                        {priceDisplay}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -355,25 +378,21 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
                   )}
                   {property.floor && (
                     <div className="flex justify-between">
-                      <span>Level:</span>
+                      <span>BHK:</span>
                       <span className="text-ivory/80">{property.floor}</span>
-                    </div>
-                  )}
-                  {property.suitableFor && (
-                    <div className="flex justify-between items-start gap-4">
-                      <span className="whitespace-nowrap">Ideal For:</span>
-                      <span className="text-ivory/80 text-right">{property.suitableFor}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Pre-filled Enquiry Form */}
-              <PropertyEnquiryForm
-                propertySlug={property.slug}
-                propertyName={`${property.configuration} · ${property.sizeRange}`}
-                locationLabel={property.locationLabel}
-              />
+              <div id="enquiry-form">
+                <PropertyEnquiryForm
+                  propertySlug={property.slug}
+                  propertyName={`${property.configuration} · ${property.sizeRange}`}
+                  locationLabel={property.locationLabel}
+                />
+              </div>
             </div>
 
           </div>

@@ -67,6 +67,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        // Ikebana: corrected configuration/size, old slug embedded outdated figures
+        source: "/properties/4-5-bhk-penthouse-duplex-7300-15500-sindhu-bhavan",
+        destination: "/properties/5-bhk-3300-6300-sindhu-bhavan",
+        permanent: true,
+      },
+    ];
+  },
   // Silence workspace-root detection warning when pnpm-lock exists at a parent level
   turbopack: {
     root: __dirname,

@@ -5,13 +5,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn, BUDGET_BAND_LABELS } from "@/lib/utils";
 import type { StaticProperty } from "@/lib/data/properties";
 import { LOCATION_LABELS, LOCATION_SLUGS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
-import type { LocationSlug, ResidentialCategory } from "@/types";
-import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
+import type { LocationSlug, ResidentialCategory, BudgetBand } from "@/types";
+import { propertyMatchesCategoryIntent, propertyMatchesBudgetBand } from "@/lib/propertyFilters";
 import { ExpandedDetailPanel } from "@/components/home/FeaturedResidencesGrid";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, ChevronDown, X } from "lucide-react";
 
 const FILTERS: { label: string; value: "" | ResidentialCategory }[] = [
   { label: "All", value: "" },
@@ -24,8 +24,16 @@ const FILTERS: { label: string; value: "" | ResidentialCategory }[] = [
   { label: "Investment", value: "investment" },
 ];
 
+const BUDGET_FILTERS: { label: string; value: "" | BudgetBand }[] = [
+  { label: "Any Budget", value: "" },
+  ...(Object.entries(BUDGET_BAND_LABELS) as [BudgetBand, string][]).map(([value, label]) => ({ label, value })),
+];
+
 const FILTER_VALUES = new Set<ResidentialCategory>(
   FILTERS.map((filter) => filter.value).filter((value): value is ResidentialCategory => Boolean(value))
+);
+const BUDGET_VALUES = new Set<BudgetBand>(
+  BUDGET_FILTERS.map((filter) => filter.value).filter((value): value is BudgetBand => Boolean(value))
 );
 const LOCATION_VALUES = new Set<LocationSlug>(LOCATION_SLUGS);
 
@@ -35,16 +43,34 @@ function getFilterFromUrl(): "" | ResidentialCategory {
   return category && FILTER_VALUES.has(category as ResidentialCategory) ? (category as ResidentialCategory) : "";
 }
 
+function getBudgetFromUrl(): "" | BudgetBand {
+  if (typeof window === "undefined") return "";
+  const budget = new URLSearchParams(window.location.search).get("budget");
+  return budget && BUDGET_VALUES.has(budget as BudgetBand) ? (budget as BudgetBand) : "";
+}
+
+function getAreaFromUrl(): string {
+  if (typeof window === "undefined") return "";
+  return new URLSearchParams(window.location.search).get("area") ?? "";
+}
+
 function getLocationFromUrl(): "" | LocationSlug {
   if (typeof window === "undefined") return "";
   const location = new URLSearchParams(window.location.search).get("location");
   return location && LOCATION_VALUES.has(location as LocationSlug) ? (location as LocationSlug) : "";
 }
 
-function getCollectionUrl(filter: "" | ResidentialCategory, location: "" | LocationSlug): string {
+function getCollectionUrl(
+  filter: "" | ResidentialCategory,
+  location: "" | LocationSlug,
+  area: string,
+  budget: "" | BudgetBand
+): string {
   const params = new URLSearchParams();
   if (filter) params.set("category", filter);
   if (location) params.set("location", location);
+  if (area) params.set("area", area);
+  if (budget) params.set("budget", budget);
   const query = params.toString();
   return query ? `/properties?${query}` : "/properties";
 }
@@ -56,13 +82,20 @@ interface PropertiesGridProps {
 export function PropertiesGrid({ properties: currentProperties }: PropertiesGridProps) {
   const [activeFilter, setActiveFilter] = useState<"" | ResidentialCategory>("");
   const [activeLocation, setActiveLocation] = useState<"" | LocationSlug>("");
+  const [activeArea, setActiveArea] = useState<string>("");
+  const [activeBudget, setActiveBudget] = useState<"" | BudgetBand>("");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const areaOptions = Array.from(new Set(currentProperties.map((p) => p.locationLabel))).sort();
 
   // Sync expanded property from URL path or query on load & listen to popstate
   useEffect(() => {
     const handleUrlSync = () => {
       setActiveFilter(getFilterFromUrl());
       setActiveLocation(getLocationFromUrl());
+      setActiveArea(getAreaFromUrl());
+      setActiveBudget(getBudgetFromUrl());
 
       const pathParts = window.location.pathname.split("/").filter(Boolean);
       // Path format: /properties/[slug]
@@ -111,17 +144,17 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setExpandedSlug(null);
-        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
+        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeFilter, activeLocation]);
+  }, [activeFilter, activeLocation, activeArea, activeBudget]);
 
   const handleToggleExpand = (slug: string) => {
     if (expandedSlug === slug) {
       setExpandedSlug(null);
-      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
+      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
     } else {
       setExpandedSlug(slug);
       window.history.pushState(null, "", `/properties/${slug}`);
@@ -130,64 +163,208 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
 
   const handleCloseProperty = () => {
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
   };
 
   const handleFilterChange = (filter: "" | ResidentialCategory) => {
     setActiveFilter(filter);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation));
+    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation, activeArea, activeBudget));
   };
 
   const handleLocationClear = () => {
     setActiveLocation("");
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, ""));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, "", activeArea, activeBudget));
+  };
+
+  const handleAreaChange = (area: string) => {
+    setActiveArea(area);
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, area, activeBudget));
+  };
+
+  const handleBudgetChange = (budget: "" | BudgetBand) => {
+    setActiveBudget(budget);
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, budget));
   };
 
   const filtered = currentProperties.filter((property) => {
     const matchesCategory = activeFilter ? propertyMatchesCategoryIntent(property, activeFilter) : true;
     const matchesLocation = activeLocation ? property.location === activeLocation : true;
-    return matchesCategory && matchesLocation;
+    const matchesArea = activeArea ? property.locationLabel === activeArea : true;
+    const matchesBudget = activeBudget ? propertyMatchesBudgetBand(property, activeBudget) : true;
+    return matchesCategory && matchesLocation && matchesArea && matchesBudget;
   });
 
   const activeProperty = currentProperties.find((p) => p.slug === expandedSlug);
+
+  const activeChips: { key: string; label: string; onClear: () => void }[] = [
+    ...(activeFilter ? [{ key: "category", label: FILTERS.find((f) => f.value === activeFilter)!.label, onClear: () => handleFilterChange("") }] : []),
+    ...(activeArea ? [{ key: "area", label: activeArea, onClear: () => handleAreaChange("") }] : []),
+    ...(activeBudget ? [{ key: "budget", label: BUDGET_BAND_LABELS[activeBudget], onClear: () => handleBudgetChange("") }] : []),
+    ...(activeLocation ? [{ key: "location", label: LOCATION_LABELS[activeLocation], onClear: handleLocationClear }] : []),
+  ];
+
+  const handleClearAll = () => {
+    setActiveFilter("");
+    setActiveLocation("");
+    setActiveArea("");
+    setActiveBudget("");
+    setExpandedSlug(null);
+    window.history.pushState(null, "", "/properties");
+  };
 
   return (
     <>
       {/* Filter strip */}
       <div className="bg-lux-black border-b border-white/[0.06] sticky top-[64px] lg:top-[80px] z-30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none">
-            {FILTERS.map((f) => (
-              <button
-                key={f.value}
-                onClick={() => handleFilterChange(f.value)}
-                className={cn(
-                  "flex-shrink-0 px-5 py-2 text-[11px] font-sans uppercase tracking-[0.15em] border transition-all duration-150 rounded-sm",
-                  activeFilter === f.value
-                    ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
-                    : "border-white/[0.08] text-ivory/50 hover:border-white/20 hover:text-ivory"
-                )}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-          {activeLocation && (
-            <div className="pb-4 flex items-center gap-3">
-              <span className="text-[10px] font-sans uppercase tracking-[0.18em] text-ivory/45">
-                Corridor: <span className="text-champagne-gold">{LOCATION_LABELS[activeLocation]}</span>
+
+          {/* Toggle row: Filters button · result count · clear all */}
+          <div className="flex items-center justify-between gap-4 py-4">
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((v) => !v)}
+              className={cn(
+                "inline-flex items-center gap-2 px-4 py-2 text-[11px] font-sans uppercase tracking-[0.15em] border rounded-sm transition-all duration-150",
+                filtersOpen
+                  ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
+                  : "border-white/[0.1] text-ivory/60 hover:border-white/25 hover:text-ivory"
+              )}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              Filters
+              {activeChips.length > 0 && (
+                <span className="flex items-center justify-center w-4 h-4 rounded-full bg-champagne-gold text-lux-black text-[9px] font-medium">
+                  {activeChips.length}
+                </span>
+              )}
+              <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", filtersOpen && "rotate-180")} />
+            </button>
+
+            <div className="flex items-center gap-4">
+              <span className="text-[10px] font-sans uppercase tracking-[0.15em] text-ivory/35 whitespace-nowrap">
+                {filtered.length} {filtered.length === 1 ? "Residence" : "Residences"}
               </span>
-              <button
-                type="button"
-                onClick={handleLocationClear}
-                className="text-[10px] font-sans uppercase tracking-[0.16em] text-ivory/35 hover:text-ivory transition-colors"
-              >
-                Clear
-              </button>
+              {activeChips.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleClearAll}
+                  className="text-[10px] font-sans uppercase tracking-[0.15em] text-ivory/40 hover:text-champagne-gold transition-colors whitespace-nowrap"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Active filter chips — visible even when the panel is collapsed */}
+          {activeChips.length > 0 && (
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
+              {activeChips.map((chip) => (
+                <button
+                  key={chip.key}
+                  type="button"
+                  onClick={chip.onClear}
+                  className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-sans uppercase tracking-[0.12em] text-champagne-gold bg-champagne-gold/10 border border-champagne-gold/30 rounded-sm hover:border-champagne-gold/60 transition-colors duration-150"
+                >
+                  {chip.label}
+                  <X className="w-3 h-3" />
+                </button>
+              ))}
             </div>
           )}
+
+          {/* Expandable filter panel */}
+          <AnimatePresence initial={false}>
+            {filtersOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="pb-5 space-y-4">
+                  {/* Type */}
+                  <div>
+                    <p className="text-[9px] font-sans uppercase tracking-[0.2em] text-ivory/30 mb-2">Type</p>
+                    <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+                      {FILTERS.map((f) => (
+                        <button
+                          key={f.value}
+                          onClick={() => handleFilterChange(f.value)}
+                          className={cn(
+                            "flex-shrink-0 px-5 py-2 text-[11px] font-sans uppercase tracking-[0.15em] border transition-all duration-150 rounded-sm",
+                            activeFilter === f.value
+                              ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
+                              : "border-white/[0.08] text-ivory/50 hover:border-white/20 hover:text-ivory"
+                          )}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Area */}
+                  <div>
+                    <p className="text-[9px] font-sans uppercase tracking-[0.2em] text-ivory/30 mb-2">Area</p>
+                    <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+                      <button
+                        onClick={() => handleAreaChange("")}
+                        className={cn(
+                          "flex-shrink-0 px-4 py-1.5 text-[10px] font-sans uppercase tracking-[0.14em] border transition-all duration-150 rounded-sm",
+                          activeArea === ""
+                            ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
+                            : "border-white/[0.07] text-ivory/40 hover:border-white/20 hover:text-ivory"
+                        )}
+                      >
+                        All Areas
+                      </button>
+                      {areaOptions.map((area) => (
+                        <button
+                          key={area}
+                          onClick={() => handleAreaChange(area)}
+                          className={cn(
+                            "flex-shrink-0 px-4 py-1.5 text-[10px] font-sans uppercase tracking-[0.14em] border transition-all duration-150 rounded-sm",
+                            activeArea === area
+                              ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
+                              : "border-white/[0.07] text-ivory/40 hover:border-white/20 hover:text-ivory"
+                          )}
+                        >
+                          {area}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Budget */}
+                  <div>
+                    <p className="text-[9px] font-sans uppercase tracking-[0.2em] text-ivory/30 mb-2">Budget</p>
+                    <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+                      {BUDGET_FILTERS.map((b) => (
+                        <button
+                          key={b.value}
+                          onClick={() => handleBudgetChange(b.value)}
+                          className={cn(
+                            "flex-shrink-0 px-4 py-1.5 text-[10px] font-sans uppercase tracking-[0.14em] border transition-all duration-150 rounded-sm",
+                            activeBudget === b.value
+                              ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
+                              : "border-white/[0.07] text-ivory/40 hover:border-white/20 hover:text-ivory"
+                          )}
+                        >
+                          {b.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -352,6 +529,7 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
                 src={images[currentImgIdx]}
                 alt={RESIDENTIAL_CATEGORY_LABELS[property.category]}
                 fill
+                quality={90}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 className="object-cover object-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                 priority={currentImgIdx === 0}
@@ -419,7 +597,9 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
         <div className="mb-2.5">
           <h2 className="font-display text-[14px] lg:text-[15px] font-normal text-ivory leading-tight group-hover:text-champagne-gold transition-colors duration-200 uppercase tracking-wider">
             <span className="block">{property.configuration}</span>
-            <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.sizeRange}</span>
+            {property.floor && (
+              <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.floor}</span>
+            )}
           </h2>
           <p className="text-xs font-sans text-ivory/40 uppercase tracking-[0.12em] mt-1.5">
             {property.locationLabel}

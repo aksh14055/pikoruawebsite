@@ -100,6 +100,7 @@ export function PropertyGallery({ images, name }: PropertyGalleryProps) {
               src={images[currentIndex]}
               alt={`${name} gallery view ${currentIndex + 1}`}
               fill
+              quality={90}
               sizes="(max-width: 1024px) 100vw, 60vw"
               className="object-cover object-center scale-[1.04]"
               priority={currentIndex === 0}
@@ -158,6 +159,7 @@ export function PropertyGallery({ images, name }: PropertyGalleryProps) {
                 src={img}
                 alt={`${name} thumbnail ${idx + 1}`}
                 fill
+                quality={90}
                 sizes="100px"
                 className="object-cover object-center"
               />

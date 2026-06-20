@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants, useMotionValue, animate } from "framer-motion";
@@ -20,14 +19,6 @@ const DISPLAY_CATEGORY_LABELS: Record<string, string> = {
   plot: "Plot / Land",
   investment: "Investment Property",
   "residential-investment": "Investment Property",
-};
-
-// Pulsing indicator colors mapped by status
-const STATUS_PULSE_COLORS: Record<string, string> = {
-  "ready-to-move":       "bg-emerald-400 shadow-emerald-400/50",
-  "near-possession":     "bg-champagne-gold shadow-[#C8A45D]/50",
-  "under-construction":  "bg-sky-400 shadow-sky-400/50",
-  "pre-launch":          "bg-amber-500 shadow-amber-500/50",
 };
 
 interface FeaturedResidencesGridProps {
@@ -119,12 +110,57 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
 
   // Pin specific top 3 spotlight properties in exact order
   const ikebanaProp = properties.find((p) => p.id === "ikebana");
-  const swatiProp = properties.find((p) => p.id === "swati-senor");
-  const capstoneProp = properties.find((p) => p.id === "capstone");
+  const maruti360Prop = properties.find((p) => p.id === "maruti-360");
+  const anamikaProp = properties.find((p) => p.id === "anamika");
 
-  const top3 = [ikebanaProp, swatiProp, capstoneProp].filter(Boolean) as StaticProperty[];
+  const top3 = [ikebanaProp, maruti360Prop, anamikaProp].filter(Boolean) as StaticProperty[];
 
-  const { ref: remainingMarqueeRef, durationSeconds: remainingDuration } = useMarqueeSpeed<HTMLDivElement>();
+  // Seamless infinite strip: a tripled list scrolled natively, snapped back into the middle
+  // copy whenever it drifts into an outer copy (invisible since all three copies are identical).
+  const manualMarqueeRef = useRef<HTMLDivElement>(null);
+  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+  const marqueeResumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const el = manualMarqueeRef.current;
+    if (!el) return;
+    el.scrollLeft = el.scrollWidth / 3;
+  }, [properties]);
+
+  useEffect(() => {
+    const el = manualMarqueeRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const oneSet = el.scrollWidth / 3;
+      if (el.scrollLeft < oneSet * 0.1) {
+        el.scrollLeft += oneSet;
+      } else if (el.scrollLeft > oneSet * 1.9) {
+        el.scrollLeft -= oneSet;
+      }
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isMarqueePaused) return;
+    const el = manualMarqueeRef.current;
+    if (!el) return;
+    let raf: number;
+    const step = () => {
+      el.scrollLeft += 0.5;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [isMarqueePaused]);
+
+  const handleMarqueeNav = (dir: 1 | -1) => {
+    setIsMarqueePaused(true);
+    manualMarqueeRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
+    if (marqueeResumeTimeout.current) clearTimeout(marqueeResumeTimeout.current);
+    marqueeResumeTimeout.current = setTimeout(() => setIsMarqueePaused(false), 1800);
+  };
 
   // Autoplay spotlight property index
   useEffect(() => {
@@ -141,6 +177,16 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
   const activePropertyImages = activeTopProp
     ? (activeTopProp.images && activeTopProp.images.length > 0 ? activeTopProp.images : [activeTopProp.coverImage])
     : [];
+
+  const topCategoryLabel = activeTopProp
+    ? DISPLAY_CATEGORY_LABELS[activeTopProp.category] || "Luxury Residence"
+    : "";
+  const topPriceDisplay = activeTopProp
+    ? (activeTopProp.priceOnRequest ? "Price on Request" : (activeTopProp.price || "Price on Request"))
+    : "";
+  const topPrimaryDesc = activeTopProp
+    ? (activeTopProp.description?.[0] ?? "").split(/(?<=\.)\s+/)[0] || ""
+    : "";
 
   const handlePrevSpotlight = () => {
     setTopDirection(-1);
@@ -197,22 +243,19 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
   };
 
   const spotlightSlideVariants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? "100%" : "-100%",
-      opacity: 1,
+    enter: () => ({
+      opacity: 0,
     }),
     center: {
-      x: 0,
       opacity: 1,
       transition: {
-        x: { duration: 1.1, ease: luxuryEase },
+        opacity: { duration: 0.4, ease: luxuryEase },
       },
     },
-    exit: (dir: number) => ({
-      x: dir > 0 ? "-100%" : "100%",
-      opacity: 1,
+    exit: () => ({
+      opacity: 0,
       transition: {
-        x: { duration: 1.1, ease: luxuryEase },
+        opacity: { duration: 0.25, ease: luxuryEase },
       },
     }),
   };
@@ -224,20 +267,40 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
         <div
           onMouseEnter={() => setIsTopPaused(true)}
           onMouseLeave={() => setIsTopPaused(false)}
-          className="relative mb-20 w-full overflow-hidden"
+          className="relative mb-20 w-full overflow-visible group/spotlight"
         >
-          <AnimatePresence initial={false} custom={topDirection} mode="popLayout">
-            <motion.div
-              key={activeTopIndex}
-              custom={topDirection}
-              variants={spotlightSlideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="flex flex-col lg:flex-row h-auto lg:h-[620px] w-full group gap-8 lg:gap-12"
-            >
+          {/* Spotlight Property Navigation Controls — corners, matching image carousel positioning */}
+          {top3.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevSpotlight}
+                className="absolute left-2 lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                aria-label="Previous property"
+              >
+                <ChevronLeft className="w-5 h-5 stroke-2" />
+              </button>
+              <button
+                onClick={handleNextSpotlight}
+                className="absolute right-2 lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                aria-label="Next property"
+              >
+                <ChevronRight className="w-5 h-5 stroke-2" />
+              </button>
+            </>
+          )}
+          <div className="relative w-full overflow-hidden [clip-path:inset(0)]">
+            <AnimatePresence initial={false} custom={topDirection} mode="wait">
+              <motion.div
+                key={activeTopIndex}
+                custom={topDirection}
+                variants={spotlightSlideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="flex flex-col lg:flex-row h-auto lg:h-[620px] w-full group gap-8 lg:gap-12"
+              >
           {/* Left: Cinematic Image Carousel */}
-          <div className="w-full lg:w-[60%] h-[350px] lg:h-full relative overflow-hidden bg-lux-black group/spotlight-img">
+          <div className="w-full lg:w-[58%] h-[350px] lg:h-full relative overflow-hidden bg-lux-black group/spotlight-img">
             <AnimatePresence initial={false} custom={topDirection}>
               {activePropertyImages.length > 0 && (
                 <motion.div
@@ -253,6 +316,7 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
                     src={activePropertyImages[activeTopImageIndex]}
                     alt={`${activeTopProp.configuration} Spotlight image`}
                     fill
+                    quality={90}
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover object-center scale-[1.04]"
                     priority
@@ -270,159 +334,96 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
               <>
                 <button
                   onClick={handlePrevTopImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-lux-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-lux-black transition-all duration-200 shadow-lg cursor-pointer"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center text-white/35 hover:text-white bg-black/20 hover:bg-black/50 border border-white/[0.07] hover:border-white/20 transition-all duration-250 lg:opacity-0 lg:group-hover/spotlight-img:opacity-100"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft className="w-5 h-5 stroke-2" />
+                  <ChevronLeft className="w-4 h-4 stroke-[1.5]" />
                 </button>
                 <button
                   onClick={handleNextTopImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-lux-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-lux-black transition-all duration-200 shadow-lg cursor-pointer"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center text-white/35 hover:text-white bg-black/20 hover:bg-black/50 border border-white/[0.07] hover:border-white/20 transition-all duration-250 lg:opacity-0 lg:group-hover/spotlight-img:opacity-100"
                   aria-label="Next image"
                 >
-                  <ChevronRight className="w-5 h-5 stroke-2" />
+                  <ChevronRight className="w-4 h-4 stroke-[1.5]" />
                 </button>
               </>
             )}
 
-            {/* Image Pagination Dots */}
-            {activePropertyImages.length > 1 && (
-              <div className="absolute bottom-5 left-8 z-20 flex gap-2">
-                {activePropertyImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      if (idx === activeTopImageIndex) return;
-                      setTopDirection(idx > activeTopImageIndex ? 1 : -1);
-                      setActiveTopImageIndex(idx);
-                    }}
-                    className={cn(
-                      "w-1.5 h-1.5 rounded-full transition-all duration-300",
-                      activeTopImageIndex === idx ? "bg-champagne-gold w-4" : "bg-white/30 hover:bg-white/60"
-                    )}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            )}
+            {/* Bottom bar: Private Collection label + counter */}
+            <div className="absolute bottom-6 left-7 right-7 z-20 flex items-end justify-between pointer-events-none">
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.28em] text-champagne-gold/60 font-sans">
+                Private Collection
+              </span>
+              {activePropertyImages.length > 1 && (
+                <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/30 font-sans tabular-nums">
+                  {String(activeTopImageIndex + 1).padStart(2, "0")} / {String(activePropertyImages.length).padStart(2, "0")}
+                </span>
+              )}
+            </div>
 
           </div>
 
           {/* Right: Premium Editorial Info Card */}
-          <div className="w-full lg:w-[40%] flex flex-col justify-between h-auto lg:h-full text-left py-2">
-            <div className="space-y-4">
-              {/* Location Eyebrow */}
-              <div className="flex items-center gap-3">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-sans font-medium flex items-center gap-1.5">
-                  <span className={cn("inline-block w-1.5 h-1.5 rounded-full animate-pulse", STATUS_PULSE_COLORS[activeTopProp.status] || "bg-champagne-gold")} />
-                  {PROPERTY_STATUS_LABELS[activeTopProp.status]}
-                </span>
-                <span className="w-1 h-1 rounded-full bg-white/10" />
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-ivory/40">
-                  {activeTopProp.locationLabel}
-                </span>
+          <div className="w-full lg:w-[42%] flex flex-col h-auto lg:h-full text-left">
+            {/* Top content block */}
+            <div className="flex-1">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-2.5 mb-4">
+                <span className="text-[11px] sm:text-xs uppercase tracking-[0.22em] text-champagne-gold/75 font-sans font-medium">{activeTopProp.locationLabel}</span>
               </div>
 
-              {/* Specs Header */}
-              <div className="space-y-1">
-                <h3 className="font-display text-[1.6rem] sm:text-[1.9rem] md:text-[2.25rem] font-light text-white tracking-wide leading-tight uppercase">
-                  {activeTopProp.configuration}
-                </h3>
-                <div className="text-sm text-champagne-gold/90 font-sans mt-1">
-                  {activeTopProp.sizeRange}
-                </div>
+              {/* Title */}
+              <h2 className="font-display text-[1.4rem] sm:text-[1.8rem] md:text-[2.2rem] font-light text-white tracking-wide leading-tight mb-3 uppercase">
+                <span className="block">{activeTopProp.configuration}</span>
+                <span className="block text-sm sm:text-base text-champagne-gold/90 font-sans mt-2 normal-case tracking-normal font-normal">{activeTopProp.sizeRange}</span>
+              </h2>
+
+              {/* Gold rule */}
+              <div className="w-9 h-px bg-champagne-gold/40 mb-3" />
+
+              {/* Description */}
+              <div className="space-y-3 mb-4">
+                <p
+                  className="font-sans text-xs sm:text-sm text-ivory/60 leading-relaxed font-light"
+                  dangerouslySetInnerHTML={{ __html: renderFormattedText(topPrimaryDesc) }}
+                />
               </div>
 
-              {/* Main description sentence */}
-              <p 
-                className="text-xs sm:text-sm font-sans text-ivory/55 leading-relaxed font-light"
-                dangerouslySetInnerHTML={{ __html: renderFormattedText(activeTopProp.description?.[0] ?? "") }}
-              />
-
-              {/* Key Highlights */}
-              {activeTopProp.highlights && activeTopProp.highlights.length > 0 && (
-                <div className="space-y-2">
-                  <span className="block text-[9px] uppercase tracking-[0.15em] text-champagne-gold/60 font-sans font-medium">Key Highlights</span>
-                  <ul className="space-y-1.5 text-xs text-ivory/70 font-sans font-light">
-                    {activeTopProp.highlights.slice(0, 2).map((highlight, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold/75 mt-1.5 flex-shrink-0 animate-pulse" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Specifications Grid */}
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3.5 pt-2">
-                {activeTopProp.floor && (
-                  <div>
-                    <span className="block text-[9px] uppercase tracking-[0.15em] text-champagne-gold/60 font-sans font-medium">Floor Level</span>
-                    <span className="text-xs text-white/90 font-sans mt-0.5 block truncate">{activeTopProp.floor}</span>
+              {/* Details Cards */}
+              <div className="grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-4">
+                {[
+                  { label: "Residence Type", value: topCategoryLabel },
+                  { label: "Status", value: PROPERTY_STATUS_LABELS[activeTopProp.status] },
+                  { label: "Location", value: activeTopProp.locationLabel },
+                  { label: "Price Guide", value: topPriceDisplay },
+                  ...(activeTopProp.builtUpArea ? [{ label: "Built-Up Area", value: activeTopProp.builtUpArea }] : []),
+                  ...(activeTopProp.plotArea ? [{ label: "Plot Area", value: activeTopProp.plotArea }] : []),
+                  ...(activeTopProp.floor
+                    ? [{ label: "BHK", value: activeTopProp.floor }]
+                    : []),
+                ].map(({ label, value }) => (
+                  <div key={label} className="bg-soft-black border border-white/[0.06] rounded-md p-3.5 space-y-1">
+                    <span className="block text-[9px] uppercase tracking-[0.18em] text-champagne-gold font-sans font-medium">{label}</span>
+                    <span className="block text-sm font-sans text-ivory/85 leading-snug">{value}</span>
                   </div>
-                )}
-                {activeTopProp.price && (
-                  <div>
-                    <span className="block text-[9px] uppercase tracking-[0.15em] text-champagne-gold/60 font-sans font-medium">Pricing</span>
-                    <span className="text-xs text-champagne-gold font-sans mt-0.5 block">{activeTopProp.price}</span>
-                  </div>
-                )}
-                {activeTopProp.suitableFor && (
-                  <div className="col-span-2">
-                    <span className="block text-[9px] uppercase tracking-[0.15em] text-champagne-gold/60 font-sans font-medium">Ideal For</span>
-                    <span className="text-xs text-ivory/80 font-sans mt-0.5 block leading-normal line-clamp-1">{activeTopProp.suitableFor}</span>
-                  </div>
-                )}
+                ))}
               </div>
             </div>
 
-            {/* Action and Navigation footer */}
-            <div className="mt-6 pt-5 relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              {/* Premium Gold Gradient Divider Line */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-champagne-gold/30 via-white/[0.06] to-transparent" />
-
-              <button
-                onClick={() => handleToggleExpand(activeTopProp.slug)}
-                className="group/primary relative overflow-hidden inline-flex items-center justify-center gap-2.5 text-[11px] uppercase tracking-[0.22em] font-sans text-champagne-gold border border-champagne-gold/40 hover:text-lux-black transition-all duration-300 min-h-[44px] px-6 rounded-sm bg-transparent"
+            {/* CTAs */}
+            <div className="pt-4 sm:pt-5 mt-4 border-t border-white/[0.06] flex flex-col gap-3 sm:gap-4">
+              <Link
+                href={`/properties/${activeTopProp.slug}#enquiry-form`}
+                className="group/primary inline-flex items-center justify-center gap-2.5 text-xs uppercase tracking-[0.22em] font-sans text-champagne-gold border border-champagne-gold/30 hover:border-champagne-gold/65 hover:bg-champagne-gold/[0.04] px-5 py-3 transition-all duration-300 w-full sm:w-fit min-h-[40px]"
               >
-                {/* Background hover slider */}
-                <span className="absolute inset-0 bg-champagne-gold translate-y-full group-hover/primary:translate-y-0 transition-transform duration-300 ease-out z-0" />
-                
-                <span className="relative z-10 flex items-center gap-2.5">
-                  Request Private Details
-                  <span className="transform group-hover/primary:translate-x-1.5 transition-transform duration-300">→</span>
-                </span>
-              </button>
-
-              {/* Spotlight Property Navigation Controls */}
-              {top3.length > 1 && (
-                <div className="flex items-center gap-4">
-                  <div className="text-[10px] font-sans tracking-widest text-ivory/40 uppercase">
-                    {String(activeTopIndex + 1).padStart(2, "0")} / {String(top3.length).padStart(2, "0")}
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handlePrevSpotlight}
-                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-ivory/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-250 cursor-pointer"
-                      aria-label="Previous property"
-                    >
-                      <ChevronLeft className="w-4 h-4 stroke-[1.5]" />
-                    </button>
-                    <button
-                      onClick={handleNextSpotlight}
-                      className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-ivory/60 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-250 cursor-pointer"
-                      aria-label="Next property"
-                    >
-                      <ChevronRight className="w-4 h-4 stroke-[1.5]" />
-                    </button>
-                  </div>
-                </div>
-              )}
+                Request Private Details
+                <span className="transform group-hover/primary:translate-x-1 transition-transform duration-300">→</span>
+              </Link>
             </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </div>
     </div>
     )}
 
@@ -434,28 +435,57 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
               <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold" />
               <h3 className="font-display text-xs tracking-[0.2em] text-ivory/60 uppercase">More Residences</h3>
             </div>
+            <Link
+              href="/properties"
+              className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] font-sans text-champagne-gold/75 hover:text-champagne-gold transition-colors duration-300"
+            >
+              View All Properties
+              <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+            </Link>
           </div>
 
-          {/* Continuous Marquee Strip of Property Cards */}
-          <div className="marquee-container w-full overflow-hidden relative z-20 py-4">
+          {/* Infinite Manually-Scrollable Strip of Property Cards */}
+          <div className="relative">
             <div
-              ref={remainingMarqueeRef}
-              className="flex gap-5 w-max animate-marquee"
-              style={remainingDuration ? { animationDuration: `${remainingDuration}s` } : undefined}
+              ref={manualMarqueeRef}
+              onMouseEnter={() => setIsMarqueePaused(true)}
+              onMouseLeave={() => setIsMarqueePaused(false)}
+              className="marquee-container w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4"
             >
-              {[...properties, ...properties].map((property, idx) => (
-                <div
-                  key={`rem-${property.id}-${idx}`}
-                  className="w-[260px] sm:w-[300px] lg:w-[320px] flex-shrink-0"
-                >
-                  <StaticPropertyCard
-                    property={property}
-                    isExpanded={expandedSlug === property.slug}
-                    onToggle={() => handleToggleExpand(property.slug)}
-                  />
-                </div>
-              ))}
+              <div className="flex gap-5 w-max">
+                {[...properties, ...properties, ...properties].map((property, idx) => (
+                  <div
+                    key={`rem-${property.id}-${idx}`}
+                    className="w-[260px] sm:w-[300px] lg:w-[320px] flex-shrink-0"
+                  >
+                    <StaticPropertyCard
+                      property={property}
+                      isExpanded={expandedSlug === property.slug}
+                      onToggle={() => handleToggleExpand(property.slug)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {properties.length > 1 && (
+              <>
+                <button
+                  onClick={() => handleMarqueeNav(-1)}
+                  className="absolute left-2 lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  aria-label="Scroll residences left"
+                >
+                  <ChevronLeft className="w-5 h-5 stroke-2" />
+                </button>
+                <button
+                  onClick={() => handleMarqueeNav(1)}
+                  className="absolute right-2 lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  aria-label="Scroll residences right"
+                >
+                  <ChevronRight className="w-5 h-5 stroke-2" />
+                </button>
+              </>
+            )}
           </div>
         </>
       )}
@@ -601,6 +631,7 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
                 src={images[currentImgIdx]}
                 alt={`${DISPLAY_CATEGORY_LABELS[property.category] || property.category} — image ${currentImgIdx + 1}`}
                 fill
+                quality={90}
                 sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover object-center transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
                 priority={currentImgIdx === 0}
@@ -675,7 +706,9 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
         <div className="space-y-2.5">
           <h3 className="font-display text-[13px] sm:text-[14px] lg:text-[15px] font-normal tracking-wide text-ivory group-hover:text-champagne-gold transition-colors duration-300 uppercase leading-snug">
             <span className="block">{property.configuration}</span>
-            <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.sizeRange}</span>
+            {property.floor && (
+              <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.floor}</span>
+            )}
           </h3>
 
           <p className="text-xs font-sans text-ivory/40 uppercase tracking-[0.15em] flex items-center gap-1">
@@ -845,6 +878,7 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
                   src={allImages[currentIndex]}
                   alt={`${categoryLabel} — image ${currentIndex + 1} of ${total}`}
                   fill
+                  quality={90}
                   sizes="(max-width: 768px) 100vw, 58vw"
                   priority={currentIndex === 0}
                   className="object-cover object-center scale-[1.04]"
@@ -963,13 +997,13 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
             </p>
           </motion.div>
 
-          {/* 2×2 Details Grid */}
+          {/* Details Cards */}
           <motion.div
             custom={4}
             initial="hidden"
             animate="visible"
             variants={STAGGER_VARIANTS}
-            className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-white/[0.06] pt-4"
+            className="grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-4"
           >
             {[
               { label: "Residence Type", value: categoryLabel },
@@ -978,12 +1012,13 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
               { label: "Price Guide", value: priceDisplay },
               ...(property.builtUpArea ? [{ label: "Built-Up Area", value: property.builtUpArea }] : []),
               ...(property.plotArea ? [{ label: "Plot Area", value: property.plotArea }] : []),
-              ...(property.floor ? [{ label: "Floor Level", value: property.floor }] : []),
-              ...(property.suitableFor ? [{ label: "Suitable For", value: property.suitableFor }] : []),
+              ...(property.floor
+                ? [{ label: "BHK", value: property.floor }]
+                : []),
             ].map(({ label, value }) => (
-              <div key={label} className={cn(label === "Suitable For" && "col-span-2")}>
-                <span className="block text-[10px] uppercase tracking-[0.22em] text-champagne-gold/50 font-sans mb-0.5">{label}</span>
-                <span className="text-sm font-sans text-ivory/65 font-light leading-snug">{value}</span>
+              <div key={label} className="bg-soft-black border border-white/[0.06] rounded-md p-3.5 space-y-1">
+                <span className="block text-[9px] uppercase tracking-[0.18em] text-champagne-gold font-sans font-medium">{label}</span>
+                <span className="block text-sm font-sans text-ivory/85 leading-snug">{value}</span>
               </div>
             ))}
           </motion.div>
@@ -998,20 +1033,12 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
           className="px-5 sm:px-8 md:px-9 py-4 sm:py-5 border-t border-white/[0.06] flex flex-col gap-3 sm:gap-4"
         >
           <Link
-            href={`/contact?property=${property.slug}&type=enquiry`}
+            href={`/properties/${property.slug}#enquiry-form`}
             onClick={onClose}
             className="group/primary inline-flex items-center justify-center gap-2.5 text-xs uppercase tracking-[0.22em] font-sans text-champagne-gold border border-champagne-gold/30 hover:border-champagne-gold/65 hover:bg-champagne-gold/[0.04] px-5 py-3 transition-all duration-300 w-full sm:w-fit min-h-[40px]"
           >
             Request Private Details
             <span className="transform group-hover/primary:translate-x-1 transition-transform duration-300">→</span>
-          </Link>
-          <Link
-            href={`/contact?property=${property.slug}&type=walkthrough`}
-            onClick={onClose}
-            className="group/secondary inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] font-sans text-ivory/30 hover:text-ivory/60 transition-colors duration-300"
-          >
-            Book a Walkthrough
-            <span className="transform group-hover/secondary:translate-x-1 transition-transform duration-300">→</span>
           </Link>
         </motion.div>
 

@@ -3,6 +3,7 @@
 import { useState, useId } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { trackLeadSubmit } from "@/lib/analytics";
 import type { ResidentialCategory, LocationSlug, BudgetBand, LeadPurpose, Timeline } from "@/types";
 
 // ─── Static data ────────────────────────────────────────────────────────────
@@ -35,11 +36,10 @@ const LOCATION_OPTIONS: { id: LocationSlug; label: string }[] = [
 
 const BUDGETS: { id: BudgetBand; label: string; sub: string }[] = [
   { id: "1-2cr",     label: "₹1 Cr – ₹2 Cr",   sub: "Entry premium" },
-  { id: "2-3cr",     label: "₹2 Cr – ₹3 Cr",   sub: "Premium luxury" },
-  { id: "3-5cr",     label: "₹3 Cr – ₹5 Cr",   sub: "Mid luxury" },
-  { id: "5-10cr",    label: "₹5 Cr – ₹10 Cr",  sub: "Ultra premium" },
+  { id: "3-4cr",     label: "₹3 Cr – ₹4 Cr",   sub: "Premium luxury" },
+  { id: "5-7cr",     label: "₹5 Cr – ₹7 Cr",   sub: "Mid luxury" },
+  { id: "8-10cr",    label: "₹8 Cr – ₹10 Cr",  sub: "Ultra premium" },
   { id: "10cr-plus", label: "₹10 Cr +",         sub: "Ultra HNI" },
-  { id: "custom",    label: "Discuss privately", sub: "Let's talk first" },
 ];
 
 const TIMELINES: { id: Timeline; label: string }[] = [
@@ -193,6 +193,7 @@ export function DiscoveryForm({ initialPurpose = "", id = "discovery" }: Discove
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.error ?? "Submission failed. Please try again.");
       }
+      trackLeadSubmit("discovery", { lead_purpose: form.purpose });
       router.push(`/thank-you?source=discovery&purpose=${form.purpose}`);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");

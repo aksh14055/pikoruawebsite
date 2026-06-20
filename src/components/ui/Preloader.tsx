@@ -14,7 +14,7 @@ export function Preloader() {
       // Small timeout to allow the premium load animation to complete
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 1600);
+      }, 400);
       return () => clearTimeout(timer);
     };
 
@@ -64,6 +64,8 @@ export function Preloader() {
                 src="/logo.png"
                 alt="PIKORUA Realty"
                 fill
+                quality={90}
+                sizes="(max-width: 640px) 12rem, 14rem"
                 priority
                 className="object-contain"
               />

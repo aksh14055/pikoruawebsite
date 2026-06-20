@@ -21,6 +21,7 @@ export interface StaticProperty {
   plotArea?: string;
   floor?: string;
   suitableFor?: string;
+  amenitiesSummary?: string;
   seoTitle?: string;
   seoDescription?: string;
   isActive?: boolean;
@@ -29,13 +30,13 @@ export interface StaticProperty {
 const ALL_STATIC_PROPERTIES: StaticProperty[] = [
   {
     id: "ikebana",
-    slug: "4-5-bhk-penthouse-duplex-7300-15500-sindhu-bhavan",
+    slug: "5-bhk-3300-6300-sindhu-bhavan",
     name: "Ikebana",
     category: "apartment",
     location: "sindhu-bhavan",
-    locationLabel: "Sindhu Bhavan Road",
-    configuration: "4 & 5 BHK · Penthouse · Duplex",
-    sizeRange: "7,300 – 15,500 sq.ft.",
+    locationLabel: "Sindhu Bhavan",
+    configuration: "5 BHK Luxury Residences",
+    sizeRange: "Approx. 3,300 – 6,300 sq.ft.",
     status: "near-possession",
     coverImage: "/properties/ikebana/ikebana1.png",
     images: [
@@ -48,17 +49,17 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     price: "Price on Request",
     priceOnRequest: true,
     description: [
-      "This landmark of ultra-luxury residential living is situated along the premium Sindhu Bhavan Road corridor. Designed with Japanese-inspired minimalism combined with global luxury standards, it features expansive private decks and double-height ceilings.",
-      "Each residence is meticulously oriented to optimize natural ventilation and panoramic views of the city skyline. Spanning across generous floor plates, these homes represent the pinnacle of architectural elegance in Ahmedabad."
+      "An exclusive luxury residence on Sindhu Bhavan Road, offering spacious 5 BHK homes, green open spaces, premium amenities, and a highly connected central Ahmedabad address.",
     ],
+    amenitiesSummary: "Sky-level pool, gym, gardens, lounge, sports, library, theatre & more",
     highlights: [
       "Double-height living rooms with floor-to-ceiling glazing",
       "State-of-the-art private screening theatre and clubhouse",
       "Spacious wrap-around sundecks with customizable private plunge pools",
       "Concierge services and robust multi-tiered HNI security systems"
     ],
-    builtUpArea: "7,300 – 15,500 sq.ft.",
-    floor: "Upper Floors (15th and above)",
+    builtUpArea: "Approx. 3,300 – 6,300 sq.ft.",
+    floor: "5 BHK",
     suitableFor: "HNI families looking for premium vertical estates with high privacy and security"
   },
   {
@@ -67,9 +68,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Maruti 360",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "4 & 5 BHK · Duplex",
-    sizeRange: "5,700 – 7,500 sq.ft.",
+    locationLabel: "Bodakdev",
+    configuration: "4 & 5 BHK Suites, Duplexes & Penthouses",
+    sizeRange: "Approx. 2,087 – 7,024 sq.ft.",
     status: "under-construction",
     coverImage: "/properties/maruti-360/maruti-360-view.jpg",
     images: [
@@ -77,23 +78,22 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/maruti-360/maruti-360-bedroom-2.png",
       "/properties/maruti-360/maruti-360-pool-3.png",
       "/properties/maruti-360/maruti360-play-area-4.png",
-      "/properties/maruti-360/maruti-360-1.jpeg",
     ],
     isFeatured: true,
     price: "₹5.50 Cr – ₹8.25 Cr",
     priceOnRequest: false,
     description: [
-      "This development redefines vertical estate living on the highly coveted Iskon-Ambli Road. Offering true 360-degree, uninterrupted views of the luxury corridor, the residences guarantee absolute privacy with single-apartment-per-floor layouts.",
-      "Finished with premium imported marble, premium VRV air conditioning, and bespoke sanitary ware, every corner represents high-end craftsmanship built to endure for generations."
+      "A landmark high-rise beside Karnavati Club, offering expansive luxury suites, unobstructed green views, and an elevated lifestyle across a twin-tower residential development.",
     ],
+    amenitiesSummary: "41st-floor viewing gallery, infinity pool, gym, wellness centre, mini theatre, clubhouse, banquet hall, yoga deck, indoor games & landscaped jogging track.",
     highlights: [
       "Single apartment per floor layouts for ultimate privacy",
       "360-degree panoramic views of Iskon-Ambli corridor",
       "Grand entry lobby with triple-height clearance",
       "Eco-friendly building design with IGBC Gold certification"
     ],
-    builtUpArea: "5,700 – 7,500 sq.ft.",
-    floor: "Bespoke levels available",
+    builtUpArea: "Approx. 2,087 – 7,024 sq.ft.",
+    floor: "4 & 5 BHK",
     suitableFor: "Discerning owners desiring single-apartment-per-floor privacy in the prime luxury zone"
   },
   {
@@ -102,9 +102,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Pashmina",
     category: "apartment",
     location: "sindhu-bhavan",
-    locationLabel: "Sindhu Bhavan Road",
-    configuration: "4 & 5 BHK · Penthouse",
-    sizeRange: "5,200 – 7,500 sq.ft.",
+    locationLabel: "Bodakdev",
+    configuration: "4 & 5 BHK Residences",
+    sizeRange: "Approx. 2,714 – 5,236 sq.ft.",
     status: "ready-to-move",
     coverImage: "/properties/pashmina/pashmina.jpg",
     images: [
@@ -116,17 +116,17 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     price: "₹6.20 Cr – ₹9.50 Cr",
     priceOnRequest: false,
     description: [
-      "A sanctuary of comfort and privacy on Sindhu Bhavan Road. This development offers grand-scale apartments and bespoke penthouses meticulously crafted for HNI families seeking immediate possession.",
-      "The design prioritizes vast living spaces, rich materials, and extensive natural light, creating an environment that is both relaxing and majestic."
+      "A high-rise luxury address in Bodakdev, designed around expansive residences, panoramic verandahs, premium club spaces, and a secure, green living environment.",
     ],
+    amenitiesSummary: "50,000 sq. ft. clubhouse, gym, indoor games, community hall, lawns, children's zones, podium garden & smart security.",
     highlights: [
       "Ready to move in with completed luxury finishes",
       "Extremely spacious layout with dual master suites",
       "Centrally located near top dining and retail options",
       "Beautifully landscaped central gardens and walking tracks"
     ],
-    builtUpArea: "5,200 – 7,500 sq.ft.",
-    floor: "Mid & High levels",
+    builtUpArea: "Approx. 2,714 – 5,236 sq.ft.",
+    floor: "4 & 5 BHK",
     suitableFor: "Buyers seeking immediate-possession ready luxury residences in high-connectivity zones"
   },
   {
@@ -135,9 +135,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Swati Senor",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "5 BHK",
-    sizeRange: "8,000 – 10,000 sq.ft.",
+    locationLabel: "Ambli",
+    configuration: "5 BHK Apartments",
+    sizeRange: "4,311 sq.ft. onwards",
     status: "ready-to-move",
     coverImage: "/properties/swati-senor/swati-senor-1.jpg",
     images: [
@@ -152,17 +152,17 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     price: "Price on Request",
     priceOnRequest: true,
     description: [
-      "Widely recognized as one of the most premium addresses on Iskon-Ambli Road, these massive 5 BHK luxury sky mansions offer palatial room dimensions and double-deck balconies.",
-      "The project boasts world-class wellness amenities, a private temperature-controlled pool, and premium concierge services catering to the most demanding luxury tastes."
+      "An exclusive large-format residence on Iscon–Ambli Road, created for buyers seeking a spacious single-level home, sophisticated common spaces, and a central luxury address.",
     ],
+    amenitiesSummary: "Banquet hall, gym, mini theatre, indoor games, children's play area, toddler zone, designed foyer, CCTV & allotted parking.",
     highlights: [
       "Sky mansions with massive 8,000+ sq.ft. footprints",
       "Temperature-controlled private swimming pool and deck",
       "Fully equipped fitness sanctuary and private dining room",
       "Advanced 5-tier security and dedicated valet service"
     ],
-    builtUpArea: "8,000 – 10,000 sq.ft.",
-    floor: "High Floor residences",
+    builtUpArea: "4,311 sq.ft. onwards",
+    floor: "5 BHK",
     suitableFor: "Families looking for palatial room dimensions and top-tier wellness clubhouse amenities"
   },
   {
@@ -171,9 +171,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Anurita",
     category: "bungalow",
     location: "sindhu-bhavan",
-    locationLabel: "Sindhu Bhavan Road",
-    configuration: "4 BHK Villa",
-    sizeRange: "950 sq.yd. Plot · 700 sq.yd. Built",
+    locationLabel: "Thaltej",
+    configuration: "4 & 5 BHK Villas",
+    sizeRange: "Approx. 2,809 – 3,517 sq.ft.",
     status: "ready-to-move",
     coverImage: "/properties/anurita/anurita-1.jpg",
     images: [
@@ -186,18 +186,18 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     price: "₹14.50 Cr",
     priceOnRequest: false,
     description: [
-      "This development presents a rare opportunity to own a bespoke luxury bungalow in the heart of Sindhu Bhavan Road. This low-density estate offers private villas surrounded by landscaped personal lawns.",
-      "Every villa is designed as a standalone sanctuary, offering extensive indoor and outdoor entertaining spaces, a personal elevator, and state-of-the-art home automation systems."
+      "An exclusive gated villa enclave in Thaltej, created for private family living with expansive homes, landscaped surroundings, and a thoughtful mix of wellness, recreation, and security-led amenities.",
     ],
+    amenitiesSummary: "Clubhouse, gym, yoga/meditation spaces, party lawn, multipurpose hall, children's zones & 24/7 security.",
     highlights: [
       "Private garden lawn and large outdoor party deck",
       "Standalone villa layout with absolute boundary privacy",
       "Dedicated personal elevator and automated security systems",
       "Private servant quarters and 4-car parking garage"
     ],
-    builtUpArea: "700 sq.yd. Built",
+    builtUpArea: "Approx. 2,809 – 3,517 sq.ft.",
     plotArea: "950 sq.yd. Plot",
-    floor: "G + 2 Levels",
+    floor: "4 & 5 BHK",
     suitableFor: "VIP buyers wanting standalone boundary privacy and dedicated personal grounds"
   },
   {
@@ -206,9 +206,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Belagio",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
+    locationLabel: "Ambli",
     configuration: "4 & 5 BHK",
-    sizeRange: "6,100 – 8,500 sq.ft.",
+    sizeRange: "Approx. 3,071 – 4,095 sq.ft.",
     status: "under-construction",
     coverImage: "/properties/belagio/belagio-1.jpg",
     images: [
@@ -221,17 +221,17 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     price: "Price on Request",
     priceOnRequest: true,
     description: [
-      "This project combines classic European aesthetics with modern architectural engineering. Situated on Iskon-Ambli Road, the property features gorgeous high-arched entryways, fountains, and majestic facades.",
-      "The apartments offer expansive layouts with deep balconies overlooking the central manicured gardens and recreation zones, creating a peaceful escape."
+      "An ultra-luxury residential address near Iscon Cross Road, offering expansive homes, refined interiors, and a private, resort-style lifestyle in one of Ahmedabad's most connected premium neighbourhoods.",
     ],
+    amenitiesSummary: "Pool, gym, theatre, clubhouse, banquet hall, indoor games, library, jacuzzi, garden, jogging track & kids' play area.",
     highlights: [
       "European architectural theme with premium stone finishes",
       "Infinity-edge pool overlooking landscaped gardens",
       "Grand banqueting facility for resident celebrations",
       "Double-height sky lounges for community interaction"
     ],
-    builtUpArea: "6,100 – 8,500 sq.ft.",
-    floor: "All levels available",
+    builtUpArea: "Approx. 3,071 – 4,095 sq.ft.",
+    floor: "4 & 5 BHK",
     suitableFor: "Connoisseurs seeking classic European architectural themes and expansive sky lounge amenities"
   },
   {
@@ -240,9 +240,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Anamika",
     category: "apartment",
     location: "sindhu-bhavan",
-    locationLabel: "Sindhu Bhavan Road",
-    configuration: "4 & 5 BHK · Duplex",
-    sizeRange: "3,200 – 10,000 sq.ft.",
+    locationLabel: "Bodakdev",
+    configuration: "4 & 5 BHK Apartments",
+    sizeRange: "Approx. 1,767 – 3,346 sq.ft.",
     status: "under-construction",
     coverImage: "/properties/anamika/anamika2.jpg",
     images: [
@@ -252,6 +252,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/anamika/anamika4-bedroom.jpg",
     ],
     isFeatured: false,
+    description: [
+      "Contemporary high-rise living in Bodakdev, offering spacious family residences with an additional living space and a club-style lifestyle environment for recreation, wellness, social gatherings, and everyday comfort.",
+    ],
+    amenitiesSummary: "Clubhouse, swimming pool with deck, banquet lawn, multifunction hall, landscaped gardens, drop-off zones & CCTV security.",
+    builtUpArea: "Approx. 1,767 – 3,346 sq.ft.",
+    floor: "4 & 5 BHK",
   },
   {
     id: "triveni-84",
@@ -259,9 +265,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Triveni 84",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "4 BHK · Penthouse · Duplex",
-    sizeRange: "3,700 – 6,500 sq.ft.",
+    locationLabel: "Ambli",
+    configuration: "4 BHK Residences & 5 BHK Duplex Penthouses",
+    sizeRange: "Approx. 1,942 sq.ft. onwards for 4 BHK",
     status: "under-construction",
     coverImage: "/properties/triveni-84/triveni-1.jpg",
     images: [
@@ -272,6 +278,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/triveni-84/triveni5-banquet-hall.jpeg",
     ],
     isFeatured: false,
+    description: [
+      "A limited-edition address on Iscon–Ambli Road, designed for private large-format living with only two residences per floor, generous open spaces, and wellness-led shared amenities.",
+    ],
+    amenitiesSummary: "Gym, yoga room, games room, co-working space, banquet area, landscaped garden, toddler zone, wellness floor & secured parking.",
+    builtUpArea: "Approx. 1,942 sq.ft. onwards for 4 BHK",
+    floor: "4 & 5 BHK",
   },
   {
     id: "avant",
@@ -279,9 +291,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Avant",
     category: "apartment",
     location: "sindhu-bhavan",
-    locationLabel: "Sindhu Bhavan Road",
-    configuration: "4 BHK · Duplex",
-    sizeRange: "4,500 – 8,000 sq.ft.",
+    locationLabel: "Bodakdev",
+    configuration: "4 BHK Apartments",
+    sizeRange: "Approx. 2,502 – 2,895 sq.ft.",
     status: "ready-to-move",
     coverImage: "/properties/avant/avant1.png",
     images: [
@@ -290,6 +302,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/avant/avant-3-park.avif",
     ],
     isFeatured: false,
+    description: [
+      "A green, eco-conscious residential address just off Sindhu Bhavan Road, offering large homes with deep verandas, generous outdoor spaces, and a leisure-focused setting for modern family living.",
+    ],
+    amenitiesSummary: "Covered pool, skywalk, clubhouse, indoor games, kids' play area, adventure zone, café, lake, walking trail & BBQ lawn.",
+    builtUpArea: "Approx. 2,502 – 2,895 sq.ft.",
+    floor: "4 BHK",
   },
   {
     id: "capstone",
@@ -297,31 +315,34 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Capstone",
     category: "apartment",
     location: "thaltej",
-    locationLabel: "Thaltej",
-    configuration: "4 BHK · Penthouse · Duplex",
-    sizeRange: "5,200 – 9,000 sq.ft.",
+    locationLabel: "Shilaj",
+    configuration: "4 BHK",
+    sizeRange: "Approx. 2,860 – 2,888 sq.ft.",
     status: "under-construction",
-    coverImage: "/properties/capstone/castone1.png",
+    coverImage: "/properties/capstone/capstone-1-courtyard.jpg",
     images: [
-      "/properties/capstone/castone1.png",
-      "/properties/capstone/capstone-2-pool.avif",
-      "/properties/capstone/capstone-3-garden.avif",
+      "/properties/capstone/capstone-1-courtyard.jpg",
+      "/properties/capstone/capstone-2-living.jpg",
+      "/properties/capstone/capstone-3-aerial.jpg",
+      "/properties/capstone/capstone-4-gameroom.jpg",
+      "/properties/capstone/capstone-5-hometheater.jpg",
+      "/properties/capstone/capstone-6-kidsplay.jpg",
     ],
     isFeatured: true,
     price: "Price on Request",
     priceOnRequest: true,
     description: [
-      "A dramatic architectural statement rising in the scenic residential enclave of Thaltej. Offering a limited collection of bespoke 4 BHK duplexes and grand penthouses designed for multi-generational HNI families.",
-      "Every home features high-volume living spaces, direct personal elevators, and a wide panoramic viewing deck that captures Ahmedabad's western green cover."
+      "A low-density, four-side-open residential development in Shilaj, created for buyers who value generous layouts, open views, large balconies, and the privacy of only two residences per floor.",
     ],
+    amenitiesSummary: "Clubhouse, landscaped garden, children's play area, CCTV, visitor parking, rainwater harvesting, power backup & 24/7 security.",
     highlights: [
       "Prime Thaltej location with scenic vistas and excellent connectivity",
       "Exclusive duplex layouts with high-volume double-height spaces",
       "Rooftop infinity pool, fitness club, and bespoke social lounge",
       "Advanced smart home automation and 24/7 automated private security"
     ],
-    builtUpArea: "5,200 – 9,000 sq.ft.",
-    floor: "Premium view floors",
+    builtUpArea: "Approx. 2,860 – 2,888 sq.ft.",
+    floor: "4 BHK",
     suitableFor: "VIP buyers desiring high-volume duplex living near the prime western corridor"
   },
   {
@@ -331,8 +352,8 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     category: "apartment",
     location: "thaltej",
     locationLabel: "Thaltej",
-    configuration: "4 BHK · Duplex",
-    sizeRange: "3,800 – 7,000 sq.ft.",
+    configuration: "4 BHK | 5 BHK Penthouse Duplex",
+    sizeRange: "From approx. 1,649 sq.ft. for 4 BHK; 3,336 sq.ft. for 5 BHK",
     status: "ready-to-move",
     coverImage: "/properties/eminence-96/emini96-1.png",
     images: [
@@ -342,6 +363,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/eminence-96/eminence-96-4-seting-area.webp",
     ],
     isFeatured: false,
+    description: [
+      "A contemporary luxury residence near Thaltej–Shilaj Road, combining spacious family homes and penthouse duplexes with wellness, recreation, and landscaped community spaces.",
+    ],
+    amenitiesSummary: "Covered pool, gym, theatre, banquet hall, terrace garden, indoor games, landscaped garden, waterbody & children's play areas.",
+    builtUpArea: "From approx. 1,649 sq.ft. for 4 BHK; 3,336 sq.ft. for 5 BHK",
+    floor: "4 & 5 BHK",
   },
   {
     id: "belrosa",
@@ -349,9 +376,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Belrosa",
     category: "apartment",
     location: "vaishno-devi",
-    locationLabel: "Vaishno Devi",
-    configuration: "4 & 5 BHK · Duplex · Penthouse",
-    sizeRange: "5,500 – 11,000 sq.ft.",
+    locationLabel: "Vaishnodevi Circle",
+    configuration: "4 & 5 BHK Simplex | 5 & 6 BHK Duplex",
+    sizeRange: "Approx. 2,942 – 6,911 sq.ft.",
     status: "pre-launch",
     coverImage: "/properties/belrosa/belrosa-1.jpg",
     images: [
@@ -361,6 +388,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/belrosa/living-dining.jpg",
     ],
     isFeatured: false,
+    description: [
+      "A landmark high-rise within Shantigram, designed around private foyers, sweeping golf-course views, expansive layouts, and a sky-high lifestyle for families seeking scale, privacy, and prestige.",
+    ],
+    amenitiesSummary: "Sky Club with infinity pool, spa, sauna, gym, banquet hall, home theatre, reading nook, billiards & indoor games.",
+    builtUpArea: "Approx. 2,942 – 6,911 sq.ft.",
+    floor: "4, 5 & 6 BHK",
   },
   {
     id: "rashmi",
@@ -368,13 +401,19 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Rashmi",
     category: "apartment",
     location: "thaltej",
-    locationLabel: "Thaltej",
-    configuration: "4 BHK · Penthouse · Duplex",
-    sizeRange: "3,200 – 6,500 sq.ft.",
+    locationLabel: "Shantipura",
+    configuration: "3 & 4 BHK Apartments",
+    sizeRange: "Approx. 1,163 – 1,694 sq.ft.",
     status: "pre-launch",
     coverImage: "",
     images: [],
     isFeatured: false,
+    description: [
+      "A contemporary gated residential development on Link-in Road, offering well-planned family homes with leisure amenities, landscaped outdoor spaces, and convenient access to the wider South-West Ahmedabad corridor.",
+    ],
+    amenitiesSummary: "Swimming pool, gym, mini theatre, banquet hall, party lawn, indoor games, outdoor seating & toddler play area.",
+    builtUpArea: "Approx. 1,163 – 1,694 sq.ft.",
+    floor: "3 & 4 BHK",
   },
   {
     id: "vaikunth",
@@ -383,8 +422,8 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     category: "bungalow",
     location: "shilaj",
     locationLabel: "Shilaj",
-    configuration: "4 BHK Villa",
-    sizeRange: "390 sq.yd. Plot · 440 sq.yd. Built",
+    configuration: "4 BHK Villas",
+    sizeRange: "Approx. 2,393 – 2,757 sq.ft.",
     status: "near-possession",
     coverImage: "/properties/vaikunth/vaikunth-1.png",
     images: [
@@ -392,7 +431,13 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/vaikunth/vaikunth-2-pool.png",
       "/properties/vaikunth/vaikunth-3.png",
     ],
-    isFeatured: false,
+    isFeatured: true,
+    description: [
+      "An ultra-premium bungalow enclave near Shilaj, offering spacious private homes, tree-lined surroundings, and a calm yet well-connected lifestyle along the Bopal–Ambli corridor.",
+    ],
+    amenitiesSummary: "Swimming pool, mini water park, gym, indoor games, multipurpose court, landscaped spaces, senior sit-outs & children's play areas.",
+    builtUpArea: "Approx. 2,393 – 2,757 sq.ft.",
+    floor: "4 BHK",
   },
   {
     id: "northpark",
@@ -400,9 +445,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Northpark",
     category: "bungalow",
     location: "vaishno-devi",
-    locationLabel: "Vaishno Devi",
-    configuration: "4 BHK Villa",
-    sizeRange: "500 sq.yd. Plot · 550 sq.yd. Built",
+    locationLabel: "Vaishnodevi Circle",
+    configuration: "4 BHK Villas",
+    sizeRange: "Approx. 3,375 – 3,791 sq.ft.",
     status: "under-construction",
     coverImage: "/properties/northpark/northpark-1.jpg",
     images: [
@@ -412,7 +457,13 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/northpark/northpark-04-dainnig.jpg",
       "/properties/northpark/northpark-5-bedroom.jpg",
     ],
-    isFeatured: false,
+    isFeatured: true,
+    description: [
+      "An exclusive independent villa address within Shantigram, bringing together expansive layouts, landscaped outdoor spaces, private decks, and the comfort of township living.",
+    ],
+    amenitiesSummary: "Clubhouse, gym, children's play area, party lawn, outdoor seating, large decks and terraces, plus golf club membership benefits.",
+    builtUpArea: "Approx. 3,375 – 3,791 sq.ft.",
+    floor: "4 BHK",
   },
   {
     id: "kalrav-alpines",
@@ -420,13 +471,18 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Kalrav Alpines",
     category: "plot",
     location: "shilaj",
-    locationLabel: "Shilaj",
-    configuration: "Premium Plots",
-    sizeRange: "1,100 – 2,000 sq.yd.",
+    locationLabel: "Nandoli",
+    configuration: "Residential Villa Plots",
+    sizeRange: "1,100 sq.yd. onwards",
     status: "under-construction",
     coverImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
     images: ["/properties/kalrav-alpines/kalrav-alpines-1.jpg"],
-    isFeatured: false,
+    isFeatured: true,
+    description: [
+      "A low-density plotted villa community in Nandoli, created for families looking to build a private retreat with generous land, open surroundings, and leisure-led community spaces.",
+    ],
+    amenitiesSummary: "Swimming pool, clubhouse, theatre, pool table, reserved parking, CCTV, power backup & 24/7 security.",
+    plotArea: "1,100 sq.yd. onwards",
   },
   {
     id: "westpark",
@@ -434,16 +490,22 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Westpark",
     category: "plot",
     location: "vaishno-devi",
-    locationLabel: "Vaishno Devi",
-    configuration: "Premium Plots",
-    sizeRange: "700 – 2,500 sq.yd.",
+    locationLabel: "Vaishnodevi Circle",
+    configuration: "Customisable Luxury Villas / 5 BHK layouts",
+    sizeRange: "Starting approx. 3,853 sq.ft.",
     status: "under-construction",
     coverImage: "/properties/westpark/westpark-1.jpeg",
     images: [
       "/properties/westpark/westpark-1.jpeg",
       "/properties/westpark/westpark-2-bun.jpg",
     ],
-    isFeatured: false,
+    isFeatured: true,
+    description: [
+      "A limited villa community within Shantigram, created for buyers seeking a customisable home, green golf-side surroundings, and the scale and privacy of township living.",
+    ],
+    amenitiesSummary: "Clubhouse, celebration lawn, yoga zone, walking track, box cricket, multipurpose court, children's play area, senior sit-outs & golf promenade access.",
+    builtUpArea: "Starting approx. 3,853 sq.ft.",
+    floor: "5 BHK",
   },
   {
     id: "atman",
@@ -451,9 +513,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Atman",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "4 BHK",
-    sizeRange: "5,000 sq.ft.",
+    locationLabel: "Ambli",
+    configuration: "4 BHK Residences",
+    sizeRange: "Approx. 2,399 – 2,764 sq.ft.",
     status: "ready-to-move",
     coverImage: "/properties/atman/atman-1.jpg",
     images: [
@@ -461,6 +523,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/atman/atman-2.jpg",
     ],
     isFeatured: false,
+    description: [
+      "A low-density, design-led residential address in Ambli, centred around spacious homes, green open spaces, a serene waterbody, and lifestyle amenities designed for refined family living.",
+    ],
+    amenitiesSummary: "Central waterbody, landscaped gardens, Jain Derasar, children's play area, sit-outs, basement parking & 24/7 security.",
+    builtUpArea: "Approx. 2,399 – 2,764 sq.ft.",
+    floor: "4 BHK",
   },
   {
     id: "shaligram-luxuria",
@@ -468,9 +536,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Shaligram Luxuria",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "4 BHK · Penthouse",
-    sizeRange: "3,800 – 7,500 sq.ft.",
+    locationLabel: "Ambli",
+    configuration: "4 BHK Apartments & 5 BHK Penthouses",
+    sizeRange: "Approx. 1,888 – 3,648 sq.ft.",
     status: "near-possession",
     coverImage: "/properties/shaligram-luxuria/shaligram-luxuria-1.jpg",
     images: [
@@ -479,6 +547,12 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/shaligram-luxuria/shaligram-luxuria-3.jpg",
     ],
     isFeatured: false,
+    description: [
+      "A refined residential address in Ambli, combining spacious apartments and penthouses with landscaped community spaces, recreation zones, and a family-oriented luxury lifestyle.",
+    ],
+    amenitiesSummary: "Gym, lounge and library, badminton court, indoor games, multipurpose hall, landscaped garden, children's area & CCTV security.",
+    builtUpArea: "Approx. 1,888 – 3,648 sq.ft.",
+    floor: "4 & 5 BHK",
   },
   {
     id: "kimana",
@@ -486,9 +560,9 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     name: "Kimana",
     category: "apartment",
     location: "iskon-ambli",
-    locationLabel: "Iskon-Ambli Road",
-    configuration: "4 & 5 BHK",
-    sizeRange: "6,000 – 8,000 sq.ft.",
+    locationLabel: "Ambli",
+    configuration: "4, 5, 6 & 7 BHK Apartments, Duplexes & Penthouses",
+    sizeRange: "Approx. 2,984 – 6,162 sq.ft.",
     status: "near-possession",
     coverImage: "/properties/kimana/kimana.jpg",
     images: [
@@ -497,6 +571,75 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/kimana/kimana-3.jpg",
     ],
     isFeatured: false,
+    description: [
+      "A private, large-format residential address in Ambli, designed around spacious homes, refined interiors, landscaped surroundings, and an elevated lifestyle for discerning families.",
+    ],
+    amenitiesSummary: "Swimming pool, gym, theatre, banquet hall, indoor games, jogging track, landscaped garden, children's area, senior sit-out & 24/7 security.",
+    builtUpArea: "Approx. 2,984 – 6,162 sq.ft.",
+    floor: "4, 5, 6 & 7 BHK",
+  },
+  {
+    id: "nehru-nagar-project",
+    slug: "nehru-nagar-project",
+    name: "Nehru Nagar Project",
+    category: "apartment",
+    location: "other",
+    locationLabel: "Nehru Nagar",
+    configuration: "4 & 5 BHK",
+    sizeRange: "3,000–6,000 sq. ft.",
+    status: "newly-launched",
+    coverImage: "/images/properties/nehru-nagar/nehru-nagar-1.jpeg",
+    images: [
+      "/images/properties/nehru-nagar/nehru-nagar-1.jpeg",
+      "/images/properties/nehru-nagar/nehru-nagar-2.jpeg",
+      "/images/properties/nehru-nagar/nehru-nagar-3.jpeg",
+      "/images/properties/nehru-nagar/nehru-nagar-4.jpeg",
+    ],
+    isFeatured: false,
+    priceOnRequest: true,
+    description: [
+      "A centrally located high-rise development offering spacious family residences, generous open spaces, and strong everyday connectivity in the heart of Ahmedabad.",
+    ],
+    highlights: [
+      "70% open space",
+      "150 m from Jain Derasar",
+      "25 storeys",
+      "10 buildings & 600 units",
+    ],
+    builtUpArea: "3,000–6,000 sq. ft.",
+    floor: "4 & 5 BHK",
+    isActive: true,
+  },
+  {
+    id: "vastrapur-project",
+    slug: "vastrapur-project",
+    name: "Vastrapur Project",
+    category: "apartment",
+    location: "other",
+    locationLabel: "Vastrapur",
+    configuration: "3, 4 & 5 BHK",
+    sizeRange: "3,000–4,700 sq. ft.*",
+    status: "under-construction",
+    coverImage: "/properties/vastrapur/vastrapur-3-facade.jpg",
+    images: [
+      "/properties/vastrapur/vastrapur-3-facade.jpg",
+      "/properties/vastrapur/vastrapur-1-balcony.jpg",
+      "/properties/vastrapur/vastrapur-2-pool.jpg",
+    ],
+    isFeatured: false,
+    priceOnRequest: true,
+    description: [
+      "A premium residential development in Vastrapur, designed for upscale urban living with spacious configurations, Italian marble finishes, and a lower-density tower layout.",
+    ],
+    highlights: [
+      "60% open space",
+      "Italian marble flooring",
+      "4 towers",
+      "17 storeys & 220 units",
+    ],
+    builtUpArea: "3,000–4,700 sq. ft.*",
+    floor: "3, 4 & 5 BHK",
+    isActive: true,
   },
 ];
 
@@ -512,7 +655,7 @@ function getSupabaseUrl(localPath: string): string {
 }
 
 export const STATIC_PROPERTIES = ALL_STATIC_PROPERTIES
-  .filter((p) => p.coverImage && p.coverImage !== "")
+  .filter((p) => (p.coverImage && p.coverImage !== "") || p.isActive === true)
   .map((p) => ({
     ...p,
     coverImage: getSupabaseUrl(p.coverImage),
