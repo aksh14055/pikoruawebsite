@@ -251,7 +251,7 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
       "/properties/anamika/anamika3-hall.png",
       "/properties/anamika/anamika4-bedroom.jpg",
     ],
-    isFeatured: false,
+    isFeatured: true,
     description: [
       "Contemporary high-rise living in Bodakdev, offering spacious family residences with an additional living space and a club-style lifestyle environment for recreation, wellness, social gatherings, and everyday comfort.",
     ],
