@@ -28,8 +28,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
+    icon: "/logo-icon.png",
+    shortcut: "/logo-icon.png",
+    apple: "/logo-icon.png",
   },
   description:
     "A private gateway to Ahmedabad's finest luxury residences, curated privately for buyers, NRIs, investors, and sellers.",
@@ -66,8 +67,8 @@ const organizationSchema = {
   "@id": `${SITE_URL}#real-estate-agent`,
   name: SITE_NAME,
   url: SITE_URL,
-  logo: absoluteUrl("/logo.png"),
-  image: absoluteUrl("/logo.png"),
+  logo: absoluteUrl("/logo-icon.png"),
+  image: absoluteUrl("/logo-icon.png"),
   description:
     "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
   sameAs: [
