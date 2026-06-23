@@ -295,10 +295,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
               aria-expanded={drawerOpen}
               aria-controls="mobile-drawer"
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
-              className={cn(
-                "lg:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm transition-all duration-500",
-                scrolled ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
-              )}
+              className="lg:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm"
             >
               {[
                 drawerOpen ? "translate-y-[7px] rotate-45" : "",

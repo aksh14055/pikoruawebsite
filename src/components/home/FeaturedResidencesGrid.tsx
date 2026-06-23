@@ -274,14 +274,14 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
             <>
               <button
                 onClick={handlePrevSpotlight}
-                className="absolute left-2 lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                className="absolute left-2 lg:-left-16 xl:-left-20 top-[175px] lg:top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
                 aria-label="Previous property"
               >
                 <ChevronLeft className="w-5 h-5 stroke-2" />
               </button>
               <button
                 onClick={handleNextSpotlight}
-                className="absolute right-2 lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                className="absolute right-2 lg:-right-16 xl:-right-20 top-[175px] lg:top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
                 aria-label="Next property"
               >
                 <ChevronRight className="w-5 h-5 stroke-2" />
