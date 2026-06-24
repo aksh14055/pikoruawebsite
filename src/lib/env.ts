@@ -11,6 +11,11 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function requirePublicEnv(name: string, value: string | undefined): string {
+  if (!value) throw new Error(`Missing required environment variable: ${name}`);
+  return value;
+}
+
 function optionalEnv(name: string, fallback = ""): string {
   return process.env[name] ?? fallback;
 }
@@ -19,23 +24,21 @@ function optionalEnv(name: string, fallback = ""): string {
 // Accessed via getter so validation runs at call time, not module load time.
 
 export const env = {
-  get SANITY_PROJECT_ID() { return requireEnv("NEXT_PUBLIC_SANITY_PROJECT_ID"); },
-  get SANITY_DATASET() { return optionalEnv("NEXT_PUBLIC_SANITY_DATASET", "production"); },
-  get SUPABASE_URL() { return requireEnv("NEXT_PUBLIC_SUPABASE_URL"); },
-  get SUPABASE_ANON_KEY() { return requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"); },
-  get SITE_URL() { return optionalEnv("NEXT_PUBLIC_SITE_URL", "https://pikorua.in"); },
-  get GTM_ID() { return optionalEnv("NEXT_PUBLIC_GTM_ID"); },
-  get GA4_MEASUREMENT_ID() { return optionalEnv("NEXT_PUBLIC_GA4_MEASUREMENT_ID"); },
+  get SANITY_PROJECT_ID() { return requirePublicEnv("NEXT_PUBLIC_SANITY_PROJECT_ID", process.env.NEXT_PUBLIC_SANITY_PROJECT_ID); },
+  get SANITY_DATASET() { return process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production"; },
+  get SUPABASE_URL() { return requirePublicEnv("NEXT_PUBLIC_SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL); },
+  get SUPABASE_ANON_KEY() { return requirePublicEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY); },
+  get SITE_URL() { return process.env.NEXT_PUBLIC_SITE_URL ?? "https://pikorua.in"; },
+  get GTM_ID() { return process.env.NEXT_PUBLIC_GTM_ID ?? ""; },
+  get GA4_MEASUREMENT_ID() { return process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? ""; },
   // WhatsApp contact — public so client components can build wa.me links
-  get WHATSAPP_NUMBER() { return optionalEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "916354359222"); },
+  get WHATSAPP_NUMBER() { return process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "916354359222"; },
   get WHATSAPP_DEFAULT_MESSAGE() {
-    return optionalEnv(
-      "NEXT_PUBLIC_WHATSAPP_DEFAULT_MESSAGE",
-      "Hi, I'd like to know more about luxury residences in Ahmedabad."
-    );
+    return process.env.NEXT_PUBLIC_WHATSAPP_DEFAULT_MESSAGE ??
+      "Hi, I'd like to know more about luxury residences in Ahmedabad.";
   },
   // Set to "true" when the full site is ready to go live; gates the coming-soon page
-  get SITE_LIVE() { return optionalEnv("NEXT_PUBLIC_SITE_LIVE", "false") === "true"; },
+  get SITE_LIVE() { return (process.env.NEXT_PUBLIC_SITE_LIVE ?? "false") === "true"; },
 } as const;
 
 // ─── Server-only env (never included in client bundles) ───────────────────
