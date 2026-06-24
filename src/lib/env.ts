@@ -28,7 +28,7 @@ export const env = {
   get SANITY_DATASET() { return process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production"; },
   get SUPABASE_URL() { return requirePublicEnv("NEXT_PUBLIC_SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL); },
   get SUPABASE_ANON_KEY() { return requirePublicEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY); },
-  get SITE_URL() { return process.env.NEXT_PUBLIC_SITE_URL ?? "https://pikorua.in"; },
+  get SITE_URL() { return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pikorua.in"; },
   get GTM_ID() { return process.env.NEXT_PUBLIC_GTM_ID ?? ""; },
   get GA4_MEASUREMENT_ID() { return process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? ""; },
   // WhatsApp contact — public so client components can build wa.me links

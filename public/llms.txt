@@ -4,41 +4,41 @@ PIKORUA Realty is a private luxury real estate advisory based in Ahmedabad, Indi
 
 ## Primary public pages
 
-- Home: https://pikorua.in/
-- Properties collection: https://pikorua.in/properties
-- About: https://pikorua.in/about
-- Testimonials: https://pikorua.in/testimonials
-- Contact: https://pikorua.in/contact
-- Blog and market insights: https://pikorua.in/blog
+- Home: https://www.pikorua.in/
+- Properties collection: https://www.pikorua.in/properties
+- About: https://www.pikorua.in/about
+- Testimonials: https://www.pikorua.in/testimonials
+- Contact: https://www.pikorua.in/contact
+- Blog and market insights: https://www.pikorua.in/blog
 
 ## Location guides
 
-- Sindhu Bhavan Road luxury properties: https://pikorua.in/locations/sindhu-bhavan
-- Iskon-Ambli Road luxury properties: https://pikorua.in/locations/iskon-ambli
-- Thaltej luxury properties: https://pikorua.in/locations/thaltej
-- Shilaj villas and plots: https://pikorua.in/locations/shilaj
-- Vaishno Devi luxury properties: https://pikorua.in/locations/vaishno-devi
-- SG Highway luxury properties: https://pikorua.in/locations/sg-highway
+- Sindhu Bhavan Road luxury properties: https://www.pikorua.in/locations/sindhu-bhavan
+- Iskon-Ambli Road luxury properties: https://www.pikorua.in/locations/iskon-ambli
+- Thaltej luxury properties: https://www.pikorua.in/locations/thaltej
+- Shilaj villas and plots: https://www.pikorua.in/locations/shilaj
+- Vaishno Devi luxury properties: https://www.pikorua.in/locations/vaishno-devi
+- SG Highway luxury properties: https://www.pikorua.in/locations/sg-highway
 
 ## Property-type guides
 
-- Luxury apartments in Ahmedabad: https://pikorua.in/property-types/luxury-apartments-ahmedabad
-- Penthouses and duplex homes in Ahmedabad: https://pikorua.in/property-types/penthouses-duplexes-ahmedabad
-- Villas and bungalows in Ahmedabad: https://pikorua.in/property-types/villas-bungalows-ahmedabad
-- Premium residential plots in Ahmedabad: https://pikorua.in/property-types/residential-plots-ahmedabad
-- Luxury residential investment properties in Ahmedabad: https://pikorua.in/property-types/luxury-residential-investment-ahmedabad
+- Luxury apartments in Ahmedabad: https://www.pikorua.in/property-types/luxury-apartments-ahmedabad
+- Penthouses and duplex homes in Ahmedabad: https://www.pikorua.in/property-types/penthouses-duplexes-ahmedabad
+- Villas and bungalows in Ahmedabad: https://www.pikorua.in/property-types/villas-bungalows-ahmedabad
+- Premium residential plots in Ahmedabad: https://www.pikorua.in/property-types/residential-plots-ahmedabad
+- Luxury residential investment properties in Ahmedabad: https://www.pikorua.in/property-types/luxury-residential-investment-ahmedabad
 
 ## Featured inventory examples
 
-- Ikebana: https://pikorua.in/properties/5-bhk-3300-6300-sindhu-bhavan
-- Maruti 360: https://pikorua.in/properties/4-5-bhk-duplex-5700-7500-iskon-ambli
-- Anamika: https://pikorua.in/properties/4-5-bhk-duplex-3200-10000-sindhu-bhavan
-- Nehru Nagar Project: https://pikorua.in/properties/nehru-nagar-project
-- Vastrapur Project: https://pikorua.in/properties/vastrapur-project
+- Ikebana: https://www.pikorua.in/properties/5-bhk-3300-6300-sindhu-bhavan
+- Maruti 360: https://www.pikorua.in/properties/4-5-bhk-duplex-5700-7500-iskon-ambli
+- Anamika: https://www.pikorua.in/properties/4-5-bhk-duplex-3200-10000-sindhu-bhavan
+- Nehru Nagar Project: https://www.pikorua.in/properties/nehru-nagar-project
+- Vastrapur Project: https://www.pikorua.in/properties/vastrapur-project
 
 ## Contact
 
-For private advisory, use https://pikorua.in/contact.
+For private advisory, use https://www.pikorua.in/contact.
 
 ## Automated access guidance
 

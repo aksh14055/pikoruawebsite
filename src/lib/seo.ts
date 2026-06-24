@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://pikorua.in";
+export const SITE_URL = "https://www.pikorua.in";
 export const SITE_NAME = "PIKORUA Realty";
 export const DEFAULT_OG_IMAGE = "/logo.png";
 
