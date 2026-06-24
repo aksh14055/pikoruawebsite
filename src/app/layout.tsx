@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { Preloader } from "@/components/ui/Preloader";
 import { LeadCapturePopup } from "@/components/ui/LeadCapturePopup";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
 import { env } from "@/lib/env";
@@ -59,46 +60,94 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
+  verification: {
+    google: "google91c2c9a5f53b75d8.html",
+  },
 };
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "@id": `${SITE_URL}#real-estate-agent`,
-  name: SITE_NAME,
-  url: SITE_URL,
-  logo: absoluteUrl("/logo-icon.png"),
-  image: absoluteUrl("/logo-icon.png"),
-  description:
-    "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
-  sameAs: [
-    "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
-    "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      publisher: {
+        "@id": `${SITE_URL}#real-estate-agent`,
+      },
+      inLanguage: "en-IN",
+    },
+    {
+      "@type": ["RealEstateAgent", "LocalBusiness"],
+      "@id": `${SITE_URL}#real-estate-agent`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: absoluteUrl("/logo-icon.png"),
+      image: absoluteUrl("/logo.png"),
+      description:
+        "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
+      sameAs: [
+        "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
+        "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
+        "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
+        "https://youtube.com/@pikorua_realty_official?si=M3r65vxOcgUvdGfi",
+      ],
+      areaServed: {
+        "@type": "City",
+        name: "Ahmedabad",
+        addressRegion: "Gujarat",
+        addressCountry: "IN",
+      },
+      knowsAbout: [
+        "Luxury apartments in Ahmedabad",
+        "Penthouses in Ahmedabad",
+        "Duplex homes in Ahmedabad",
+        "Villas and bungalows in Ahmedabad",
+        "Premium residential plots in Ahmedabad",
+        "NRI property purchase in Gujarat",
+        "Private residential real estate advisory",
+        "Luxury residential investment in Ahmedabad",
+      ],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Iskon-Ambli",
+        addressLocality: "Ahmedabad",
+        addressRegion: "Gujarat",
+        addressCountry: "IN",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: `+${env.WHATSAPP_NUMBER}`,
+        contactType: "sales",
+        areaServed: "IN",
+        availableLanguage: ["en", "hi", "gu"],
+      },
+      makesOffer: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Private luxury property buying advisory",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Discreet seller representation",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "NRI residential property advisory",
+          },
+        },
+      ],
+    },
   ],
-  areaServed: {
-    "@type": "City",
-    name: "Ahmedabad",
-    addressRegion: "Gujarat",
-    addressCountry: "IN",
-  },
-  knowsAbout: [
-    "Luxury apartments in Ahmedabad",
-    "Penthouses in Ahmedabad",
-    "Villas and bungalows in Ahmedabad",
-    "NRI property purchase in Gujarat",
-    "Private residential real estate advisory",
-  ],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ahmedabad",
-    addressRegion: "Gujarat",
-    addressCountry: "IN",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: `+${env.WHATSAPP_NUMBER}`,
-    contactType: "sales",
-  },
 };
 
 export default function RootLayout({
@@ -113,6 +162,7 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
+        <GoogleAnalytics />
         <GoogleTagManager />
         <WebVitalsReporter />
         <script

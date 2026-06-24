@@ -44,7 +44,7 @@ export async function generateStaticParams() {
     console.error("Error fetching slugs for static params:", err);
   }
   const staticSlugs = STATIC_PROPERTIES.map((property) => property.slug);
-  const allSlugs = Array.from(new Set(dbSlugs.length > 0 ? dbSlugs : staticSlugs));
+  const allSlugs = Array.from(new Set([...dbSlugs, ...staticSlugs]));
   return allSlugs.map((slug) => ({ slug }));
 }
 

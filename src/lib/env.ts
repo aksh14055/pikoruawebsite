@@ -25,6 +25,7 @@ export const env = {
   get SUPABASE_ANON_KEY() { return requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"); },
   get SITE_URL() { return optionalEnv("NEXT_PUBLIC_SITE_URL", "https://pikorua.in"); },
   get GTM_ID() { return optionalEnv("NEXT_PUBLIC_GTM_ID"); },
+  get GA4_MEASUREMENT_ID() { return optionalEnv("NEXT_PUBLIC_GA4_MEASUREMENT_ID"); },
   // WhatsApp contact — public so client components can build wa.me links
   get WHATSAPP_NUMBER() { return optionalEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "916354359222"); },
   get WHATSAPP_DEFAULT_MESSAGE() {

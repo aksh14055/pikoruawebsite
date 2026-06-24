@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dateBySlug = new Map(dbSlugsWithDates.map((p) => [p.slug, p.updatedAt]));
   const staticSlugs = STATIC_PROPERTIES.map((p) => p.slug);
-  const propertySlugs = dbSlugsWithDates.length > 0 ? dbSlugsWithDates.map((p) => p.slug) : staticSlugs;
+  const propertySlugs = Array.from(new Set([...dbSlugsWithDates.map((p) => p.slug), ...staticSlugs]));
 
   const propertyRoutes = Array.from(new Set(propertySlugs)).map((slug) => {
     const updatedAt = dateBySlug.get(slug);
