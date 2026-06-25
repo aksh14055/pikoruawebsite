@@ -123,15 +123,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ],
   };
 
+  const combinedBlogSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        ...blogPostingSchema,
+        "@context": undefined,
+      },
+      {
+        ...breadcrumbSchema,
+        "@context": undefined,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogPostingSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(combinedBlogSchema) }}
       />
       <Header alwaysSolid />
       <main id="main-content" className="bg-lux-black text-ivory min-h-screen">

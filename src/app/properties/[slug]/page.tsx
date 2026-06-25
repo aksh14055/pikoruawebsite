@@ -122,16 +122,26 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
     ]
   };
 
+  const combinedPropertySchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        ...listingSchema,
+        "@context": undefined,
+      },
+      {
+        ...breadcrumbSchema,
+        "@context": undefined,
+      },
+    ],
+  };
+
   return (
     <>
       {/* Dynamic JSON-LD Schemas */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(listingSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(combinedPropertySchema) }}
       />
 
       <Header alwaysSolid />

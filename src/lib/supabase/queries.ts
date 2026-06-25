@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabasePublicClient } from "./client";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
 import type { Testimonial, AboutPageContent } from "@/types";
@@ -105,7 +106,7 @@ function mapDbTestimonialToTypes(db: any): Testimonial {
   };
 }
 
-export async function getSupabaseProperties(filters?: {
+export const getSupabaseProperties = cache(async function getSupabaseProperties(filters?: {
   location?: string;
   category?: string;
   onlyActive?: boolean;
@@ -137,9 +138,9 @@ export async function getSupabaseProperties(filters?: {
     console.error("Unhandled error in getSupabaseProperties:", err);
     return [];
   }
-}
+});
 
-export async function getSupabaseFeaturedProperties(): Promise<StaticProperty[]> {
+export const getSupabaseFeaturedProperties = cache(async function getSupabaseFeaturedProperties(): Promise<StaticProperty[]> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -159,9 +160,9 @@ export async function getSupabaseFeaturedProperties(): Promise<StaticProperty[]>
     console.error("Unhandled error in getSupabaseFeaturedProperties:", err);
     return [];
   }
-}
+});
 
-export async function getSupabasePropertyBySlug(slug: string): Promise<StaticProperty | null> {
+export const getSupabasePropertyBySlug = cache(async function getSupabasePropertyBySlug(slug: string): Promise<StaticProperty | null> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -180,9 +181,9 @@ export async function getSupabasePropertyBySlug(slug: string): Promise<StaticPro
     console.error("Unhandled error in getSupabasePropertyBySlug:", err);
     return null;
   }
-}
+});
 
-export async function getSupabaseAllPropertySlugs(): Promise<string[]> {
+export const getSupabaseAllPropertySlugs = cache(async function getSupabaseAllPropertySlugs(): Promise<string[]> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -200,9 +201,9 @@ export async function getSupabaseAllPropertySlugs(): Promise<string[]> {
     console.error("Unhandled error in getSupabaseAllPropertySlugs:", err);
     return [];
   }
-}
+});
 
-export async function getSupabaseAllPropertySlugsWithDates(): Promise<
+export const getSupabaseAllPropertySlugsWithDates = cache(async function getSupabaseAllPropertySlugsWithDates(): Promise<
   { slug: string; updatedAt: string }[]
 > {
   try {
@@ -222,9 +223,9 @@ export async function getSupabaseAllPropertySlugsWithDates(): Promise<
     console.error("Unhandled error in getSupabaseAllPropertySlugsWithDates:", err);
     return [];
   }
-}
+});
 
-export async function getSupabaseFeaturedTestimonials(): Promise<Testimonial[]> {
+export const getSupabaseFeaturedTestimonials = cache(async function getSupabaseFeaturedTestimonials(): Promise<Testimonial[]> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -245,9 +246,9 @@ export async function getSupabaseFeaturedTestimonials(): Promise<Testimonial[]> 
     console.error("Unhandled error in getSupabaseFeaturedTestimonials:", err);
     return [];
   }
-}
+});
 
-export async function getSupabaseAllTestimonials(): Promise<Testimonial[]> {
+export const getSupabaseAllTestimonials = cache(async function getSupabaseAllTestimonials(): Promise<Testimonial[]> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -266,7 +267,7 @@ export async function getSupabaseAllTestimonials(): Promise<Testimonial[]> {
     console.error("Unhandled error in getSupabaseAllTestimonials:", err);
     return [];
   }
-}
+});
 
 function mapDbBlogToBlogPost(db: any): BlogPost {
   return {
@@ -293,7 +294,7 @@ function mapDbBlogToBlogPost(db: any): BlogPost {
   };
 }
 
-export async function getSupabaseBlogs(onlyActive = false): Promise<BlogPost[]> {
+export const getSupabaseBlogs = cache(async function getSupabaseBlogs(onlyActive = false): Promise<BlogPost[]> {
   try {
     const supabase = getSupabasePublicClient();
     let query = supabase.from("blogs").select("*");
@@ -314,9 +315,9 @@ export async function getSupabaseBlogs(onlyActive = false): Promise<BlogPost[]> 
     console.error("Unhandled error in getSupabaseBlogs:", err);
     return [];
   }
-}
+});
 
-export async function getSupabaseBlogBySlug(slug: string): Promise<BlogPost | null> {
+export const getSupabaseBlogBySlug = cache(async function getSupabaseBlogBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -335,9 +336,9 @@ export async function getSupabaseBlogBySlug(slug: string): Promise<BlogPost | nu
     console.error("Unhandled error in getSupabaseBlogBySlug:", err);
     return null;
   }
-}
+});
 
-export async function getSupabaseAboutPageContent(): Promise<AboutPageContent | null> {
+export const getSupabaseAboutPageContent = cache(async function getSupabaseAboutPageContent(): Promise<AboutPageContent | null> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -362,9 +363,9 @@ export async function getSupabaseAboutPageContent(): Promise<AboutPageContent | 
     console.error("Unhandled error in getSupabaseAboutPageContent:", err);
     return null;
   }
-}
+});
 
-export async function getPageSeoData(id: string): Promise<{ seoTitle?: string; seoDescription?: string } | null> {
+export const getPageSeoData = cache(async function getPageSeoData(id: string): Promise<{ seoTitle?: string; seoDescription?: string } | null> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -388,9 +389,9 @@ export async function getPageSeoData(id: string): Promise<{ seoTitle?: string; s
     console.error(`Unhandled error in getPageSeoData for ${id}:`, err);
     return null;
   }
-}
+});
 
-export async function getSupabaseHomePageContent(): Promise<any | null> {
+export const getSupabaseHomePageContent = cache(async function getSupabaseHomePageContent(): Promise<any | null> {
   try {
     const supabase = getSupabasePublicClient();
     const { data, error } = await supabase
@@ -409,4 +410,4 @@ export async function getSupabaseHomePageContent(): Promise<any | null> {
     console.error("Unhandled error in getSupabaseHomePageContent:", err);
     return null;
   }
-}
+});
