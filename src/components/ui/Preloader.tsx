@@ -9,21 +9,33 @@ export function Preloader() {
   const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    // Wait for the window load event or complete state
+    let dismissTimer: ReturnType<typeof setTimeout>;
+
+    // Hard cap: always dismiss after 1800 ms so Speed Index isn't held hostage
+    // by slow CDN images or third-party scripts delaying window.onload.
+    // 1800 ms gives the 1.3 s progress animation time to complete while still
+    // ensuring visual content is revealed well before the LCP window closes.
+    const maxTimer = setTimeout(() => setLoading(false), 1800);
+
     const handleLoad = () => {
-      // Small timeout to allow the premium load animation to complete
-      const timer = setTimeout(() => {
+      // Small buffer after load for the animation to complete gracefully
+      dismissTimer = setTimeout(() => {
         setLoading(false);
+        clearTimeout(maxTimer);
       }, 400);
-      return () => clearTimeout(timer);
     };
 
     if (document.readyState === "complete") {
       handleLoad();
     } else {
       window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
     }
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+      clearTimeout(dismissTimer);
+      clearTimeout(maxTimer);
+    };
   }, []);
 
   // Prevent background scrolling while preloading

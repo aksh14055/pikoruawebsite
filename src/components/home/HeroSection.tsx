@@ -115,11 +115,10 @@ export function HeroSection({
            can preload it immediately, driving LCP from ~4.7s → ~1.8s. */}
       <Image
         src={posterUrl ?? MEDIA.videos.heroPoster}
-        alt=""
+        alt="Luxury residential property in Ahmedabad"
         fill
         priority
-        fetchPriority="high"
-        quality={60}
+        quality={40}
         sizes="100vw"
         className={cn(
           "object-cover object-center brightness-75",
