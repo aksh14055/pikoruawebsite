@@ -66,6 +66,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "The corridor has luxury apartments, penthouses, duplex homes, select villas, and private bungalow estates, usually suited to HNI and NRI residential buyers.",
       },
+      {
+        question: "Why is Sindhu Bhavan Road considered a prime investment corridor for HNIs?",
+        answer:
+          "Sindhu Bhavan Road commands premium pricing due to its strategic position, high commercial activity, and prestige. It represents a defensive real estate asset class in Ahmedabad, offering solid capital appreciation and stable rental yields from corporate executives.",
+      },
+      {
+        question: "Can NRIs buy luxury properties on Sindhu Bhavan Road and repatriate funds?",
+        answer:
+          "Yes. Under FEMA regulations, NRIs can buy residential properties using inward remittances. Capital gains repatriation is permitted for up to two residential properties, making Sindhu Bhavan Road a secure wealth preservation destination.",
+      },
     ],
     relatedSlugs: ["iskon-ambli", "thaltej", "villas-bungalows-ahmedabad"],
   },
@@ -103,6 +113,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         question: "Are there ready-to-move luxury homes on Iskon-Ambli Road?",
         answer:
           "Availability changes quickly. PIKORUA Realty maintains a private shortlist that may include ready, near-possession, and under-construction residences depending on buyer fit.",
+      },
+      {
+        question: "What is the long-term investment outlook for Iskon-Ambli Road?",
+        answer:
+          "Iskon-Ambli is Ahmedabad's Billionaires' Row with high demand for premium 4 and 5 BHK sky mansions. Land constraints along this main corridor insulate property values, ensuring steady capital appreciation and making it a preferred choice for wealth compounding.",
+      },
+      {
+        question: "How can an NRI manage property acquisition on Iskon-Ambli Road remotely?",
+        answer:
+          "NRIs can seamlessly execute transactions remotely via Power of Attorney (POA) for registration. At PIKORUA Realty, we handle the complete process—from video-walkthroughs and banking setup to legal title verification and post-handover management.",
       },
     ],
     relatedSlugs: ["sindhu-bhavan", "thaltej", "penthouses-duplexes-ahmedabad"],
@@ -142,6 +162,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "Thaltej suits families who want western Ahmedabad connectivity, quieter residential surroundings, and access to large-format apartments or duplex residences.",
       },
+      {
+        question: "How does Thaltej perform as a real estate investment destination?",
+        answer:
+          "Thaltej is a mature, low-risk investment destination. Unlike newer corridors, it has established social infrastructure and limited new launches, which protects values during market cycles and offers stable rental returns.",
+      },
+      {
+        question: "Are there specific tax benefits or rules for NRIs investing in Thaltej?",
+        answer:
+          "NRIs pay standard stamp duty and registration fees, and can avail of tax benefits on home loans under Section 24 and 80C. When buying from a resident Indian, tax withholding (TDS) under Section 195 must be carefully calculated based on capital gains.",
+      },
     ],
     relatedSlugs: ["iskon-ambli", "shilaj", "luxury-apartments-ahmedabad"],
   },
@@ -179,6 +209,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         question: "What should buyers check before buying land in Shilaj?",
         answer:
           "Buyers should review title, zoning, approach road, development permissions, utilities, and neighborhood maturity. PIKORUA Realty handles this diligence during private advisory.",
+      },
+      {
+        question: "Is buying a residential plot in Shilaj a good investment for NRIs?",
+        answer:
+          "Yes. Plots in Shilaj offer substantial long-term land-appreciation value. NRIs can freely purchase residential plots, but they should ensure the land is non-agricultural and has clear zoning permissions before investing.",
+      },
+      {
+        question: "What is the growth potential for luxury villas in Shilaj?",
+        answer:
+          "Shilaj has emerged as the premier villa and bungalow suburb of Western Ahmedabad. With infrastructure extensions and proximity to SG Highway, villa developments here represent high capital appreciation potential.",
       },
     ],
     relatedSlugs: ["thaltej", "vaishno-devi", "residential-plots-ahmedabad"],
@@ -218,6 +258,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "The area includes villas, bungalows, premium plots, and selected larger apartment formats, with availability varying by project stage and seller discretion.",
       },
+      {
+        question: "Why is the Vaishno Devi corridor attractive for NRI real estate buyers?",
+        answer:
+          "The area offers gated villa communities and premium plots at a lower entry cost compared to central western corridors. This provides high arbitrage potential and long-term capital gains as SG Highway infrastructure matures.",
+      },
+      {
+        question: "What are the repatriation rules for NRIs selling property in the Vaishno Devi area?",
+        answer:
+          "Upon sale, NRIs can repatriate the sale proceeds of up to two residential properties back to their country of residence, subject to tax clearance and submission of Form 15CA/15CB.",
+      },
     ],
     relatedSlugs: ["shilaj", "sg-highway", "residential-plots-ahmedabad"],
   },
@@ -255,6 +305,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         question: "Which areas should I compare with SG Highway?",
         answer:
           "Common comparisons include Thaltej, Iskon-Ambli, Shilaj, Sindhu Bhavan Road, and Vaishno Devi, depending on budget and property type.",
+      },
+      {
+        question: "How does the commercial growth along SG Highway impact residential investments?",
+        answer:
+          "The expansion of corporate offices and tech parks along SG Highway drives strong rental demand for luxury residences. Investing just off the highway provides premium rental yields and high liquidity.",
+      },
+      {
+        question: "What compliance steps must NRIs follow for property purchases off SG Highway?",
+        answer:
+          "NRIs must route all transactions through NRE/NRO accounts. No special permission is required from the RBI, but filing proper returns and ensuring clear developer-buyer agreements (RERA-aligned) is essential.",
       },
     ],
     relatedSlugs: ["thaltej", "iskon-ambli", "luxury-residential-investment-ahmedabad"],

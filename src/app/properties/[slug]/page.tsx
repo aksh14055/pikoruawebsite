@@ -12,25 +12,10 @@ import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
 import type { ResidentialCategory } from "@/types";
 import { MapPin, ArrowLeft, ShieldCheck } from "lucide-react";
 import { renderFormattedText } from "@/lib/utils";
-import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, createMetadata, generatePropertySchema, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
-const LOCATION_COORDINATES: Record<string, { latitude: string; longitude: string }> = {
-  "iskon-ambli": { latitude: "23.0246", longitude: "72.5074" },
-  "sindhu-bhavan": { latitude: "23.0392", longitude: "72.5071" },
-  "thaltej": { latitude: "23.0500", longitude: "72.5167" },
-  "shilaj": { latitude: "23.0395", longitude: "72.4764" },
-  "vaishno-devi": { latitude: "23.1250", longitude: "72.5414" },
-  "sg-highway": { latitude: "23.0287", longitude: "72.5068" },
-};
-
-const DEFAULT_COORDINATES = { latitude: "23.0225", longitude: "72.5714" }; // Ahmedabad center
-
-function getResidenceSchemaType(category: ResidentialCategory): string {
-  if (category === "plot") return "Landform";
-  if (category === "villa" || category === "bungalow") return "SingleFamilyResidence";
-  if (category === "apartment" || category === "penthouse" || category === "duplex") return "Apartment";
-  return "Residence";
-}
+// Note: LOCATION_COORDINATES and getResidenceSchemaType have been moved to @/lib/seo
+// and are used via generatePropertySchema(). This keeps schema logic centralised.
 
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
@@ -83,54 +68,33 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
   const categoryLabel = RESIDENTIAL_CATEGORY_LABELS[property.category] || "Luxury Residence";
   const statusLabel = PROPERTY_STATUS_LABELS[property.status];
   const allImages = property.images && property.images.length > 0 ? property.images.filter(Boolean) : [property.coverImage].filter(Boolean);
-
-  const coords = LOCATION_COORDINATES[property.location] || DEFAULT_COORDINATES;
   const priceDisplay = property.priceOnRequest ? "Price on Request" : (property.price || "Price on Request");
-  const canonicalUrl = absoluteUrl(`/properties/${property.slug}`);
-  const propertyName = `${property.configuration} · ${property.sizeRange} in ${property.locationLabel}`;
 
-  const listingSchema = {
-    "@context": "https://schema.org",
-    "@type": "RealEstateListing",
-    "@id": `${canonicalUrl}#listing`,
-    url: canonicalUrl,
-    name: propertyName,
-    description: property.description?.[0] || "",
-    image: allImages.filter(Boolean).map((image) => absoluteUrl(image)),
-    about: {
-      "@type": getResidenceSchemaType(property.category),
-      "@id": `${canonicalUrl}#residence`,
-      name: propertyName,
-      description: property.description?.[0] || "",
-      image: property.coverImage ? absoluteUrl(property.coverImage) : undefined,
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Ahmedabad",
-        addressRegion: "Gujarat",
-        addressCountry: "IN",
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      },
-    },
-    offers: {
-      "@type": "Offer",
-      availability:
-        property.status === "ready-to-move"
-          ? "https://schema.org/InStock"
-          : "https://schema.org/LimitedAvailability",
-      priceSpecification: {
-        "@type": "PriceSpecification",
-        priceCurrency: "INR",
-        description: priceDisplay,
-      },
-      seller: {
-        "@id": `${SITE_URL}#real-estate-agent`,
-      },
-    },
-  };
+  const canonicalUrl = absoluteUrl(`/properties/${property.slug}`);
+
+  // Rich RealEstateListing schema: includes numberOfRooms, floorSize,
+  // amenityFeature[], GeoCoordinates, and a typed Residence entity.
+  // Centralised in @/lib/seo so every property page emits consistent structured data.
+  const listingSchema = generatePropertySchema({
+    slug: property.slug,
+    name: property.name,
+    category: property.category,
+    location: property.location,
+    locationLabel: property.locationLabel,
+    configuration: property.configuration,
+    sizeRange: property.sizeRange,
+    status: property.status,
+    description: property.description,
+    highlights: property.highlights,
+    builtUpArea: property.builtUpArea,
+    plotArea: property.plotArea,
+    floor: property.floor,
+    amenitiesSummary: property.amenitiesSummary,
+    price: property.price,
+    priceOnRequest: property.priceOnRequest,
+    coverImage: property.coverImage,
+    images: allImages,
+  });
 
   // Schema: BreadcrumbList
   const breadcrumbSchema = {

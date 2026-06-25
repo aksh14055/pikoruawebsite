@@ -161,6 +161,14 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${playfair.variable} h-full`}
     >
+      <head>
+        {/* Eliminate cold TCP/TLS handshake for Supabase CDN (hero video, property images, founder avatar) */}
+        <link rel="preconnect" href="https://rwtueiruyktjzvsgdcoh.supabase.co" crossOrigin="anonymous" />
+        {/* DNS prefetch for third-party analytics scripts — avoids DNS lookup latency on first tag fire */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+      </head>
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
         <GoogleAnalytics />
         <GoogleTagManager />

@@ -18,6 +18,7 @@ export interface BlogPost {
   seoTitle?: string;
   seoDescription?: string;
   isActive?: boolean;
+  updatedAt?: string;
   /** Slugs of related /locations or /property-types landing pages to cross-link from this post */
   relatedLandingSlugs?: string[];
 }

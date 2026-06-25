@@ -65,6 +65,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     : getRelatedLandingPagesForText(`${post.title} ${post.excerpt} ${post.content.join(" ")}`);
 
   const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
+  const wordCount = post.content.join(" ").split(/\s+/).filter(Boolean).length;
+  const dateModified = post.updatedAt || post.publishedAt;
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -73,9 +76,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     description: post.excerpt,
     image: absoluteUrl(post.coverImage),
     datePublished: post.publishedAt,
+    dateModified: dateModified,
+    wordCount: wordCount,
     author: {
       "@type": "Person",
       name: post.author.name,
+      worksFor: {
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}#real-estate-agent`,
+        name: SITE_NAME,
+      },
     },
     publisher: {
       "@type": "Organization",

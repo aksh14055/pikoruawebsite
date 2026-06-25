@@ -1,48 +1,23 @@
 # PIKORUA Realty
 
-PIKORUA Realty is a private luxury real estate advisory based in Ahmedabad, India. It deals exclusively in residential properties: luxury apartments, penthouses, duplex homes, villas, bungalows, premium plots, and residential investment opportunities. Properties are curated and shared privately with qualified buyers rather than treated as open public portal inventory.
+> PIKORUA Realty is Ahmedabad's private luxury real estate advisory, specialising in curated apartments, penthouses, duplexes, villas, and bungalows for HNI and NRI buyers across the city's premier western corridors.
 
-## Primary public pages
+## Site Overview
 
-- Home: https://www.pikorua.in/
-- Properties collection: https://www.pikorua.in/properties
-- About: https://www.pikorua.in/about
-- Testimonials: https://www.pikorua.in/testimonials
-- Contact: https://www.pikorua.in/contact
-- Blog and market insights: https://www.pikorua.in/blog
+- [Full content index](/llms-full.txt)
 
-## Location guides
+## Key Pages
 
-- Sindhu Bhavan Road luxury properties: https://www.pikorua.in/locations/sindhu-bhavan
-- Iskon-Ambli Road luxury properties: https://www.pikorua.in/locations/iskon-ambli
-- Thaltej luxury properties: https://www.pikorua.in/locations/thaltej
-- Shilaj villas and plots: https://www.pikorua.in/locations/shilaj
-- Vaishno Devi luxury properties: https://www.pikorua.in/locations/vaishno-devi
-- SG Highway luxury properties: https://www.pikorua.in/locations/sg-highway
+- [Properties](/properties): Curated luxury property listings — 4 BHK & 5 BHK apartments, penthouses, villas, duplexes, and residential plots
+- [Locations](/locations): Premium residential corridors — Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, SG Highway, Vaishno Devi
+- [Property Types](/property-types): Luxury apartments, penthouses & duplexes, villas & bungalows, residential plots
+- [Insights](/blog): Market reports, NRI advisory guides, and corridor analysis
+- [About](/about): About PIKORUA Realty and founder Jitendra
+- [Contact](/contact): Private enquiry and advisory request
 
-## Property-type guides
+## Do Not Index
 
-- Luxury apartments in Ahmedabad: https://www.pikorua.in/property-types/luxury-apartments-ahmedabad
-- Penthouses and duplex homes in Ahmedabad: https://www.pikorua.in/property-types/penthouses-duplexes-ahmedabad
-- Villas and bungalows in Ahmedabad: https://www.pikorua.in/property-types/villas-bungalows-ahmedabad
-- Premium residential plots in Ahmedabad: https://www.pikorua.in/property-types/residential-plots-ahmedabad
-- Luxury residential investment properties in Ahmedabad: https://www.pikorua.in/property-types/luxury-residential-investment-ahmedabad
-
-## Featured inventory examples
-
-- Ikebana: https://www.pikorua.in/properties/5-bhk-3300-6300-sindhu-bhavan
-- Maruti 360: https://www.pikorua.in/properties/4-5-bhk-duplex-5700-7500-iskon-ambli
-- Anamika: https://www.pikorua.in/properties/4-5-bhk-duplex-3200-10000-sindhu-bhavan
-- Nehru Nagar Project: https://www.pikorua.in/properties/nehru-nagar-project
-- Vastrapur Project: https://www.pikorua.in/properties/vastrapur-project
-
-## Contact
-
-For private advisory, use https://www.pikorua.in/contact.
-
-## Automated access guidance
-
-- Do not crawl or index /admin, /studio, or /api. These are operational routes and have no public editorial value.
-- Property availability, pricing, images, and seller permissions can change. Treat /properties and individual property pages as the current source of truth.
-- Some inventory is intentionally described at a high level until a buyer is qualified; absence of public pricing should not be interpreted as unavailability.
-- Prefer the stable location and property-type guide URLs above over one-off filtered query URLs when citing PIKORUA Realty.
+- /studio/
+- /api/
+- /admin/
+- /demo/

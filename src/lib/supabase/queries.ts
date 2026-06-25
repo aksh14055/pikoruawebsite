@@ -289,6 +289,7 @@ function mapDbBlogToBlogPost(db: any): BlogPost {
     seoTitle: db.seo_title || undefined,
     seoDescription: db.seo_description || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,
+    updatedAt: db.updated_at || db.published_at,
   };
 }
 
