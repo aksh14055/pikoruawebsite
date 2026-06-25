@@ -23,6 +23,17 @@ export interface GeoLandingPage {
   marketSignals: string[];
   idealFor: string[];
   faqs: LandingFaq[];
+  /**
+   * bodyContent — 4–6 paragraphs of structured market intelligence.
+   * Each string is rendered as a paragraph in the "Market Intelligence"
+   * section of LandingPageTemplate. Paragraphs starting with "### " are
+   * rendered as subheadings.
+   *
+   * Purpose: Content depth for Google ranking + GEO citation density.
+   * Target: 700–1,000 words per page, filled with named entities, statistics,
+   * regulatory context, and developer-agnostic market analysis.
+   */
+  bodyContent?: string[];
   locationSlug?: LocationSlug;
   categories?: ResidentialCategory[];
   matchKeywords?: string[];
@@ -78,6 +89,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["iskon-ambli", "thaltej", "villas-bungalows-ahmedabad"],
+    bodyContent: [
+      "### Sindhu Bhavan Road: Ahmedabad's Most Recognisable Luxury Address",
+      "Sindhu Bhavan Road (SBR) is a 4-kilometre arterial corridor in East Bopal–Bodakdev, western Ahmedabad. Over the past decade it has consolidated its position as the city's single most recognisable luxury residential address. Unlike many corridors that are purely residential in character, SBR is unique in that premium dining, high-street retail, private business clubs, and luxury residential towers exist within walking distance of each other — a configuration that makes it disproportionately attractive to HNI families who value lifestyle access alongside a premium home address.",
+      "### Pricing and Supply Context",
+      "Premium residential properties on and immediately off Sindhu Bhavan Road trade in the range of ₹8,000–₹15,000 per sq.ft. depending on specification, floor level, and building quality. Large-format 5 BHK apartments of 4,000–6,000 sq.ft. and penthouses with private terraces represent the upper band. Supply at this specification is deliberately limited — the corridor's commercial intensity means available residential land is scarce, and the development cycle for any new luxury tower on SBR takes 4–6 years from land acquisition to possession. This supply compression structurally supports capital values during market cycles.",
+      "### Buyer Profile and What Drives Demand",
+      "The typical SBR luxury buyer is either an Ahmedabad-based HNI family upgrading from a 3 BHK in Satellite or Bodakdev, or an NRI buyer (particularly from the US, UK, UAE, and Australia) seeking a prestigious Gujarat address with high resale recognition. NRI buyers are drawn to SBR specifically because the corridor's name travels — it is the address that other Gujarati NRIs recognise without explanation. This cultural recognition factor sustains demand from the NRI community even during periods when broader Indian real estate sentiment is cautious. For seller-side mandates, SBR properties attract the shortest buyer qualification timelines of any western Ahmedabad corridor, as qualified buyers actively maintain shortlists of available homes on this road.",
+      "### Infrastructure and Livability",
+      "The corridor benefits from proximity to Ahmedabad's best private schools, multi-specialty hospitals, and premium social clubs. Key points of reference include the business district on CG Road (approximately 8 minutes drive), the central SG Highway interchange (5 minutes), and the Sardar Vallabhbhai Patel International Airport (approximately 25 minutes). The recent completion of the BRTS Bopal-Bhikhajibama route has further improved public connectivity. For families concerned with school catchment, the corridor sits within easy reach of several top-ranked CBSE and IB schools in Bodakdev and Satellite.",
+      "### NRI Acquisition Considerations",
+      "NRIs buying on Sindhu Bhavan Road should be aware that the corridor's most exclusive inventory — particularly bungalow estates and low-density tower penthouses — is rarely listed publicly. Sellers prefer controlled introduction through trusted advisories to preserve privacy and protect valuation. For buyers operating under Power of Attorney and routing funds through NRE/NRO accounts, transactions on SBR are structurally clean because the primary inventory is RERA-compliant new construction or resale from verified HNI owners, with clear title chains and minimal dispute history.",
+    ],
+
   },
   {
     kind: "location",
@@ -126,6 +150,18 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["sindhu-bhavan", "thaltej", "penthouses-duplexes-ahmedabad"],
+    bodyContent: [
+      "### Iskon-Ambli Road: Ahmedabad's Billionaires' Row",
+      "Iskon-Ambli Road, anchored by the ISKCON Temple at one end and extending towards Ambli Circle, is the undisputed pinnacle of Ahmedabad's luxury residential market. Its status derives from a unique combination of structural factors: absolute land scarcity on the main road, the presence of Ahmedabad University within the corridor, premium social infrastructure within walking distance, and a decade-long track record of being the address of choice for Gujarat's most accomplished industrialists, entrepreneurs, and business families.",
+      "### Pricing: ₹11,000 to ₹15,000 per sq.ft.",
+      "Average transactional pricing for premium residential floors on Iskon-Ambli Road currently ranges from ₹11,000 to ₹15,000 per sq.ft., with signature penthouses and private sky mansions commanding premiums beyond this band. This represents a near-tripling of values from 2016 pricing of ₹5,500 per sq.ft. — a compounded appreciation rate driven by demand scarcity, not speculative fever. Under-construction 5 BHK apartments in new towers routinely attract pre-launch interest from existing corridor residents upgrading within the same road.",
+      "### What the Corridor Offers",
+      "The luxury inventory on Iskon-Ambli is dominated by 4 BHK and 5 BHK large-format apartments of 2,000–7,000 sq.ft., in low-density towers of 20–40 units. The best projects feature private lift lobbies, fewer than 4 apartments per floor, wrap-around sundecks, and clubhouses with sky-level pools. Bungalow estates also exist on the arterial roads branching off the main corridor, offering plot sizes of 2,000–5,000 sq.yd. for buyers who prefer horizontal living. These bungalow opportunities rarely reach public markets.",
+      "### NRI Demand Dynamics",
+      "Iskon-Ambli is among the top three corridors across India for NRI buyer inquiries in the luxury segment (alongside Juhu, Mumbai and Jubilee Hills, Hyderabad). Gujarati NRIs based in the US (primarily New Jersey, California), UK (Leicester, London), UAE (Dubai, Abu Dhabi), and Canada (Toronto, Vancouver) maintain active interest in this corridor. Key drivers include cultural proximity to the ISKCON community, the corridor's name recognition across the Gujarati diaspora, and strong exit liquidity from a deep local buyer pool when resale arises.",
+      "### Investment Thesis",
+      "The investment case for Iskon-Ambli is structurally simple: new residential land on the main road is effectively exhausted. Any future towers must come from redevelopment or the few remaining plots in adjacent streets, which face longer planning timelines and higher base costs. This supply ceiling means that well-specified, low-density apartments and penthouses on the main road corridor will continue to appreciate above the Ahmedabad city average, making them a natural choice for HNIs who want a defensive residential asset with strong rental yield potential (₹60,000–₹1,50,000 per month for furnished premium floors) alongside long-term capital compounding.",
+    ],
   },
   {
     kind: "location",
@@ -174,6 +210,18 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["iskon-ambli", "shilaj", "luxury-apartments-ahmedabad"],
+    bodyContent: [
+      "### Thaltej: Quiet Prestige in Western Ahmedabad",
+      "Thaltej is a mature, established luxury residential pocket in western Ahmedabad that is often described as the 'quieter alternative' to the more commercially active Sindhu Bhavan and Iskon-Ambli corridors. This characterisation undersells the corridor's strength. Thaltej benefits from direct access to the SG Highway interchange, proximity to the Thaltej Metro Station (Ahmedabad Metro Phase II), and a network of established residential societies with deep community infrastructure.",
+      "### Pricing and Property Formats",
+      "Residential pricing in Thaltej ranges from ₹6,500–₹12,000 per sq.ft. for premium apartments and duplexes depending on specification and building quality. Large duplex homes of 3,000–5,000 sq.ft. are particularly popular in this corridor — buyers value the ability to have clearly separated family and guest zones across two levels, which the duplex format provides more naturally than a single-floor apartment. Penthouse supply is limited but present, and represents the higher end of the pricing band. Villa and bungalow options exist on the streets branching off the main road.",
+      "### Infrastructure and Connectivity",
+      "The Thaltej Metro Station (part of Ahmedabad Metro's east-west corridor) provides direct rail connectivity to the GIFT City corridor and Gandhinagar, making Thaltej a genuine option for professionals who need access across the Ahmedabad metropolitan region. The GIFT City Special Economic Zone, approximately 20 minutes away, is a growing employer of senior professionals and HNI-profile executives — a segment that is increasingly evaluating Thaltej as a base. SG Highway's commercial belt (Prahlad Nagar Corporate Road, Prahladnagar Garden area) is within 10 minutes.",
+      "### Buyer Profile",
+      "Thaltej attracts two distinct buyer types: first, families with school-age children who need access to the strong school belt in Bopal, Ghuma, and Science City Road; second, buyers who are comparing Thaltej against Shilaj and Iskon-Ambli and are drawn to Thaltej's better connectivity-to-density balance. The corridor is generally less expensive than Iskon-Ambli for equivalent square footage, which makes it the natural choice for buyers who want western Ahmedabad luxury positioning without the Iskon-Ambli price premium.",
+      "### Investment Outlook",
+      "Thaltej is a low-volatility residential investment. The combination of metro access, SG Highway connectivity, established social infrastructure, and limited new supply on prime plots creates a stable appreciation environment. Rental yields for furnished 4 BHK apartments in well-maintained towers range from ₹45,000–₹90,000 per month, with demand primarily from senior professionals, CXOs, and expat consultants working in the western Ahmedabad corporate belt.",
+    ],
   },
   {
     kind: "location",
@@ -222,6 +270,18 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["thaltej", "vaishno-devi", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Shilaj: Western Ahmedabad's Premier Villa and Land Corridor",
+      "Shilaj has emerged over the past eight years as the primary destination for buyers who want land, privacy, and independence — but do not want to sacrifice western Ahmedabad's connectivity and lifestyle ecosystem. Located on the Bopal-Ambli Road belt, Shilaj sits between the established residential fabric of Thaltej and the emerging growth corridors of Ghuma and Sanand Road. This positioning makes it uniquely attractive for families who want a bungalow lifestyle without committing to the city's outer periphery.",
+      "### Pricing and What the Market Offers",
+      "Plotted land in Shilaj trades at ₹6,000–₹12,000 per sq.yd. depending on access, society quality, and plot size. Finished bungalow estates on 400–1,000 sq.yd. plots trade from ₹3.5 Crore to ₹10 Crore depending on build quality and configuration. Villa communities with managed security, shared amenities, and common landscaping represent the upper end of the market. Ready bungalows are rare and tend to transact quickly when correctly priced — most inventory is available only through private advisory networks, not public portals.",
+      "### What to Check Before Buying in Shilaj",
+      "The diligence requirements for Shilaj purchases are more intensive than for apartment transactions. Buyers must verify: (a) that the land is classified as non-agricultural (NA) and has correct residential zoning under the Ahmedabad Urban Development Authority (AUDA) town planning scheme; (b) that approach road width meets minimum standards for clear vehicular access; (c) that utilities (water, electricity, sewage) are connected or have a clear connection pathway; and (d) that any society maintenance structure has a functional committee and clear charge schedule. PIKORUA Realty coordinates all diligence through empanelled property lawyers and surveyors.",
+      "### NRI Suitability",
+      "Shilaj is particularly well-suited for NRIs who intend to build a custom private residence in Ahmedabad over a 3–7 year horizon. Purchasing a residential plot under FEMA is straightforward (general permission, no RBI approval needed) and allows the NRI to control construction phasing, design brief, and future use — whether as a family home, seasonal residence, or long-term rental asset. Land parcels in Shilaj have historically appreciated at 12–18% CAGR over 10-year windows, making them among the strongest land-backed investments in Gujarat.",
+      "### Connectivity from Shilaj",
+      "Shilaj is approximately 6 km from the SG Highway interchange and 8 km from Iskon-Ambli Road. The corridor is served by the BRTS Bopal route, with the proposed Ghuma-Science City metro extension expected to further improve connectivity by 2028. Sardar Vallabhbhai Patel International Airport is approximately 30 minutes by car, making Shilaj practical for frequent business travellers despite its low-density, village-adjacent character.",
+    ],
   },
   {
     kind: "location",
@@ -270,6 +330,18 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["shilaj", "sg-highway", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Vaishno Devi: Western Ahmedabad's Growth Corridor",
+      "The Vaishno Devi circle and its surrounding residential belt represent Ahmedabad's most active growth zone for villa communities, gated plotted developments, and large-format independent homes. Located on the SP Ring Road corridor in the north-western quadrant of Ahmedabad, this pocket has benefited significantly from the Ring Road's completion and the resulting expansion of accessible land north of the established SG Highway belt. The corridor takes its name from the Vaishno Devi temple circle — a recognised landmark at the intersection of SP Ring Road and the Ahmedabad-Gandhinagar highway.",
+      "### Pricing Relative to Central Corridors",
+      "The Vaishno Devi corridor offers a meaningful entry-price advantage relative to Sindhu Bhavan Road and Iskon-Ambli. Residential plots trade at ₹4,500–₹8,000 per sq.yd., and finished villa residences in gated communities are available at ₹2.5 Crore to ₹7 Crore — making it the most accessible large-land destination in western Ahmedabad for HNIs who are beginning their Ahmedabad property journey or want to diversify into land-backed assets. The arbitrage potential relative to the established corridors is among the highest in the city.",
+      "### Infrastructure Driving Growth",
+      "The SP Ring Road expansion and the improved connectivity to Gandhinagar (15 km, approximately 20 minutes drive) have materially changed Vaishno Devi's attractiveness. GIFT City — India's first operational IFSC (International Financial Services Centre) — is approximately 25 minutes from the Vaishno Devi belt, creating genuine demand from GIFT City professionals seeking larger homes in a quieter environment. The planned BRTS extension and the proposed metro connectivity to Science City Road are additional medium-term catalysts.",
+      "### What to Verify in This Corridor",
+      "Vaishno Devi's growth story requires more careful micro-location evaluation than mature corridors. Key diligence points: (a) SP Ring Road-facing plots versus roads set back from the highway — the distinction significantly affects both livability and resale; (b) AUDA versus AMC zoning for any given plot, which affects permissible FSI and development type; (c) society completion and utility connection status for gated villa projects. PIKORUA Realty's diligence process covers all three before any introduction is made to buyers.",
+      "### NRI Perspective",
+      "For NRIs evaluating Ahmedabad as a future home base, Vaishno Devi offers the best value for a custom bungalow or villa community home at a price point below ₹5 Crore. The corridor's long-term capital appreciation is expected to outperform as GIFT City and the Ring Road catchment matures, making early entry here a structurally sound long-term decision for NRIs with a 5–10 year horizon.",
+    ],
   },
   {
     kind: "location",
@@ -318,6 +390,18 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["thaltej", "iskon-ambli", "luxury-residential-investment-ahmedabad"],
+    bodyContent: [
+      "### SG Highway: Ahmedabad's Connectivity Spine",
+      "The Sarkhej–Gandhinagar Highway (SG Highway) is a 30-kilometre arterial expressway that functions as the backbone of western Ahmedabad's residential and commercial geography. It links Sarkhej in the south to Gandhinagar in the north, passing through the primary luxury residential belt — Thaltej, Iskon-Ambli, Science City, Prahlad Nagar, and the GIFT City corridor. For real estate purposes, SG Highway is less a destination and more a reference axis: the corridors that sit along it, or branch off it, represent Ahmedabad's premium residential real estate market.",
+      "### Why Buyers Search for 'SG Highway' Properties",
+      "The search term 'luxury property near SG Highway Ahmedabad' is one of the highest-volume real estate queries in the city — particularly from NRI buyers who know the highway as a landmark but need advisory on which micro-pockets actually offer premium living. The honest answer: the best residential properties are not on the highway itself (too much traffic noise and commercial density), but in the quieter residential streets that branch off it — Thaltej, Iskon-Ambli Road, Sindhu Bhavan Road, and the Bopal-Ambli belt.",
+      "### Pricing Range Across the Corridor",
+      "Property prices along and adjacent to SG Highway span the full luxury range: ₹5,000–₹8,000 per sq.ft. in Thaltej and Science City pockets; ₹8,000–₹12,000 per sq.ft. on Sindhu Bhavan Road; and ₹11,000–₹15,000 per sq.ft. on Iskon-Ambli Road. The variance is driven by land scarcity, building quality, and corridor brand recognition. Buyers evaluating 'SG Highway' as a broad geography should approach it as a corridor comparison exercise, not a single market — PIKORUA Realty provides detailed cross-corridor analysis during private advisory.",
+      "### Infrastructure along SG Highway",
+      "The Ahmedabad Metro (Phase I: Vastral–Apparel Park east-west line and Motera–APMC north-south line) does not run along SG Highway itself, but the Phase II east-west extension (Gyaspur–Thaltej–Makarba) will add direct metro access to the SG Highway residential belt, significantly improving public transport connectivity. Prahlad Nagar Corporate Road, Science City Road, and the upcoming GIFT City metro spur are additional mid-term infrastructure catalysts.",
+      "### Rental Yield and Investment Perspective",
+      "Premium furnished apartments adjacent to SG Highway command rental yields of ₹40,000–₹1,20,000 per month depending on specification and proximity to corporate employment zones. The primary tenant profile includes senior professionals, visiting CXOs, and GIFT City-linked expat consultants. For NRI investors prioritising rental income alongside capital appreciation, the SG Highway belt — particularly Thaltej and Iskon-Ambli — offers a combination of yield, liquidity, and NRI-recognisable address that is hard to match elsewhere in Ahmedabad.",
+    ],
   },
 ];
 
@@ -360,6 +444,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["iskon-ambli", "sindhu-bhavan", "penthouses-duplexes-ahmedabad"],
+    bodyContent: [
+      "### What Defines a Truly Luxury Apartment in Ahmedabad",
+      "The definition of 'luxury apartment' in Ahmedabad has shifted materially over the past five years. Size alone is no longer sufficient. The strongest residences now compete on a different set of criteria: fewer apartments per floor (the best buildings have 2–4 per floor), private or semi-private lift lobbies, double-height living volumes with ceiling heights above 12 feet, wrap-around sundecks of 400–800 sq.ft., and clubhouse programming that includes sky-level pools, screening rooms, and professional-grade gyms. Buildings that were considered premium in 2018 may not qualify as true luxury by 2026 buyer standards.",
+      "### Where Demand is Concentrated",
+      "Luxury apartment demand in Ahmedabad is primarily concentrated in three corridors: Iskon-Ambli Road (₹11,000–₹15,000/sq.ft.), Sindhu Bhavan Road (₹8,000–₹15,000/sq.ft.), and Thaltej (₹6,500–₹12,000/sq.ft.). Within these corridors, 4 BHK apartments of 2,500–4,000 sq.ft. represent the dominant transaction segment by volume, while 5 BHK apartments and penthouses of 4,500–7,000 sq.ft. represent the highest absolute values. A 5 BHK on Iskon-Ambli Road in a well-specified building routinely transacts between ₹7 Crore and ₹12 Crore for the floor and configuration.",
+      "### Key Diligence Points for Luxury Apartment Buyers",
+      "Before committing to a luxury apartment purchase in Ahmedabad, buyers should verify: GujRERA registration status and compliance; the approved floor plan versus the marketed floor plate (discrepancies are common in older buildings); lift lobby exclusivity and neighbour count per floor; structural quality of the building (independent structural audit for buildings older than 7 years); terrace and sundeck rights documentation; parking allocation and parking tower quality; and society maintenance fund health. PIKORUA Realty conducts a proprietary evaluation across all these dimensions before any property recommendation.",
+      "### NRI Considerations for Apartment Purchases",
+      "Luxury apartments are the most NRI-friendly residential format in Ahmedabad. They eliminate the land-related diligence complexity (NA permissions, AUDA zoning) and offer managed infrastructure — security, maintenance, facility management — that suits buyers who are not resident in the city. For NRIs wanting a managed, hassle-low home in a recognisable building in a premium corridor, a well-selected 4 BHK or 5 BHK apartment represents the optimal format. The rental market for furnished luxury apartments in Ahmedabad (particularly from senior corporate professionals and GIFT City employees) provides NRI investors with viable ₹45,000–₹1,20,000/month rental income while awaiting self-use or resale.",
+    ],
   },
   {
     kind: "property-type",
@@ -399,6 +493,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["luxury-apartments-ahmedabad", "sindhu-bhavan", "iskon-ambli"],
+    bodyContent: [
+      "### Penthouses and Duplexes: The Peak of Vertical Luxury in Ahmedabad",
+      "Penthouses and duplex residences occupy a separate category within Ahmedabad's luxury market. They are not merely large apartments — they represent a fundamentally different quality of vertical living. The best penthouses in Ahmedabad offer 5,000–7,000 sq.ft. of single-floor internal space, private wrap-around terraces of 2,000–4,000 sq.ft., private plunge pools, and dedicated lobby access from a semi-private lift. They are, in essence, horizontally-oriented bungalows elevated above the city — combining land-backed lifestyle with tower-level security and panoramic views.",
+      "### Penthouse vs. Duplex: What to Choose",
+      "Penthouses suit buyers who want seamless single-floor flow — no internal staircase, no split between social and private zones, all spaces on one level connected by an uninterrupted visual axis. Duplexes suit buyers who want explicit physical separation between zones — entertainment and guest quarters on one level, family bedrooms on another. For multi-generational families or buyers who frequently host guests, a well-designed duplex can offer superior privacy management. For couples or compact families who value spatial continuity, a penthouse is the stronger choice. PIKORUA Realty's advisory process aligns the format recommendation to the specific family configuration.",
+      "### Pricing in Ahmedabad's Penthouse Market",
+      "Top-tier penthouses in Ahmedabad transact between ₹8 Crore and ₹25 Crore depending on corridor, floor height, terrace size, and specification. Signature penthouses on Iskon-Ambli Road and Sindhu Bhavan Road have achieved prices above ₹20 Crore. Duplex homes of 3,500–6,000 sq.ft. typically trade at ₹5 Crore to ₹15 Crore. The key price determinants are terrace rights (legally documented versus informally assumed), private pool rights, building quality, and the existence of fewer than 3 other residences sharing the top two floors.",
+      "### Why Most Premium Inventory Is Off-Market",
+      "Sellers of penthouses and signature duplex residences almost universally prefer private, off-market introductions. A seller who has built a ₹12 Crore home does not want unqualified buyers touring it. Developers releasing penthouse inventory in new towers similarly prefer selective introduction to buyers who are pre-qualified and culturally aligned with the building's character. PIKORUA Realty's private advisory model is specifically designed for this format — we source and present penthouse inventory that is never publicly listed.",
+    ],
   },
   {
     kind: "property-type",
@@ -438,6 +542,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["shilaj", "sindhu-bhavan", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Villas and Bungalows in Ahmedabad: What the Market Actually Offers",
+      "Luxury villas and independent bungalows in Ahmedabad represent a distinct asset class from vertical apartments. They are bought primarily for three reasons: privacy (no shared walls, lobby, or elevator), land ownership (an asset class that compounds differently from built-up FSI), and identity (a custom-designed home is a personal statement in a way that even the finest apartment cannot be). Demand for quality independent homes has consistently outpaced supply in Ahmedabad's western corridors — the city's zoning structure and the speed of vertical development have made genuinely large private plots increasingly rare.",
+      "### Primary Corridors for Villas and Bungalows",
+      "Sindhu Bhavan Road, Shilaj, and Vaishno Devi are the three primary corridors for villa and bungalow inventory in western Ahmedabad. On Sindhu Bhavan Road, bungalow estates on 2,000–5,000 sq.yd. plots exist in the lanes branching off the main road and command prices of ₹8 Crore to ₹25 Crore depending on built quality and plot dimensions. In Shilaj, bungalow communities on 400–1,000 sq.yd. plots are available at ₹3.5 Crore to ₹10 Crore. In Vaishno Devi, gated villa communities with shared amenities offer entry at ₹2.5 Crore to ₹7 Crore.",
+      "### Critical Diligence for Villa and Bungalow Purchases",
+      "The diligence process for independent homes is materially more involved than for apartments. Title chain review (minimum 30 years) is essential. Construction approvals and building plan sanctions must be verified against the actual structure — illegal constructions or deviations from sanctioned plans are a common issue in Ahmedabad's older bungalow stock. Plot survey against the revenue records (7/12 extract in Gujarat) must match the physically measured area. Any bungalow with a separate servant quarters or farm annex requires additional verification of permitted usage. PIKORUA Realty engages empanelled property advocates for all bungalow-related title work before any buyer recommendation.",
+      "### Seller Advisory for Bungalow Owners",
+      "Sellers of premium bungalows in Ahmedabad face a specific challenge: the pool of qualified buyers for a ₹10 Crore–₹25 Crore independent home is genuinely small, and exposing the property publicly through portals risks extended marketing periods, speculative tire-kicking, and price erosion through perceived over-availability. PIKORUA Realty's discreet seller representation model — where the property is curated to a private shortlist of qualified buyers — is designed specifically for this asset class, preserving both the seller's privacy and the asset's valuation premium.",
+    ],
   },
   {
     kind: "property-type",
@@ -477,6 +591,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["shilaj", "vaishno-devi", "villas-bungalows-ahmedabad"],
+    bodyContent: [
+      "### Residential Plots in Ahmedabad: Land as a Long-Term Asset",
+      "Premium residential plots in Ahmedabad represent one of the most compelling long-term wealth preservation assets available to HNI and NRI buyers. Unlike an apartment — which depreciates through use and maintenance intensity — a correctly positioned residential plot appreciates through both land scarcity and infrastructure development. The western Ahmedabad belt (Shilaj, Vaishno Devi, Bopal-Ghuma, Sanand Road) has historically delivered land appreciation of 12–20% CAGR over 10-year horizons, significantly outperforming many equity benchmark periods on a risk-adjusted basis.",
+      "### What 'Premium' Means for Plots in Ahmedabad",
+      "Not all residential plots are equal. A 'premium' residential plot in Ahmedabad meets four specific criteria: (a) clear title with no encumbrances in the past 30-year chain; (b) classified as Non-Agricultural (NA) with residential zoning under the relevant TP (Town Planning) scheme; (c) minimum 18-foot approach road with independent entry (corner or double-frontage plots command a 15–25% premium); and (d) location within a zone with completed or committed utility infrastructure (water, power, sewage). Plots that fail on any of these dimensions carry risk that brochure presentation obscures.",
+      "### AUDA vs. AMC Jurisdiction",
+      "One of the most critical due diligence points for plot purchases in western Ahmedabad is understanding whether the land falls under the Ahmedabad Municipal Corporation (AMC) or the Ahmedabad Urban Development Authority (AUDA). AMC zones have stricter building permission timelines but typically have better utility infrastructure. AUDA zones offer more flexible development timelines but may have less-developed utility connections. The FSI (Floor Space Index) permissible under each authority and each TP scheme also differs. PIKORUA Realty's advisory process includes an AUDA/AMC assessment for every plot recommendation.",
+      "### NRI Plot Investment Protocol",
+      "NRIs can freely purchase residential plots in India under the general FEMA permission — no RBI approval or specific clearance is required for residential (non-agricultural) land. Payments must be routed through NRE/NRO accounts. Under Power of Attorney, an NRI's local representative can manage registration, construction permissions, and ongoing diligence. For NRIs planning to build a custom residence over 5–10 years, acquiring the plot now and building later is a structurally sound strategy — it locks in land at today's price while allowing full design control over the future home.",
+    ],
   },
   {
     kind: "property-type",
@@ -517,6 +641,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: ["sg-highway", "iskon-ambli", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Luxury Residential Investment in Ahmedabad: The Honest Framework",
+      "Ahmedabad's luxury residential market offers genuine investment upside — but only when acquisition decisions are made at the micro-market level, not at a city-level or macro-India level. The corridors that have historically outperformed (Iskon-Ambli, Sindhu Bhavan Road) did so because of structural scarcity, not speculation. The corridors that have underperformed did so because of oversupply in low-differentiation buildings on secondary roads. The key skill in Ahmedabad residential investment is distinguishing the former from the latter — a distinction that requires ground-level market intelligence, not brochure reading.",
+      "### Ready vs. Under-Construction: The Core Trade-off",
+      "Ready or near-possession properties eliminate construction risk, allowing buyers to verify the finished quality before committing. However, they typically trade at a premium to under-construction pricing of 15–30% in the same building. Under-construction properties offer lower entry prices but require confidence in the developer's track record and financial stability, and carry a 2–4 year timeline risk. For NRI investors who are not in a hurry, a selective under-construction purchase in a proven developer's project in a strong corridor can deliver the best combined entry price and capital appreciation outcome.",
+      "### Rental Yield as a Component of Return",
+      "Luxury residential properties in Ahmedabad generate rental yields of 2–4% annually on capital value in the primary corridors. This is lower than commercial properties but provides stable, low-maintenance income from a high-quality tenant profile: senior executives, GIFT City professionals, expat consultants, and CXOs of Ahmedabad-based corporations. Premium furnished apartments of 4 BHK and above on Sindhu Bhavan Road and Iskon-Ambli rent at ₹60,000–₹1,50,000 per month. Adding rental income to capital appreciation produces total return profiles that are attractive on a risk-adjusted basis for HNI portfolios.",
+      "### Capital Gains and Repatriation for NRI Investors",
+      "NRI investors should plan exit taxation from the acquisition stage. Long-term capital gains (LTCG) on residential property held for more than 24 months attract a 20% tax after indexation benefits. Short-term gains are taxed at the applicable income slab. Upon sale, NRIs can repatriate the proceeds of up to two residential properties to their country of residence per financial year, subject to filing Form 15CA/15CB and obtaining tax clearance. PIKORUA Realty's advisory process includes connecting investors with experienced tax advisors to structure entry and exit efficiently.",
+    ],
   },
 ];
 

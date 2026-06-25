@@ -3,7 +3,11 @@ import { absoluteUrl } from "@/lib/seo";
 
 const PROTECTED_PATHS = ["/studio/", "/api/", "/admin/", "/demo/"];
 
-// Public pages that are most valuable for AI indexing
+// Public pages that are most valuable for AI indexing.
+// /llms.txt and /llms-full.txt are dynamic Route Handlers (not static files)
+// that generate live, machine-readable Markdown indexes of all properties,
+// corridors, services, FAQs, and blog articles — the highest-signal GEO/AEO
+// endpoints on the site. Explicitly allow all AI bots to access them.
 const AI_ALLOW_PATHS = [
   "/",
   "/properties",
@@ -13,6 +17,8 @@ const AI_ALLOW_PATHS = [
   "/about",
   "/testimonials",
   "/contact",
+  "/llms.txt",
+  "/llms-full.txt",
 ];
 
 export default function robots(): MetadataRoute.Robots {

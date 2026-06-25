@@ -5,6 +5,14 @@ export const SITE_URL = "https://www.pikorua.in";
 export const SITE_NAME = "PIKORUA Realty";
 export const DEFAULT_OG_IMAGE = "/logo.png";
 
+/**
+ * Google Business Profile URL — used in the organization schema's sameAs
+ * array so that search engines can link the website entity to the verified
+ * Google Maps listing (local SEO graph node).
+ */
+export const GOOGLE_BUSINESS_PROFILE_URL =
+  "https://maps.app.goo.gl/ZLDmmbt7CYPzTBkx8";
+
 type OpenGraphType = "website" | "article";
 const BRAND_TITLE_PATTERN = /\s*(?:\||-|—)\s*PIKORUA\s+Realty(?:\s+Insights)?\s*$/i;
 
@@ -72,6 +80,20 @@ const LOCATION_COORDINATES: Record<LocationSlug, { latitude: string; longitude: 
   "vaishno-devi":  { latitude: "23.1250", longitude: "72.5414" },
   "sg-highway":    { latitude: "23.0287", longitude: "72.5068" },
   other:           { latitude: "23.0225", longitude: "72.5714" }, // Ahmedabad centre
+};
+
+/**
+ * Nearby landmarks per corridor for local SEO knowledge-graph anchoring.
+ * These are well-known, publicly named places that search engines can use
+ * to tie property listings to a verified geographic entity node.
+ */
+const LOCATION_NEARBY_POIS: Partial<Record<LocationSlug, string[]>> = {
+  "iskon-ambli":   ["ISKCON Temple Ahmedabad", "Ahmedabad University", "Mondeal Heights"],
+  "sindhu-bhavan": ["Sindhu Bhavan Road", "CG Road Business District", "Bopal Circle"],
+  thaltej:         ["SG Highway", "Thaltej Metro Station", "Science City Ahmedabad"],
+  shilaj:          ["Shilaj Village", "Vastrapur Lake", "Bopal-Ambli Road"],
+  "vaishno-devi":  ["Vaishno Devi Circle", "SP Ring Road Ahmedabad"],
+  "sg-highway":    ["Sarkhej–Gandhinagar Highway", "Ahmadabad Airport", "Prahladnagar Corporate Road"],
 };
 
 const AVAILABILITY_MAP: Record<PropertyStatus, string> = {
@@ -196,6 +218,22 @@ export function generatePropertySchema(property: PropertySchemaInput) {
     ...(amenities ? { amenityFeature: amenities } : {}),
     ...(property.highlights?.length
       ? { additionalProperty: property.highlights.map((h) => ({ "@type": "PropertyValue", value: h })) }
+      : {}),
+    // NearbyAttraction entities anchor the listing to local knowledge-graph nodes
+    // so that AI search engines can confidently cite it for geo-specific queries.
+    ...((LOCATION_NEARBY_POIS[property.location] ?? []).length > 0
+      ? {
+          nearbyAttraction: (LOCATION_NEARBY_POIS[property.location] ?? []).map((name) => ({
+            "@type": "TouristAttraction",
+            name,
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Ahmedabad",
+              addressRegion: "Gujarat",
+              addressCountry: "IN",
+            },
+          })),
+        }
       : {}),
   };
 

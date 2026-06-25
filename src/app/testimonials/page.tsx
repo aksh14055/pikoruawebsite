@@ -105,32 +105,90 @@ export default async function TestimonialsPage() {
 
   const testimonials = liveTestimonials.length > 0 ? liveTestimonials : STATIC_TESTIMONIALS;
 
+  // ── Structured data: Review + AggregateRating ────────────────────────────
+  // Using Review schema (not CreativeWork) so Google can display star snippets
+  // in search results. We have real, verifiable 5-star Google reviews with
+  // direct Google Maps URLs — the previous CollectionPage schema ignored all
+  // rating data, which is a missed trust signal.
+  const publishedTestimonials = testimonials.filter((t) => t.isPublished !== false);
+  const ratedTestimonials = publishedTestimonials.filter((t) => t.rating);
+  const totalRating = ratedTestimonials.reduce((sum, t) => sum + (t.rating ?? 5), 0);
+  const averageRating =
+    ratedTestimonials.length > 0
+      ? (totalRating / ratedTestimonials.length).toFixed(1)
+      : "5.0";
+
   const testimonialsPageSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": absoluteUrl("/testimonials#webpage"),
-    url: absoluteUrl("/testimonials"),
-    name: "Client Testimonials",
-    about: {
-      "@id": `${SITE_URL}#real-estate-agent`,
-    },
-    mainEntity: {
-      "@type": "ItemList",
-      itemListElement: testimonials.map((testimonial, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "CreativeWork",
-          name: `Client experience from ${testimonial.clientName}`,
-          text: testimonial.quote,
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": absoluteUrl("/testimonials#webpage"),
+        url: absoluteUrl("/testimonials"),
+        name: "Client Testimonials — PIKORUA Realty",
+        description:
+          "Read verified reviews from HNI buyers, NRI investors, and sellers who chose PIKORUA Realty's private luxury real estate advisory in Ahmedabad.",
+        about: { "@id": `${SITE_URL}#advisory-service` },
+      },
+      {
+        // Define the advisory service itself.
+        // Google permits review snippets on Services (unlike self-serving reviews on LocalBusiness/Organization),
+        // which preserves our star rating visibility in Google Search results.
+        "@type": "Service",
+        "@id": `${SITE_URL}#advisory-service`,
+        name: "Private Luxury Property Advisory",
+        provider: {
+          "@type": "RealEstateAgent",
+          "@id": `${SITE_URL}#real-estate-agent`,
+          name: "PIKORUA Realty",
+          url: SITE_URL,
+          logo: absoluteUrl("/logo-icon.png"),
+        },
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: averageRating,
+          bestRating: "5",
+          worstRating: "1",
+          ratingCount: String(ratedTestimonials.length),
+          reviewCount: String(publishedTestimonials.length),
+        },
+        review: publishedTestimonials.map((t) => ({
+          "@type": "Review",
+          itemReviewed: {
+            "@type": "Service",
+            "@id": `${SITE_URL}#advisory-service`,
+            name: "Private Luxury Property Advisory",
+          },
           author: {
             "@type": "Person",
-            name: testimonial.clientName,
+            name: t.clientName,
           },
-        },
-      })),
-    },
+          reviewBody: t.quote,
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: String(t.rating ?? 5),
+            bestRating: "5",
+            worstRating: "1",
+          },
+          ...(t.reviewUrl ? { url: t.reviewUrl } : {}),
+          ...(t.context ? { description: t.context } : {}),
+          publisher: {
+            "@type": "Organization",
+            "@id": `${SITE_URL}#real-estate-agent`,
+            name: "PIKORUA Realty",
+          },
+        })),
+      },
+      {
+        // Reference the RealEstateAgent separately for local graph completion
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}#real-estate-agent`,
+        name: "PIKORUA Realty",
+        url: SITE_URL,
+      },
+    ],
   };
+
 
   return (
     <>

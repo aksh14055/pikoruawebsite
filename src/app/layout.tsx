@@ -6,7 +6,7 @@ import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
 import { env } from "@/lib/env";
-import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL, GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -92,6 +92,9 @@ const organizationSchema = {
         "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
         "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
         "https://youtube.com/@pikorua_realty_official?si=M3r65vxOcgUvdGfi",
+        // Google Business Profile — links the schema entity to the verified
+        // local GMB listing for local SEO knowledge-graph association
+        GOOGLE_BUSINESS_PROFILE_URL,
       ],
       areaServed: {
         "@type": "City",
@@ -111,18 +114,34 @@ const organizationSchema = {
       ],
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Iskon-Ambli",
+        streetAddress: "Iskon-Ambli Road",
         addressLocality: "Ahmedabad",
         addressRegion: "Gujarat",
+        postalCode: "380058",
         addressCountry: "IN",
       },
-      contactPoint: {
-        "@type": "ContactPoint",
-        telephone: `+${env.WHATSAPP_NUMBER}`,
-        contactType: "sales",
-        areaServed: "IN",
-        availableLanguage: ["en", "hi", "gu"],
-      },
+      // Google Maps URL — hasMap links the schema entity directly to the
+      // verified Google Business Profile map listing (Local SEO signal)
+      hasMap: GOOGLE_BUSINESS_PROFILE_URL,
+      email: "connect@pikorua.in",
+      telephone: `+${env.WHATSAPP_NUMBER}`,
+      priceRange: "₹₹₹₹",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: `+${env.WHATSAPP_NUMBER}`,
+          contactType: "sales",
+          areaServed: ["IN", "AE", "US", "GB", "SG", "CA", "AU"],
+          availableLanguage: ["en", "hi", "gu"],
+        },
+        {
+          "@type": "ContactPoint",
+          email: "connect@pikorua.in",
+          contactType: "customer support",
+          areaServed: "IN",
+          availableLanguage: ["en", "hi", "gu"],
+        },
+      ],
       makesOffer: [
         {
           "@type": "Offer",

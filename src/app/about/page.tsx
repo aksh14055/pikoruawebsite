@@ -111,26 +111,81 @@ export default async function AboutPage() {
 
   const aboutSchema = {
     "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    "@id": `${SITE_URL}#real-estate-agent`,
-    "name": "PIKORUA Realty",
-    "url": SITE_URL,
-    "image": absoluteUrl(founderAvatar),
-    "areaServed": {
-      "@type": "City",
-      "name": "Ahmedabad",
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Ahmedabad",
-      "addressRegion": "Gujarat",
-      "addressCountry": "IN",
-    },
-    "founder": {
-      "@type": "Person",
-      "name": FOUNDER_NAME,
-    },
+    "@graph": [
+      {
+        // Full RealEstateAgent entity — re-declares core fields on this page
+        // so the about page can independently anchor the entity
+        "@type": ["RealEstateAgent", "LocalBusiness"],
+        "@id": `${SITE_URL}#real-estate-agent`,
+        name: "PIKORUA Realty",
+        url: SITE_URL,
+        image: absoluteUrl(founderAvatar),
+        description:
+          "Private luxury residential real estate advisory founded by Jitendra Pareek. We curate exclusive apartments, penthouses, villas, and bungalows for HNI and NRI buyers across Ahmedabad's premier western corridors.",
+        areaServed: {
+          "@type": "City",
+          name: "Ahmedabad",
+          addressRegion: "Gujarat",
+          addressCountry: "IN",
+        },
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Iskon-Ambli Road",
+          addressLocality: "Ahmedabad",
+          addressRegion: "Gujarat",
+          postalCode: "380058",
+          addressCountry: "IN",
+        },
+        knowsAbout: [
+          "Luxury residential real estate in Ahmedabad",
+          "HNI property advisory Gujarat",
+          "NRI property purchase India FEMA compliance",
+          "Off-market luxury property advisory",
+          "Sindhu Bhavan Road property market",
+          "Iskon-Ambli Road luxury apartments",
+          "Thaltej Shilaj premium residential corridors",
+          "5 BHK luxury apartments Ahmedabad",
+          "Penthouse duplex advisory western Ahmedabad",
+          "Private seller representation luxury real estate",
+        ],
+        founder: {
+          "@type": "Person",
+          "@id": `${SITE_URL}#founder`,
+        },
+      },
+      {
+        // Rich Person entity for Jitendra — allows AI engines to build
+        // a knowledge-graph node for the founder independently of the firm
+        "@type": "Person",
+        "@id": `${SITE_URL}#founder`,
+        name: FOUNDER_NAME,
+        jobTitle: "Founder & Managing Director",
+        description:
+          "Jitendra Pareek is the founder of PIKORUA Realty, Ahmedabad's private luxury residential real estate advisory. He specialises in curating off-market 4 BHK and 5 BHK apartments, penthouses, villas, and bungalows for HNI and NRI buyers across western Ahmedabad's premium corridors.",
+        image: absoluteUrl(founderAvatar),
+        url: absoluteUrl("/about"),
+        worksFor: {
+          "@type": "RealEstateAgent",
+          "@id": `${SITE_URL}#real-estate-agent`,
+          name: "PIKORUA Realty",
+        },
+        knowsAbout: [
+          "Luxury real estate advisory Ahmedabad",
+          "NRI property transactions India",
+          "FEMA compliance residential property",
+          "Off-market property advisory",
+          "Western Ahmedabad residential corridors",
+          "High net worth individual real estate",
+          "Private real estate consultation Gujarat",
+        ],
+        sameAs: [
+          "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
+          "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
+        ],
+      },
+    ],
   };
+
 
   return (
     <>

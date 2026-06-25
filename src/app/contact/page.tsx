@@ -37,7 +37,6 @@ interface ContactPageProps {
 }
 
 const faqSchema = {
-  "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: FAQ_ITEMS.map((item) => ({
     "@type": "Question",
@@ -49,16 +48,82 @@ const faqSchema = {
   })),
 };
 
+/**
+ * HowTo schema for the NRI residential property purchase process.
+ * Targets high-intent AEO queries like "How do NRIs buy property in Ahmedabad?"
+ * Google uses HowTo schema to display step-by-step featured snippets and
+ * AI Overview answer cards — this is the primary AEO opportunity on the site.
+ */
+const nriHowToSchema = {
+  "@type": "HowTo",
+  name: "How to Buy Residential Property in Ahmedabad as an NRI",
+  description:
+    "A step-by-step guide for Non-Resident Indians (NRIs) purchasing luxury residential property in Ahmedabad, covering FEMA compliance, NRE/NRO banking, Power of Attorney, TDS, stamp duty, and possession.",
+  totalTime: "PT8W",
+  estimatedCost: {
+    "@type": "MonetaryAmount",
+    currency: "INR",
+    value: "30000000",
+  },
+  step: [
+    {
+      "@type": "HowToStep",
+      position: 1,
+      name: "Establish Your Property Brief and Budget",
+      text: "Define your requirement — configuration (4 BHK, 5 BHK, penthouse, villa), corridor preference (Sindhu Bhavan Road, Iskon-Ambli, Thaltej), possession timeline, and budget. Share your brief with PIKORUA Realty's private advisory desk to receive a curated shortlist of pre-vetted properties, including off-market options not available on public portals.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 2,
+      name: "Set Up Your NRE or NRO Bank Account",
+      text: "All property payments must be routed through an NRE (Non-Resident External) or NRO (Non-Resident Ordinary) account in Indian Rupees as mandated by FEMA (Foreign Exchange Management Act). Direct foreign currency payments or cash transactions are prohibited. If you do not have an active NRE/NRO account, your banker in India or our advisory team can guide setup with partner institutions.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 3,
+      name: "Execute a Special Power of Attorney (POA)",
+      text: "NRIs who cannot travel to India for each transaction stage should execute a Special Power of Attorney (SPOA) in favor of a trusted local representative. The POA must be signed and attested by the Indian Consulate or Embassy in your country of residence. It must then be notarised, apostilled (if applicable), and registered in India within three months of receipt.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 4,
+      name: "Conduct Title Verification and RERA Due Diligence",
+      text: "Before signing any agreement, a title search by a qualified property lawyer is essential. For under-construction projects in Gujarat, verify the RERA (GujRERA) registration number, approved drawings, declared completion timeline, and escrow account compliance. PIKORUA Realty coordinates all legal verification through its panel of Ahmedabad-based property solicitors.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 5,
+      name: "Sign the Sale Agreement and Manage TDS",
+      text: "Upon agreeing on price and terms, sign a registered Sale Agreement. If purchasing from a resident Indian seller, deduct TDS at 1% under Section 194-IA if the property value exceeds ₹50 Lakhs. If the seller is also an NRI, TDS under Section 195 applies (20%–30% depending on capital gains type). Deposit the TDS with the government and obtain Form 16B within 15 days.",
+    },
+    {
+      "@type": "HowToStep",
+      position: 6,
+      name: "Complete Stamp Duty, Registration, and Possession",
+      text: "Pay stamp duty (typically 4.9% in Gujarat, with concessions for female buyers) and 1% registration fee at the Sub-Registrar office. The sale deed is registered in your name. For NRIs, your POA holder can complete registration. After possession, PIKORUA Realty can assist with property management, rental, and future resale advisory.",
+    },
+  ],
+};
+
+
 export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { purpose: rawPurpose } = await searchParams;
   const purposeKey = rawPurpose?.toLowerCase() ?? "";
   const initialPurpose: LeadPurpose | "" = PURPOSE_MAP[purposeKey] ?? "";
 
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      faqSchema,
+      nriHowToSchema,
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(combinedSchema) }}
       />
       <Header alwaysSolid />
       <main>

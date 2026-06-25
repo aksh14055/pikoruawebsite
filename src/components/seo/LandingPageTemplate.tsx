@@ -181,6 +181,54 @@ export function LandingPageTemplate({ page, properties }: LandingPageTemplatePro
           </div>
         </section>
 
+        {/* Market Intelligence — rendered when bodyContent is populated.
+            This section is the primary SEO/GEO content depth driver.
+            700–1,000 words of named-entity-dense prose per page. */}
+        {page.bodyContent && page.bodyContent.length > 0 && (
+          <section
+            className="py-16 lg:py-24 border-b border-white/[0.06]"
+            aria-labelledby="market-intelligence-heading"
+          >
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+              <div className="mb-10 flex flex-col items-start gap-3">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans">
+                  Market Intelligence
+                </p>
+                <div className="w-6 h-px bg-champagne-gold/40" aria-hidden="true" />
+                <h2
+                  id="market-intelligence-heading"
+                  className="font-display text-[clamp(1.4rem,2.6vw,2rem)] font-light uppercase tracking-wider"
+                >
+                  {page.label} — Advisory Guide
+                </h2>
+              </div>
+              <div className="space-y-6">
+                {page.bodyContent.map((paragraph, index) => {
+                  const isHeading = paragraph.startsWith("### ");
+                  if (isHeading) {
+                    return (
+                      <h3
+                        key={index}
+                        className="font-display text-lg text-champagne-gold uppercase tracking-wide pt-4 first:pt-0"
+                      >
+                        {paragraph.replace(/^### /, "")}
+                      </h3>
+                    );
+                  }
+                  return (
+                    <p
+                      key={index}
+                      className="text-sm sm:text-base text-ivory/70 font-sans leading-relaxed"
+                    >
+                      {paragraph}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="py-16 lg:py-24 border-b border-white/[0.06]" aria-labelledby="landing-faq-heading">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
