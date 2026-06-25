@@ -39,7 +39,7 @@ export async function FeaturedResidences() {
                 <span className="text-champagne-gold italic">from our private collection.</span>
               </h2>
 
-              <p className="text-[11px] font-sans text-ivory/40 leading-relaxed">
+              <p className="text-[11px] font-sans text-ivory/50 leading-relaxed">
                 Each property is curated for its location, lifestyle value, privacy, and long-term potential.
               </p>
             </div>
@@ -48,7 +48,7 @@ export async function FeaturedResidences() {
             <div className="flex-shrink-0">
               <Link
                 href="/properties"
-                className="inline-flex items-center gap-2 text-xs font-sans text-ivory/40 hover:text-ivory uppercase tracking-[0.12em] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm group"
+                className="inline-flex items-center gap-2 text-xs font-sans text-ivory/50 hover:text-ivory uppercase tracking-[0.12em] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm group"
               >
                 View all properties
                 <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
@@ -65,7 +65,7 @@ export async function FeaturedResidences() {
         <div className="mt-10 text-center sm:hidden">
           <Link
             href="/properties"
-            className="inline-flex items-center gap-2 text-xs font-sans text-ivory/40 hover:text-ivory uppercase tracking-[0.12em] transition-colors duration-150"
+            className="inline-flex items-center gap-2 text-xs font-sans text-ivory/50 hover:text-ivory uppercase tracking-[0.12em] transition-colors duration-150"
           >
             View all properties →
           </Link>

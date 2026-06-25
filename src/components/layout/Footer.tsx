@@ -45,11 +45,11 @@ export function Footer({
               <span className="font-display text-2xl tracking-[0.12em] text-ivory block">PIKORUA</span>
               <span className="text-[10px] tracking-[0.25em] text-champagne-gold uppercase font-sans">Realty</span>
             </div>
-            <p className="text-sm text-ivory/45 leading-relaxed max-w-xs font-sans">
+            <p className="text-sm text-ivory/55 leading-relaxed max-w-xs font-sans">
               A private gateway to Ahmedabad&rsquo;s finest luxury residences — curated, never listed.
             </p>
             <div className="h-px w-8 bg-champagne-gold/35 my-4" />
-            <p className="text-xs text-ivory/25 font-sans">
+            <p className="text-xs text-ivory/50 font-sans">
               Ahmedabad&nbsp;·&nbsp;Mumbai &amp; Dubai
             </p>
           </div>
@@ -68,7 +68,7 @@ export function Footer({
                   +91 6354 359 222
                 </a>
               </li>
-              <li className="text-ivory/30 leading-relaxed text-xs">
+              <li className="text-ivory/50 leading-relaxed text-xs">
                 Iskon-Ambli, Ahmedabad<br />Gujarat, India
               </li>
               {googleMapsUrl && (
@@ -124,7 +124,7 @@ export function Footer({
 
         {/* Bottom bar */}
         <div className="border-t border-white/[0.06] py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-ivory/25 font-sans">
+          <p className="text-xs text-ivory/50 font-sans">
             &copy; {new Date().getFullYear()} PIKORUA Realty. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -139,8 +139,8 @@ export function Footer({
               </div>
             )}
             <div className="flex items-center gap-4">
-              <Link href="/privacy" className="text-xs text-ivory/25 hover:text-ivory/50 transition-colors duration-150 font-sans">Privacy</Link>
-              <Link href="/terms"   className="text-xs text-ivory/25 hover:text-ivory/50 transition-colors duration-150 font-sans">Terms</Link>
+              <Link href="/privacy" className="text-xs text-ivory/50 hover:text-ivory/80 transition-colors duration-150 font-sans">Privacy</Link>
+              <Link href="/terms"   className="text-xs text-ivory/50 hover:text-ivory/80 transition-colors duration-150 font-sans">Terms</Link>
             </div>
           </div>
         </div>

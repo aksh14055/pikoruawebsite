@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
 
-const TOURS_DATA = [
+const TOURS_DATA: { id: string; title: string; subtitle: string; location?: string }[] = [
   {
     id: "G17NU0mliT4",
     title: "Off Thaltej - Shilaj Road",
@@ -57,7 +57,7 @@ const TOURS_DATA = [
 ];
 
 interface VirtualToursProps {
-  tours?: { id: string; title: string; subtitle: string }[];
+  tours?: { id: string; title: string; subtitle: string; location?: string }[];
 }
 
 export function VirtualTours({ tours }: VirtualToursProps = {}) {
@@ -66,7 +66,8 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
   const [isHovered, setIsHovered] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>();
-  const displayedTours = tours && tours.length > 0 ? tours : TOURS_DATA;
+  const validTours = (tours || []).filter(t => t && t.id && t.id.trim() !== "");
+  const displayedTours = validTours.length > 0 ? validTours : TOURS_DATA;
 
   const handleMouseEnter = (id: string) => {
     setIsHovered(true);
@@ -142,7 +143,7 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
               {/* YouTube Thumbnail Image */}
               <img
                 src={`https://img.youtube.com/vi/${tour.id}/maxresdefault.jpg`}
-                alt={tour.title}
+                alt={tour.title && tour.title.trim() ? tour.title : "Property Walkthrough Video"}
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
@@ -154,10 +155,23 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30 transition-opacity duration-300" />
 
               <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 border-b-2 border-transparent transition-colors duration-300">
-                <p className="font-serif italic font-light text-[clamp(1.5rem,2.5vw,2.2rem)] text-white/95 leading-none mb-1">
-                  Ahmedabad
-                </p>
-                <div className="h-px bg-white/10 my-2" aria-hidden="true" />
+                {tour.location !== undefined ? (
+                  tour.location && (
+                    <>
+                      <p className="font-serif italic font-light text-[clamp(1.5rem,2.5vw,2.2rem)] text-white/95 leading-none mb-1">
+                        {tour.location}
+                      </p>
+                      <div className="h-px bg-white/10 my-2" aria-hidden="true" />
+                    </>
+                  )
+                ) : (
+                  <>
+                    <p className="font-serif italic font-light text-[clamp(1.5rem,2.5vw,2.2rem)] text-white/95 leading-none mb-1">
+                      Ahmedabad
+                    </p>
+                    <div className="h-px bg-white/10 my-2" aria-hidden="true" />
+                  </>
+                )}
                 <p className="text-[10px] sm:text-[11px] font-sans text-ivory/70 group-hover:text-champagne-gold transition-colors duration-300 uppercase tracking-widest leading-relaxed">
                   {tour.title}
                 </p>

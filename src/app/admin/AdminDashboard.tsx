@@ -1720,7 +1720,7 @@ export default function AdminDashboard({
                     onClick={() => {
                       console.log("Add Tour Video clicked, current virtualTours:", homeContent.virtualTours);
                       setHomeContent((p: any) => {
-                        const newTours = [...(p?.virtualTours || []), { id: "", title: "", subtitle: "" }];
+                        const newTours = [...(p?.virtualTours || []), { id: "", title: "", subtitle: "", location: "Ahmedabad" }];
                         console.log("Setting virtualTours to:", newTours);
                         return {
                           ...p,
@@ -1738,7 +1738,7 @@ export default function AdminDashboard({
                 <div className="space-y-4">
                   {(homeContent.virtualTours || []).map((tour: any, idx: number) => (
                     <div key={idx} className="flex gap-4 items-end bg-lux-black/45 p-4 border border-white/[0.04] rounded-sm text-xs relative group/tour">
-                      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="space-y-1">
                           <label className="block text-[8px] uppercase tracking-wider text-ivory/30">YouTube Video ID</label>
                           <input
@@ -1752,6 +1752,20 @@ export default function AdminDashboard({
                             }}
                             placeholder="e.g. G17NU0mliT4"
                             className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none font-mono text-white"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block text-[8px] uppercase tracking-wider text-ivory/30">City / Header Label</label>
+                          <input
+                            type="text"
+                            value={tour.location !== undefined ? tour.location : "Ahmedabad"}
+                            onChange={(e) => {
+                              const newTours = [...(homeContent.virtualTours || [])];
+                              newTours[idx] = { ...tour, location: e.target.value };
+                              setHomeContent((p: any) => ({ ...p, virtualTours: newTours }));
+                            }}
+                            placeholder="e.g. Ahmedabad (blank to hide)"
+                            className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none"
                           />
                         </div>
                         <div className="space-y-1">

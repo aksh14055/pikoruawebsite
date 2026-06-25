@@ -711,7 +711,7 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
             )}
           </h3>
 
-          <p className="text-xs font-sans text-ivory/40 uppercase tracking-[0.15em] flex items-center gap-1">
+          <p className="text-xs font-sans text-ivory/50 uppercase tracking-[0.15em] flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5 text-champagne-gold/50" />
             {property.locationLabel}
           </p>

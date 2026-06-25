@@ -97,7 +97,7 @@ export function FinalCTABand() {
                   <p className="font-sans text-[15px] text-ivory/65 group-hover:text-ivory transition-colors duration-200 mb-1 leading-snug">
                     {path.label}
                   </p>
-                  <p className="text-[11px] font-sans text-ivory/25 leading-relaxed">
+                  <p className="text-[11px] font-sans text-ivory/50 leading-relaxed">
                     {path.description}
                   </p>
                 </div>

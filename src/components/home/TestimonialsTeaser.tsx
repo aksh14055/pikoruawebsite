@@ -73,7 +73,7 @@ export async function TestimonialsTeaser() {
           <div className="h-px flex-1 bg-ivory/[0.06]" aria-hidden="true" />
           <Link
             href="/testimonials"
-            className="flex-shrink-0 text-xs font-sans text-ivory/30 hover:text-ivory/70 tracking-[0.12em] uppercase transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm"
+            className="flex-shrink-0 text-xs font-sans text-ivory/50 hover:text-ivory/80 tracking-[0.12em] uppercase transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-champagne-gold rounded-sm"
           >
             Read all reviews →
           </Link>
@@ -100,10 +100,10 @@ function TestimonialCard({ testimonial }: { testimonial: TeaserItem }) {
       <div className="border-t border-ivory/[0.06] pt-5">
         <p className="text-sm font-sans text-ivory font-medium">{testimonial.clientName}</p>
         {testimonial.context && (
-          <p className="text-xs font-sans text-ivory/30 mt-0.5">{testimonial.context}</p>
+          <p className="text-xs font-sans text-ivory/50 mt-0.5">{testimonial.context}</p>
         )}
         {testimonial.source === "google" && (
-          <p className="text-[10px] font-sans text-champagne-gold/50 mt-1.5 uppercase tracking-[0.12em] flex items-center gap-1">
+          <p className="text-[10px] font-sans text-champagne-gold/75 mt-1.5 uppercase tracking-[0.12em] flex items-center gap-1">
             Google Review
             {testimonial.reviewUrl && (
               <span className="text-[8px] opacity-70">↗</span>
