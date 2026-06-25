@@ -108,7 +108,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   alt="PIKORUA Realty"
                   width={224}
                   height={48}
-                  quality={90}
+                  quality={75}
                   className="h-8 sm:h-9 lg:h-11 w-auto object-contain"
                   priority
                 />

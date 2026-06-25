@@ -86,6 +86,7 @@ export function HeroSection({
 
   useEffect(() => {
     if (!videoUrl || !videoRef.current) return;
+    
     const conn = (
       navigator as Navigator & {
         connection?: { saveData?: boolean; effectiveType?: string };

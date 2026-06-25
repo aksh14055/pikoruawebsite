@@ -316,7 +316,7 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
                     src={activePropertyImages[activeTopImageIndex]}
                     alt={`${activeTopProp.configuration} Spotlight image`}
                     fill
-                    quality={90}
+                    quality={75}
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover object-center scale-[1.04]"
                     priority
@@ -631,7 +631,7 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
                 src={images[currentImgIdx]}
                 alt={`${DISPLAY_CATEGORY_LABELS[property.category] || property.category} — image ${currentImgIdx + 1}`}
                 fill
-                quality={90}
+                quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover object-center transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
                 priority={currentImgIdx === 0}
@@ -878,7 +878,7 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
                   src={allImages[currentIndex]}
                   alt={`${categoryLabel} — image ${currentIndex + 1} of ${total}`}
                   fill
-                  quality={90}
+                  quality={75}
                   sizes="(max-width: 768px) 100vw, 58vw"
                   priority={currentIndex === 0}
                   className="object-cover object-center scale-[1.04]"

@@ -223,7 +223,7 @@ export function LeadCapturePopup() {
                   alt="PIKORUA Realty"
                   width={224}
                   height={48}
-                  quality={90}
+                  quality={75}
                   className="h-6 w-auto object-contain"
                 />
               </div>

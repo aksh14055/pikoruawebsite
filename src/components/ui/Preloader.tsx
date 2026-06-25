@@ -11,18 +11,18 @@ export function Preloader() {
   useEffect(() => {
     let dismissTimer: ReturnType<typeof setTimeout>;
 
-    // Hard cap: always dismiss after 1800 ms so Speed Index isn't held hostage
+    // Hard cap: always dismiss after 950 ms so Speed Index isn't held hostage
     // by slow CDN images or third-party scripts delaying window.onload.
-    // 1800 ms gives the 1.3 s progress animation time to complete while still
+    // 950 ms gives the progress animation time to complete while still
     // ensuring visual content is revealed well before the LCP window closes.
-    const maxTimer = setTimeout(() => setLoading(false), 1800);
+    const maxTimer = setTimeout(() => setLoading(false), 950);
 
     const handleLoad = () => {
       // Small buffer after load for the animation to complete gracefully
       dismissTimer = setTimeout(() => {
         setLoading(false);
         clearTimeout(maxTimer);
-      }, 400);
+      }, 200);
     };
 
     if (document.readyState === "complete") {
@@ -59,7 +59,7 @@ export function Preloader() {
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            transition: { duration: 0.6, ease: "easeInOut" }
+            transition: { duration: 0.4, ease: "easeInOut" }
           }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-lux-black select-none pointer-events-auto"
         >
@@ -76,7 +76,7 @@ export function Preloader() {
                 src="/logo.png"
                 alt="PIKORUA Realty"
                 fill
-                quality={90}
+                quality={75}
                 sizes="(max-width: 640px) 12rem, 14rem"
                 priority
                 className="object-contain"
@@ -88,7 +88,7 @@ export function Preloader() {
               <motion.div
                 initial={{ left: "-100%" }}
                 animate={{ left: "0%" }}
-                transition={{ duration: 1.3, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
+                transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1], delay: 0.1 }}
                 className="absolute inset-0 bg-champagne-gold w-full"
               />
             </div>
@@ -97,7 +97,7 @@ export function Preloader() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.35 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               className="text-[9px] uppercase tracking-[0.3em] text-ivory font-sans mt-3.5"
             >
               Quietly Curated Residences
