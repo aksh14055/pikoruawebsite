@@ -193,46 +193,55 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Content body */}
             <div className="font-sans text-ivory/60 text-[15px] sm:text-base leading-[1.8] max-w-3xl mx-auto space-y-6 sm:space-y-8">
-              {post.content.map((paragraph, index) => {
-                const isHeading = paragraph.startsWith("### ");
-                const isListItem = paragraph.startsWith("- ") || paragraph.startsWith("* ");
+              {post.htmlContent ? (
+                // DOCX-imported content: single styled HTML block
+                <div
+                  className="prose-blog"
+                  dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+                />
+              ) : (
+                // Plain-text paragraph array: rendered element-by-element
+                post.content.map((paragraph, index) => {
+                  const isHeading = paragraph.startsWith("### ");
+                  const isListItem = paragraph.startsWith("- ") || paragraph.startsWith("* ");
 
-                if (isHeading) {
-                  return (
-                    <h3 
-                      key={index}
-                      className="font-display text-lg sm:text-xl text-white uppercase tracking-wider mt-10 mb-4 font-normal"
-                      dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(4)) }}
-                    />
-                  );
-                }
+                  if (isHeading) {
+                    return (
+                      <h3 
+                        key={index}
+                        className="font-display text-lg sm:text-xl text-white uppercase tracking-wider mt-10 mb-4 font-normal"
+                        dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(4)) }}
+                      />
+                    );
+                  }
 
-                if (isListItem) {
-                  return (
-                    <div key={index} className="flex items-start gap-2.5 my-2 pl-4 text-ivory/70">
-                      <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold/75 mt-2 flex-shrink-0 animate-pulse" />
-                      <span dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(2)) }} />
-                    </div>
-                  );
-                }
+                  if (isListItem) {
+                    return (
+                      <div key={index} className="flex items-start gap-2.5 my-2 pl-4 text-ivory/70">
+                        <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold/75 mt-2 flex-shrink-0 animate-pulse" />
+                        <span dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph.substring(2)) }} />
+                      </div>
+                    );
+                  }
 
-                // Style the first paragraph slightly larger as an intro
-                if (index === 0) {
+                  // Style the first paragraph slightly larger as an intro
+                  if (index === 0) {
+                    return (
+                      <p 
+                        key={index} 
+                        className="text-ivory/80 text-[17px] sm:text-lg leading-[1.7] font-normal font-sans border-l-2 border-champagne-gold/40 pl-5 italic mb-8"
+                        dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
+                      />
+                    );
+                  }
                   return (
                     <p 
                       key={index} 
-                      className="text-ivory/80 text-[17px] sm:text-lg leading-[1.7] font-normal font-sans border-l-2 border-champagne-gold/40 pl-5 italic mb-8"
                       dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
                     />
                   );
-                }
-                return (
-                  <p 
-                    key={index} 
-                    dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
-                  />
-                );
-              })}
+                })
+              )}
             </div>
 
             {/* Bottom CTA block */}

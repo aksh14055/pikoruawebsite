@@ -248,3 +248,194 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .animate-marquee-continuous {
   animation: marquee 45s linear infinite;
 }
+
+/* ─── Prose Blog: DOCX-imported HTML content renderer ───────────────────── */
+/* Applied to blog posts that were imported via .docx upload (mammoth.js)    */
+
+.prose-blog {
+  color: rgba(255, 248, 235, 0.65);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  max-width: 48rem;
+}
+
+.prose-blog p {
+  margin-bottom: 1.4em;
+}
+
+.prose-blog h1,
+.prose-blog h2 {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.95);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(200, 160, 90, 0.15);
+}
+
+.prose-blog h3 {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.85);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-blog h4,
+.prose-blog h5,
+.prose-blog h6 {
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c8a05a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-blog strong,
+.prose-blog b {
+  color: rgba(255, 248, 235, 0.9);
+  font-weight: 600;
+}
+
+.prose-blog em,
+.prose-blog i {
+  color: rgba(255, 248, 235, 0.75);
+  font-style: italic;
+}
+
+.prose-blog a {
+  color: #c8a05a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(200, 160, 90, 0.4);
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.prose-blog a:hover {
+  color: #e2c07a;
+  text-decoration-color: rgba(226, 192, 122, 0.7);
+}
+
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.4em;
+  space-y: 0.4rem;
+}
+
+.prose-blog ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose-blog ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 248, 235, 0.7);
+}
+
+.prose-blog ul li::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  min-width: 5px;
+  border-radius: 50%;
+  background-color: rgba(200, 160, 90, 0.7);
+  margin-top: 0.6rem;
+}
+
+.prose-blog ol {
+  list-style: decimal;
+  color: rgba(255, 248, 235, 0.7);
+}
+
+.prose-blog ol li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+/* ── Tables ── */
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.8125rem;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.prose-blog thead {
+  background-color: rgba(200, 160, 90, 0.08);
+  border-bottom: 1px solid rgba(200, 160, 90, 0.25);
+}
+
+.prose-blog thead th {
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c8a05a;
+}
+
+.prose-blog tbody tr {
+  border-bottom: 1px solid rgba(255, 248, 235, 0.05);
+  transition: background-color 0.15s;
+}
+
+.prose-blog tbody tr:hover {
+  background-color: rgba(255, 248, 235, 0.02);
+}
+
+.prose-blog tbody td {
+  padding: 0.55rem 0.875rem;
+  color: rgba(255, 248, 235, 0.65);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.prose-blog tbody td strong {
+  color: rgba(255, 248, 235, 0.85);
+}
+
+/* ── Blockquotes ── */
+.prose-blog blockquote {
+  border-left: 2px solid rgba(200, 160, 90, 0.4);
+  padding: 0.5rem 0 0.5rem 1.25rem;
+  margin: 1.75rem 0;
+  color: rgba(255, 248, 235, 0.55);
+  font-style: italic;
+}
+
+/* ── Horizontal rules ── */
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid rgba(255, 248, 235, 0.06);
+  margin: 2rem 0;
+}
+
+/* ── Inline code ── */
+.prose-blog code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8125rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  padding: 0.1em 0.35em;
+  color: rgba(200, 160, 90, 0.9);
+}
+

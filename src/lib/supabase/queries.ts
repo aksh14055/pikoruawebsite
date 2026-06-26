@@ -287,6 +287,7 @@ function mapDbBlogToBlogPost(db: any): BlogPost {
     },
     isFeatured: db.is_featured,
     content: db.content || [],
+    htmlContent: db.html_content || undefined,
     seoTitle: db.seo_title || undefined,
     seoDescription: db.seo_description || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,

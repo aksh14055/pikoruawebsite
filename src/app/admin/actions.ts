@@ -340,6 +340,7 @@ export async function createOrUpdateBlogPost(blog: any) {
     seo_title: blog.seoTitle || blog.seo_title || null,
     seo_description: blog.seoDescription || blog.seo_description || null,
     is_active: blog.isActive !== undefined ? blog.isActive : (blog.is_active !== undefined ? blog.is_active : true),
+    html_content: blog.htmlContent || blog.html_content || null,
   };
 
   const { error } = await supabase

@@ -121,6 +121,7 @@ export default function AdminDashboard({
   const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
   const [uploadingBlogImage, setUploadingBlogImage] = useState<boolean>(false);
   const [uploadingAuthorAvatar, setUploadingAuthorAvatar] = useState<boolean>(false);
+  const [docxUploading, setDocxUploading] = useState<boolean>(false);
 
   // About Page state
   const defaultAboutContent = {
@@ -617,6 +618,7 @@ export default function AdminDashboard({
       authorAvatar: "/images/founder.jpg",
       isFeatured: false,
       content: "", // handled as single text string, parsed on save
+      htmlContent: "",
       seoTitle: "",
       seoDescription: "",
       isActive: true,
@@ -631,6 +633,7 @@ export default function AdminDashboard({
       authorRole: blog.author?.role || "PIKORUA Realty",
       authorAvatar: blog.author?.avatar || "/images/founder.jpg",
       content: blog.content ? blog.content.join("\n\n") : "",
+      htmlContent: blog.htmlContent || "",
       seoTitle: blog.seoTitle || "",
       seoDescription: blog.seoDescription || "",
       isActive: blog.isActive !== undefined ? blog.isActive : true,
@@ -689,6 +692,7 @@ export default function AdminDashboard({
           },
           isFeatured: payload.isFeatured,
           content: payload.content,
+          htmlContent: payload.htmlContent || undefined,
         };
 
         if (exists) {
@@ -743,6 +747,52 @@ export default function AdminDashboard({
     } finally {
       setUploadingBlogImage(false);
       setUploadingAuthorAvatar(false);
+    }
+  };
+
+  // DOCX → HTML converter (runs entirely client-side using mammoth.js)
+  const handleDocxUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith(".docx")) {
+      alert("Please upload a .docx file.");
+      return;
+    }
+    setDocxUploading(true);
+    try {
+      const mammoth = await import("mammoth");
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.convertToHtml(
+        { arrayBuffer },
+        {
+          styleMap: [
+            "p[style-name='Heading 1'] => h2:fresh",
+            "p[style-name='Heading 2'] => h3:fresh",
+            "p[style-name='Heading 3'] => h4:fresh",
+            "p[style-name='Heading 4'] => h5:fresh",
+            "b => strong",
+            "i => em",
+          ],
+        }
+      );
+      const html = result.value;
+      // Generate plain-text excerpt from converted HTML for the excerpt field
+      const plainText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const autoExcerpt = plainText.substring(0, 220) + (plainText.length > 220 ? "..." : "");
+      setEditingBlog((prev: any) => ({
+        ...prev,
+        htmlContent: html,
+        content: "", // clear plain-text when HTML is set
+        excerpt: prev.excerpt || autoExcerpt,
+      }));
+      if (result.messages.length > 0) {
+        console.warn("Mammoth conversion warnings:", result.messages);
+      }
+    } catch (err: any) {
+      alert("DOCX conversion failed: " + err.message);
+    } finally {
+      setDocxUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -3079,19 +3129,62 @@ export default function AdminDashboard({
 
               {/* Article Content */}
               <div className="space-y-1">
-                <label className="block text-[9px] uppercase tracking-wider text-ivory/40 font-medium">
-                  Article Body paragraphs (Double-Enter for new paragraphs)
-                </label>
-                {renderTextToolbar("content")}
-                <textarea
-                  id="content"
-                  rows={8}
-                  required
-                  value={editingBlog.content}
-                  onChange={(e) => setEditingBlog((p: any) => ({ ...p, content: e.target.value }))}
-                  placeholder="Write full article body paragraphs here..."
-                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2 rounded-sm focus:outline-none font-sans leading-relaxed"
-                />
+                <div className="flex items-center justify-between">
+                  <label className="block text-[9px] uppercase tracking-wider text-ivory/40 font-medium">
+                    Article Body
+                  </label>
+                  {/* DOCX Upload */}
+                  <label className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm border cursor-pointer text-[9px] uppercase tracking-wider font-semibold transition-all ${
+                    docxUploading
+                      ? "border-champagne-gold/30 text-champagne-gold/50 cursor-wait"
+                      : "border-champagne-gold/40 text-champagne-gold hover:border-champagne-gold hover:bg-champagne-gold/5"
+                  }`}>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    {docxUploading ? "Converting..." : "Upload DOCX"}
+                    <input
+                      type="file"
+                      accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      className="hidden"
+                      disabled={docxUploading}
+                      onChange={handleDocxUpload}
+                    />
+                  </label>
+                </div>
+
+                {/* HTML preview from DOCX */}
+                {editingBlog.htmlContent ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] text-champagne-gold/70 uppercase tracking-wider">✓ DOCX imported — HTML preview</span>
+                      <button
+                        type="button"
+                        onClick={() => setEditingBlog((p: any) => ({ ...p, htmlContent: "", content: "" }))}
+                        className="text-[9px] text-red-400/70 hover:text-red-400 uppercase tracking-wider transition-colors"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <div
+                      className="prose-blog w-full min-h-[200px] max-h-[400px] overflow-y-auto bg-lux-black border border-champagne-gold/20 rounded-sm px-4 py-3 text-xs"
+                      dangerouslySetInnerHTML={{ __html: editingBlog.htmlContent }}
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <p className="text-[9px] text-ivory/30">Or write manually — double-Enter for new paragraphs</p>
+                    {renderTextToolbar("content")}
+                    <textarea
+                      id="content"
+                      rows={8}
+                      value={editingBlog.content}
+                      onChange={(e) => setEditingBlog((p: any) => ({ ...p, content: e.target.value }))}
+                      placeholder="Write full article body paragraphs here..."
+                      className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2 rounded-sm focus:outline-none font-sans leading-relaxed"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* SEO Meta Tags Option */}

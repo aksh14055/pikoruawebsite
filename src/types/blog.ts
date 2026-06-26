@@ -21,4 +21,6 @@ export interface BlogPost {
   updatedAt?: string;
   /** Slugs of related /locations or /property-types landing pages to cross-link from this post */
   relatedLandingSlugs?: string[];
+  /** Rich HTML body from DOCX import — takes precedence over content[] when set */
+  htmlContent?: string;
 }
