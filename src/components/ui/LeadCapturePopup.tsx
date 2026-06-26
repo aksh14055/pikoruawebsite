@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CheckCircle, ChevronDown } from "lucide-react";
@@ -72,8 +73,16 @@ export function LeadCapturePopup() {
     }
   }
 
+  const pathname = usePathname();
+
   useEffect(() => {
     const frame = requestAnimationFrame(() => setMounted(true));
+
+    // Never show lead popup on the admin console
+    if (pathname?.startsWith("/admin")) {
+      return () => cancelAnimationFrame(frame);
+    }
+
     if (typeof window !== "undefined" && hasSubmittedBefore()) {
       return () => cancelAnimationFrame(frame);
     }
