@@ -7,6 +7,7 @@ import {
   getSupabaseBlogs,
   getSupabaseAboutPageContent,
   getSupabaseHomePageContent,
+  getSupabaseGeneralFaqs,
 } from "@/lib/supabase/queries";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
@@ -36,7 +37,7 @@ export default async function AdminPage() {
   let aboutContent: any = null;
   let homeContent: any = null;
   let pagesSeo: any[] = [];
-
+  let generalFaqs: any[] = [];
 
   try {
     properties = await getSupabaseProperties();
@@ -83,6 +84,12 @@ export default async function AdminPage() {
     console.error("Error fetching pages SEO for admin page:", err);
   }
 
+  try {
+    generalFaqs = await getSupabaseGeneralFaqs();
+  } catch (err) {
+    console.error("Error fetching general FAQs for admin page:", err);
+  }
+
   return (
     <AdminDashboard
       initialProperties={properties}
@@ -91,6 +98,7 @@ export default async function AdminPage() {
       initialAboutContent={aboutContent}
       initialHomeContent={homeContent}
       initialPagesSeo={pagesSeo}
+      initialGeneralFaqs={generalFaqs}
     />
   );
 }

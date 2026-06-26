@@ -23,4 +23,6 @@ export interface BlogPost {
   relatedLandingSlugs?: string[];
   /** Rich HTML body from DOCX import — takes precedence over content[] when set */
   htmlContent?: string;
+  /** FAQ entries for AEO/rich results schema */
+  faqs?: { question: string; answer: string }[];
 }

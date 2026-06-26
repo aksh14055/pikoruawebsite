@@ -6,8 +6,8 @@ import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { FAQ_ITEMS } from "@/lib/data/faq";
 import { createMetadata, serializeJsonLd } from "@/lib/seo";
-import { getPageSeoData } from "@/lib/supabase/queries";
-import type { LeadPurpose } from "@/types";
+import { getPageSeoData, getSupabaseGeneralFaqs } from "@/lib/supabase/queries";
+import type { LeadPurpose, GeneralFaq } from "@/types";
 
 // ─── URL purpose → LeadPurpose mapping ───────────────────────────────────────
 // ?purpose=buy → self-use, ?purpose=sell → selling, etc.
@@ -36,17 +36,7 @@ interface ContactPageProps {
   searchParams: Promise<{ purpose?: string }>;
 }
 
-const faqSchema = {
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
+
 
 /**
  * HowTo schema for the NRI residential property purchase process.
@@ -111,6 +101,28 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const purposeKey = rawPurpose?.toLowerCase() ?? "";
   const initialPurpose: LeadPurpose | "" = PURPOSE_MAP[purposeKey] ?? "";
 
+  let dbFaqs: GeneralFaq[] = [];
+  try {
+    dbFaqs = await getSupabaseGeneralFaqs();
+  } catch (err) {
+    console.error("Error fetching general FAQs for contact page:", err);
+  }
+
+  const categoryFaqs = dbFaqs.filter((f) => f.category === "general");
+  const finalFaqs = categoryFaqs.length > 0 ? categoryFaqs : FAQ_ITEMS;
+
+  const faqSchema = {
+    "@type": "FAQPage",
+    mainEntity: finalFaqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   const combinedSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -143,7 +155,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
                 Frequently Asked Questions
               </h2>
             </div>
-            <FaqAccordion items={FAQ_ITEMS} />
+            <FaqAccordion items={finalFaqs} />
           </div>
         </section>
       </main>

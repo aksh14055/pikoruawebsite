@@ -341,6 +341,7 @@ export async function createOrUpdateBlogPost(blog: any) {
     seo_description: blog.seoDescription || blog.seo_description || null,
     is_active: blog.isActive !== undefined ? blog.isActive : (blog.is_active !== undefined ? blog.is_active : true),
     html_content: blog.htmlContent || blog.html_content || null,
+    faqs: blog.faqs || [],
   };
 
   const { error } = await supabase
@@ -521,6 +522,61 @@ export async function createOrUpdateHomePage(homeContent: any) {
   }
 
   revalidatePath("/");
+
+  return { success: true };
+}
+
+/**
+ * Creates or updates a general FAQ in the database.
+ */
+export async function createOrUpdateGeneralFaq(faq: any) {
+  await requireAuth();
+  const supabase = createServerSupabaseClient();
+
+  const dbFaq = {
+    id: faq.id || undefined, // auto-generate UUID if not present
+    question: faq.question,
+    answer: faq.answer,
+    display_order: faq.display_order !== undefined ? faq.display_order : (faq.displayOrder || 0),
+    category: faq.category || "general",
+  };
+
+  const { error } = await supabase
+    .from("general_faqs")
+    .upsert(dbFaq);
+
+  if (error) {
+    console.error("Error upserting general FAQ:", error);
+    throw new Error(error.message);
+  }
+
+  // Revalidate public pages where FAQs are displayed
+  revalidatePath("/contact");
+  revalidatePath("/properties");
+
+  return { success: true };
+}
+
+/**
+ * Deletes a general FAQ from the database.
+ */
+export async function deleteGeneralFaq(id: string) {
+  await requireAuth();
+  const supabase = createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from("general_faqs")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting general FAQ:", error);
+    throw new Error(error.message);
+  }
+
+  // Revalidate public pages
+  revalidatePath("/contact");
+  revalidatePath("/properties");
 
   return { success: true };
 }

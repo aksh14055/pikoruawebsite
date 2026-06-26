@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { getSupabasePublicClient } from "./client";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
-import type { Testimonial, AboutPageContent } from "@/types";
+import type { Testimonial, AboutPageContent, GeneralFaq } from "@/types";
 import type { BlogPost } from "@/types/blog";
 
 // Helper to convert local image paths to absolute Supabase storage URLs if needed.
@@ -288,6 +288,7 @@ function mapDbBlogToBlogPost(db: any): BlogPost {
     isFeatured: db.is_featured,
     content: db.content || [],
     htmlContent: db.html_content || undefined,
+    faqs: db.faqs || [],
     seoTitle: db.seo_title || undefined,
     seoDescription: db.seo_description || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,
@@ -410,5 +411,26 @@ export const getSupabaseHomePageContent = cache(async function getSupabaseHomePa
   } catch (err) {
     console.error("Unhandled error in getSupabaseHomePageContent:", err);
     return null;
+  }
+});
+
+export const getSupabaseGeneralFaqs = cache(async function getSupabaseGeneralFaqs(): Promise<GeneralFaq[]> {
+  try {
+    const supabase = getSupabasePublicClient();
+    const { data, error } = await supabase
+      .from("general_faqs")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching general FAQs from Supabase:", error);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("Unhandled error in getSupabaseGeneralFaqs:", err);
+    return [];
   }
 });

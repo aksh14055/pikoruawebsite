@@ -241,3 +241,13 @@ export interface DiscoveryState {
   prefillPropertyRef?: string;
   prefillLocation?: LocationSlug;
 }
+
+// ─── FAQ Item (Supabase-managed) ──────────────────────────────────────────
+export interface GeneralFaq {
+  id: string;
+  question: string;
+  answer: string;
+  display_order: number;
+  category: string; // 'general' | 'properties' | 'contact'
+  created_at?: string;
+}

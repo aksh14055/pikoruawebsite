@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   logoutAction,
   getLeads,
@@ -15,6 +15,8 @@ import {
   createOrUpdateAboutPage,
   createOrUpdatePageSeo,
   createOrUpdateHomePage,
+  createOrUpdateGeneralFaq,
+  deleteGeneralFaq,
 } from "./actions";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
 import {
@@ -36,8 +38,9 @@ import {
   Download,
   Globe,
   Home,
+  HelpCircle,
 } from "lucide-react";
-import type { Lead, Testimonial } from "@/types";
+import type { Lead, Testimonial, GeneralFaq } from "@/types";
 import type { BlogPost } from "@/types/blog";
 import Image from "next/image";
 
@@ -79,6 +82,44 @@ const generateAutoExcerpt = (contentStr: string): string => {
   return sub + "...";
 };
 
+interface HtmlContentEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+function HtmlContentEditor({ value, onChange }: HtmlContentEditorProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const lastValueRef = useRef(value);
+
+  // Sync state to DOM only when it changes from outside
+  useEffect(() => {
+    if (value !== lastValueRef.current) {
+      lastValueRef.current = value;
+      if (ref.current) {
+        ref.current.innerHTML = value;
+      }
+    }
+  }, [value]);
+
+  const handleInput = () => {
+    if (ref.current) {
+      const html = ref.current.innerHTML;
+      lastValueRef.current = html;
+      onChange(html);
+    }
+  };
+
+  return (
+    <div
+      ref={ref}
+      contentEditable
+      suppressContentEditableWarning
+      onInput={handleInput}
+      className="prose-blog w-full min-h-[200px] max-h-[500px] overflow-y-auto bg-lux-black border border-champagne-gold/20 hover:border-champagne-gold/40 focus:border-champagne-gold focus:outline-none rounded-sm px-4 py-3 text-xs cursor-text transition-colors"
+    />
+  );
+}
+
 interface AdminDashboardProps {
   initialProperties: StaticProperty[];
   initialTestimonials: Testimonial[];
@@ -86,6 +127,7 @@ interface AdminDashboardProps {
   initialAboutContent: any;
   initialHomeContent?: any;
   initialPagesSeo: any[];
+  initialGeneralFaqs: GeneralFaq[];
 }
 
 export default function AdminDashboard({
@@ -95,9 +137,14 @@ export default function AdminDashboard({
   initialAboutContent,
   initialHomeContent,
   initialPagesSeo,
+  initialGeneralFaqs,
 }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<"leads" | "properties" | "testimonials" | "blogs" | "home" | "about" | "seo">("leads");
+  const [activeTab, setActiveTab] = useState<"leads" | "properties" | "testimonials" | "blogs" | "home" | "about" | "seo" | "faqs">("leads");
 
+  // General FAQs state
+  const [generalFaqs, setGeneralFaqs] = useState<GeneralFaq[]>(initialGeneralFaqs || []);
+  const [editingGeneralFaq, setEditingGeneralFaq] = useState<any | null>(null);
+  const [isGeneralFaqModalOpen, setIsGeneralFaqModalOpen] = useState(false);
 
   // Leads state
   const [leads, setLeads] = useState<any[]>([]);
@@ -619,6 +666,7 @@ export default function AdminDashboard({
       isFeatured: false,
       content: "", // handled as single text string, parsed on save
       htmlContent: "",
+      faqs: [],
       seoTitle: "",
       seoDescription: "",
       isActive: true,
@@ -634,6 +682,7 @@ export default function AdminDashboard({
       authorAvatar: blog.author?.avatar || "/images/founder.jpg",
       content: blog.content ? blog.content.join("\n\n") : "",
       htmlContent: blog.htmlContent || "",
+      faqs: blog.faqs || [],
       seoTitle: blog.seoTitle || "",
       seoDescription: blog.seoDescription || "",
       isActive: blog.isActive !== undefined ? blog.isActive : true,
@@ -693,6 +742,7 @@ export default function AdminDashboard({
           isFeatured: payload.isFeatured,
           content: payload.content,
           htmlContent: payload.htmlContent || undefined,
+          faqs: payload.faqs || [],
         };
 
         if (exists) {
@@ -747,6 +797,56 @@ export default function AdminDashboard({
     } finally {
       setUploadingBlogImage(false);
       setUploadingAuthorAvatar(false);
+    }
+  };
+
+  // General FAQ actions
+  const handleOpenAddGeneralFaq = () => {
+    setEditingGeneralFaq({
+      question: "",
+      answer: "",
+      display_order: generalFaqs.length,
+      category: "general",
+    });
+    setIsGeneralFaqModalOpen(true);
+  };
+
+  const handleOpenEditGeneralFaq = (faq: GeneralFaq) => {
+    setEditingGeneralFaq({ ...faq });
+    setIsGeneralFaqModalOpen(true);
+  };
+
+  const handleSaveGeneralFaq = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingGeneralFaq.question || !editingGeneralFaq.answer) {
+      alert("Question and Answer are required.");
+      return;
+    }
+    setActionLoading(true);
+    try {
+      await createOrUpdateGeneralFaq(editingGeneralFaq);
+      // Refetch or update local list
+      // Since it's upsert, we can query it or simply reload the list or patch the state.
+      // To keep it 100% synced with actual generated database IDs, let's reload window or update state.
+      // The best is window.location.reload() or patching state. Let's reload window after success so we fetch fresh database IDs.
+      window.location.reload();
+    } catch (err: any) {
+      alert("Error saving FAQ: " + err.message);
+      setActionLoading(false);
+    }
+  };
+
+  const handleDeleteGeneralFaq = async (id: string, question: string) => {
+    if (confirm(`Are you sure you want to delete this FAQ: "${question.substring(0, 40)}..."?`)) {
+      setActionLoading(true);
+      try {
+        await deleteGeneralFaq(id);
+        setGeneralFaqs((prev) => prev.filter((f) => f.id !== id));
+      } catch (err: any) {
+        alert("Error deleting FAQ: " + err.message);
+      } finally {
+        setActionLoading(false);
+      }
     }
   };
 
@@ -1125,6 +1225,18 @@ export default function AdminDashboard({
             >
               <Globe className="w-4 h-4" />
               SEO Settings
+            </button>
+
+            <button
+              onClick={() => setActiveTab("faqs")}
+              className={`w-full flex items-center gap-3 px-4 py-3 text-xs uppercase tracking-wider rounded-sm transition-all text-left cursor-pointer ${
+                activeTab === "faqs"
+                  ? "bg-champagne-gold/10 text-champagne-gold font-medium border-l-2 border-champagne-gold"
+                  : "text-ivory/50 hover:bg-white/[0.02] hover:text-white"
+              }`}
+            >
+              <HelpCircle className="w-4 h-4" />
+              General FAQs
             </button>
           </nav>
         </div>
@@ -2221,6 +2333,179 @@ export default function AdminDashboard({
                   );
                 })}
               </div>
+
+              {/* ── Best Practices Guide ────────────────────────────── */}
+              <div className="mt-10 space-y-6">
+                <div className="border-b border-white/[0.06] pb-3">
+                  <h2 className="font-display text-sm tracking-[0.2em] text-champagne-gold uppercase">Best Practices — SEO · GEO · AEO</h2>
+                  <p className="text-[9px] text-ivory/30 mt-1 uppercase tracking-wider">Reference guide for every time you publish new content</p>
+                </div>
+
+                {/* Checklist cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                  {/* SEO Card */}
+                  <div className="bg-soft-black border border-white/[0.06] rounded-sm p-5 space-y-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400/80" />
+                      <h3 className="text-[10px] uppercase tracking-widest text-blue-300 font-semibold">SEO</h3>
+                      <span className="text-[8px] text-ivory/30 uppercase tracking-wider">Search Engine</span>
+                    </div>
+                    {[
+                      { label: "Meta Title", tip: "60 chars max. Include main keyword + \"Ahmedabad\" or location" },
+                      { label: "Meta Description", tip: "150 chars. One sentence with a benefit. Avoid generic phrases." },
+                      { label: "Slug / URL", tip: "Hyphens, lowercase, keyword-first (e.g. luxury-flats-sindhu-bhavan)" },
+                      { label: "Cover Image", tip: "Real photo, not stock. Alt text is auto-set from title." },
+                      { label: "Internal Links", tip: "Link from 1–2 older posts to every new post you publish" },
+                      { label: "Google Indexing", tip: "Go to Search Console → paste URL → Request Indexing (do this every time)" },
+                    ].map((item) => (
+                      <div key={item.label} className="border-l border-blue-400/20 pl-3">
+                        <p className="text-[9px] font-semibold text-ivory/80 uppercase tracking-wider">{item.label}</p>
+                        <p className="text-[9px] text-ivory/40 leading-relaxed mt-0.5">{item.tip}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* GEO Card */}
+                  <div className="bg-soft-black border border-white/[0.06] rounded-sm p-5 space-y-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-champagne-gold/80" />
+                      <h3 className="text-[10px] uppercase tracking-widest text-champagne-gold font-semibold">GEO</h3>
+                      <span className="text-[8px] text-ivory/30 uppercase tracking-wider">Generative Engine</span>
+                    </div>
+                    {[
+                      { label: "Open with a Direct Answer", tip: "First paragraph answers the post title directly. AI engines pull these as citations." },
+                      { label: "Use Specific Data", tip: "₹ amounts, sq ft, possession date, exact road name. Vague content is never cited." },
+                      { label: "Name Entities", tip: "Project name, builder, exact location (Sindhu Bhavan Rd, SG Highway) — not just 'Ahmedabad'" },
+                      { label: "FAQs Section", tip: "3–5 Q&As at the bottom. LLMs love structured Q&A for direct citation." },
+                      { label: "Social Sharing", tip: "Post on LinkedIn + Instagram after publishing. Social signals help AI engines surface content." },
+                      { label: "Freshness", tip: "Update possession dates, prices, and availability when they change." },
+                    ].map((item) => (
+                      <div key={item.label} className="border-l border-champagne-gold/20 pl-3">
+                        <p className="text-[9px] font-semibold text-ivory/80 uppercase tracking-wider">{item.label}</p>
+                        <p className="text-[9px] text-ivory/40 leading-relaxed mt-0.5">{item.tip}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* AEO Card */}
+                  <div className="bg-soft-black border border-white/[0.06] rounded-sm p-5 space-y-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                      <h3 className="text-[10px] uppercase tracking-widest text-emerald-300 font-semibold">AEO</h3>
+                      <span className="text-[8px] text-ivory/30 uppercase tracking-wider">Answer Engine</span>
+                    </div>
+                    {[
+                      { label: "FAQs with Schema", tip: "FAQs you add here get published as JSON-LD — eligible for Google FAQ rich results" },
+                      { label: "Question-format Headings", tip: "Use headings like 'What is the price of…' — these become featured snippet candidates" },
+                      { label: "Short Direct Answers", tip: "Under each heading, write the answer in ≤2 sentences before elaborating" },
+                      { label: "Number Lists", tip: "'Top 5 reasons...' or '3 things to know...' — voice and AI assistants prefer numbered formats" },
+                      { label: "Local Specificity", tip: "Include pin codes, landmarks, and neighbourhood names — critical for voice search (Alexa, Siri)" },
+                      { label: "Review / Testimonials", tip: "Each testimonial added to the site adds credibility signals AEO systems weigh" },
+                    ].map((item) => (
+                      <div key={item.label} className="border-l border-emerald-400/20 pl-3">
+                        <p className="text-[9px] font-semibold text-ivory/80 uppercase tracking-wider">{item.label}</p>
+                        <p className="text-[9px] text-ivory/40 leading-relaxed mt-0.5">{item.tip}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Publishing checklist */}
+                <div className="bg-soft-black border border-white/[0.06] rounded-sm p-5">
+                  <h3 className="text-[9px] uppercase tracking-widest text-ivory/50 font-semibold mb-4">Every-time publishing checklist</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                    {[
+                      "✦  Fill Meta Title (≤60 chars, keyword + location)",
+                      "✦  Fill Meta Description (≤150 chars, 1 benefit sentence)",
+                      "✦  Set a keyword-rich slug (no special characters)",
+                      "✦  Upload a real cover image (no stock photos)",
+                      "✦  Add 3–5 FAQs in the FAQ section",
+                      "✦  Check excerpt reads naturally",
+                      "✦  First paragraph answers the post title directly",
+                      "✦  Include at least 3 specific facts (₹, sq ft, date, location)",
+                      "✦  Request indexing in Google Search Console",
+                      "✦  Share on LinkedIn & Instagram after publishing",
+                      "✦  Add 1 internal link from an older post",
+                      "✦  Update prices / dates whenever market changes",
+                    ].map((item) => (
+                      <p key={item} className="text-[9px] text-ivory/50 leading-relaxed">{item}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === "faqs" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center border-b border-white/[0.06] pb-5">
+                <div>
+                  <h1 className="font-display text-lg tracking-widest text-white uppercase">
+                    General & Page FAQs
+                  </h1>
+                  <p className="text-[10px] text-champagne-gold/60 mt-1 uppercase tracking-wider">
+                    Manage FAQs displayed on the Contact page, Properties grid page, and other general sections
+                  </p>
+                </div>
+                <button
+                  onClick={handleOpenAddGeneralFaq}
+                  className="inline-flex items-center gap-2 bg-champagne-gold/10 hover:bg-champagne-gold/20 text-champagne-gold text-[10px] uppercase tracking-wider font-semibold border border-champagne-gold/30 px-4 py-2.5 rounded-sm transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add New FAQ
+                </button>
+              </div>
+
+              {generalFaqs.length === 0 ? (
+                <div className="text-center py-12 border border-dashed border-white/[0.06] rounded-sm">
+                  <p className="text-sm text-ivory/30 italic">No general FAQs found in database.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {generalFaqs.map((faq) => (
+                    <div
+                      key={faq.id}
+                      className="bg-soft-black border border-white/[0.06] p-5 rounded-sm flex flex-col md:flex-row md:items-start justify-between gap-4"
+                    >
+                      <div className="space-y-2 flex-grow">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[9px] px-2 py-0.5 bg-champagne-gold/10 text-champagne-gold uppercase tracking-wider font-medium rounded-sm border border-champagne-gold/20">
+                            {faq.category}
+                          </span>
+                          <span className="text-[9px] text-ivory/40 uppercase tracking-wider font-sans">
+                            Order: {faq.display_order}
+                          </span>
+                        </div>
+                        <h3 className="font-sans text-sm text-white font-normal leading-snug">
+                          {faq.question}
+                        </h3>
+                        <p className="text-xs text-ivory/60 leading-relaxed font-sans pr-4">
+                          {faq.answer}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 flex-shrink-0 self-end md:self-start">
+                        <button
+                          onClick={() => handleOpenEditGeneralFaq(faq)}
+                          className="p-2 border border-white/10 hover:border-champagne-gold/40 text-ivory/60 hover:text-champagne-gold rounded-sm bg-lux-black cursor-pointer transition-all"
+                          title="Edit FAQ"
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteGeneralFaq(faq.id, faq.question)}
+                          className="p-2 border border-white/10 hover:border-red-500/40 text-ivory/60 hover:text-red-400 rounded-sm bg-lux-black cursor-pointer transition-all"
+                          title="Delete FAQ"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -3168,15 +3453,9 @@ export default function AdminDashboard({
                         Clear
                       </button>
                     </div>
-                    <div
-                      contentEditable
-                      suppressContentEditableWarning
-                      onInput={(e) => {
-                        const html = (e.currentTarget as HTMLDivElement).innerHTML;
-                        setEditingBlog((p: any) => ({ ...p, htmlContent: html }));
-                      }}
-                      className="prose-blog w-full min-h-[200px] max-h-[500px] overflow-y-auto bg-lux-black border border-champagne-gold/20 hover:border-champagne-gold/40 focus:border-champagne-gold focus:outline-none rounded-sm px-4 py-3 text-xs cursor-text transition-colors"
-                      dangerouslySetInnerHTML={{ __html: editingBlog.htmlContent }}
+                    <HtmlContentEditor
+                      value={editingBlog.htmlContent}
+                      onChange={(html) => setEditingBlog((p: any) => ({ ...p, htmlContent: html }))}
                     />
                     <p className="text-[9px] text-ivory/25">Click anywhere inside to edit. Formatting is preserved.</p>
                   </div>
@@ -3231,6 +3510,73 @@ export default function AdminDashboard({
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* FAQ Editor — for AEO / Google rich results */}
+              <div className="bg-white/[0.01] p-4 border border-white/[0.04] rounded-sm space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[9px] uppercase tracking-wider text-champagne-gold font-medium">FAQs</h4>
+                    <p className="text-[8px] text-ivory/30 mt-0.5 uppercase tracking-wider">Boosts AEO — powers Google FAQ rich results &amp; AI citation</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEditingBlog((p: any) => ({
+                      ...p,
+                      faqs: [...(p.faqs || []), { question: "", answer: "" }]
+                    }))}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 border border-champagne-gold/40 text-champagne-gold hover:border-champagne-gold text-[9px] uppercase tracking-wider font-semibold rounded-sm transition-all cursor-pointer"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Add FAQ
+                  </button>
+                </div>
+
+                {(!editingBlog.faqs || editingBlog.faqs.length === 0) ? (
+                  <p className="text-[9px] text-ivory/25 italic">No FAQs yet. Add 3–5 questions your buyer would ask.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {(editingBlog.faqs || []).map((faq: { question: string; answer: string }, i: number) => (
+                      <div key={i} className="bg-lux-black border border-white/[0.06] rounded-sm p-3 space-y-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[9px] text-champagne-gold/60 uppercase tracking-wider font-medium">Q{i + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => setEditingBlog((p: any) => ({
+                              ...p,
+                              faqs: (p.faqs || []).filter((_: any, idx: number) => idx !== i)
+                            }))}
+                            className="text-[9px] text-red-400/60 hover:text-red-400 uppercase tracking-wider transition-colors cursor-pointer"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={faq.question}
+                          onChange={(e) => setEditingBlog((p: any) => {
+                            const updated = [...(p.faqs || [])];
+                            updated[i] = { ...updated[i], question: e.target.value };
+                            return { ...p, faqs: updated };
+                          })}
+                          placeholder="e.g. What is the price range for penthouses on Sindhu Bhavan Road?"
+                          className="w-full bg-lux-black/50 border border-white/[0.08] focus:border-champagne-gold/50 text-ivory text-xs px-3 py-2 rounded-sm focus:outline-none font-sans"
+                        />
+                        <textarea
+                          rows={2}
+                          value={faq.answer}
+                          onChange={(e) => setEditingBlog((p: any) => {
+                            const updated = [...(p.faqs || [])];
+                            updated[i] = { ...updated[i], answer: e.target.value };
+                            return { ...p, faqs: updated };
+                          })}
+                          placeholder="Concise answer in 2–3 sentences with specific details (price, location, size)..."
+                          className="w-full bg-lux-black/50 border border-white/[0.08] focus:border-champagne-gold/50 text-ivory text-xs px-3 py-2 rounded-sm focus:outline-none font-sans leading-relaxed"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Featured & Active Options */}
@@ -3288,6 +3634,94 @@ export default function AdminDashboard({
                 >
                   {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   Save Article
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── General FAQ Modal ── */}
+      {isGeneralFaqModalOpen && editingGeneralFaq && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsGeneralFaqModalOpen(false)} />
+          <div className="relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 z-10 shadow-2xl">
+            <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6 font-sans">
+              <h3 className="font-display text-base tracking-widest uppercase text-white">
+                {editingGeneralFaq.id && !editingGeneralFaq.id.startsWith("0.") ? "Edit General FAQ" : "Add General FAQ"}
+              </h3>
+              <button
+                onClick={() => setIsGeneralFaqModalOpen(false)}
+                className="p-1.5 border border-white/10 hover:border-white/20 hover:text-white text-ivory/60 rounded-sm bg-lux-black cursor-pointer transition-all"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveGeneralFaq} className="space-y-4">
+              <div className="space-y-1">
+                <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Category</label>
+                <select
+                  value={editingGeneralFaq.category}
+                  onChange={(e) => setEditingGeneralFaq((p: any) => ({ ...p, category: e.target.value }))}
+                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-sm px-3 py-2 rounded-sm focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 transition-all cursor-pointer font-sans"
+                >
+                  <option value="general">General (Contact Page)</option>
+                  <option value="properties">Properties Page</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Display Order</label>
+                <input
+                  type="number"
+                  required
+                  value={editingGeneralFaq.display_order}
+                  onChange={(e) => setEditingGeneralFaq((p: any) => ({ ...p, display_order: parseInt(e.target.value) || 0 }))}
+                  placeholder="0"
+                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-sm px-3 py-2 rounded-sm focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 transition-all font-sans"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Question*</label>
+                <input
+                  type="text"
+                  required
+                  value={editingGeneralFaq.question}
+                  onChange={(e) => setEditingGeneralFaq((p: any) => ({ ...p, question: e.target.value }))}
+                  placeholder="e.g. Is PIKORUA Realty a public portal?"
+                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-sm px-3 py-2 rounded-sm focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 transition-all font-sans"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Answer*</label>
+                <textarea
+                  rows={4}
+                  required
+                  value={editingGeneralFaq.answer}
+                  onChange={(e) => setEditingGeneralFaq((p: any) => ({ ...p, answer: e.target.value }))}
+                  placeholder="Type the detailed answer to the question..."
+                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2 rounded-sm focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 transition-all font-sans leading-relaxed"
+                />
+              </div>
+
+              <div className="border-t border-white/[0.06] pt-6 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsGeneralFaqModalOpen(false)}
+                  className="px-5 py-2 bg-white/5 border border-white/10 hover:border-white/20 text-xs uppercase tracking-wider rounded-sm cursor-pointer hover:text-white transition-all font-sans"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionLoading}
+                  className="px-6 py-2 bg-champagne-gold hover:bg-antique-gold text-lux-black font-semibold text-xs uppercase tracking-widest rounded-sm cursor-pointer transition-all inline-flex items-center gap-1.5 font-sans"
+                >
+                  {actionLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                  Save FAQ
                 </button>
               </div>
             </form>

@@ -6,8 +6,9 @@ import { PropertiesGrid } from "@/components/properties/PropertiesGrid";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
-import { getSupabaseProperties, getPageSeoData } from "@/lib/supabase/queries";
+import { getSupabaseProperties, getPageSeoData, getSupabaseGeneralFaqs } from "@/lib/supabase/queries";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
+import type { GeneralFaq } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("properties");
@@ -21,9 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const revalidate = 300;
-
-const PROPERTY_FAQ_ITEMS = [
+const FALLBACK_PROPERTY_FAQ_ITEMS = [
   {
     question: "Which Ahmedabad areas does PIKORUA Realty focus on for luxury homes?",
     answer:
@@ -49,6 +48,17 @@ const PROPERTY_FAQ_ITEMS = [
 export default async function PropertiesPage() {
   const dbProperties = await getSupabaseProperties({ onlyActive: true });
   const properties = dbProperties.length > 0 ? dbProperties : STATIC_PROPERTIES;
+
+  let dbFaqs: GeneralFaq[] = [];
+  try {
+    dbFaqs = await getSupabaseGeneralFaqs();
+  } catch (err) {
+    console.error("Error fetching general FAQs for properties page:", err);
+  }
+
+  const categoryFaqs = dbFaqs.filter((f) => f.category === "properties");
+  const finalFaqs = categoryFaqs.length > 0 ? categoryFaqs : FALLBACK_PROPERTY_FAQ_ITEMS;
+
   const pageDescription =
     "A curated collection of luxury residential properties in Ahmedabad, including apartments, penthouses, villas, bungalows, plots, and investment-led residences.";
   const collectionPageSchema = {
@@ -74,7 +84,7 @@ export default async function PropertiesPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: PROPERTY_FAQ_ITEMS.map((item) => ({
+    mainEntity: finalFaqs.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -176,7 +186,7 @@ export default async function PropertiesPage() {
                 Ahmedabad&rsquo;s Luxury Property Questions
               </h2>
             </div>
-            <FaqAccordion items={PROPERTY_FAQ_ITEMS} />
+            <FaqAccordion items={finalFaqs} />
           </div>
         </section>
       </main>

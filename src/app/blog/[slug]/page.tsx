@@ -134,6 +134,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         ...breadcrumbSchema,
         "@context": undefined,
       },
+      // FAQ rich result schema — only emitted when FAQs are present
+      ...(post.faqs && post.faqs.length > 0 ? [{
+        "@type": "FAQPage",
+        mainEntity: post.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      }] : []),
     ],
   };
 
@@ -243,6 +255,27 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 })
               )}
             </div>
+
+            {/* FAQ Accordion — AEO section */}
+            {post.faqs && post.faqs.length > 0 && (
+              <div className="mt-16 lg:mt-20 max-w-3xl mx-auto">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-6">Frequently Asked Questions</p>
+                <div className="divide-y divide-white/[0.06]">
+                  {post.faqs.map((faq, idx) => (
+                    <details
+                      key={idx}
+                      className="group py-4 cursor-pointer"
+                    >
+                      <summary className="flex items-start justify-between gap-4 list-none cursor-pointer">
+                        <h3 className="font-sans text-sm text-ivory/85 font-normal leading-snug">{faq.question}</h3>
+                        <span className="text-champagne-gold/60 mt-0.5 flex-shrink-0 text-xs transition-transform group-open:rotate-45">+</span>
+                      </summary>
+                      <p className="mt-3 font-sans text-sm text-ivory/50 leading-relaxed pr-8">{faq.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Bottom CTA block */}
             <div className="mt-16 lg:mt-24 border border-champagne-gold/15 bg-white/[0.01] backdrop-blur-md p-8 lg:p-10 rounded-sm text-center relative overflow-hidden max-w-3xl mx-auto">
