@@ -264,36 +264,48 @@ export async function deleteTestimonial(id: string) {
  * Uploads an image directly to Supabase Storage inside the "media" bucket.
  */
 export async function uploadImageAction(formData: FormData) {
-  await requireAuth();
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
   const supabase = createServerSupabaseClient();
 
   const file = formData.get("file") as File;
-  if (!file) {
-    throw new Error("No file provided in form data.");
+  if (!file || !file.name) {
+    return { success: false, error: "No file provided." };
   }
 
-  const fileExt = file.name.split(".").pop();
-  // Safe alphanumeric name with timestamp
+  const fileExt = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const fileName = `${Math.random().toString(36).substring(2, 10)}-${Date.now()}.${fileExt}`;
   const filePath = `properties/${fileName}`;
 
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+  let buffer: Buffer;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    buffer = Buffer.from(arrayBuffer);
+  } catch (e: any) {
+    return { success: false, error: "Failed to read file: " + e.message };
+  }
 
   const { data, error } = await supabase.storage
     .from("media")
     .upload(filePath, buffer, {
-      contentType: file.type,
+      contentType: file.type || "application/octet-stream",
       cacheControl: "3600",
-      upsert: false
+      upsert: false,
     });
 
   if (error) {
     console.error("Supabase storage upload error:", error);
-    throw new Error(error.message);
+    return { success: false, error: error.message };
   }
 
-  // Get the public URL of the uploaded image
+  if (!data?.path) {
+    return { success: false, error: "Upload succeeded but no path returned." };
+  }
+
   const { data: { publicUrl } } = supabase.storage
     .from("media")
     .getPublicUrl(filePath);

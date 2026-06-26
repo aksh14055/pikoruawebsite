@@ -521,6 +521,8 @@ export default function AdminDashboard({
             return { ...prev, images: copy };
           });
         }
+      } else if (!result.success) {
+        alert("Upload failed: " + (result.error || "Unknown error"));
       }
     } catch (err: any) {
       alert("Upload failed: " + err.message);
@@ -733,6 +735,8 @@ export default function AdminDashboard({
       const result = await uploadImageAction(formData);
       if (result.success && result.url) {
         setEditingBlog((prev: any) => ({ ...prev, [field]: result.url }));
+      } else if (!result.success) {
+        alert("Upload failed: " + (result.error || "Unknown error"));
       }
     } catch (err: any) {
       alert("Upload failed: " + err.message);
@@ -916,6 +920,8 @@ export default function AdminDashboard({
       const result = await uploadImageAction(formData);
       if (result.success && result.url) {
         setAboutContent((prev: any) => ({ ...prev, founderAvatar: result.url }));
+      } else if (!result.success) {
+        alert("Upload failed: " + (result.error || "Unknown error"));
       }
     } catch (err: any) {
       alert("Upload failed: " + err.message);
@@ -937,6 +943,8 @@ export default function AdminDashboard({
       if (result.success && result.url) {
         setHomeContent((prev: any) => ({ ...prev, heroVideoUrl: result.url }));
         alert("Video uploaded successfully!");
+      } else if (!result.success) {
+        alert("Video upload failed: " + (result.error || "Unknown error"));
       }
     } catch (err: any) {
       alert("Video upload failed: " + err.message);
@@ -958,6 +966,8 @@ export default function AdminDashboard({
       if (result.success && result.url) {
         setHomeContent((prev: any) => ({ ...prev, heroPosterUrl: result.url }));
         alert("Poster image uploaded successfully!");
+      } else if (!result.success) {
+        alert("Poster image upload failed: " + (result.error || "Unknown error"));
       }
     } catch (err: any) {
       alert("Poster image upload failed: " + err.message);
