@@ -43,6 +43,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "15mb", // allow large property/blog images (default is 4MB)
+    },
+  },
   images: {
     remotePatterns: [
       {
