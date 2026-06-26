@@ -3153,11 +3153,13 @@ export default function AdminDashboard({
                   </label>
                 </div>
 
-                {/* HTML preview from DOCX */}
+                {/* HTML preview from DOCX — editable */}
                 {editingBlog.htmlContent ? (
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-champagne-gold/70 uppercase tracking-wider">✓ DOCX imported — HTML preview</span>
+                      <span className="text-[9px] text-champagne-gold/70 uppercase tracking-wider">
+                        ✓ DOCX imported — click to edit
+                      </span>
                       <button
                         type="button"
                         onClick={() => setEditingBlog((p: any) => ({ ...p, htmlContent: "", content: "" }))}
@@ -3167,9 +3169,16 @@ export default function AdminDashboard({
                       </button>
                     </div>
                     <div
-                      className="prose-blog w-full min-h-[200px] max-h-[400px] overflow-y-auto bg-lux-black border border-champagne-gold/20 rounded-sm px-4 py-3 text-xs"
+                      contentEditable
+                      suppressContentEditableWarning
+                      onInput={(e) => {
+                        const html = (e.currentTarget as HTMLDivElement).innerHTML;
+                        setEditingBlog((p: any) => ({ ...p, htmlContent: html }));
+                      }}
+                      className="prose-blog w-full min-h-[200px] max-h-[500px] overflow-y-auto bg-lux-black border border-champagne-gold/20 hover:border-champagne-gold/40 focus:border-champagne-gold focus:outline-none rounded-sm px-4 py-3 text-xs cursor-text transition-colors"
                       dangerouslySetInnerHTML={{ __html: editingBlog.htmlContent }}
                     />
+                    <p className="text-[9px] text-ivory/25">Click anywhere inside to edit. Formatting is preserved.</p>
                   </div>
                 ) : (
                   <div className="space-y-1">
