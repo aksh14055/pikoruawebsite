@@ -8,7 +8,7 @@ import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_HERO_TITLE, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
-import { cn } from "@/lib/utils";
+import { cn, renderFormattedText } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -95,6 +95,7 @@ export default async function AboutPage() {
   const founderStory = (dbContent?.founderStory || DEFAULT_FOUNDER_STORY).map((paragraph, index) =>
     index === 0 ? ABOUT_INTRO_COPY : withCelebritiesAudience(paragraph)
   );
+  const principles = dbContent?.principles || PRINCIPLES;
 
   const renderTitle = (title: string) => {
     const parts = title.split(/(PIKORUA)/i);
@@ -237,10 +238,8 @@ export default async function AboutPage() {
                       return (
                         <div key={idx} className="border-l border-champagne-gold/45 pl-5 sm:pl-6 py-1">
                           <p className="text-[clamp(1rem,1.8vw,1.18rem)] text-white font-sans font-light leading-relaxed tracking-wide">
-                            {introLead}
-                            <span className="text-champagne-gold">
-                              {INFINITY_SENTENCE}
-                            </span>
+                            <span dangerouslySetInnerHTML={{ __html: renderFormattedText(introLead) }} />
+                            <span className="text-champagne-gold" dangerouslySetInnerHTML={{ __html: renderFormattedText(INFINITY_SENTENCE) }} />
                           </p>
                         </div>
                       );
@@ -255,12 +254,12 @@ export default async function AboutPage() {
                         >
                           {arrivalMatch ? (
                             <>
-                              {para.slice(0, arrivalMatch.index)}
-                              <span className="text-champagne-gold font-normal">{arrivalMatch[0]}</span>
-                              {para.slice((arrivalMatch.index ?? 0) + arrivalMatch[0].length)}
+                              <span dangerouslySetInnerHTML={{ __html: renderFormattedText(para.slice(0, arrivalMatch.index)) }} />
+                              <span className="text-champagne-gold font-normal" dangerouslySetInnerHTML={{ __html: renderFormattedText(arrivalMatch[0]) }} />
+                              <span dangerouslySetInnerHTML={{ __html: renderFormattedText(para.slice((arrivalMatch.index ?? 0) + arrivalMatch[0].length)) }} />
                             </>
                           ) : (
-                            para
+                            <span dangerouslySetInnerHTML={{ __html: renderFormattedText(para) }} />
                           )}
                         </p>
                       </div>
@@ -288,36 +287,38 @@ export default async function AboutPage() {
             </div>
 
             <div className="mx-auto grid max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-              {PRINCIPLES.map((principle) => (
-                <div
-                  key={principle.label}
-                  className="group relative min-h-[260px] p-5 sm:p-6 bg-soft-black/35 border border-white/[0.06] rounded-sm transition-all duration-300 hover:border-champagne-gold/30 hover:bg-soft-black/60 flex flex-col"
-                >
-                  {/* Subtle golden top-corner glow on hover */}
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/0 to-transparent group-hover:via-champagne-gold/45 transition-all duration-500" />
+              {principles.map((principle: { label: string; body: string | string[] }) => {
+                const bodies = Array.isArray(principle.body) ? principle.body : [principle.body];
+                return (
+                  <div
+                    key={principle.label}
+                    className="group relative min-h-[260px] p-5 sm:p-6 bg-soft-black/35 border border-white/[0.06] rounded-sm transition-all duration-300 hover:border-champagne-gold/30 hover:bg-soft-black/60 flex flex-col"
+                  >
+                    {/* Subtle golden top-corner glow on hover */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/0 to-transparent group-hover:via-champagne-gold/45 transition-all duration-500" />
 
-                  <div className="space-y-4">
-                    <h3 className="font-display text-lg lg:text-xl font-light text-white uppercase tracking-wide">
-                      {principle.label}
-                    </h3>
-                    <div className="space-y-3">
-                      {principle.body.map((paragraph, index) => (
-                        <p
-                          key={paragraph}
-                          className={cn(
-                            "font-sans leading-relaxed",
-                            index === 0
-                              ? "text-sm text-champagne-gold font-light"
-                              : "text-[13px] sm:text-sm text-ivory/70 font-light"
-                          )}
-                        >
-                          {paragraph}
-                        </p>
-                      ))}
+                    <div className="space-y-4">
+                      <h3 className="font-display text-lg lg:text-xl font-light text-white uppercase tracking-wide">
+                        {principle.label}
+                      </h3>
+                      <div className="space-y-3">
+                        {bodies.map((paragraph: string, index: number) => (
+                          <p
+                            key={paragraph}
+                            className={cn(
+                              "font-sans leading-relaxed",
+                              index === 0
+                                ? "text-sm text-champagne-gold font-light"
+                                : "text-[13px] sm:text-sm text-ivory/70 font-light"
+                            )}
+                            dangerouslySetInnerHTML={{ __html: renderFormattedText(paragraph) }}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

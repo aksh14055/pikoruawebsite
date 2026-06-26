@@ -766,7 +766,7 @@ export default function AdminDashboard({
   };
 
   const insertFormatting = (
-    field: "description" | "content",
+    field: string,
     prefix: string,
     suffix: string,
     placeholder = "text"
@@ -787,6 +787,10 @@ export default function AdminDashboard({
       setEditingBlog((prev: any) => ({ ...prev, [field]: newValue }));
     } else if (activeTab === "properties") {
       setEditingProperty((prev: any) => ({ ...prev, [field]: newValue }));
+    } else if (activeTab === "about") {
+      setAboutContent((prev: any) => ({ ...prev, [field]: newValue }));
+    } else if (activeTab === "home") {
+      setHomeContent((prev: any) => ({ ...prev, [field]: newValue }));
     }
 
     // Refocus and select
@@ -799,9 +803,9 @@ export default function AdminDashboard({
     }, 0);
   };
 
-  const renderTextToolbar = (field: "description" | "content") => {
+  const renderTextToolbar = (field: string) => {
     return (
-      <div className="flex flex-wrap gap-1.5 pb-1 mb-1">
+      <div className="flex flex-wrap items-center gap-1.5 pb-1.5 mb-1.5">
         <button
           type="button"
           onClick={() => insertFormatting(field, "**", "**", "bold text")}
@@ -842,6 +846,60 @@ export default function AdminDashboard({
         >
           Bullet
         </button>
+
+        {/* Font Size Select */}
+        <select
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val) {
+              insertFormatting(field, `[size:${val}]{`, "}", "sized text");
+              e.target.value = "";
+            }
+          }}
+          className="px-1.5 py-0.5 bg-lux-black border border-white/10 hover:border-white/20 text-ivory/80 rounded-sm text-[9px] uppercase font-semibold tracking-wider transition-all cursor-pointer focus:outline-none h-[20px]"
+        >
+          <option value="" disabled selected>Size</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="16">16</option>
+          <option value="18">18</option>
+          <option value="20">20</option>
+          <option value="22">22</option>
+          <option value="24">24</option>
+          <option value="28">28</option>
+          <option value="32">32</option>
+          <option value="36">36</option>
+          <option value="40">40</option>
+          <option value="48">48</option>
+          <option value="56">56</option>
+          <option value="64">64</option>
+        </select>
+
+        {/* Font Style Select */}
+        <select
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val) {
+              insertFormatting(field, `[style:${val}]{`, "}", "styled text");
+              e.target.value = "";
+            }
+          }}
+          className="px-1.5 py-0.5 bg-lux-black border border-white/10 hover:border-white/20 text-ivory/80 rounded-sm text-[9px] uppercase font-semibold tracking-wider transition-all cursor-pointer focus:outline-none h-[20px]"
+        >
+          <option value="" disabled selected>Style</option>
+          <option value="serif">Serif (Display)</option>
+          <option value="sans">Sans-Serif</option>
+          <option value="mono">Monospace</option>
+          <option value="gold">Gold Color</option>
+          <option value="muted">Muted Text</option>
+          <option value="underline">Underline</option>
+          <option value="strike">Strike</option>
+          <option value="uppercase">Uppercase</option>
+          <option value="tracking">Letter Spac</option>
+        </select>
       </div>
     );
   };
@@ -1568,7 +1626,9 @@ export default function AdminDashboard({
 
                 <div className="space-y-1 text-xs">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Hero Subheadline</label>
+                  {renderTextToolbar("heroSubhead")}
                   <textarea
+                    id="heroSubhead"
                     rows={2}
                     required
                     value={homeContent.heroSubhead}
@@ -1654,7 +1714,9 @@ export default function AdminDashboard({
                 </h3>
                 <div className="space-y-1 text-xs">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Positioning Statement Text</label>
+                  {renderTextToolbar("positioningStatement")}
                   <textarea
+                    id="positioningStatement"
                     rows={3}
                     required
                     value={homeContent.positioningStatement}
@@ -1856,7 +1918,9 @@ export default function AdminDashboard({
                   </div>
                   <div className="space-y-1">
                     <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Hero Subtitle/Description</label>
+                    {renderTextToolbar("heroDescription")}
                     <textarea
+                      id="heroDescription"
                       rows={2}
                       required
                       value={aboutContent.heroDescription}
@@ -1942,7 +2006,9 @@ export default function AdminDashboard({
                   <div className="space-y-4">
                     <div className="space-y-1">
                       <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Founder Signature Quote</label>
+                      {renderTextToolbar("founderQuote")}
                       <textarea
+                        id="founderQuote"
                         rows={3}
                         required
                         value={aboutContent.founderQuote}
@@ -1955,7 +2021,9 @@ export default function AdminDashboard({
                       <label className="block text-[9px] uppercase tracking-wider text-ivory/40">
                         Founder Story / Biography (Double-Enter for new paragraphs)
                       </label>
+                      {renderTextToolbar("founderStory")}
                       <textarea
+                        id="founderStory"
                         rows={5}
                         required
                         value={aboutContent.founderStory}
@@ -2553,7 +2621,9 @@ export default function AdminDashboard({
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">
                     Property Highlights (One bullet point per line)
                   </label>
+                  {renderTextToolbar("highlights")}
                   <textarea
+                    id="highlights"
                     rows={4}
                     value={editingProperty.highlights}
                     onChange={(e) => setEditingProperty((p: any) => ({ ...p, highlights: e.target.value }))}

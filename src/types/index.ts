@@ -161,6 +161,7 @@ export interface AboutPageContent {
   heroTitle?: string;
   founderAvatar?: string;
   founderStory?: string[];
+  principles?: Array<{ label: string; body: string | string[] }>;
 }
 
 // ─── Guided Discovery / Lead ──────────────────────────────────────────────

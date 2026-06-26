@@ -164,6 +164,41 @@ export function renderFormattedText(text: string): string {
     `<a href="$2" class="text-champagne-gold hover:underline" target="_blank" rel="noopener noreferrer">$1</a>`
   );
 
+  // Custom Font Sizes: [size:16]{text} (numeric = px, named = Tailwind class)
+  for (let i = 0; i < 3; i++) {
+    const nextHtml = html.replace(/\[size:([a-z0-9-]+)\]\{(.*?)\}/g, (match, val, inner) => {
+      // Pure number → inline style (e.g. 16 → font-size:16px)
+      if (/^\d+$/.test(val)) {
+        return `<span style="font-size:${val}px">${inner}</span>`;
+      }
+      // Named size → Tailwind utility class (e.g. lg → text-lg)
+      return `<span class="text-${val}">${inner}</span>`;
+    });
+    if (nextHtml === html) break;
+    html = nextHtml;
+  }
+
+  // Custom Font Styles: [style:gold]{text} (supports nesting up to 3 levels)
+  for (let i = 0; i < 3; i++) {
+    const nextHtml = html.replace(/\[style:([a-z0-9-]+)\]\{(.*?)\}/g, (match, styleName, innerText) => {
+      const styleMap: Record<string, string> = {
+        serif: "font-display",
+        sans: "font-sans",
+        mono: "font-mono",
+        gold: "text-champagne-gold",
+        muted: "text-ivory/60",
+        uppercase: "uppercase",
+        underline: "underline",
+        strike: "line-through",
+        tracking: "tracking-widest",
+      };
+      const className = styleMap[styleName] || styleName;
+      return `<span class="${className}">${innerText}</span>`;
+    });
+    if (nextHtml === html) break;
+    html = nextHtml;
+  }
+
   return html;
 }
 

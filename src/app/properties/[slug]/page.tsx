@@ -266,7 +266,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
                     {property.highlights.map((highlight, idx) => (
                       <li key={idx} className="flex gap-2.5 items-start">
                         <ShieldCheck className="w-4 h-4 text-champagne-gold/75 flex-shrink-0 mt-0.5" />
-                        <span>{highlight}</span>
+                        <span dangerouslySetInnerHTML={{ __html: renderFormattedText(highlight) }} />
                       </li>
                     ))}
                   </ul>
