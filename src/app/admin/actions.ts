@@ -581,6 +581,104 @@ export async function deleteGeneralFaq(id: string) {
   return { success: true };
 }
 
+/**
+ * Call OpenRouter to automatically generate SEO title, description, excerpt, and FAQs.
+ */
+export async function generateBlogMetadataAction(title: string, contentText: string, htmlContent?: string) {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+  }
+
+  // Use the HTML content if plain text is empty
+  const sourceContent = contentText || htmlContent || "";
+  if (!title || !sourceContent) {
+    return { success: false, error: "Title and content are required to generate metadata." };
+  }
+
+  // Strip HTML tags for processing if htmlContent was used
+  const cleanText = sourceContent.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const sampleContent = cleanText.substring(0, 8000); // Send first 8k chars to prevent hitting token limits
+
+  const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
+Analyze the provided blog article's title and content. Your analysis and outputs must be STRICTLY focused on real estate, property details, valuations, local corridors, and real estate market dynamics. Filter out and ignore any non-real-estate themes or off-topic generic details.
+
+Generate:
+1. An SEO-optimized meta title (maximum 60 characters, include location "Ahmedabad" and key real estate keywords).
+2. A high-converting meta description (maximum 150 characters, summarize the post's real estate value with a clear benefit and call to action).
+3. A concise excerpt (maximum 160 characters, summarizing the core real estate subject).
+4. An array of 3 to 5 high-value FAQ entries (Question & Answer pairs) under Answer Engine Optimization (AEO) rules:
+   - Questions must reflect real queries real estate buyers, sellers, or investors would ask about this topic/property.
+   - Answers must be direct, clear, specifying property details (like pricing, layouts, built-up areas, corridors), and be 1-2 sentences long.
+
+You must respond with ONLY a single, valid JSON object matching the following structure:
+{
+  "seoTitle": "string",
+  "seoDescription": "string",
+  "excerpt": "string",
+  "faqs": [
+    {
+      "question": "string",
+      "answer": "string"
+    }
+  ]
+}
+Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json). Return only the raw JSON.`;
+
+  const userPrompt = `Title: ${title}
+Content snippet:
+${sampleContent}`;
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pikorua.in", // Optional, for OpenRouter analytics
+        "X-Title": "PIKORUA Realty Console",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return { success: false, error: `OpenRouter API error: ${response.status} - ${errText}` };
+    }
+
+    const result = await response.json();
+    const responseText = result.choices?.[0]?.message?.content;
+    if (!responseText) {
+      return { success: false, error: "OpenRouter returned an empty response." };
+    }
+
+    // Clean markdown code blocks if the model returned them
+    let cleanJson = responseText.trim();
+    if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
+    }
+
+    const metadata = JSON.parse(cleanJson);
+    return { success: true, metadata };
+  } catch (error: any) {
+    console.error("Error in generateBlogMetadataAction:", error);
+    return { success: false, error: error.message || "Failed to generate metadata." };
+  }
+}
+
 
 
 
