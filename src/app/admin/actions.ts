@@ -680,6 +680,179 @@ ${sampleContent}`;
   }
 }
 
+/**
+ * Call OpenRouter to automatically generate Property SEO tags.
+ */
+export async function generatePropertySeoAction(
+  title: string,
+  configuration: string,
+  locationLabel: string,
+  description: string,
+  highlightsText: string
+) {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+  }
+
+  if (!title || !configuration || !locationLabel) {
+    return { success: false, error: "Title, configuration, and location are required." };
+  }
+
+  const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
+Analyze the luxury residential property details provided. Generate:
+1. An SEO-optimized meta title (maximum 60 characters, include location e.g. "Sindhu Bhavan Ahmedabad" or "Iskon-Ambli Ahmedabad" and key terms like BHK type, e.g. "4 BHK Penthouse", "5 BHK Duplex Villa").
+2. A high-converting meta description (maximum 150 characters, summarize the property's key facts, layout, size, and include a clear call to action).
+
+Your output must strictly focus on luxury real estate. Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
+Return ONLY a single, valid JSON object matching the following structure:
+{
+  "seoTitle": "string",
+  "seoDescription": "string"
+}`;
+
+  const userPrompt = `Property Details:
+Title: ${title}
+Type/Configuration: ${configuration}
+Location: ${locationLabel}
+Description: ${description ? description.substring(0, 1000) : ""}
+Highlights: ${highlightsText ? highlightsText.substring(0, 1000) : ""}`;
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pikorua.in",
+        "X-Title": "PIKORUA Realty Console",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.3,
+        max_tokens: 1000,
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return { success: false, error: `OpenRouter API error: ${response.status} - ${errText}` };
+    }
+
+    const result = await response.json();
+    const responseText = result.choices?.[0]?.message?.content;
+    if (!responseText) {
+      return { success: false, error: "OpenRouter returned an empty response." };
+    }
+
+    let cleanJson = responseText.trim();
+    if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
+    }
+
+    const metadata = JSON.parse(cleanJson);
+    return { success: true, metadata };
+  } catch (error: any) {
+    console.error("Error in generatePropertySeoAction:", error);
+    return { success: false, error: error.message || "Failed to generate metadata." };
+  }
+}
+
+/**
+ * Call OpenRouter to automatically generate Page SEO tags for main site pages.
+ */
+export async function generatePageSeoAction(pageId: string, pageContext?: string) {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+  }
+
+  const pageNames: Record<string, string> = {
+    home: "Home Page (Curated luxury real estate overview of Ahmedabad's Western Corridors)",
+    properties: "Properties List Page (A showcase/collection of 4 BHK and 5 BHK apartments, penthouses, duplexes, villas, plots for sale)",
+    about: "About Page (PIKORUA Realty's founding story by Jitendra, principles of discretion, locations we serve)",
+    testimonials: "Testimonials Page (Verified reviews and experiences from elite luxury home buyers and NRI clients in Ahmedabad)",
+    contact: "Contact Page (Private consultation request form, Power of Attorney for NRIs, custom property briefs)",
+  };
+
+  const pageTitle = pageNames[pageId] || `${pageId} page`;
+
+  const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
+Analyze the target page context. Generate:
+1. An SEO-optimized meta title (maximum 60 characters, must include location "Ahmedabad", "PIKORUA Realty", and target keywords relevant to the page).
+2. A high-converting meta description (maximum 150 characters, entice premium real estate buyers or sellers, mention luxury residential focus, and end with a call to action).
+
+Your output must strictly focus on real estate. Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
+Return ONLY a single, valid JSON object matching the following structure:
+{
+  "seoTitle": "string",
+  "seoDescription": "string"
+}`;
+
+  const userPrompt = `Page ID: ${pageId}
+Page Purpose: ${pageTitle}
+Optional Context: ${pageContext || ""}`;
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pikorua.in",
+        "X-Title": "PIKORUA Realty Console",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.3,
+        max_tokens: 1000,
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return { success: false, error: `OpenRouter API error: ${response.status} - ${errText}` };
+    }
+
+    const result = await response.json();
+    const responseText = result.choices?.[0]?.message?.content;
+    if (!responseText) {
+      return { success: false, error: "OpenRouter returned an empty response." };
+    }
+
+    let cleanJson = responseText.trim();
+    if (cleanJson.startsWith("```")) {
+      cleanJson = cleanJson.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
+    }
+
+    const metadata = JSON.parse(cleanJson);
+    return { success: true, metadata };
+  } catch (error: any) {
+    console.error("Error in generatePageSeoAction:", error);
+    return { success: false, error: error.message || "Failed to generate metadata." };
+  }
+}
+
 
 
 
