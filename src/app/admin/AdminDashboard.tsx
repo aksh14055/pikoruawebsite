@@ -20,6 +20,8 @@ import {
   generateBlogMetadataAction,
   generatePropertySeoAction,
   generatePageSeoAction,
+  fetchRealEstateNewsAction,
+  generateBlogFromNewsAction,
 } from "./actions";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
 import {
@@ -94,13 +96,11 @@ function HtmlContentEditor({ value, onChange }: HtmlContentEditorProps) {
   const ref = useRef<HTMLDivElement>(null);
   const lastValueRef = useRef(value);
 
-  // Sync state to DOM only when it changes from outside
+  // Sync state to DOM on mount and when it changes from outside
   useEffect(() => {
-    if (value !== lastValueRef.current) {
+    if (ref.current && ref.current.innerHTML !== value) {
+      ref.current.innerHTML = value;
       lastValueRef.current = value;
-      if (ref.current) {
-        ref.current.innerHTML = value;
-      }
     }
   }, [value]);
 
@@ -175,6 +175,16 @@ export default function AdminDashboard({
   const [generatingAiMetadata, setGeneratingAiMetadata] = useState<boolean>(false);
   const [generatingPropertySeo, setGeneratingPropertySeo] = useState<boolean>(false);
   const [generatingPageSeo, setGeneratingPageSeo] = useState<Record<string, boolean>>({});
+
+  // News Drafter state
+  const [isNewsDrafterOpen, setIsNewsDrafterOpen] = useState<boolean>(false);
+  const [newsFeed, setNewsFeed] = useState<Array<{ title: string; link: string; pubDate: string; source: string }>>([]);
+  const [fetchingNews, setFetchingNews] = useState<boolean>(false);
+  const [generatingBlogFromNews, setGeneratingBlogFromNews] = useState<boolean>(false);
+  const [customNewsTitle, setCustomNewsTitle] = useState<string>("");
+  const [customNewsUrl, setCustomNewsUrl] = useState<string>("");
+  const [customNewsText, setCustomNewsText] = useState<string>("");
+  const [activeNewsTab, setActiveNewsTab] = useState<"feed" | "custom">("feed");
 
   // About Page state
   const defaultAboutContent = {
@@ -716,7 +726,7 @@ export default function AdminDashboard({
         "corridor-spotlight": "Corridor Spotlight",
       };
       
-      const generatedExcerpt = generateAutoExcerpt(editingBlog.content || "");
+      const generatedExcerpt = editingBlog.excerpt || generateAutoExcerpt(editingBlog.content || "");
 
       const payload = {
         ...editingBlog,
@@ -954,6 +964,69 @@ export default function AdminDashboard({
       alert("AI Generation failed: " + err.message);
     } finally {
       setGeneratingPageSeo((prev) => ({ ...prev, [pageId]: false }));
+    }
+  };
+
+  const handleFetchNews = async () => {
+    setFetchingNews(true);
+    try {
+      const result = await fetchRealEstateNewsAction();
+      if (result.success && result.items) {
+        setNewsFeed(result.items);
+      } else {
+        alert("Failed to load news feed: " + (result.error || "Unknown error"));
+      }
+    } catch (err: any) {
+      alert("Error fetching news: " + err.message);
+    } finally {
+      setFetchingNews(false);
+    }
+  };
+
+  const handleGenerateFromNews = async (title: string, url?: string, customText?: string) => {
+    if (!title) {
+      alert("A topic or headline is required.");
+      return;
+    }
+    setGeneratingBlogFromNews(true);
+    try {
+      const result = await generateBlogFromNewsAction(title, url, customText);
+      if (result.success && result.draft) {
+        setEditingBlog({
+          id: "blog-" + Math.random().toString(36).substring(2, 9),
+          title: result.draft.title,
+          slug: result.draft.slug,
+          htmlContent: result.draft.htmlContent,
+          content: [],
+          coverImage: "",
+          excerpt: result.draft.excerpt || "",
+          seoTitle: result.draft.seoTitle || "",
+          seoDescription: result.draft.seoDescription || "",
+          faqs: result.draft.faqs || [],
+          publishedAt: new Date().toISOString().split("T")[0],
+          readTime: "4 min read",
+          author: {
+            name: "Jitendra",
+            role: "Founder, PIKORUA Realty",
+            avatar: "/images/founder.jpg"
+          }
+        });
+        
+        setIsNewsDrafterOpen(false);
+        setIsBlogModalOpen(true);
+        
+        // Reset custom fields
+        setCustomNewsTitle("");
+        setCustomNewsUrl("");
+        setCustomNewsText("");
+        alert("AI Blog Draft generated successfully! You can now review, edit, and publish it.");
+      } else {
+        alert("Failed to generate blog draft: " + (result.error || "Unknown error"));
+      }
+    } catch (err: any) {
+      alert("AI Generation failed: " + err.message);
+    } finally {
+      setGeneratingBlogFromNews(false);
     }
   };
 
@@ -1743,13 +1816,25 @@ export default function AdminDashboard({
                 <p className="text-xs text-ivory/40">
                   Manage blog posts, insights, and corridor spotlights.
                 </p>
-                <button
-                  onClick={handleOpenAddBlog}
-                  className="inline-flex items-center gap-2 bg-champagne-gold text-lux-black text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:bg-antique-gold transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Blog Post
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setIsNewsDrafterOpen(true);
+                      handleFetchNews();
+                    }}
+                    className="inline-flex items-center gap-2 border border-champagne-gold/40 text-champagne-gold text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:border-champagne-gold transition-all cursor-pointer"
+                  >
+                    <Flame className="w-4 h-4 text-champagne-gold" />
+                    AI News Drafter
+                  </button>
+                  <button
+                    onClick={handleOpenAddBlog}
+                    className="inline-flex items-center gap-2 bg-champagne-gold text-lux-black text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:bg-antique-gold transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Blog Post
+                  </button>
+                </div>
               </div>
 
               <div className="bg-soft-black border border-white/[0.06] rounded-sm overflow-hidden shadow-xl">
@@ -3898,6 +3983,189 @@ export default function AdminDashboard({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── AI News Drafter Modal ── */}
+      {isNewsDrafterOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-md" onClick={() => !generatingBlogFromNews && setIsNewsDrafterOpen(false)} />
+          
+          <div className="relative w-full max-w-2xl bg-soft-black border border-white/[0.08] rounded-md p-6 sm:p-8 z-10 shadow-2xl overflow-hidden max-h-[85vh] flex flex-col font-sans">
+            
+            {generatingBlogFromNews ? (
+              <div className="flex flex-col items-center justify-center py-16 px-4 space-y-4">
+                <Loader2 className="w-12 h-12 text-champagne-gold animate-spin" />
+                <h4 className="text-sm font-display tracking-widest text-champagne-gold uppercase font-semibold">AI is drafting your post</h4>
+                <p className="text-[11px] text-ivory/50 uppercase text-center max-w-sm leading-relaxed">
+                  Our news analyzer is reading the source article details, optimizing SEO tags, writing headers, and crafting FAQs. This may take up to 25 seconds.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6">
+                  <div>
+                    <h3 className="font-display text-base tracking-widest uppercase text-white">
+                      AI News Blog Drafter
+                    </h3>
+                    <p className="text-[9px] text-ivory/40 uppercase tracking-wider mt-1">
+                      Draft a complete luxury real-estate article based on live news or custom topics
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setIsNewsDrafterOpen(false)}
+                    className="p-1.5 border border-white/10 hover:border-white/20 hover:text-white text-ivory/60 rounded-sm bg-lux-black cursor-pointer transition-all"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex border-b border-white/[0.06] mb-6 text-xs uppercase tracking-wider font-semibold">
+                  <button
+                    onClick={() => setActiveNewsTab("feed")}
+                    className={`flex-1 pb-3 text-center transition-all ${
+                      activeNewsTab === "feed"
+                        ? "text-champagne-gold border-b-2 border-champagne-gold"
+                        : "text-ivory/40 hover:text-ivory/80"
+                    }`}
+                  >
+                    Trending Local News
+                  </button>
+                  <button
+                    onClick={() => setActiveNewsTab("custom")}
+                    className={`flex-1 pb-3 text-center transition-all ${
+                      activeNewsTab === "custom"
+                        ? "text-champagne-gold border-b-2 border-champagne-gold"
+                        : "text-ivory/40 hover:text-ivory/80"
+                    }`}
+                  >
+                    Custom Topic / Link
+                  </button>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 overflow-y-auto pr-1">
+                  {activeNewsTab === "feed" ? (
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-[10px] text-ivory/40 uppercase tracking-wider">
+                          Live headlines from Google News RSS
+                        </span>
+                        <button
+                          onClick={handleFetchNews}
+                          disabled={fetchingNews}
+                          className="text-[10px] text-champagne-gold hover:text-antique-gold flex items-center gap-1 cursor-pointer disabled:text-champagne-gold/40"
+                        >
+                          <Loader2 className={`w-3.5 h-3.5 ${fetchingNews ? "animate-spin" : ""}`} />
+                          Refresh Feed
+                        </button>
+                      </div>
+
+                      {fetchingNews ? (
+                        <div className="flex flex-col items-center justify-center py-16 space-y-3">
+                          <Loader2 className="w-8 h-8 text-champagne-gold animate-spin" />
+                          <span className="text-[10px] uppercase text-ivory/40 tracking-wider">Fetching live news...</span>
+                        </div>
+                      ) : newsFeed.length === 0 ? (
+                        <div className="text-center py-16 border border-dashed border-white/10 rounded-sm">
+                          <p className="text-xs text-ivory/40">No property news found in feed.</p>
+                          <button
+                            onClick={handleFetchNews}
+                            className="mt-3 px-4 py-1.5 border border-champagne-gold/30 hover:border-champagne-gold text-champagne-gold text-[10px] uppercase tracking-wider font-semibold rounded-sm transition-all"
+                          >
+                            Try Reloading
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {newsFeed.map((item, idx) => (
+                            <div
+                              key={idx}
+                              className="bg-lux-black border border-white/[0.04] p-4 rounded-sm hover:border-champagne-gold/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+                            >
+                              <div className="space-y-1.5 md:max-w-[75%]">
+                                <h4 className="text-xs font-semibold text-ivory font-sans leading-snug">
+                                  {item.title}
+                                </h4>
+                                <div className="flex items-center gap-2 text-[9px] uppercase tracking-wider text-ivory/40">
+                                  <span className="text-champagne-gold">{item.source}</span>
+                                  <span>•</span>
+                                  <span>{item.pubDate ? new Date(item.pubDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}</span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => handleGenerateFromNews(item.title, item.link)}
+                                className="px-3.5 py-1.5 bg-champagne-gold hover:bg-antique-gold text-lux-black text-[10px] uppercase tracking-wider font-semibold rounded-sm transition-all text-center flex-shrink-0 cursor-pointer self-start md:self-center"
+                              >
+                                Draft Post
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-5">
+                      <div className="space-y-1">
+                        <label className="block text-[10px] uppercase tracking-wider text-ivory/40">News Headline / Article Title</label>
+                        <input
+                          type="text"
+                          value={customNewsTitle}
+                          onChange={(e) => setCustomNewsTitle(e.target.value)}
+                          placeholder="e.g. Ahmedabad Land rates double in Ambli Road corridor"
+                          className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2.5 rounded-sm focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-[10px] uppercase tracking-wider text-ivory/40">Source News URL (Optional - scrapes details)</label>
+                        <input
+                          type="url"
+                          value={customNewsUrl}
+                          onChange={(e) => setCustomNewsUrl(e.target.value)}
+                          placeholder="e.g. https://timesofindia.indiatimes.com/ahmedabad-real-estate"
+                          className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2.5 rounded-sm focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-[10px] uppercase tracking-wider text-ivory/40">Article Excerpt or Specific Guideline Details (Optional)</label>
+                        <textarea
+                          rows={6}
+                          value={customNewsText}
+                          onChange={(e) => setCustomNewsText(e.target.value)}
+                          placeholder="Type or paste any key facts, pricing details, or notes about RERA guidelines that the AI should weave into the post..."
+                          className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2.5 rounded-sm focus:outline-none font-sans leading-relaxed"
+                        />
+                      </div>
+
+                      <div className="border-t border-white/[0.06] pt-5 flex justify-end gap-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCustomNewsTitle("");
+                            setCustomNewsUrl("");
+                            setCustomNewsText("");
+                          }}
+                          className="px-4 py-2 border border-white/15 text-ivory/50 text-[10px] uppercase tracking-wider font-semibold rounded-sm hover:text-white transition-all cursor-pointer"
+                        >
+                          Reset Fields
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleGenerateFromNews(customNewsTitle, customNewsUrl || undefined, customNewsText || undefined)}
+                          className="px-6 py-2 bg-champagne-gold hover:bg-antique-gold text-lux-black font-semibold text-[10px] uppercase tracking-widest rounded-sm transition-all inline-flex items-center gap-1.5 cursor-pointer"
+                        >
+                          Generate AI Draft
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
