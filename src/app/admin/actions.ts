@@ -609,13 +609,22 @@ export async function generateBlogMetadataAction(title: string, contentText: str
   const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
 Analyze the provided blog article's title and content. Your analysis and outputs must be STRICTLY focused on real estate, property details, valuations, local corridors, and real estate market dynamics. Filter out and ignore any non-real-estate themes or off-topic generic details.
 
-Generate:
-1. An SEO-optimized meta title (maximum 60 characters, include location "Ahmedabad" and key real estate keywords).
-2. A high-converting meta description (maximum 150 characters, summarize the post's real estate value with a clear benefit and call to action).
-3. A concise excerpt (maximum 160 characters, summarizing the core real estate subject).
-4. An array of 3 to 5 high-value FAQ entries (Question & Answer pairs) under Answer Engine Optimization (AEO) rules:
-   - Questions must reflect real queries real estate buyers, sellers, or investors would ask about this topic/property.
-   - Answers must be direct, clear, specifying property details (like pricing, layouts, built-up areas, corridors), and be 1-2 sentences long.
+You MUST adhere to the following best practices for meta tags and content generation:
+1. Meta Title:
+   - Must be between 50 and 60 characters (max 60 characters).
+   - Start with primary keywords from the post (e.g. "Sindhu Bhavan Road Penthouses", "Ahmedabad Real Estate Market").
+   - Include the location "Ahmedabad".
+   - Conclude with the brand suffix: " | PIKORUA Realty".
+2. Meta Description:
+   - Must be between 120 and 150 characters (max 150 characters).
+   - Provide a clear value/benefit statement summarizing the article's real estate insight.
+   - Use high-intent action words (e.g. "Read our analysis", "Explore the corridors", "Get private insights").
+   - Must end with a compelling call to action.
+3. Excerpt:
+   - A concise, high-impact summary in under 155 characters.
+4. FAQs (3 to 5 pairs):
+   - Questions must match real, searcher-intent queries (e.g. "What is the average price of 4 BHK on Ambli Road?").
+   - Answers must be direct, clear, and specify real estate details (pricing figures, built-up areas, specific corridors), using under 2 sentences.
 
 You must respond with ONLY a single, valid JSON object matching the following structure:
 {
@@ -706,11 +715,20 @@ export async function generatePropertySeoAction(
   }
 
   const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
-Analyze the luxury residential property details provided. Generate:
-1. An SEO-optimized meta title (maximum 60 characters, include location e.g. "Sindhu Bhavan Ahmedabad" or "Iskon-Ambli Ahmedabad" and key terms like BHK type, e.g. "4 BHK Penthouse", "5 BHK Duplex Villa").
-2. A high-converting meta description (maximum 150 characters, summarize the property's key facts, layout, size, and include a clear call to action).
+Analyze the luxury residential property details provided. Your output must strictly focus on luxury real estate.
 
-Your output must strictly focus on luxury real estate. Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
+You MUST adhere to the following best practices for meta tags:
+1. Meta Title:
+   - Must be between 50 and 60 characters (max 60 characters).
+   - Start with configuration and location (e.g. "4 BHK Penthouse in Sindhu Bhavan Road", "5 BHK Duplex Villa in Ambli").
+   - Include the location "Ahmedabad".
+   - Conclude with the brand suffix: " | PIKORUA Realty".
+2. Meta Description:
+   - Must be between 120 and 150 characters (max 150 characters).
+   - Summarize the property's key facts (built-up area, specifications, price on request).
+   - End with a clear action-oriented call to action (e.g. "Request a private walkthrough.", "Schedule a private consultation.").
+
+Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
 Return ONLY a single, valid JSON object matching the following structure:
 {
   "seoTitle": "string",
@@ -794,11 +812,20 @@ export async function generatePageSeoAction(pageId: string, pageContext?: string
   const pageTitle = pageNames[pageId] || `${pageId} page`;
 
   const systemPrompt = `You are an expert SEO, GEO, and AEO optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
-Analyze the target page context. Generate:
-1. An SEO-optimized meta title (maximum 60 characters, must include location "Ahmedabad", "PIKORUA Realty", and target keywords relevant to the page).
-2. A high-converting meta description (maximum 150 characters, entice premium real estate buyers or sellers, mention luxury residential focus, and end with a call to action).
+Analyze the target page context. Your output must strictly focus on luxury real estate.
 
-Your output must strictly focus on real estate. Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
+You MUST adhere to the following best practices for meta tags:
+1. Meta Title:
+   - Must be between 50 and 60 characters (max 60 characters).
+   - Incorporate key terms relevant to the page's focus (e.g. "Curated Luxury Properties", "Private Real Estate Consultation", "Luxury Real Estate Advisory").
+   - Include the location "Ahmedabad".
+   - Conclude with the brand suffix: " | PIKORUA Realty".
+2. Meta Description:
+   - Must be between 120 and 150 characters (max 150 characters).
+   - Entice premium buyers, sellers, or investors by describing the private advisory model or listing curation.
+   - End with a clear action-oriented call to action (e.g. "Begin a private conversation.", "Browse our curated portfolio.").
+
+Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
 Return ONLY a single, valid JSON object matching the following structure:
 {
   "seoTitle": "string",
