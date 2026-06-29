@@ -892,14 +892,14 @@ export default function AdminDashboard({
   };
 
   const handleGeneratePropertySeo = async () => {
-    if (!editingProperty.title || !editingProperty.configuration || !editingProperty.locationLabel) {
-      alert("Please fill in Title, Configuration, and Location first.");
+    if (!editingProperty.name || !editingProperty.configuration || !editingProperty.locationLabel) {
+      alert("Please fill in Name, Configuration, and Location first.");
       return;
     }
     setGeneratingPropertySeo(true);
     try {
       const result = await generatePropertySeoAction(
-        editingProperty.title,
+        editingProperty.name,
         editingProperty.configuration,
         editingProperty.locationLabel,
         editingProperty.description || "",
@@ -929,7 +929,10 @@ export default function AdminDashboard({
       // Gather optional context if available
       let context = "";
       if (pageId === "about" && aboutContent) {
-        context = `Hero Title: ${aboutContent.heroTitle || ""}. Story: ${aboutContent.founderStory ? aboutContent.founderStory.join(" ") : ""}`;
+        const storyText = Array.isArray(aboutContent.founderStory)
+          ? aboutContent.founderStory.join(" ")
+          : (aboutContent.founderStory || "");
+        context = `Hero Title: ${aboutContent.heroTitle || ""}. Story: ${storyText}`;
       }
 
       const result = await generatePageSeoAction(pageId, context);
