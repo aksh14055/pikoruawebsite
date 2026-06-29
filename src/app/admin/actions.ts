@@ -593,7 +593,7 @@ export async function generateBlogMetadataAction(title: string, contentText: str
 
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+    return { success: false, error: "OPENROUTER_API_KEY is not configured (add it to Vercel/hosting environment variables)" };
   }
 
   // Use the HTML content if plain text is empty
@@ -707,7 +707,7 @@ export async function generatePropertySeoAction(
 
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+    return { success: false, error: "OPENROUTER_API_KEY is not configured (add it to Vercel/hosting environment variables)" };
   }
 
   if (!title || !configuration || !locationLabel) {
@@ -798,7 +798,7 @@ export async function generatePageSeoAction(pageId: string, pageContext?: string
 
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
-    return { success: false, error: "OPENROUTER_API_KEY is not configured in .env.local" };
+    return { success: false, error: "OPENROUTER_API_KEY is not configured (add it to Vercel/hosting environment variables)" };
   }
 
   const pageNames: Record<string, string> = {
