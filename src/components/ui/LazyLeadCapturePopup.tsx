@@ -8,6 +8,8 @@ const DeferredLeadCapturePopup = dynamic(
   { ssr: false }
 );
 
+const PASSIVE_PRELOAD_DELAY_MS = 12000;
+
 export function LazyLeadCapturePopup() {
   const [loadMode, setLoadMode] = useState<"idle" | "open" | null>(null);
 
@@ -34,8 +36,8 @@ export function LazyLeadCapturePopup() {
     });
 
     const idleHandle =
-      idleWindow.requestIdleCallback?.(loadIdle, { timeout: 4500 }) ??
-      window.setTimeout(loadIdle, 4500);
+      idleWindow.requestIdleCallback?.(loadIdle, { timeout: PASSIVE_PRELOAD_DELAY_MS }) ??
+      window.setTimeout(loadIdle, PASSIVE_PRELOAD_DELAY_MS);
 
     return () => {
       cancelled = true;

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ComponentProps } from "react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +28,10 @@ const PROPERTY_CATEGORIES = [
   { slug: "investment", label: "Investment Properties", href: "/property-types/luxury-residential-investment-ahmedabad" },
 ];
 
+function HeaderLink({ prefetch = false, ...props }: ComponentProps<typeof Link>) {
+  return <Link prefetch={prefetch} {...props} />;
+}
+
 interface HeaderProps {
   // Non-hero pages skip the transparent phase and start dark immediately
   alwaysSolid?: boolean;
@@ -40,6 +45,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
   const pathname = usePathname();
   const drawerRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const hasMountedRef = useRef(false);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === "/") {
@@ -56,6 +62,11 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
   }, [alwaysSolid]);
 
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
     const frame = window.requestAnimationFrame(() => {
       setDrawerOpen(false);
       setDropdownOpen(false);
@@ -96,12 +107,12 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
         <div className="w-full px-4 sm:px-6 lg:px-12">
           <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
 
-            {/* Logo — always visible on all screen sizes */}
-            <Link
+            {/* Logo - always visible on all screen sizes */}
+            <HeaderLink
               href="/"
               onClick={handleLogoClick}
               className="flex-shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne-gold rounded-sm"
-              aria-label="PIKORUA Realty — Home"
+              aria-label="PIKORUA Realty - Home"
             >
                 <Image
                   src="/logo.png"
@@ -111,7 +122,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   quality={75}
                   className="h-8 sm:h-9 lg:h-11 w-auto object-contain"
                 />
-              </Link>
+              </HeaderLink>
 
               {/* Desktop nav */}
               <nav
@@ -132,7 +143,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                       onMouseEnter={() => setDropdownOpen(true)}
                       onMouseLeave={() => setDropdownOpen(false)}
                     >
-                      <Link
+                      <HeaderLink
                         href="/properties"
                         aria-current={active ? "page" : undefined}
                         className={cn(
@@ -145,7 +156,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                       >
                         Properties
                         <ChevronDownIcon className={cn("inline-block w-3 h-3 ml-1.5 transition-transform duration-200 align-middle -mt-0.5 group-hover:rotate-180", dropdownOpen && "rotate-180")} />
-                      </Link>
+                      </HeaderLink>
 
                       {/* Dropdown Menu - Landscape/Mega-Menu Layout */}
                       <div
@@ -163,24 +174,24 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                               Towers & Sky
                             </h4>
                             <div className="flex flex-col gap-2">
-                              <Link
+                              <HeaderLink
                                 href="/property-types/luxury-apartments-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Apartments
-                              </Link>
-                              <Link
+                              </HeaderLink>
+                              <HeaderLink
                                 href="/property-types/penthouses-duplexes-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Penthouses
-                              </Link>
-                              <Link
+                              </HeaderLink>
+                              <HeaderLink
                                 href="/property-types/penthouses-duplexes-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Duplexes
-                              </Link>
+                              </HeaderLink>
                             </div>
                           </div>
 
@@ -190,24 +201,24 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                               Landed & Land
                             </h4>
                             <div className="flex flex-col gap-2">
-                              <Link
+                              <HeaderLink
                                 href="/property-types/villas-bungalows-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Villas
-                              </Link>
-                              <Link
+                              </HeaderLink>
+                              <HeaderLink
                                 href="/property-types/villas-bungalows-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Bungalows
-                              </Link>
-                              <Link
+                              </HeaderLink>
+                              <HeaderLink
                                 href="/property-types/residential-plots-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Plots / Land
-                              </Link>
+                              </HeaderLink>
                             </div>
                           </div>
 
@@ -217,24 +228,24 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                               Strategic Assets
                             </h4>
                             <div className="flex flex-col gap-2">
-                              <Link
+                              <HeaderLink
                                 href="/property-types/luxury-residential-investment-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Investment Properties
-                              </Link>
+                              </HeaderLink>
                             </div>
                           </div>
                         </div>
 
                         {/* Bottom Bar */}
                         <div className="mt-4 pt-3.5 border-t border-white/[0.06] flex items-center justify-end">
-                          <Link
+                          <HeaderLink
                             href="/properties"
                             className="text-[11px] font-sans uppercase tracking-[0.15em] text-champagne-gold hover:text-antique-gold transition-colors duration-150 font-medium"
                           >
-                            Explore All Signature Collection →
-                          </Link>
+                            Explore All Signature Collection
+                          </HeaderLink>
                         </div>
                       </div>
                     </div>
@@ -242,7 +253,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                 }
 
                 return (
-                  <Link
+                  <HeaderLink
                     key={href}
                     href={href}
                     aria-current={active ? "page" : undefined}
@@ -255,7 +266,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                     )}
                   >
                     {label}
-                  </Link>
+                  </HeaderLink>
                 );
               })}
             </nav>
@@ -279,15 +290,15 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
 
               <div className="w-px h-4 bg-ivory/15" aria-hidden="true" />
 
-              <Link
+              <HeaderLink
                 href="/contact"
                 className="px-5 py-2 text-xs font-sans tracking-widest uppercase border border-champagne-gold text-champagne-gold font-medium hover:bg-champagne-gold hover:text-lux-black transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne-gold rounded-sm min-h-[44px] flex items-center"
               >
                 Get In Touch
-              </Link>
+              </HeaderLink>
             </div>
 
-            {/* Mobile hamburger — always visible on mobile, fades in on scroll on desktop */}
+            {/* Mobile hamburger - always visible on mobile, fades in on scroll on desktop */}
             <button
               ref={hamburgerRef}
               onClick={() => setDrawerOpen(!drawerOpen)}
@@ -375,27 +386,27 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                     )}
                   >
                     {PROPERTY_CATEGORIES.map((cat) => (
-                      <Link
+                      <HeaderLink
                         key={cat.slug}
                         href={cat.href}
                         className="block py-2 text-sm font-sans text-ivory/50 hover:text-champagne-gold transition-colors"
                       >
                         {cat.label}
-                      </Link>
+                      </HeaderLink>
                     ))}
-                    <Link
+                    <HeaderLink
                       href="/properties"
                       className="block py-2 text-sm font-sans text-champagne-gold hover:text-antique-gold transition-colors font-medium"
                     >
                       View All Properties
-                    </Link>
+                    </HeaderLink>
                   </div>
                 </div>
               );
             }
 
             return (
-              <Link
+              <HeaderLink
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
@@ -406,18 +417,18 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                 )}
               >
                 {label}
-              </Link>
+              </HeaderLink>
             );
           })}
         </nav>
 
         <div className="px-6 pb-8 flex flex-col gap-3">
-          <Link
+          <HeaderLink
             href="/contact"
             className="flex items-center justify-center h-12 text-xs font-sans tracking-widest uppercase border border-champagne-gold text-champagne-gold font-medium hover:bg-champagne-gold hover:text-lux-black transition-all duration-200 rounded-sm"
           >
             Get In Touch
-          </Link>
+          </HeaderLink>
           <a
             href={whatsappUrl}
             target="_blank"
