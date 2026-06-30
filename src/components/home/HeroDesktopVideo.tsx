@@ -37,14 +37,14 @@ export function HeroDesktopVideo({ videoUrl }: HeroDesktopVideoProps) {
       autoPlay
       muted
       loop
-      preload="none"
+      preload="auto"
       playsInline
       aria-hidden="true"
       className={cn(
         "absolute inset-0 hidden h-full w-full object-cover object-center brightness-125 transition-opacity duration-1000 md:block",
         ready ? "opacity-100" : "opacity-0"
       )}
-      onCanPlayThrough={() => setReady(true)}
+      onCanPlay={() => setReady(true)}
     />
   );
 }

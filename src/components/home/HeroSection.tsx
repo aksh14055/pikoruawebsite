@@ -7,6 +7,7 @@ interface HeroSectionProps {
   headlineLines?: string[];
   videoUrl?: string;
   posterUrl?: string;
+  mobilePosterUrl?: string;
   posterBlur?: string;
 }
 
@@ -14,8 +15,12 @@ export function HeroSection({
   headlineLines = ["Private luxury", "residences,", "quietly curated."],
   videoUrl = MEDIA.videos.bg,
   posterUrl,
+  mobilePosterUrl,
   posterBlur,
 }: HeroSectionProps) {
+  const desktopSrc = posterUrl ?? MEDIA.videos.heroPoster;
+  const mobileSrc = mobilePosterUrl ?? desktopSrc;
+
   return (
     <section
       className="relative flex h-screen min-h-[640px] max-h-[1000px] flex-col justify-end overflow-hidden bg-lux-black"
@@ -26,15 +31,28 @@ export function HeroSection({
         aria-hidden="true"
       />
 
+      {/* Mobile hero image (hidden on md+) */}
       <Image
-        src={posterUrl ?? MEDIA.videos.heroPoster}
+        src={mobileSrc}
         alt="Luxury residential property in Ahmedabad"
         fill
-        preload
+        priority
+        quality={60}
+        sizes="100vw"
+        className="object-cover object-center brightness-75 md:hidden"
+        aria-hidden="true"
+      />
+
+      {/* Desktop hero image (hidden below md) */}
+      <Image
+        src={desktopSrc}
+        alt="Luxury residential property in Ahmedabad"
+        fill
+        priority
         quality={40}
         sizes="100vw"
         {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
-        className="object-cover object-center brightness-75"
+        className="hidden object-cover object-center brightness-75 md:block"
         aria-hidden="true"
       />
 

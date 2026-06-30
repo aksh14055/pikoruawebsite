@@ -142,6 +142,7 @@ export default async function HomePage() {
           headlineLines={heroLines}
           videoUrl={heroVideo}
           posterUrl={heroPoster}
+          mobilePosterUrl="/images/hero-mobile.jpg"
         />
 
 
