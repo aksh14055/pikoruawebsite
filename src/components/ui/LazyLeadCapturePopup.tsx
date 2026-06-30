@@ -8,7 +8,10 @@ const DeferredLeadCapturePopup = dynamic(
   { ssr: false }
 );
 
-const PASSIVE_PRELOAD_DELAY_MS = 12000;
+// Start loading the popup JS bundle after this idle period
+const PASSIVE_PRELOAD_DELAY_MS = 5000;
+// Show the popup this many ms after first page load (first visit only)
+const FIRST_VISIT_SHOW_DELAY_MS = 15000;
 
 export function LazyLeadCapturePopup() {
   const [loadMode, setLoadMode] = useState<"idle" | "open" | null>(null);
@@ -30,22 +33,21 @@ export function LazyLeadCapturePopup() {
       if (!cancelled) setLoadMode("open");
     };
 
-    const events: Array<keyof WindowEventMap> = ["scroll", "wheel", "touchstart"];
-    events.forEach((eventName) => {
-      window.addEventListener(eventName, loadOpen, { passive: true, once: true });
-    });
-
+    // Preload the bundle quietly after a short idle window
     const idleHandle =
       idleWindow.requestIdleCallback?.(loadIdle, { timeout: PASSIVE_PRELOAD_DELAY_MS }) ??
       window.setTimeout(loadIdle, PASSIVE_PRELOAD_DELAY_MS);
 
+    // Auto-show after 15 seconds on the first visit
+    const showTimer = window.setTimeout(loadOpen, FIRST_VISIT_SHOW_DELAY_MS);
+
     return () => {
       cancelled = true;
-      events.forEach((eventName) => window.removeEventListener(eventName, loadOpen));
+      window.clearTimeout(showTimer);
       if (idleWindow.cancelIdleCallback && typeof idleHandle === "number") {
         idleWindow.cancelIdleCallback(idleHandle);
       } else {
-        window.clearTimeout(idleHandle);
+        window.clearTimeout(idleHandle as number);
       }
     };
   }, []);
