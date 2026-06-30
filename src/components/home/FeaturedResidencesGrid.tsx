@@ -115,30 +115,7 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
 
   const top3 = [ikebanaProp, maruti360Prop, anamikaProp].filter(Boolean) as StaticProperty[];
 
-  // Seamless infinite strip: a tripled list scrolled natively, snapped back into the middle
-  // copy whenever it drifts into an outer copy (invisible since all three copies are identical).
   const manualMarqueeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = manualMarqueeRef.current;
-    if (!el) return;
-    el.scrollLeft = el.scrollWidth / 3;
-  }, [properties]);
-
-  useEffect(() => {
-    const el = manualMarqueeRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      const oneSet = el.scrollWidth / 3;
-      if (el.scrollLeft < oneSet * 0.1) {
-        el.scrollLeft += oneSet;
-      } else if (el.scrollLeft > oneSet * 1.9) {
-        el.scrollLeft -= oneSet;
-      }
-    };
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleMarqueeNav = (dir: 1 | -1) => {
     manualMarqueeRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
@@ -425,16 +402,16 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
             </Link>
           </div>
 
-          {/* Infinite Manually-Scrollable Strip of Property Cards */}
+          {/* Manually-Scrollable Strip of Property Cards */}
           <div className="relative">
             <div
               ref={manualMarqueeRef}
-              className="marquee-container w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4"
+              className="w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4"
             >
               <div className="flex gap-5 w-max">
-                {[...properties, ...properties, ...properties].map((property, idx) => (
+                {properties.map((property) => (
                   <div
-                    key={`rem-${property.id}-${idx}`}
+                    key={`rem-${property.id}`}
                     className="w-[260px] sm:w-[300px] lg:w-[320px] flex-shrink-0"
                   >
                     <StaticPropertyCard
