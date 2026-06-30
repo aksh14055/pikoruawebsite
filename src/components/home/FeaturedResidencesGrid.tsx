@@ -118,21 +118,6 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
   // Seamless infinite strip: a tripled list scrolled natively, snapped back into the middle
   // copy whenever it drifts into an outer copy (invisible since all three copies are identical).
   const manualMarqueeRef = useRef<HTMLDivElement>(null);
-  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
-  const [isMobileMarquee, setIsMobileMarquee] = useState(false);
-  const marqueeResumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 767px)");
-    const syncMobileState = () => setIsMobileMarquee(media.matches);
-
-    const initialSync = window.setTimeout(syncMobileState, 0);
-    media.addEventListener("change", syncMobileState);
-    return () => {
-      window.clearTimeout(initialSync);
-      media.removeEventListener("change", syncMobileState);
-    };
-  }, []);
 
   useEffect(() => {
     const el = manualMarqueeRef.current;
@@ -155,24 +140,8 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (isMarqueePaused || isMobileMarquee) return;
-    const el = manualMarqueeRef.current;
-    if (!el) return;
-    let raf: number;
-    const step = () => {
-      el.scrollLeft += 0.5;
-      raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [isMarqueePaused, isMobileMarquee]);
-
   const handleMarqueeNav = (dir: 1 | -1) => {
-    setIsMarqueePaused(true);
     manualMarqueeRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
-    if (marqueeResumeTimeout.current) clearTimeout(marqueeResumeTimeout.current);
-    marqueeResumeTimeout.current = setTimeout(() => setIsMarqueePaused(false), 1800);
   };
 
   // Autoplay spotlight property index
@@ -460,8 +429,6 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
           <div className="relative">
             <div
               ref={manualMarqueeRef}
-              onMouseEnter={() => setIsMarqueePaused(true)}
-              onMouseLeave={() => setIsMarqueePaused(false)}
               className="marquee-container w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4"
             >
               <div className="flex gap-5 w-max">
