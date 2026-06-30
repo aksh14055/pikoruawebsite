@@ -20,13 +20,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1.0 : 0.8,
   }));
 
-  const aiContextRoutes = ["/llms.txt", "/llms-full.txt"].map((route) => ({
-    url: absoluteUrl(route),
-    lastModified,
-    changeFrequency: "weekly" as const,
-    priority: 0.5,
-  }));
-
   const geoRoutes = ALL_GEO_LANDING_PAGES.map((page) => ({
     url: absoluteUrl(page.href),
     lastModified,
@@ -71,5 +64,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.55,
   }));
 
-  return [...coreRoutes, ...aiContextRoutes, ...geoRoutes, ...propertyRoutes, ...blogRoutes];
+  return [...coreRoutes, ...geoRoutes, ...propertyRoutes, ...blogRoutes];
 }

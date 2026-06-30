@@ -4,6 +4,13 @@ import type { ResidentialCategory, LocationSlug, PropertyStatus } from "@/types"
 export const SITE_URL = "https://www.pikorua.in";
 export const SITE_NAME = "PIKORUA Realty";
 export const DEFAULT_OG_IMAGE = "/logo.png";
+const META_DESCRIPTION_MIN_LENGTH = 25;
+const META_DESCRIPTION_MAX_LENGTH = 160;
+const META_DESCRIPTION_TRUNCATE_AT = META_DESCRIPTION_MAX_LENGTH - 3;
+const FALLBACK_META_DESCRIPTION =
+  "PIKORUA Realty offers private luxury residential real estate advisory in Ahmedabad.";
+const SHORT_META_DESCRIPTION_SUFFIX =
+  " PIKORUA Realty offers private luxury residential advisory in Ahmedabad.";
 
 /**
  * Google Business Profile URL — used in the organization schema's sameAs
@@ -20,6 +27,24 @@ export function absoluteUrl(path = ""): string {
   if (!path) return SITE_URL;
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+export function normalizeMetaDescription(description: string): string {
+  const normalized = description.replace(/\s+/g, " ").trim();
+  const readableDescription = normalized || FALLBACK_META_DESCRIPTION;
+  const minLengthDescription =
+    readableDescription.length < META_DESCRIPTION_MIN_LENGTH
+      ? `${readableDescription}${SHORT_META_DESCRIPTION_SUFFIX}`
+      : readableDescription;
+
+  if (minLengthDescription.length <= META_DESCRIPTION_MAX_LENGTH) {
+    return minLengthDescription;
+  }
+
+  const truncated = minLengthDescription.slice(0, META_DESCRIPTION_TRUNCATE_AT).trimEnd();
+  const lastSpace = truncated.lastIndexOf(" ");
+  const wordSafe = lastSpace >= 120 ? truncated.slice(0, lastSpace) : truncated;
+  return `${wordSafe.trimEnd()}...`;
 }
 
 export function createMetadata({
@@ -40,14 +65,15 @@ export function createMetadata({
   const url = absoluteUrl(path);
   const imageUrl = absoluteUrl(image);
   const pageTitle = title.replace(BRAND_TITLE_PATTERN, "").trim() || title;
+  const metaDescription = normalizeMetaDescription(description);
 
   return {
     title: pageTitle,
-    description,
+    description: metaDescription,
     alternates: { canonical: url },
     openGraph: {
       title: pageTitle,
-      description,
+      description: metaDescription,
       type,
       url,
       siteName: SITE_NAME,
@@ -57,7 +83,7 @@ export function createMetadata({
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
-      description,
+      description: metaDescription,
       images: [imageUrl],
     },
     robots: noIndex

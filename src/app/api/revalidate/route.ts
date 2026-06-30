@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag as _revalidateTag } from "next/cache";
 import { getClientIdentifier, revalidateRateLimit } from "@/lib/rate-limit";
+import { notifyGoogleIndexing, buildIndexingUrls } from "@/lib/google-indexing";
+import { submitToIndexNow } from "@/lib/index-now";
 
 // Next.js 16 added a second `profile` arg to revalidateTag for `use cache` support.
 // For traditional ISR tag invalidation the runtime only needs the tag string.
@@ -63,10 +65,19 @@ export async function POST(req: NextRequest) {
 
   tagsToRevalidate.forEach((tag) => revalidateTag(tag));
 
+  // ── Submit updated URLs to search engines ──────────────────────────────
+  // Fire-and-forget: indexing failures must never block the revalidation response.
+  const urlsToIndex = buildIndexingUrls(type ?? "", slug);
+  Promise.all([
+    notifyGoogleIndexing(urlsToIndex),
+    submitToIndexNow(urlsToIndex),
+  ]).catch((err) => console.error("[indexing] submission error:", err));
+
   return NextResponse.json({
     revalidated: true,
     tags: tagsToRevalidate,
     type,
     slug,
+    indexing: { urls: urlsToIndex },
   });
 }
