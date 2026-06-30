@@ -1,6 +1,21 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export function Preloader() {
+  const [mounted, setMounted] = useState(true);
+
+  useEffect(() => {
+    // Unmount the preloader completely from the DOM after the 400ms animation completes
+    const timer = setTimeout(() => {
+      setMounted(false);
+    }, 450);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div
       aria-hidden="true"
@@ -16,6 +31,7 @@ export function Preloader() {
             quality={75}
             sizes="(max-width: 640px) 12rem, 14rem"
             className="object-contain"
+            priority
           />
         </div>
 
