@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { MEDIA } from "@/lib/media";
 import { HeroDesktopVideo } from "./HeroDesktopVideo";
@@ -16,7 +15,6 @@ export function HeroSection({
   videoUrl = MEDIA.videos.bg,
   posterUrl,
   mobilePosterUrl,
-  posterBlur,
 }: HeroSectionProps) {
   const desktopSrc = posterUrl ?? MEDIA.videos.heroPoster;
   const mobileSrc = mobilePosterUrl ?? desktopSrc;
@@ -26,39 +24,28 @@ export function HeroSection({
       className="relative flex h-screen min-h-[640px] max-h-[1000px] flex-col justify-end overflow-hidden bg-lux-black"
       aria-label="Hero"
     >
+      {/* Responsive preloads hoisted automatically to document head */}
+      <link rel="preload" as="image" href={mobileSrc} media="(max-width: 767px)" />
+      <link rel="preload" as="image" href={desktopSrc} media="(min-width: 768px)" />
+
       <div
         className="absolute inset-0 bg-gradient-to-br from-soft-black via-lux-black to-lux-black"
         aria-hidden="true"
       />
 
-      {/* Mobile hero image (hidden on md+) */}
-      <div className="absolute inset-0 md:hidden">
-        <Image
-          src={mobileSrc}
-          alt="Luxury residential property in Ahmedabad"
-          fill
-          priority
-          quality={60}
-          sizes="100vw"
-          className="object-cover object-center brightness-75"
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Desktop hero image (hidden below md) */}
-      <div className="absolute inset-0 hidden md:block">
-        <Image
+      {/* Responsive hero image using native picture element to prevent dual download */}
+      <picture className="absolute inset-0 block h-full w-full">
+        <source media="(max-width: 767px)" srcSet={mobileSrc} />
+        <source media="(min-width: 768px)" srcSet={desktopSrc} />
+        <img
           src={desktopSrc}
           alt="Luxury residential property in Ahmedabad"
-          fill
-          priority
-          quality={40}
-          sizes="100vw"
-          {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
-          className="object-cover object-center brightness-75"
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-cover object-center brightness-75"
           aria-hidden="true"
         />
-      </div>
+      </picture>
 
       <HeroDesktopVideo videoUrl={videoUrl} />
 
