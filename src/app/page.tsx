@@ -11,13 +11,13 @@ import { FeaturedResidences } from "@/components/home/FeaturedResidences";
 import { FounderTeaser } from "@/components/home/FounderTeaser";
 import { TestimonialsTeaser } from "@/components/home/TestimonialsTeaser";
 import { FinalCTABand } from "@/components/home/FinalCTABand";
-import { VirtualTours } from "@/components/home/VirtualTours";
+import { LazyVirtualTours } from "@/components/home/LazyVirtualTours";
 import { StatsStrip } from "@/components/ui/StatsStrip";
 import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { getFirstSentence } from "@/lib/utils";
-import { createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
+import { createMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
@@ -157,7 +157,7 @@ export default async function HomePage() {
         <StatsStrip stats={stats} pauseOnHover={false} size="sm" className="pt-0 lg:pt-0 border-t-0" />
 
         {/* Take a virtual tour of our exclusive luxury properties */}
-        <VirtualTours tours={tours} />
+        <LazyVirtualTours tours={tours} />
 
         {/* What Our Clients Say */}
         <TestimonialsTeaser />

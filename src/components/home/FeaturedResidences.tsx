@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getSupabaseFeaturedProperties } from "@/lib/supabase/queries";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
-import { FeaturedResidencesGrid } from "./FeaturedResidencesGrid";
+import { LazyFeaturedResidencesGrid } from "./LazyFeaturedResidencesGrid";
 
 export async function FeaturedResidences() {
   let properties: Awaited<ReturnType<typeof getSupabaseFeaturedProperties>> = [];
@@ -60,7 +59,7 @@ export async function FeaturedResidences() {
           <div className="mt-7 h-px bg-gradient-to-r from-champagne-gold/25 via-white/[0.05] to-transparent" aria-hidden="true" />
         </div>
 
-        <FeaturedResidencesGrid properties={displayedProperties} />
+        <LazyFeaturedResidencesGrid properties={displayedProperties} />
 
         <div className="mt-10 text-center sm:hidden">
           <Link

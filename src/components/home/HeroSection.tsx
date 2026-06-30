@@ -20,25 +20,22 @@ export function HeroSection({
 }: HeroSectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [typedLineIndex, setTypedLineIndex] = useState(0);
   const [typedCharIndex, setTypedCharIndex] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 80);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     const lines = headlineLines.length > 0 ? headlineLines : [""];
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersShortStartup =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 767px)").matches;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     let cancelled = false;
 
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || prefersShortStartup) {
       timeout = setTimeout(() => {
         if (cancelled) return;
         setTypedLineIndex(lines.length - 1);
@@ -131,6 +128,7 @@ export function HeroSection({
         preload
         quality={40}
         sizes="100vw"
+        {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
         className={cn(
           "object-cover object-center brightness-75",
           "transition-opacity duration-700",
@@ -215,10 +213,8 @@ export function HeroSection({
       <div
         className={cn(
           "absolute bottom-8 right-8 lg:right-12 flex flex-col items-center gap-2.5",
-          "transition-all duration-700 ease-out",
-          mounted ? "opacity-100" : "opacity-0"
+          "opacity-100"
         )}
-        style={{ transitionDelay: "1000ms" }}
         aria-hidden="true"
       >
         <div className="w-px h-10 bg-gradient-to-b from-champagne-gold/50 to-transparent animate-[scrollCue_2s_ease-in-out_infinite]" />

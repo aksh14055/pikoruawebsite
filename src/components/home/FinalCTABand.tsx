@@ -1,8 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useScrollReveal, revealClasses } from "@/hooks/useScrollReveal";
-import { cn } from "@/lib/utils";
 
 const CTA_PATHS = [
   {
@@ -32,8 +28,6 @@ const CTA_PATHS = [
 ] as const;
 
 export function FinalCTABand() {
-  const { ref, visible } = useScrollReveal<HTMLDivElement>({ threshold: 0.12 });
-
   return (
     <section
       className="bg-soft-black border-t border-white/[0.06] py-24 lg:py-36"
@@ -41,12 +35,7 @@ export function FinalCTABand() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
-          ref={ref}
-          className={cn(
-            "grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-start",
-            revealClasses.base,
-            visible ? revealClasses.visible : revealClasses.hidden
-          )}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-start"
         >
 
           {/* ── Left: Heading + primary CTA ── */}
@@ -62,8 +51,8 @@ export function FinalCTABand() {
               id="cta-heading"
               className="font-display font-normal text-ivory leading-tight uppercase tracking-wider text-[clamp(1.5rem,3vw,2.25rem)] mb-6"
             >
-              Let's find what<br />
-              you're looking for.
+              Let&rsquo;s find what<br />
+              you&rsquo;re looking for.
             </h2>
 
             <p className="mt-3 text-ivory/50 font-sans text-xs max-w-xs leading-relaxed mb-8">
@@ -85,12 +74,7 @@ export function FinalCTABand() {
               <Link
                 key={path.id}
                 href={path.href}
-                className={cn(
-                  "group flex items-center justify-between py-5 sm:py-7 first:pt-0 last:pb-0 min-h-[44px]",
-                  "focus-visible:outline-2 focus-visible:outline-champagne-gold focus-visible:outline-offset-2",
-                  revealClasses.base,
-                  visible ? revealClasses.visible : revealClasses.hidden
-                )}
+                className="group flex items-center justify-between py-5 sm:py-7 first:pt-0 last:pb-0 min-h-[44px] focus-visible:outline-2 focus-visible:outline-champagne-gold focus-visible:outline-offset-2 transition-all duration-500 ease-out"
                 style={{ transitionDelay: `${100 + i * 70}ms` }}
               >
                 <div>

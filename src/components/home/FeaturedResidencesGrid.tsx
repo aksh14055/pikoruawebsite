@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence, type Variants, useMotionValue, animate } from "framer-motion";
-import { cn, formatLiningNumbers, renderFormattedText } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn, renderFormattedText } from "@/lib/utils";
 import { type StaticProperty } from "@/lib/data/properties";
 import { PROPERTY_STATUS_LABELS } from "@/types";
 import { MapPin, Compass, X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -536,7 +536,6 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
   const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const categoryLabel = DISPLAY_CATEGORY_LABELS[property.category] || "Luxury Residence";
-  const statusLabel = PROPERTY_STATUS_LABELS[property.status];
   const images = property.images && property.images.length > 0 ? property.images : [property.coverImage];
 
   useEffect(() => {
@@ -593,8 +592,6 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
       },
     }),
   };
-
-  const priceDisplay = property.priceOnRequest ? "Price on Request" : (property.price || "Price on Request");
 
   // Short descriptor fallback
   const shortDesc = property.description && property.description[0]

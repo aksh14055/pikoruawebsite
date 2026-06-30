@@ -1,9 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useScrollReveal, revealClasses } from "@/hooks/useScrollReveal";
-import { cn } from "@/lib/utils";
 
 interface FounderTeaserProps {
   founderImageUrl?: string;
@@ -20,18 +16,11 @@ export function FounderTeaser({
   founderTitle = "Founder, PIKORUA Realty",
   quote = "I started PIKORUA because the finest homes in Ahmedabad deserved a quieter way to be found — and sold.",
 }: FounderTeaserProps) {
-  const { ref, visible } = useScrollReveal<HTMLDivElement>({ threshold: 0.15 });
-
   return (
     <section className="bg-lux-black pt-16 lg:pt-24 pb-8 lg:pb-10 border-t border-white/[0.04]" aria-labelledby="founder-heading">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
-          ref={ref}
-          className={cn(
-            "grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center",
-            revealClasses.base,
-            visible ? revealClasses.visible : revealClasses.hidden
-          )}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center"
         >
           {/* Portrait */}
           <div className="relative aspect-[4/5] w-full max-w-[400px] mx-auto lg:mx-0 overflow-hidden bg-lux-black border border-white/[0.06] group">

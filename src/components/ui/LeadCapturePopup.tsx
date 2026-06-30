@@ -51,7 +51,11 @@ const selectBase =
 const inputBase =
   "w-full bg-lux-black border border-white/[0.08] text-ivory text-xs font-sans px-4 py-3 rounded-sm placeholder:text-ivory/20 focus:outline-none focus:border-champagne-gold/50 transition-colors duration-200";
 
-export function LeadCapturePopup() {
+interface LeadCapturePopupProps {
+  openOnMount?: boolean;
+}
+
+export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps) {
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
   // Form state
@@ -89,6 +93,8 @@ export function LeadCapturePopup() {
 
     let triggered = false;
 
+    let openOnMountTimer: ReturnType<typeof setTimeout> | null = null;
+
     const trigger = () => {
       if (triggered) return;
       triggered = true;
@@ -107,6 +113,10 @@ export function LeadCapturePopup() {
     window.addEventListener("touchstart", trigger, opts);
     window.addEventListener("touchmove", trigger, opts);
 
+    if (openOnMount) {
+      openOnMountTimer = setTimeout(trigger, 0);
+    }
+
     function cleanup() {
       window.removeEventListener("scroll", trigger);
       document.removeEventListener("scroll", trigger);
@@ -118,10 +128,11 @@ export function LeadCapturePopup() {
 
     return () => {
       cancelAnimationFrame(frame);
+      if (openOnMountTimer) clearTimeout(openOnMountTimer);
       cleanup();
       clearReshowTimer();
     };
-  }, []);
+  }, [openOnMount, pathname]);
 
 
   const dismiss = () => {

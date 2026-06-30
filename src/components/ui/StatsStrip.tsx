@@ -1,8 +1,5 @@
-"use client";
-
 import { COMPANY_STATS } from "@/lib/data/stats";
 import { cn } from "@/lib/utils";
-import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
 
 interface StatsStripProps {
   pauseOnHover?: boolean;
@@ -27,8 +24,8 @@ const GAP_SIZE: Record<NonNullable<StatsStripProps["size"]>, string> = {
 };
 
 export function StatsStrip({ pauseOnHover = true, className, size = "lg", stats }: StatsStripProps) {
-  const { ref, durationSeconds } = useMarqueeSpeed<HTMLDivElement>();
   const displayedStats = stats && stats.length > 0 ? stats : COMPANY_STATS;
+  const animationDuration = size === "sm" ? "34s" : "46s";
 
   return (
     <section
@@ -39,12 +36,11 @@ export function StatsStrip({ pauseOnHover = true, className, size = "lg", stats 
         <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-32 bg-gradient-to-r from-lux-black to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-32 bg-gradient-to-l from-lux-black to-transparent z-10 pointer-events-none" />
         <div
-          ref={ref}
           className={cn(
             "flex items-center w-max",
             pauseOnHover ? "animate-marquee" : "animate-marquee-continuous"
           )}
-          style={durationSeconds ? { animationDuration: `${durationSeconds}s` } : undefined}
+          style={{ animationDuration }}
         >
           {[...displayedStats, ...displayedStats].map((stat, idx) => (
             <div key={`${stat.label}-${idx}`} className="flex items-center flex-shrink-0">

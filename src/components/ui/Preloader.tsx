@@ -1,28 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export function Preloader() {
-  const [gone, setGone] = useState(false);
-
-  useEffect(() => {
-    // Remove from DOM after CSS animation completes (400ms) + small buffer.
-    // The CSS animation is what actually hides the element — this just cleans
-    // up the DOM node so it stops consuming memory.
-    const t = setTimeout(() => setGone(true), 460);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (gone) return null;
-
   return (
     <div
       aria-hidden="true"
-      // pointer-events: none from the start — the element is purely visual.
-      // This means the hero image can be interacted with immediately even while
-      // the preloader is visible, and Lighthouse can measure LCP unobstructed
-      // once the CSS animation fades it out at ~400ms from HTML parse time.
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-lux-black select-none pointer-events-none"
       style={{ animation: "preloader-out 400ms ease-out forwards" }}
     >

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { Preloader } from "@/components/ui/Preloader";
-import { LeadCapturePopup } from "@/components/ui/LeadCapturePopup";
+import { LazyLeadCapturePopup } from "@/components/ui/LazyLeadCapturePopup";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
@@ -212,7 +212,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }}
         />
         <Preloader />
-        <LeadCapturePopup />
+        <LazyLeadCapturePopup />
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
