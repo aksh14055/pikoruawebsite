@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import type { GeoLandingPage } from "@/lib/data/geo";
 import { getLandingFilterHref, getRelatedLandingPages } from "@/lib/data/geo";
 import type { StaticProperty } from "@/lib/data/properties";
@@ -36,6 +37,15 @@ export function LandingPageTemplate({ page, properties }: LandingPageTemplatePro
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
+              <Breadcrumb
+                items={[
+                  { label: "Home", href: "/" },
+                  page.kind === "location"
+                    ? { label: "Locations", href: "/properties" }
+                    : { label: "Properties", href: "/properties" },
+                  { label: page.label },
+                ]}
+              />
               <div className="w-8 h-px bg-champagne-gold/60 mb-5" aria-hidden="true" />
               <p className="text-[10px] uppercase tracking-[0.28em] text-champagne-gold font-sans mb-4">
                 {page.eyebrow}

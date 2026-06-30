@@ -42,7 +42,7 @@ export function LocationGrid() {
           {LOCATIONS.map((loc, i) => (
             <Link
               key={loc.slug}
-              href={`/properties?location=${loc.slug}`}
+              href={`/locations/${loc.slug}`}
               className={cn(
                 "group bg-soft-black p-5 sm:p-8 border border-transparent hover:border-champagne-gold/40 transition-all duration-300",
                 "hover:bg-lux-black",
@@ -63,7 +63,7 @@ export function LocationGrid() {
                 className="block mt-5 text-champagne-gold/30 group-hover:text-champagne-gold group-hover:translate-x-1 transition-all duration-200 text-sm"
                 aria-hidden="true"
               >
-                View residences →
+                Explore corridor →
               </span>
             </Link>
           ))}

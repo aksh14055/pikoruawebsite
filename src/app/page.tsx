@@ -13,6 +13,7 @@ import { TestimonialsTeaser } from "@/components/home/TestimonialsTeaser";
 import { FinalCTABand } from "@/components/home/FinalCTABand";
 import { LazyVirtualTours } from "@/components/home/LazyVirtualTours";
 import { StatsStrip } from "@/components/ui/StatsStrip";
+import { LocationGrid } from "@/components/home/LocationGrid";
 import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
@@ -242,6 +243,8 @@ export default async function HomePage() {
           founderName={FOUNDER_NAME}
           quote={founderGlimpse}
         />
+
+        <LocationGrid />
 
         <StatsStrip stats={stats} pauseOnHover={false} size="sm" className="pt-0 lg:pt-0 border-t-0" />
 
