@@ -26,7 +26,7 @@ export function Preloader() {
         <div className="relative w-48 sm:w-56 h-12 sm:h-14">
           <Image
             src="/logo.png"
-            alt=""
+            alt="PIKORUA Realty Logo"
             fill
             quality={75}
             sizes="(max-width: 640px) 12rem, 14rem"
