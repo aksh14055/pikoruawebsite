@@ -133,9 +133,33 @@ const organizationSchema = {
         latitude: "23.0246",
         longitude: "72.5074",
       },
-      // Google Maps URL — hasMap links the schema entity directly to the
-      // verified Google Business Profile map listing (Local SEO signal)
       hasMap: GOOGLE_BUSINESS_PROFILE_URL,
+      review: [
+        {
+          "@type": "Review",
+          author: {
+            "@type": "Person",
+            name: "Krunal Patel",
+          },
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: "5",
+          },
+          reviewBody: "We are incredibly grateful to Jitendra bhai for helping us find and purchase our dream home! From the very beginning, he was professional, attentive, and genuinely invested in understanding our needs.",
+        },
+        {
+          "@type": "Review",
+          author: {
+            "@type": "Person",
+            name: "Rutuja Joshi",
+          },
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: "5",
+          },
+          reviewBody: "Navigating the complexities of luxury real estate requires not just expertise, but a rare blend of patience, discernment, and unwavering integrity; qualities that Jitendra embodies effortlessly.",
+        },
+      ],
       email: "connect@pikorua.in",
       telephone: `+${env.WHATSAPP_NUMBER}`,
       priceRange: "₹₹₹₹",
