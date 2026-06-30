@@ -48,10 +48,10 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     href: "/locations/sindhu-bhavan",
     label: "Sindhu Bhavan Road",
     eyebrow: "Prime Corridor",
-    title: "Luxury Properties on Sindhu Bhavan Road, Ahmedabad",
-    h1: "Luxury Properties on Sindhu Bhavan Road",
+    title: "Luxury Property on Sindhu Bhavan Road (SBR), Ahmedabad",
+    h1: "Luxury Property on Sindhu Bhavan Road",
     description:
-      "Private advisory for luxury apartments, penthouses, villas, and bungalows on Sindhu Bhavan Road, Ahmedabad's most recognized high-value residential corridor.",
+      "Private advisory for luxury flats, penthouses, villas, and bungalows on Sindhu Bhavan Road — Ahmedabad's most recognised premium residential address.",
     heroImage: "/properties/anurita/anurita-1.jpg",
     locationSlug: "sindhu-bhavan",
     intro:
@@ -109,10 +109,10 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     href: "/locations/iskon-ambli",
     label: "Iskon-Ambli Road",
     eyebrow: "Prime Corridor",
-    title: "Luxury Properties on Iskon-Ambli Road, Ahmedabad",
-    h1: "Luxury Properties on Iskon-Ambli Road",
+    title: "Luxury Property on Iscon Ambli Road, Ahmedabad",
+    h1: "Luxury Property on Iscon Ambli Road",
     description:
-      "Curated luxury apartments, sky mansions, penthouses, and duplex residences on Ahmedabad's Iskon-Ambli corridor.",
+      "Curated luxury apartments, sky mansions, and penthouses on Iscon Ambli Road — Ahmedabad's highest-value luxury residential corridor.",
     heroImage: "/properties/maruti-360/maruti-360-view.jpg",
     locationSlug: "iskon-ambli",
     intro:
@@ -750,6 +750,156 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "All of Ahmedabad's primary luxury corridors are on the western side of the city — which is also the side that faces the airport. Thaltej is 15–18 minutes from arrivals; Iskon-Ambli Road is 18–22 minutes; Sindhu Bhavan Road is 22–25 minutes; and Shilaj is 12–15 minutes.",
       "### NRI Buyer Perspective",
       "For NRI buyers arriving from abroad, the first impression of their Ahmedabad property is often formed in the car from the airport. A home that is 20 minutes from arrivals on a clear road makes a meaningful difference to how the property feels as a base. PIKORUA Realty's NRI advisory process specifically addresses airport access as part of corridor evaluation during initial consultations.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "bodakdev",
+    href: "/locations/bodakdev",
+    label: "Bodakdev",
+    eyebrow: "Established Address",
+    title: "Luxury Property in Bodakdev, Ahmedabad",
+    h1: "Luxury Property in Bodakdev",
+    description:
+      "Curated luxury flats, premium apartments, and exclusive residences in Bodakdev — one of Ahmedabad's most established and well-connected western neighbourhoods.",
+    heroImage: "/properties/ikebana/ikebana1.png",
+    intro:
+      "Bodakdev is among Ahmedabad's most mature and sought-after residential addresses — well-connected, socially dense, and home to a strong concentration of HNI families, premium schools, and corporate offices. Properties here offer a balance of established neighbourhood character with proximity to Karnavati Club, CG Road, and the SG Highway belt.",
+    marketSignals: [
+      "Bodakdev is Ahmedabad's most economically dense residential neighbourhood — with the tightest premium buyer concentration outside the SG Highway corridor.",
+      "Supply of large-format 4 BHK and 5 BHK apartments is genuinely constrained; most premium inventory moves through private networks.",
+      "Karnavati Club proximity anchors strong resale demand from business families who value social address alongside home quality.",
+    ],
+    idealFor: [
+      "Buyers who want a central, established Ahmedabad address over a newer but peripheral corridor.",
+      "Families who value school proximity, corporate access, and mature neighbourhood infrastructure.",
+      "NRIs seeking a recognisable Ahmedabad address with immediate livability.",
+    ],
+    faqs: [
+      {
+        question: "Is Bodakdev a good location to buy luxury property in Ahmedabad?",
+        answer:
+          "Yes. Bodakdev is one of Ahmedabad's most sought-after and established luxury neighbourhoods. It offers strong social infrastructure, proximity to Karnavati Club, top private schools, and CG Road — making it consistently one of the most liquid and desirable residential micro-markets in the city.",
+      },
+      {
+        question: "What is the price of luxury flats in Bodakdev Ahmedabad?",
+        answer:
+          "Luxury apartments in Bodakdev typically price between ₹8,000 and ₹13,000 per sq.ft. A premium 4 BHK of 3,000–4,000 sq.ft. generally ranges from ₹3 Crore to ₹6 Crore. Addresses near Karnavati Club or on key feeder roads command a further premium.",
+      },
+      {
+        question: "How close is Bodakdev to SG Highway and Sindhu Bhavan Road?",
+        answer:
+          "Bodakdev is approximately 5–7 minutes from SG Highway and 8–12 minutes from Sindhu Bhavan Road. CG Road and Prahlad Nagar Corporate Road are within 5 minutes — making it one of the best-connected luxury addresses in western Ahmedabad.",
+      },
+    ],
+    relatedSlugs: ["karnavati-club", "sindhu-bhavan", "satellite"],
+    bodyContent: [
+      "### Bodakdev: Ahmedabad's Original HNI Neighbourhood",
+      "Bodakdev is often described as the original luxury residential neighbourhood of western Ahmedabad. Unlike newer corridors that have matured around a single road or landmark, Bodakdev has developed organically over three decades into a fully formed residential district — with premium schools, specialty hospitals, private clubs, upscale dining, and a deeply established community of business families.",
+      "### Karnavati Club Proximity and the HNI Premium",
+      "Karnavati Club, located in the heart of Bodakdev, is one of Ahmedabad's most exclusive private membership clubs. Properties within walking distance of the club carry a consistent demand premium. This creates a micro-demand concentration that has historically insulated Bodakdev property values from broader market corrections.",
+      "### Pricing and Supply Context",
+      "Bodakdev's luxury apartment market prices at ₹8,000–₹13,000 per sq.ft. for well-specified newer stock. Supply of large-format apartments (4,000 sq.ft. and above) is genuinely limited — most transactions happen through private introductions rather than public listing.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "satellite",
+    href: "/locations/satellite",
+    label: "Satellite",
+    eyebrow: "Premium Address",
+    title: "Luxury Property in Satellite, Ahmedabad",
+    h1: "Luxury Property in Satellite",
+    description:
+      "Curated luxury apartments and premium homes in Satellite, Ahmedabad — one of western Ahmedabad's most well-connected and established residential neighbourhoods.",
+    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    intro:
+      "Satellite is a central-western Ahmedabad residential neighbourhood with strong connectivity to CG Road, Prahlad Nagar, and the SG Highway belt. It houses a mix of premium apartments, established bungalows, and well-serviced residential buildings that attract both end-users and investment buyers.",
+    marketSignals: [
+      "Satellite is one of Ahmedabad's most connected premium residential areas — within 10 minutes of CG Road, Prahlad Nagar, and SG Highway.",
+      "Strong demand for 3 BHK and 4 BHK premium apartments from families who want urban connectivity without committing to higher SG Highway prices.",
+      "Satellite's established retail and dining infrastructure creates strong livability for NRIs and corporate professionals.",
+    ],
+    idealFor: [
+      "Buyers who want a central, well-connected premium address at better value than SG Highway corridors.",
+      "Corporate professionals working across CG Road, Prahlad Nagar, or the city's commercial belt.",
+      "NRIs seeking an immediately livable Ahmedabad address with strong neighbourhood infrastructure.",
+    ],
+    faqs: [
+      {
+        question: "Is Satellite a good area for luxury property in Ahmedabad?",
+        answer:
+          "Yes. Satellite is one of Ahmedabad's most established premium residential neighbourhoods, offering good connectivity, mature social infrastructure, and a wide choice of apartments at prices that represent better value than the SG Highway luxury belt. It is an ideal choice for buyers who prioritise connectivity and neighbourhood quality over corridor prestige.",
+      },
+      {
+        question: "What is the price range for luxury property in Satellite Ahmedabad?",
+        answer:
+          "Premium apartments in Satellite typically price between ₹6,500 and ₹11,000 per sq.ft. A 3 BHK of 1,800–2,500 sq.ft. ranges from ₹1.5 Crore to ₹3 Crore; a 4 BHK of 2,800–3,500 sq.ft. typically prices from ₹2.5 Crore to ₹4.5 Crore.",
+      },
+      {
+        question: "How close is Satellite to SG Highway and Bodakdev?",
+        answer:
+          "Satellite is approximately 5–7 minutes from SG Highway and 5–8 minutes from Bodakdev. CG Road is within 5 minutes. The area's central position in western Ahmedabad gives residents multi-directional access across the city's premium belt.",
+      },
+    ],
+    relatedSlugs: ["bodakdev", "prahlad-nagar", "sg-highway"],
+    bodyContent: [
+      "### Satellite: The Connected Hub of Western Ahmedabad",
+      "Satellite sits at the geographic heart of western Ahmedabad's residential belt — south of Bodakdev, west of CG Road, and north of the SG Highway corridor. Its central position gives residents exceptional multi-directional connectivity: 5 minutes to Prahlad Nagar, 7 minutes to SG Highway, 5 minutes to CG Road, and 8 minutes to Bodakdev.",
+      "### Neighbourhood Character and Livability",
+      "Satellite is a mature, dense neighbourhood with strong retail, dining, and services infrastructure. The neighbourhood's density creates an urban, walkable texture that attracts younger HNI buyers and families who want immediate access to daily conveniences.",
+      "### Pricing and Value Proposition",
+      "Satellite offers strong value relative to the premium SG Highway corridors. Premium apartment pricing at ₹6,500–₹11,000 per sq.ft. is typically 20–30% below comparable floor plates on Iskon-Ambli Road — making it a rational and increasingly popular choice for value-conscious luxury buyers.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "prahlad-nagar",
+    href: "/locations/prahlad-nagar",
+    label: "Prahlad Nagar",
+    eyebrow: "Corporate Corridor",
+    title: "Premium Property in Prahlad Nagar, Ahmedabad",
+    h1: "Premium Property in Prahlad Nagar",
+    description:
+      "Luxury residences and premium apartments in Prahlad Nagar, Ahmedabad — a premier corporate and residential corridor anchored by Ahmedabad's most prominent office district.",
+    heroImage: "/properties/eminence-96/emini96-1.png",
+    intro:
+      "Prahlad Nagar is Ahmedabad's most prominent corporate district and a strong residential corridor for senior executives, business families, and professionals who want to live within minutes of their offices. Premium residential buildings here attract both self-use buyers and investors seeking the city's best professional tenant profile.",
+    marketSignals: [
+      "Prahlad Nagar Corporate Road is home to the offices of Ahmedabad's largest corporations — creating consistent rental demand from senior executives and CXOs.",
+      "Premium residential buildings adjacent to the corporate cluster attract both self-use buyers and investor-buyers seeking professional tenant profiles.",
+      "Prahlad Nagar's proximity to SG Highway, Satellite, and Bodakdev makes it one of the most accessible corporate-residential addresses in Ahmedabad.",
+    ],
+    idealFor: [
+      "Senior executives and CXOs working in Prahlad Nagar's corporate cluster who want minimal commute from a premium home.",
+      "Investors seeking professional tenant profiles with strong rental yield in a branded corporate address.",
+      "Families who want a premium address combining residential quality with proximity to Ahmedabad's business hub.",
+    ],
+    faqs: [
+      {
+        question: "Is Prahlad Nagar a good area for premium property in Ahmedabad?",
+        answer:
+          "Yes. Prahlad Nagar is one of Ahmedabad's most prominent corporate and residential corridors. Its combination of corporate office proximity, strong connectivity to SG Highway and Satellite, and high tenant demand from senior executives makes it an excellent choice for both self-use buyers and investment-oriented buyers.",
+      },
+      {
+        question: "What is the price range for premium property in Prahlad Nagar Ahmedabad?",
+        answer:
+          "Premium apartments in Prahlad Nagar typically price between ₹7,000 and ₹12,000 per sq.ft. A quality 3 BHK of 2,000–2,800 sq.ft. ranges from ₹1.8 Crore to ₹3.5 Crore. Premium 4 BHK apartments in newer buildings price from ₹2.5 Crore to ₹5 Crore.",
+      },
+      {
+        question: "What kind of tenants rent in Prahlad Nagar?",
+        answer:
+          "Prahlad Nagar attracts senior executives, CXOs of major corporations, and GIFT City-linked consultants as tenants. Furnished 3 BHK and 4 BHK apartments rent at ₹35,000–₹90,000 per month — a yield-positive profile for investors.",
+      },
+    ],
+    relatedSlugs: ["satellite", "sg-highway", "bodakdev"],
+    bodyContent: [
+      "### Prahlad Nagar: Work and Home in One Premium Address",
+      "Prahlad Nagar Corporate Road is Ahmedabad's most prominent business address — home to the headquarters and regional offices of major Indian conglomerates, financial institutions, and multinational brands. The residential streets adjacent to the corporate cluster have developed in parallel, creating a premium live-work neighbourhood that is unique in Ahmedabad's geography.",
+      "### Rental Yield and Investment Case",
+      "Prahlad Nagar's corporate tenant profile is among the most stable and high-yielding in Ahmedabad's residential market. Furnished 3 BHK apartments at ₹35,000–₹60,000 per month and 4 BHK apartments at ₹55,000–₹90,000 per month are consistently in demand. This produces gross rental yields of 3.5–5% on acquisition cost — stronger than most luxury residential micro-markets in Ahmedabad.",
+      "### Connectivity Profile",
+      "Prahlad Nagar sits at the junction of the SG Highway corridor and the Satellite-Bodakdev residential belt. SG Highway is within 3 minutes; Bodakdev is 5 minutes; CG Road is 7 minutes; Sindhu Bhavan Road is 12 minutes.",
     ],
   },
 ];
