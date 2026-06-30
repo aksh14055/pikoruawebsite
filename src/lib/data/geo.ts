@@ -403,6 +403,355 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Premium furnished apartments adjacent to SG Highway command rental yields of ₹40,000–₹1,20,000 per month depending on specification and proximity to corporate employment zones. The primary tenant profile includes senior professionals, visiting CXOs, and GIFT City-linked expat consultants. For NRI investors prioritising rental income alongside capital appreciation, the SG Highway belt — particularly Thaltej and Iskon-Ambli — offers a combination of yield, liquidity, and NRI-recognisable address that is hard to match elsewhere in Ahmedabad.",
     ],
   },
+  {
+    kind: "location",
+    slug: "vastrapur",
+    href: "/locations/vastrapur",
+    label: "Vastrapur",
+    eyebrow: "Established Corridor",
+    title: "Luxury Property in Vastrapur, Ahmedabad",
+    h1: "Luxury Property in Vastrapur",
+    description:
+      "Curated luxury apartments, penthouses, and premium residences in Vastrapur — one of Ahmedabad's most established western residential neighbourhoods.",
+    heroImage: "/properties/eminence-96/emini96-1.png",
+    intro:
+      "Vastrapur is a mature western Ahmedabad neighbourhood with a strong residential character, proximity to Vastrapur Lake, quality social infrastructure, and a buyer base that values urban depth over a single corridor brand.",
+    marketSignals: [
+      "Strong demand for premium 3 BHK and 4 BHK apartments with lake-adjacent or park-facing positions.",
+      "One of the most walkable upscale neighbourhoods in Ahmedabad — restaurants, cafes, and retail within 5 minutes.",
+      "Vastrapur Lake and Jogging Track create a rare urban green-corridor premium.",
+    ],
+    idealFor: [
+      "Buyers seeking an established, walkable luxury neighbourhood rather than an emerging corridor.",
+      "Families who value social density, dining access, and institutional schools in close proximity.",
+      "NRIs who want a recognisable Ahmedabad address with lifestyle infrastructure already in place.",
+    ],
+    faqs: [
+      {
+        question: "Is Vastrapur a good area to buy luxury property in Ahmedabad?",
+        answer:
+          "Yes. Vastrapur is one of Ahmedabad's most established luxury neighbourhoods, offering premium apartments, proximity to Vastrapur Lake, and a mature social infrastructure — making it one of the most livable and sought-after areas for HNI buyers.",
+      },
+      {
+        question: "What is the price of luxury property in Vastrapur Ahmedabad?",
+        answer:
+          "Luxury properties in Vastrapur typically range from ₹7,000 to ₹12,000 per sq.ft. depending on floor, building specification, and lake proximity. A 4 BHK of 2,800–3,800 sq.ft. generally prices between ₹2.5 Crore and ₹5 Crore.",
+      },
+      {
+        question: "How close is Vastrapur to SG Highway and Iskon-Ambli?",
+        answer:
+          "Vastrapur is approximately 5–7 minutes from SG Highway and 10–12 minutes from Iskon-Ambli Road. Its central location makes it well-positioned for buyers who want access across western Ahmedabad's full business and lifestyle belt.",
+      },
+      {
+        question: "Does PIKORUA Realty advise on Vastrapur properties?",
+        answer:
+          "Yes. PIKORUA Realty advises on premium residential properties in Vastrapur, Ahmedabad. Our advisory includes both off-market and selectively listed options — contact us at pikorua.in/contact for a private consultation.",
+      },
+    ],
+    relatedSlugs: ["sg-highway", "iskon-ambli", "sindhu-bhavan"],
+    bodyContent: [
+      "### Vastrapur: Ahmedabad's Most Livable Luxury Neighbourhood",
+      "Vastrapur occupies a unique position in Ahmedabad's western luxury residential market. Unlike corridors that are still maturing (Shilaj, Vaishno Devi) or corridors whose brand has become synonymous with a single road (Sindhu Bhavan Road, Iskon-Ambli), Vastrapur is a fully realised urban neighbourhood — with a lake, multiple parks, dense restaurant and retail infrastructure, and institutional schools — all within walking distance.",
+      "### The Vastrapur Lake Premium",
+      "Properties with direct or near views of Vastrapur Lake command a measurable premium — typically 12–20% above equivalent non-lake-facing units in the same neighbourhood. The lake's jogging track, evening crowd, and ambient light quality create an address cachet that is difficult to replicate on any other western Ahmedabad corridor.",
+      "### Pricing and Supply Context",
+      "The Vastrapur market is mature, which means supply is constrained. Pricing ranges from ₹7,000–₹12,000 per sq.ft. for well-specified apartments. Premium 4 BHK and 5 BHK units in established buildings trade at ₹3 Crore to ₹6 Crore. Unlike emerging corridors, Vastrapur's resale market has deep buyer liquidity — a key advantage for investors evaluating exit horizon.",
+      "### Connectivity and Infrastructure",
+      "Vastrapur is approximately 5 minutes from SG Highway, 8 minutes from Prahlad Nagar Corporate Road, 10 minutes from Iskon-Ambli, and 20 minutes from Ahmedabad International Airport.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "rajpath-club",
+    href: "/locations/rajpath-club",
+    label: "Near Rajpath Club",
+    eyebrow: "Prestige Address",
+    title: "Luxury Property near Rajpath Club, Ahmedabad",
+    h1: "Luxury Property near Rajpath Club",
+    description:
+      "Premium residences and luxury properties near Rajpath Club — Ahmedabad's most prestigious social club address on SG Highway.",
+    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    intro:
+      "Rajpath Club on SG Highway is Ahmedabad's most prestigious social address. Properties within 1–2 km of the club carry a distinct prestige premium, attracting HNI buyers who value both lifestyle access and the social cachet of a Rajpath Club-adjacent address.",
+    marketSignals: [
+      "Rajpath Club membership and proximity significantly influence buyer willingness to pay in this micro-market.",
+      "Properties within 5 minutes of the club benefit from strong resale demand from Ahmedabad's top business families.",
+      "The corridor between Rajpath Club and Karnavati Club is Ahmedabad's most densely HNI-occupied residential belt.",
+    ],
+    idealFor: [
+      "Business families and HNI buyers who value proximity to Ahmedabad's most elite social infrastructure.",
+      "NRIs looking for a prestige address that is immediately recognisable to the Gujarati HNI community.",
+      "Buyers evaluating premium apartments and bungalows in the Ambli-Bopal belt.",
+    ],
+    faqs: [
+      {
+        question: "Why is Rajpath Club considered prestigious in Ahmedabad real estate?",
+        answer:
+          "Rajpath Club is Ahmedabad's most exclusive private social club, with a membership base drawn from the city's top industrial and business families. Properties adjacent to the club carry an address premium because proximity signals social status and provides immediate access to the club's lifestyle infrastructure.",
+      },
+      {
+        question: "What type of luxury properties are available near Rajpath Club in Ahmedabad?",
+        answer:
+          "The Rajpath Club neighbourhood primarily features luxury 4 BHK and 5 BHK apartments in premium towers, bungalow estates in private lanes, and a small number of sky-mansion and penthouse residences in newer developments on and off SG Highway.",
+      },
+      {
+        question: "Which corridors are closest to Rajpath Club?",
+        answer:
+          "Rajpath Club sits on SG Highway near Ambli, making Iskon-Ambli Road, Sindhu Bhavan Road, and Thaltej all within 8–12 minutes. It is also connected to Bodakdev and Satellite by the SG Highway spine.",
+      },
+    ],
+    relatedSlugs: ["iskon-ambli", "sg-highway", "karnavati-club"],
+    bodyContent: [
+      "### Rajpath Club: The Address That Defines Prestige in Ahmedabad",
+      "In Ahmedabad's luxury real estate lexicon, few landmarks carry the weight of Rajpath Club. Founded in 1988, the club's membership reads like a roster of Gujarat's most prominent industrial families. It offers golf, squash, swimming, fine dining, and one of the city's finest event venues — and its proximity is a primary search filter for a specific segment of Ahmedabad's most discerning luxury home buyers.",
+      "### Why Proximity Matters for Property Values",
+      "The Rajpath Club address premium is real and measurable. HNI buyers who are members or aspiring members of the club actively prefer addresses within 5 minutes of the campus. This creates a micro-demand concentration that insulates nearby property values from broader market corrections.",
+      "### Property Types and Pricing",
+      "The Rajpath Club neighbourhood features luxury apartments priced at ₹9,000–₹15,000 per sq.ft. in newer towers, and bungalow estates ranging from ₹5 Crore to ₹30 Crore depending on plot size and construction quality. Penthouses on upper floors have achieved prices above ₹15 Crore.",
+      "### PIKORUA Realty's Role in This Micro-Market",
+      "PIKORUA Realty advises both buyers and sellers in the Rajpath Club micro-market through a private, relationship-led model. Most premium inventory in this belt changes hands without public listing. Contact PIKORUA Realty for a private consultation on available options.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "karnavati-club",
+    href: "/locations/karnavati-club",
+    label: "Near Karnavati Club",
+    eyebrow: "Prestige Corridor",
+    title: "Luxury Property near Karnavati Club, Ahmedabad",
+    h1: "Luxury Property near Karnavati Club",
+    description:
+      "Curated luxury residences and premium properties near Karnavati Club — one of Ahmedabad's most sought-after social and residential addresses.",
+    heroImage: "/properties/ikebana/ikebana1.png",
+    intro:
+      "Karnavati Club is one of Ahmedabad's premier private membership clubs, located in the heart of Satellite–Bodakdev. Properties in its immediate vicinity are among the most sought-after in the city, attracting buyers from Ahmedabad's top corporate and business families.",
+    marketSignals: [
+      "Premium apartments and penthouses within walking distance of Karnavati Club command consistent demand.",
+      "The Satellite–Bodakdev corridor, anchored by the club, is Ahmedabad's most established luxury residential micro-market outside the SG Highway axis.",
+      "Supply of large-format 4 BHK and 5 BHK residences near the club is genuinely limited.",
+    ],
+    idealFor: [
+      "Buyers seeking a central, well-connected Ahmedabad luxury address with immediate social infrastructure.",
+      "Corporate professionals who value proximity to CG Road, Prahlad Nagar, and the Satellite business district.",
+      "NRIs who want a recognisable, mature Ahmedabad address near family or business connections.",
+    ],
+    faqs: [
+      {
+        question: "Is the Karnavati Club area a good location for luxury property in Ahmedabad?",
+        answer:
+          "Yes. The Karnavati Club neighbourhood in Satellite-Bodakdev is one of Ahmedabad's most mature and sought-after luxury residential addresses. It offers immediate access to premium social infrastructure, corporate offices, and quality schools — making it consistently one of the most liquid micro-markets for HNI buyers.",
+      },
+      {
+        question: "What is the price range for luxury property near Karnavati Club?",
+        answer:
+          "Luxury apartments near Karnavati Club in Satellite-Bodakdev typically price between ₹8,000 and ₹13,000 per sq.ft. A 4 BHK of 3,000–4,000 sq.ft. ranges from ₹3 Crore to ₹6 Crore. Premium penthouses and large-format 5 BHK residences can price above ₹8 Crore.",
+      },
+      {
+        question: "How far is the Karnavati Club area from Iskon-Ambli and SG Highway?",
+        answer:
+          "Karnavati Club in Bodakdev is approximately 10–12 minutes from Iskon-Ambli Road and 5–7 minutes from SG Highway. CG Road and Prahlad Nagar Corporate Road are within 5 minutes.",
+      },
+    ],
+    relatedSlugs: ["sindhu-bhavan", "rajpath-club", "sg-highway"],
+    bodyContent: [
+      "### Karnavati Club: The Satellite-Bodakdev Prestige Address",
+      "Karnavati Club occupies a parallel prestige position to Rajpath Club — but with a different geography and social character. While Rajpath Club is the SG Highway landmark, Karnavati Club anchors the Satellite-Bodakdev corridor, which is the original luxury residential belt of western Ahmedabad.",
+      "### The Satellite-Bodakdev Corridor",
+      "The neighbourhood around Karnavati Club includes Bodakdev, Satellite, Thaltej Road, and Sindhu Bhavan Road's eastern section — home to the offices of major Gujarati conglomerates, the best private schools in the city, and a mature restaurant and retail ecosystem.",
+      "### Pricing and Supply",
+      "Premium apartments near Karnavati Club in Bodakdev price at ₹8,000–₹13,000 per sq.ft. Supply of truly large-format (4,000+ sq.ft.) apartments is limited, which supports values in this micro-market during soft cycles.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "nehru-nagar",
+    href: "/locations/nehru-nagar",
+    label: "Near Nehru Nagar",
+    eyebrow: "Connected Corridor",
+    title: "Luxury Property near Nehru Nagar, Ahmedabad",
+    h1: "Luxury Property near Nehru Nagar",
+    description:
+      "Premium residential properties and luxury apartments near Nehru Nagar Circle — a well-connected node in Ahmedabad's western residential belt.",
+    heroImage: "/properties/nehru-nagar/nehru-nagar-1.jpeg",
+    intro:
+      "Nehru Nagar Circle is a key connectivity node in western Ahmedabad, sitting at the intersection of multiple premium residential corridors. Properties in the Nehru Nagar belt offer buyers a balance of connectivity, established neighbourhood character, and relative value versus SG Highway-facing addresses.",
+    marketSignals: [
+      "Strong demand for mid-to-large 3 BHK and 4 BHK apartments in the Nehru Nagar–Satellite belt.",
+      "The area benefits from proximity to top private schools and corporate offices in Prahlad Nagar.",
+      "Value proposition is stronger than Iskon-Ambli but with comparable connectivity.",
+    ],
+    idealFor: [
+      "Buyers seeking a value-conscious entry into Ahmedabad's western luxury belt.",
+      "Families prioritising school proximity and corporate connectivity.",
+      "Investors evaluating emerging premium pockets adjacent to established corridors.",
+    ],
+    faqs: [
+      {
+        question: "Is Nehru Nagar a good area for buying luxury property in Ahmedabad?",
+        answer:
+          "Nehru Nagar is a well-connected mid-market to premium residential area in western Ahmedabad. It offers good value relative to SG Highway corridors while providing proximity to Satellite, Bodakdev, and corporate districts.",
+      },
+      {
+        question: "What types of properties are available near Nehru Nagar?",
+        answer:
+          "The Nehru Nagar belt offers a mix of 3 BHK and 4 BHK premium apartments, some older standalone bungalows, and select new-build residences in gated communities. PIKORUA Realty can advise on the best options based on your budget and requirements.",
+      },
+      {
+        question: "Which premium areas are close to Nehru Nagar Circle?",
+        answer:
+          "Satellite, Bodakdev, Prahlad Nagar, and Vasna Road are all within 5–10 minutes of Nehru Nagar Circle. Sindhu Bhavan Road is approximately 12 minutes away.",
+      },
+    ],
+    relatedSlugs: ["sindhu-bhavan", "sg-highway", "luxury-apartments-ahmedabad"],
+    bodyContent: [
+      "### Nehru Nagar: The Connected Heart of Western Ahmedabad",
+      "Nehru Nagar Circle sits at one of the most strategically connected points in western Ahmedabad, linking Satellite Road, Vasna Road, Nehru Nagar itself, and feeder roads to Bodakdev and Prahlad Nagar — giving residents multi-directional access to virtually every key destination in the western half of the city within 10–15 minutes.",
+      "### Neighbourhood Character",
+      "Unlike the newer SG Highway belt, the Nehru Nagar area has an established, lived-in character — mature trees, older bungalows alongside newer apartment buildings, dense neighbourhood retail, and a self-contained lifestyle.",
+      "### Pricing and Value Proposition",
+      "Luxury apartments in new-build buildings near Nehru Nagar price at ₹6,000–₹9,000 per sq.ft., representing a 15–25% discount to comparable floor plates on Iskon-Ambli Road. For buyers with longer investment horizons, Nehru Nagar represents a compelling entry point.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "zydus-hospital",
+    href: "/locations/zydus-hospital",
+    label: "Near Zydus Hospital",
+    eyebrow: "Healthcare Landmark",
+    title: "Luxury Property near Zydus Hospital, Ahmedabad",
+    h1: "Luxury Property near Zydus Hospital",
+    description:
+      "Premium residential properties and luxury homes near Zydus Hospital on SG Highway — a landmark that anchors a well-serviced western Ahmedabad neighbourhood.",
+    heroImage: "/properties/eminence-96/eminence-96-3-pool.webp",
+    intro:
+      "Zydus Hospital on SG Highway is a key healthcare landmark and neighbourhood anchor in western Ahmedabad. Properties in the immediate vicinity benefit from strong social infrastructure, direct SG Highway connectivity, and proximity to the Thaltej–Sindhu Bhavan corridor.",
+    marketSignals: [
+      "Healthcare-adjacent properties in Ahmedabad command a consistent demand premium from senior buyers and medical professionals.",
+      "The Zydus Hospital location sits within the SG Highway luxury belt — 5 minutes from Thaltej and 12 minutes from Iskon-Ambli.",
+      "Strong rental demand from healthcare professionals working at Zydus and the nearby hospital cluster.",
+    ],
+    idealFor: [
+      "Senior buyers and families who value proximity to Ahmedabad's top private hospital.",
+      "Healthcare professionals seeking premium residences within minutes of their workplace.",
+      "Investors looking at rental yield from the healthcare professional tenant profile.",
+    ],
+    faqs: [
+      {
+        question: "Is living near Zydus Hospital in Ahmedabad a good residential choice?",
+        answer:
+          "Yes. The area near Zydus Hospital on SG Highway is a well-served western Ahmedabad residential neighbourhood. Beyond healthcare access, it offers proximity to Thaltej, Sindhu Bhavan Road, and the SG Highway corridor — making it well-connected for both lifestyle and commute.",
+      },
+      {
+        question: "What kind of luxury properties are available near Zydus Hospital?",
+        answer:
+          "The area near Zydus Hospital features premium 3 BHK and 4 BHK apartments in gated buildings, some larger 5 BHK residences in newer towers, and a small number of bungalow-adjacent properties in the internal streets. PIKORUA Realty can advise on available options.",
+      },
+    ],
+    relatedSlugs: ["thaltej", "sg-highway", "sindhu-bhavan"],
+    bodyContent: [
+      "### Zydus Hospital Neighbourhood: Healthcare, Connectivity, and Residential Premium",
+      "Zydus Hospital on Thaltej-Hebatpur Road (SG Highway) is one of Ahmedabad's foremost multi-specialty private hospitals. Its presence creates a measurable residential premium in the surrounding streets — particularly for senior buyers and medical professionals who value immediate access to top-tier healthcare.",
+      "### Proximity to the SG Highway Luxury Belt",
+      "The Zydus Hospital area sits at the junction of Thaltej and the SG Highway corridor. Thaltej — already an established luxury residential address — is within 5 minutes. Sindhu Bhavan Road is 8–10 minutes away.",
+      "### Pricing Context",
+      "Premium apartments in new buildings near Zydus Hospital price at ₹7,000–₹11,000 per sq.ft. Healthcare professional tenants typically commit to 11–36 month leases at ₹35,000–₹80,000 per month for furnished apartments.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "palladium-mall",
+    href: "/locations/palladium-mall",
+    label: "Near Palladium Mall",
+    eyebrow: "Lifestyle Landmark",
+    title: "Luxury Property near Palladium Mall, Ahmedabad",
+    h1: "Luxury Property near Palladium Mall",
+    description:
+      "Premium residential properties and luxury homes near Palladium Mall on SG Highway — one of Ahmedabad's most vibrant and well-serviced lifestyle addresses.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    intro:
+      "Palladium Mall on SG Highway is Ahmedabad's most prominent luxury retail and lifestyle landmark. Properties within a short radius of the mall benefit from exceptional lifestyle infrastructure, strong connectivity, and the prestige of one of the city's most recognised commercial addresses.",
+    marketSignals: [
+      "Palladium Mall proximity is a positive filter for luxury apartment buyers who prioritise retail and dining walkability.",
+      "The SG Highway corridor anchored by Palladium has seen consistent price appreciation over the last 5 years.",
+      "Strong rental demand from professionals working in the adjacent corporate districts.",
+    ],
+    idealFor: [
+      "Young HNI couples and families who value urban lifestyle access within the western Ahmedabad premium belt.",
+      "NRIs looking for a vibrant, recognisable neighbourhood with strong retail and dining infrastructure.",
+      "Investors seeking rental properties with a strong lifestyle-linked tenant profile.",
+    ],
+    faqs: [
+      {
+        question: "Why is the area near Palladium Mall popular for luxury property in Ahmedabad?",
+        answer:
+          "Palladium Mall on SG Highway is Ahmedabad's leading luxury retail destination. Its surrounding neighbourhood offers premium apartments with direct access to high-end dining, retail, entertainment, and corporate offices — a combination that commands strong demand from HNI buyers and premium tenants.",
+      },
+      {
+        question: "What luxury property options are available near Palladium Mall?",
+        answer:
+          "The area near Palladium Mall features luxury towers with 3 BHK, 4 BHK, and penthouse residences, several of which offer views towards the SG Highway corridor. PIKORUA Realty maintains a private shortlist of available options — contact us for details.",
+      },
+    ],
+    relatedSlugs: ["sg-highway", "iskon-ambli", "vastrapur"],
+    bodyContent: [
+      "### Palladium Mall: Ahmedabad's Luxury Lifestyle Epicentre",
+      "Palladium Mall on SG Highway houses some of India's finest luxury brands, premium dining concepts, a multiplex, and curated retail — making the surrounding neighbourhood one of Ahmedabad's most lifestyle-complete addresses.",
+      "### Residential Market Around Palladium",
+      "The most in-demand format near Palladium is the 4 BHK of 2,500–3,500 sq.ft. with building amenities including a pool, gym, and concierge. Pricing ranges from ₹9,000–₹14,000 per sq.ft. for newer stock.",
+      "### Connectivity and Investment Case",
+      "Palladium Mall sits at the SG Highway–Thaltej Road junction. The airport is 20 minutes away; Iskon-Ambli Road is 8 minutes; Vastrapur is 10 minutes. Rental yields from premium tenants average ₹50,000–₹1,00,000 per month.",
+    ],
+  },
+  {
+    kind: "location",
+    slug: "ahmedabad-airport",
+    href: "/locations/ahmedabad-airport",
+    label: "Near Ahmedabad Airport",
+    eyebrow: "Connectivity Premium",
+    title: "Luxury Property near Ahmedabad Airport",
+    h1: "Luxury Property near Ahmedabad Airport",
+    description:
+      "Premium residential properties and luxury homes near Sardar Vallabhbhai Patel International Airport, Ahmedabad — ideal for frequent flyers, NRI buyers, and senior executives.",
+    heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
+    intro:
+      "Properties near Ahmedabad's Sardar Vallabhbhai Patel International Airport combine city connectivity with a premium address on the city's western growth axis. Frequent-traveller buyers and senior executives consistently rank airport proximity as a key filter, and the western Ahmedabad luxury belt sits within 20–25 minutes of the airport.",
+    marketSignals: [
+      "Airport proximity is a leading search filter for NRI buyers evaluating Ahmedabad property from abroad.",
+      "The Thaltej–Shilaj belt on the western side of the airport represents Ahmedabad's most dynamic luxury growth corridor.",
+      "Business travellers and senior executives view sub-25-minute airport access as a premium attribute.",
+    ],
+    idealFor: [
+      "NRIs who travel frequently between India and their overseas base and want fast airport access from their Ahmedabad home.",
+      "Senior executives who require regular international and domestic flight access.",
+      "Buyers evaluating Thaltej, Shilaj, and the western corridor for their combination of airport proximity and luxury residential quality.",
+    ],
+    faqs: [
+      {
+        question: "Which Ahmedabad luxury areas are closest to the airport?",
+        answer:
+          "Thaltej, Shilaj, Vaishno Devi Circle, and Iskon-Ambli Road are the closest luxury residential corridors to Sardar Vallabhbhai Patel International Airport — all within 15–25 minutes depending on traffic. Sindhu Bhavan Road is approximately 25 minutes.",
+      },
+      {
+        question: "Is airport proximity a good reason to buy luxury property near Ahmedabad Airport?",
+        answer:
+          "Yes — particularly for NRI buyers and frequent business travellers. Sub-25-minute airport access from a luxury western corridor home is a genuine lifestyle advantage. The same corridors (Thaltej, Iskon-Ambli) also offer strong capital appreciation and rental yield.",
+      },
+      {
+        question: "Will the expansion of Ahmedabad Airport affect property values nearby?",
+        answer:
+          "Positively, in most cases. The planned expansion of Sardar Vallabhbhai Patel International Airport and increased international connectivity will increase the attractiveness of the western Ahmedabad corridor as a premium residential address for globally mobile buyers.",
+      },
+    ],
+    relatedSlugs: ["thaltej", "shilaj", "vaishno-devi"],
+    bodyContent: [
+      "### Airport Proximity: A Premium Filter in Ahmedabad's Luxury Market",
+      "Sardar Vallabhbhai Patel International Airport is one of India's busiest airports for NRI traffic — particularly from the Gulf, the UK, and North America. For Ahmedabad's large Gujarati NRI community, the airport is both a symbol and a practical requirement: their Ahmedabad home must be within a comfortable drive of it.",
+      "### The Western Luxury Belt's Airport Advantage",
+      "All of Ahmedabad's primary luxury corridors are on the western side of the city — which is also the side that faces the airport. Thaltej is 15–18 minutes from arrivals; Iskon-Ambli Road is 18–22 minutes; Sindhu Bhavan Road is 22–25 minutes; and Shilaj is 12–15 minutes.",
+      "### NRI Buyer Perspective",
+      "For NRI buyers arriving from abroad, the first impression of their Ahmedabad property is often formed in the car from the airport. A home that is 20 minutes from arrivals on a clear road makes a meaningful difference to how the property feels as a base. PIKORUA Realty's NRI advisory process specifically addresses airport access as part of corridor evaluation during initial consultations.",
+    ],
+  },
 ];
 
 export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
@@ -441,6 +790,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "What should I check before buying a luxury apartment?",
         answer:
           "Review floor plate privacy, lift access, parking, amenity quality, maintenance standards, legal documentation, RERA status where applicable, and future resale positioning.",
+      },
+      {
+        question: "Where can I find a luxury 4 BHK flat in Ahmedabad?",
+        answer:
+          "Luxury 4 BHK flats in Ahmedabad are concentrated on Iskon-Ambli Road, Sindhu Bhavan Road, and Thaltej. These corridors offer the best combination of floor plate quality, privacy, amenity depth, and long-term resale value. PIKORUA Realty maintains a private shortlist of available 4 BHK homes — contact us for curated options.",
+      },
+      {
+        question: "Where can I find a luxury 5 BHK flat in Ahmedabad?",
+        answer:
+          "Luxury 5 BHK apartments in Ahmedabad are available on Iskon-Ambli Road and select Sindhu Bhavan Road towers, typically as large-format floor plates of 4,000–6,000 sq.ft. These are among the rarest and most sought-after residential formats in the city. PIKORUA Realty can share current availability on request.",
       },
     ],
     relatedSlugs: ["iskon-ambli", "sindhu-bhavan", "penthouses-duplexes-ahmedabad"],
@@ -491,6 +850,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "Privacy, terrace usability, view protection, floor height, lift access, layout efficiency, building quality, and legal clarity around exclusive areas determine whether the premium is justified.",
       },
+      {
+        question: "Where can I find a premium penthouse in Ahmedabad?",
+        answer:
+          "Premium penthouses in Ahmedabad are available on Iskon-Ambli Road, Sindhu Bhavan Road, and select Thaltej towers. Most top-tier penthouse inventory is not listed publicly — PIKORUA Realty provides access to private and off-market penthouse opportunities across all three corridors.",
+      },
+      {
+        question: "What is the price of a luxury duplex in Ahmedabad?",
+        answer:
+          "Luxury duplex homes in Ahmedabad typically price between ₹4 Crore and ₹12 Crore depending on size, location, and specification. The most in-demand duplexes are in Iskon-Ambli Road towers, where 4,000–6,000 sq.ft. duplexes with private terraces trade at ₹6 Crore to ₹12 Crore.",
+      },
     ],
     relatedSlugs: ["luxury-apartments-ahmedabad", "sindhu-bhavan", "iskon-ambli"],
     bodyContent: [
@@ -540,6 +909,16 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "Title clarity, construction approvals, plot dimensions, access, parking, service areas, renovation scope, and future resale fit should be reviewed before committing.",
       },
+      {
+        question: "Where can I find a luxury villa for sale in Ahmedabad?",
+        answer:
+          "Luxury villas in Ahmedabad are available in Shilaj, Sindhu Bhavan Road lanes, and Vaishno Devi. Premium gated villa communities with shared amenities are concentrated in Shilaj and Vaishno Devi. PIKORUA Realty advises on both gated community and independent villa options — many of which are not publicly listed.",
+      },
+      {
+        question: "Where can I find a luxury bungalow for sale in Ahmedabad?",
+        answer:
+          "Luxury bungalows in Ahmedabad are primarily available in the lanes off Sindhu Bhavan Road, in select Shilaj pockets, and in established Bodakdev neighbourhoods. Independent bungalow estates on 2,000–5,000 sq.yd. plots are rare — PIKORUA Realty can connect qualified buyers with private bungalow mandates.",
+      },
     ],
     relatedSlugs: ["shilaj", "sindhu-bhavan", "residential-plots-ahmedabad"],
     bodyContent: [
@@ -588,6 +967,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "What documents should be checked before buying a plot?",
         answer:
           "Title chain, zoning, NA permissions where applicable, development permissions, survey records, encumbrance, access road, and utility readiness should be checked.",
+      },
+      {
+        question: "Where can I find a luxury plot for sale in Ahmedabad?",
+        answer:
+          "Luxury residential plots for sale in Ahmedabad are available in Shilaj, Vaishno Devi, and selected Bopal-Ambli pockets. Premium 400–1,000 sq.yd. plots with NA permissions and road access typically price from ₹2 Crore to ₹8 Crore depending on location and specification. PIKORUA Realty advises on plot purchases including full legal and development diligence.",
       },
     ],
     relatedSlugs: ["shilaj", "vaishno-devi", "villas-bungalows-ahmedabad"],
@@ -650,6 +1034,66 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "Luxury residential properties in Ahmedabad generate rental yields of 2–4% annually on capital value in the primary corridors. This is lower than commercial properties but provides stable, low-maintenance income from a high-quality tenant profile: senior executives, GIFT City professionals, expat consultants, and CXOs of Ahmedabad-based corporations. Premium furnished apartments of 4 BHK and above on Sindhu Bhavan Road and Iskon-Ambli rent at ₹60,000–₹1,50,000 per month. Adding rental income to capital appreciation produces total return profiles that are attractive on a risk-adjusted basis for HNI portfolios.",
       "### Capital Gains and Repatriation for NRI Investors",
       "NRI investors should plan exit taxation from the acquisition stage. Long-term capital gains (LTCG) on residential property held for more than 24 months attract a 20% tax after indexation benefits. Short-term gains are taxed at the applicable income slab. Upon sale, NRIs can repatriate the proceeds of up to two residential properties to their country of residence per financial year, subject to filing Form 15CA/15CB and obtaining tax clearance. PIKORUA Realty's advisory process includes connecting investors with experienced tax advisors to structure entry and exit efficiently.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "commercial-properties-ahmedabad",
+    href: "/property-types/commercial-properties-ahmedabad",
+    label: "Commercial Properties",
+    eyebrow: "Property Type",
+    title: "Premium Commercial Property in Ahmedabad — Office & Showroom",
+    h1: "Premium Commercial Properties in Ahmedabad",
+    description:
+      "Private advisory for premium commercial properties in Ahmedabad — luxury office spaces, showrooms, and weekend villas for HNI and corporate buyers.",
+    heroImage: "/properties/eminence-96/emini96-1.png",
+    categories: ["investment"],
+    matchKeywords: ["commercial", "office", "showroom", "weekend villa"],
+    collectionHref: "/properties",
+    intro:
+      "PIKORUA Realty advises on select premium commercial and lifestyle properties in Ahmedabad — including luxury office spaces, flagship showrooms, and weekend villa estates near the city.",
+    marketSignals: [
+      "Demand for premium office spaces in Prahlad Nagar and SG Highway corporate corridors remains strong.",
+      "Flagship showroom spaces in Ahmedabad's high-footfall luxury zones are limited and rarely listed publicly.",
+      "Weekend villa estates within 60–90 minutes of Ahmedabad are an emerging luxury category for HNI buyers.",
+    ],
+    idealFor: [
+      "Business owners seeking a premium flagship office or showroom address in Ahmedabad.",
+      "HNI buyers looking for a weekend retreat villa near Ahmedabad.",
+      "Investors evaluating high-yield commercial assets in Ahmedabad's premium commercial belt.",
+    ],
+    faqs: [
+      {
+        question: "Does PIKORUA Realty advise on commercial properties in Ahmedabad?",
+        answer:
+          "Yes. PIKORUA Realty advises on select premium commercial properties in Ahmedabad — including luxury office spaces in Prahlad Nagar and SG Highway, flagship showroom spaces, and weekend villa estates near Ahmedabad. Our commercial advisory is selective and relationship-led, consistent with our broader private advisory model.",
+      },
+      {
+        question: "Where are the best premium office spaces in Ahmedabad?",
+        answer:
+          "Prahlad Nagar Corporate Road, SG Highway, and select CG Road buildings house Ahmedabad's most sought-after premium office spaces. Grade A office floors in Prahlad Nagar price at ₹70–₹150 per sq.ft. per month. PIKORUA Realty can advise on availability based on your specific size, specification, and timeline requirements.",
+      },
+      {
+        question: "Where can I find a premium showroom for sale in Ahmedabad?",
+        answer:
+          "High-quality showroom spaces in Ahmedabad's luxury retail zones — particularly on SG Highway, Sindhu Bhavan Road, and C.G. Road — are extremely limited in supply. Most change hands through private introductions. PIKORUA Realty advises qualified business owners and investors on showroom acquisition opportunities that are not publicly listed.",
+      },
+      {
+        question: "Are there weekend villas near Ahmedabad?",
+        answer:
+          "Yes. Weekend villa estates near Ahmedabad are available in the Nalsarovar belt, the Kevadia-Statue of Unity corridor, the Dholera smart city periphery, and select farmhouse communities on the Ahmedabad-Vadodara Expressway. Drive times range from 60 to 120 minutes from the city centre. PIKORUA Realty advises HNI buyers on weekend villa acquisition, including due diligence on land classification and construction permissions.",
+      },
+    ],
+    relatedSlugs: ["luxury-residential-investment-ahmedabad", "sg-highway", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Premium Commercial Property in Ahmedabad: A Select Advisory Category",
+      "PIKORUA Realty's core expertise is luxury residential real estate advisory. However, we selectively advise HNI and corporate clients on premium commercial property requirements in Ahmedabad — specifically luxury office spaces, flagship showrooms, and weekend villa estates — where the acquisition process benefits from the same discretion and relationship-led access that characterises our residential model.",
+      "### Luxury Office Spaces in Ahmedabad",
+      "Ahmedabad's premium commercial office market is concentrated in Prahlad Nagar Corporate Road and select SG Highway buildings. Grade A office floors in Prahlad Nagar are the most institutionally credible address for corporate headquarters and regional offices. Pricing for outright purchase of premium office floors ranges from ₹8,000–₹15,000 per sq.ft. for well-specified buildings. Rental yields on commercial property in Ahmedabad range from 5–8% annually — significantly higher than residential yields — making premium office and showroom assets attractive for HNI investors seeking yield-generating commercial exposure.",
+      "### Flagship Showrooms and Retail Spaces",
+      "Premium showroom spaces in Ahmedabad — particularly on Sindhu Bhavan Road, SG Highway, and select C.G. Road buildings — command high prices per sq.ft. and rarely come to market publicly. For luxury automotive brands, premium furniture retailers, high-end jewellery houses, and designer apparel labels, an Ahmedabad showroom on the right corridor is a strategic priority. PIKORUA Realty can access showroom inventory through private channels before it reaches public listing.",
+      "### Weekend Villas near Ahmedabad",
+      "The concept of the luxury weekend home is gaining strong traction among Ahmedabad's HNI families. The most sought-after weekend villa locations within 60–90 minutes of the city include Nalsarovar (bird sanctuary proximity, farmhouse character), the Ahmedabad-Vadodara Expressway belt (easy dual-city access), and select Kevadia-adjacent properties for buyers interested in eco-tourism and sustainable estate living. Weekend villas typically require specific land classification diligence (agricultural land conversion status, gram panchayat permissions) — PIKORUA Realty's advisory process includes this specialised due diligence.",
     ],
   },
 ];

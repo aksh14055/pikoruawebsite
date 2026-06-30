@@ -125,6 +125,22 @@ export default async function HomePage() {
           text: "You can reach PIKORUA Realty by WhatsApp, by emailing connect@pikorua.in, or by submitting an enquiry at pikorua.in/contact. We respond to all qualified enquiries within 24 hours and schedule a private consultation to understand your requirements before sharing curated options.",
         },
       },
+      {
+        "@type": "Question",
+        name: "Who is the best luxury real estate consultant in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty, founded by Jitendra Pareek, is widely regarded as one of Ahmedabad's most trusted luxury real estate consultancies. Operating as a private advisory — not a portal or a high-volume brokerage — PIKORUA provides a deeply personalised experience to a selective number of HNI and NRI clients at any given time. Reach out via pikorua.in/contact for a private consultation.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does PIKORUA Realty offer NRI property advisory in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. PIKORUA Realty is a specialist NRI property consultant in Ahmedabad. We guide Gujarati and Indian NRI clients based in the US, UK, UAE, Canada, Singapore, and Australia through the full process of identifying, evaluating, and acquiring luxury residential properties in Ahmedabad — remotely and securely, including Power of Attorney facilitation, NRE/NRO fund routing guidance, and RERA verification.",
+        },
+      },
     ],
   };
 
