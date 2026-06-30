@@ -32,29 +32,33 @@ export function HeroSection({
       />
 
       {/* Mobile hero image (hidden on md+) */}
-      <Image
-        src={mobileSrc}
-        alt="Luxury residential property in Ahmedabad"
-        fill
-        priority
-        quality={60}
-        sizes="100vw"
-        className="object-cover object-center brightness-75 md:hidden"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 md:hidden">
+        <Image
+          src={mobileSrc}
+          alt="Luxury residential property in Ahmedabad"
+          fill
+          priority
+          quality={60}
+          sizes="100vw"
+          className="object-cover object-center brightness-75"
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Desktop hero image (hidden below md) */}
-      <Image
-        src={desktopSrc}
-        alt="Luxury residential property in Ahmedabad"
-        fill
-        priority
-        quality={40}
-        sizes="100vw"
-        {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
-        className="hidden object-cover object-center brightness-75 md:block"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 hidden md:block">
+        <Image
+          src={desktopSrc}
+          alt="Luxury residential property in Ahmedabad"
+          fill
+          priority
+          quality={40}
+          sizes="100vw"
+          {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
+          className="object-cover object-center brightness-75"
+          aria-hidden="true"
+        />
+      </div>
 
       <HeroDesktopVideo videoUrl={videoUrl} />
 
