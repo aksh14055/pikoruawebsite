@@ -9,6 +9,6 @@ export const MEDIA = {
     hero2: `${BASE}/videos/hero2.mp4`,
     bg: `${BASE}/videos/bg.mp4`,
     bg1: `${BASE}/videos/bg_1.mp4`,
-    heroPoster: `${BASE}/videos/hero-poster.jpg`,
+    heroPoster: `/images/hero-living.jpg`,
   },
 } as const;

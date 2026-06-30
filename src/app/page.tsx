@@ -53,7 +53,7 @@ export default async function HomePage() {
     : ["Trust what", "most luxury buyers", "have trusted."];
 
   const heroVideo = homeContent?.heroVideoUrl || undefined;
-  const heroPoster = homeContent?.heroPosterUrl || undefined;
+  const heroPoster = "/images/hero-living.jpg";
   const stats = homeContent?.stats || undefined;
   const tours = homeContent?.virtualTours || undefined;
 
