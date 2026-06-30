@@ -91,45 +91,15 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
       return () => cancelAnimationFrame(frame);
     }
 
-    let triggered = false;
-
     let openOnMountTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const trigger = () => {
-      if (triggered) return;
-      triggered = true;
-      setVisible(true);
-      // Clean up all listeners at once
-      cleanup();
-    };
-
-    const opts = { passive: true, once: true } as AddEventListenerOptions;
-
-    // Attach to every plausible scroll target + gesture events
-    window.addEventListener("scroll", trigger, opts);
-    document.addEventListener("scroll", trigger, opts);
-    document.documentElement.addEventListener("scroll", trigger, opts);
-    window.addEventListener("wheel", trigger, opts);
-    window.addEventListener("touchstart", trigger, opts);
-    window.addEventListener("touchmove", trigger, opts);
-
     if (openOnMount) {
-      openOnMountTimer = setTimeout(trigger, 0);
-    }
-
-    function cleanup() {
-      window.removeEventListener("scroll", trigger);
-      document.removeEventListener("scroll", trigger);
-      document.documentElement.removeEventListener("scroll", trigger);
-      window.removeEventListener("wheel", trigger);
-      window.removeEventListener("touchstart", trigger);
-      window.removeEventListener("touchmove", trigger);
+      openOnMountTimer = setTimeout(() => setVisible(true), 0);
     }
 
     return () => {
       cancelAnimationFrame(frame);
       if (openOnMountTimer) clearTimeout(openOnMountTimer);
-      cleanup();
       clearReshowTimer();
     };
   }, [openOnMount, pathname]);
