@@ -198,6 +198,19 @@ h1, h2, h3, h4, h5, h6, .font-display {
   50%       { opacity: 0;   transform: translateY(6px); }
 }
 
+/* Preloader — CSS-driven so timing starts at HTML parse, not JS execution.
+   Visible for 300ms, fades out over the final 100ms. */
+@keyframes preloader-out {
+  0%, 75% { opacity: 1; }
+  100%     { opacity: 0; }
+}
+
+/* Preloader progress bar — slides in from left */
+@keyframes preloader-bar {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
 /* ─── Utility: visually hidden (screen reader only) ─────────────────────── */
 
 .sr-only {

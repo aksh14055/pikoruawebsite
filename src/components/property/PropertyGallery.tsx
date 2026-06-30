@@ -9,9 +9,10 @@ import { cn } from "@/lib/utils";
 interface PropertyGalleryProps {
   images: string[];
   name: string;
+  imageAlts?: Record<string, string>;
 }
 
-export function PropertyGallery({ images, name }: PropertyGalleryProps) {
+export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
 
@@ -98,7 +99,7 @@ export function PropertyGallery({ images, name }: PropertyGalleryProps) {
           >
             <Image
               src={images[currentIndex]}
-              alt={`${name} gallery view ${currentIndex + 1}`}
+              alt={imageAlts?.[images[currentIndex]] || `${name} gallery view ${currentIndex + 1}`}
               fill
               quality={90}
               sizes="(max-width: 1024px) 100vw, 60vw"
@@ -157,7 +158,7 @@ export function PropertyGallery({ images, name }: PropertyGalleryProps) {
             >
               <Image
                 src={img}
-                alt={`${name} thumbnail ${idx + 1}`}
+                alt={imageAlts?.[img] || `${name} thumbnail ${idx + 1}`}
                 fill
                 quality={90}
                 sizes="100px"

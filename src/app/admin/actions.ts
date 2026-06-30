@@ -3,8 +3,10 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createServerSupabaseClient } from "@/lib/supabase/client";
+// @ts-ignore
+import { GoogleDecoder } from "google-news-url-decoder";
 
-import { createHash } from "crypto";
+import crypto, { createHash } from "crypto";
 
 // Get admin email and password from environment variables
 const getAdminEmail = () => process.env.ADMIN_EMAIL || "pikoruarealtymarketing@gmail.com";
@@ -130,11 +132,46 @@ export async function updateLeadStatus(leadId: string, status: string) {
 }
 
 /**
+ * Automatically generates property SEO tags in the background.
+ */
+async function autoGeneratePropertySeo(property: any) {
+  const title = property.name || "";
+  const config = property.configuration || "";
+  const loc = property.locationLabel || property.location_label || "";
+  const desc = Array.isArray(property.description) ? property.description.join(" ") : (property.description || "");
+  const highlights = Array.isArray(property.highlights) ? property.highlights.join(", ") : (property.highlights || "");
+
+  try {
+    const res = await generatePropertySeoAction(title, config, loc, desc, highlights);
+    if (res.success && res.metadata) {
+      return {
+        seoTitle: res.metadata.seoTitle,
+        seoDescription: res.metadata.seoDescription
+      };
+    }
+  } catch (err) {
+    console.error("Error generating automatic property SEO:", err);
+  }
+  return null;
+}
+
+/**
  * Creates or updates a property in the Supabase database.
  */
 export async function createOrUpdateProperty(property: any) {
   await requireAuth();
   const supabase = createServerSupabaseClient();
+
+  let seoTitle = property.seoTitle || property.seo_title || null;
+  let seoDescription = property.seoDescription || property.seo_description || null;
+
+  if (!seoTitle || !seoDescription) {
+    const seoResult = await autoGeneratePropertySeo(property);
+    if (seoResult) {
+      if (!seoTitle) seoTitle = seoResult.seoTitle;
+      if (!seoDescription) seoDescription = seoResult.seoDescription;
+    }
+  }
 
   const dbProperty = {
     id: property.id,
@@ -157,9 +194,10 @@ export async function createOrUpdateProperty(property: any) {
     plot_area: property.plotArea || property.plot_area || null,
     floor: property.floor || null,
     suitable_for: property.suitableFor || property.suitable_for || null,
-    seo_title: property.seoTitle || property.seo_title || null,
-    seo_description: property.seoDescription || property.seo_description || null,
+    seo_title: seoTitle,
+    seo_description: seoDescription,
     is_active: property.isActive !== undefined ? property.isActive : (property.is_active !== undefined ? property.is_active : true),
+    image_alts: property.imageAlts || property.image_alts || {},
   };
 
   const { error } = await supabase
@@ -175,6 +213,10 @@ export async function createOrUpdateProperty(property: any) {
   revalidatePath("/");
   revalidatePath("/properties");
   revalidatePath(`/properties/${property.slug}`);
+
+  // Trigger Google Indexing API ping in background
+  const absoluteUrl = `https://pikorua.in/properties/${property.slug}`;
+  triggerGoogleIndexing(absoluteUrl, "URL_UPDATED");
 
   return { success: true };
 }
@@ -200,6 +242,10 @@ export async function deleteProperty(id: string, slug: string) {
   revalidatePath("/");
   revalidatePath("/properties");
   revalidatePath(`/properties/${slug}`);
+
+  // Trigger Google Indexing API deletion in background
+  const absoluteUrl = `https://pikorua.in/properties/${slug}`;
+  triggerGoogleIndexing(absoluteUrl, "URL_DELETED");
 
   return { success: true };
 }
@@ -314,6 +360,31 @@ export async function uploadImageAction(formData: FormData) {
 }
 
 /**
+ * Automatically generates blog SEO tags, excerpt, and FAQs in the background.
+ */
+async function autoGenerateBlogSeo(blog: any) {
+  const title = blog.title || "";
+  const excerpt = blog.excerpt || "";
+  const contentText = Array.isArray(blog.content) ? blog.content.join(" ") : (blog.content || "");
+  const htmlContent = blog.htmlContent || blog.html_content || "";
+
+  try {
+    const res = await generateBlogMetadataAction(title, contentText || excerpt, htmlContent);
+    if (res.success && res.metadata) {
+      return {
+        seoTitle: res.metadata.seoTitle,
+        seoDescription: res.metadata.seoDescription,
+        excerpt: res.metadata.excerpt,
+        faqs: res.metadata.faqs
+      };
+    }
+  } catch (err) {
+    console.error("Error generating automatic blog SEO:", err);
+  }
+  return null;
+}
+
+/**
  * Creates or updates a blog post in the Supabase database.
  */
 export async function createOrUpdateBlogPost(blog: any) {
@@ -321,6 +392,21 @@ export async function createOrUpdateBlogPost(blog: any) {
   const supabase = createServerSupabaseClient();
 
   const cleanSlug = blog.slug ? blog.slug.replace(/^\//, "") : "";
+
+  let seoTitle = blog.seoTitle || blog.seo_title || null;
+  let seoDescription = blog.seoDescription || blog.seo_description || null;
+  let excerpt = blog.excerpt || null;
+  let faqs = blog.faqs || [];
+
+  if (!seoTitle || !seoDescription) {
+    const seoResult = await autoGenerateBlogSeo(blog);
+    if (seoResult) {
+      if (!seoTitle) seoTitle = seoResult.seoTitle;
+      if (!seoDescription) seoDescription = seoResult.seoDescription;
+      if (!excerpt) excerpt = seoResult.excerpt;
+      if (!faqs || faqs.length === 0) faqs = seoResult.faqs;
+    }
+  }
 
   const dbBlog = {
     id: blog.id,
@@ -330,18 +416,18 @@ export async function createOrUpdateBlogPost(blog: any) {
     category_label: blog.categoryLabel || blog.category_label,
     published_at: blog.publishedAt || blog.published_at || new Date().toISOString().split("T")[0],
     read_time: blog.readTime || blog.read_time || "5 min read",
-    excerpt: blog.excerpt,
+    excerpt: excerpt,
     cover_image: blog.coverImage || blog.cover_image,
     author_name: blog.authorName || blog.author_name || "Jitendra",
     author_role: blog.authorRole || blog.author_role || "PIKORUA Realty",
     author_avatar: blog.authorAvatar || blog.author_avatar || "/images/founder.jpg",
     is_featured: blog.isFeatured !== undefined ? blog.isFeatured : blog.is_featured,
     content: blog.content || [],
-    seo_title: blog.seoTitle || blog.seo_title || null,
-    seo_description: blog.seoDescription || blog.seo_description || null,
+    seo_title: seoTitle,
+    seo_description: seoDescription,
     is_active: blog.isActive !== undefined ? blog.isActive : (blog.is_active !== undefined ? blog.is_active : true),
     html_content: blog.htmlContent || blog.html_content || null,
-    faqs: blog.faqs || [],
+    faqs: faqs,
   };
 
   const { error } = await supabase
@@ -357,6 +443,10 @@ export async function createOrUpdateBlogPost(blog: any) {
   revalidatePath("/blog");
   revalidatePath(`/blog/${blog.slug}`);
   revalidatePath("/");
+
+  // Trigger Google Indexing API ping in background
+  const absoluteUrl = `https://pikorua.in/blog/${cleanSlug}`;
+  triggerGoogleIndexing(absoluteUrl, "URL_UPDATED");
 
   return { success: true };
 }
@@ -382,6 +472,10 @@ export async function deleteBlogPost(id: string, slug: string) {
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
   revalidatePath("/");
+
+  // Trigger Google Indexing API deletion in background
+  const absoluteUrl = `https://pikorua.in/blog/${slug}`;
+  triggerGoogleIndexing(absoluteUrl, "URL_DELETED");
 
   return { success: true };
 }
@@ -943,17 +1037,12 @@ export async function fetchRealEstateNewsAction() {
 /**
  * Decodes the direct article URL from a Google News redirect URL.
  */
-function decodeGoogleNewsUrl(googleUrl: string): string {
+async function decodeGoogleNewsUrl(googleUrl: string): Promise<string> {
   try {
-    const urlParts = googleUrl.split('/');
-    const base64Part = urlParts[urlParts.length - 1]?.split('?')[0];
-    if (!base64Part) return googleUrl;
-    
-    const decodedBuffer = Buffer.from(base64Part, 'base64');
-    const decodedString = decodedBuffer.toString('binary');
-    const match = decodedString.match(/https?:\/\/[a-zA-Z0-9_\-\.\/\?=&%]+/);
-    if (match) {
-      return match[0];
+    const decoder = new GoogleDecoder();
+    const res = await decoder.decode(googleUrl);
+    if (res.status && res.decoded_url) {
+      return res.decoded_url;
     }
     return googleUrl;
   } catch {
@@ -964,7 +1053,44 @@ function decodeGoogleNewsUrl(googleUrl: string): string {
 /**
  * Scrapes clean text content from a web page by stripping HTML tags.
  */
-async function scrapeUrlText(url: string): Promise<string> {
+/**
+ * Resolves a high-resolution version of a news image URL by removing crop/resize constraints.
+ */
+function getHighResImageUrl(imgUrl: string, basePageUrl?: string): string {
+  if (!imgUrl) return imgUrl;
+
+  let resolved = imgUrl;
+  if (!resolved.startsWith("http://") && !resolved.startsWith("https://") && basePageUrl) {
+    try {
+      resolved = new URL(resolved, basePageUrl).href;
+    } catch {
+      // Ignore if invalid
+    }
+  }
+
+  // 1. Google User Content / Google News images
+  if (resolved.includes("googleusercontent.com") || resolved.includes("lh3.googleusercontent.com")) {
+    // Replace size parameters at the end (e.g. =s0-w300-rw, =w150-h150, =s120) with =s1200
+    resolved = resolved.replace(/=[ws0-9\-r]+$/, "=s1200");
+  }
+
+  // 2. Clear query resizing parameters from standard news publisher sites
+  try {
+    const urlObj = new URL(resolved);
+    urlObj.searchParams.delete("width");
+    urlObj.searchParams.delete("height");
+    urlObj.searchParams.delete("w");
+    urlObj.searchParams.delete("h");
+    urlObj.searchParams.delete("resize");
+    resolved = urlObj.toString();
+  } catch {
+    // Ignore invalid URL parse
+  }
+
+  return resolved;
+}
+
+async function scrapeUrlText(url: string): Promise<{ text: string; ogImage: string | null }> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 4000); // 4-second timeout limit
 
@@ -978,8 +1104,27 @@ async function scrapeUrlText(url: string): Promise<string> {
     });
     clearTimeout(timeoutId);
 
-    if (!response.ok) return "";
+    if (!response.ok) return { text: "", ogImage: null };
     const html = await response.text();
+
+    // Extract og:image content using a regular expression
+    let ogImage: string | null = null;
+    const ogImageMatch = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+                         html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if (ogImageMatch) {
+      ogImage = ogImageMatch[1];
+    } else {
+      // Fallback to twitter:image
+      const twitterImageMatch = html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ||
+                                html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i);
+      if (twitterImageMatch) {
+        ogImage = twitterImageMatch[1];
+      }
+    }
+
+    if (ogImage) {
+      ogImage = getHighResImageUrl(ogImage, url);
+    }
 
     // Strip scripts, styles, and tags to keep only readable text
     let cleanText = html
@@ -989,11 +1134,14 @@ async function scrapeUrlText(url: string): Promise<string> {
       .replace(/\s+/g, " ")
       .trim();
 
-    return cleanText.substring(0, 8000); // Return first 8k characters
+    return {
+      text: cleanText.substring(0, 8000), // Return first 8k characters
+      ogImage
+    };
   } catch (err) {
     clearTimeout(timeoutId);
     console.log("Scraping URL timed out or failed:", url);
-    return "";
+    return { text: "", ogImage: null };
   }
 }
 
@@ -1013,11 +1161,14 @@ export async function generateBlogFromNewsAction(title: string, url?: string, cu
   }
   let articleContext = customText || "";
   let finalUrl = url || "";
+  let ogImage: string | null = null;
 
   if (url) {
-    finalUrl = decodeGoogleNewsUrl(url);
+    finalUrl = await decodeGoogleNewsUrl(url);
     if (!articleContext) {
-      articleContext = await scrapeUrlText(finalUrl);
+      const scraped = await scrapeUrlText(finalUrl);
+      articleContext = scraped.text;
+      ogImage = scraped.ogImage;
     }
   }
   const systemPrompt = `You are an expert real estate content writer and SEO strategist for PIKORUA Realty, a private luxury residential real estate advisory in Ahmedabad.
@@ -1111,10 +1262,324 @@ ${articleContext ? articleContext.substring(0, 7500) : "No extra context provide
     }
 
     const draft = JSON.parse(cleanJson);
+    if (ogImage) {
+      draft.coverImage = ogImage;
+    }
     return { success: true, draft };
   } catch (error: any) {
     console.error("Error in generateBlogFromNewsAction:", error);
     return { success: false, error: error.message || "Failed to generate blog post." };
+  }
+}
+
+/**
+ * Call OpenRouter (multimodal Gemini 2.5 Flash) to analyze the property image and generate an SEO-optimized Alt text.
+ */
+export async function generateImageAltAction(
+  imageUrl: string,
+  propertyName?: string,
+  propertyLocation?: string,
+  propertyConfig?: string
+) {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return { success: false, error: "OPENROUTER_API_KEY is not configured (add it to Vercel/hosting environment variables)" };
+  }
+
+  if (!imageUrl) {
+    return { success: false, error: "Image URL is required." };
+  }
+
+  const systemPrompt = `You are an expert SEO, GEO, and image optimization assistant for PIKORUA Realty, a private luxury real estate advisory in Ahmedabad.
+Analyze the provided property photograph. Write a highly descriptive, search-engine-optimized image ALT text tag (maximum 120 characters) that describes the scene and includes relevant real estate keywords.
+
+Strict Rules:
+1. Ground details: Use details from the property info if provided (Project name: "${propertyName || "Luxury Residence"}", Location: "${propertyLocation || "Ahmedabad"}", Type: "${propertyConfig || "Residential"}").
+2. Focus: Focus on structural layout, materials, luxury fittings, views, and room type (e.g. "double-height living room", "Italian marble flooring", "curated balcony deck", "glass facade").
+3. Suffix: Conclude with "| PIKORUA Realty" if character limit allows, but prioritize description.
+4. Output: Return ONLY the raw plain text description, no JSON, no quotes, no introductory text, no markdown. Limit to 120 characters.`;
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pikorua.in",
+        "X-Title": "PIKORUA Realty Console",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Describe this luxury real estate property image for SEO Alt text."
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: imageUrl
+                }
+              }
+            ]
+          }
+        ],
+        temperature: 0.3,
+        max_tokens: 100
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return { success: false, error: `OpenRouter API error: ${response.status} - ${errText}` };
+    }
+
+    const result = await response.json();
+    const altText = result.choices?.[0]?.message?.content?.trim();
+    if (!altText) {
+      return { success: false, error: "OpenRouter returned an empty response." };
+    }
+
+    // Strip quotation marks if AI returned them
+    const cleanAlt = altText.replace(/^["']|["']$/g, "").trim();
+    return { success: true, altText: cleanAlt };
+  } catch (error: any) {
+    console.error("Error in generateImageAltAction:", error);
+    return { success: false, error: error.message || "Failed to generate image alt." };
+  }
+}
+
+/**
+ * Call OpenRouter (Gemini 2.5 Flash) to generate a personalized luxury WhatsApp follow-up greeting.
+ */
+export async function generateLeadReplyAction(
+  leadName: string,
+  category?: string,
+  location?: string,
+  budget?: string,
+  message?: string
+) {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return { success: false, error: "OPENROUTER_API_KEY is not configured." };
+  }
+
+  const systemPrompt = `You are Jitendra, founder of PIKORUA Realty, an elite private real estate advisory in Ahmedabad.
+Write a highly natural, short WhatsApp follow-up message to reply to a new lead.
+
+Pattern to follow:
+"Hi [Client Name], saw your inquiry about [specific preference]. Are you free for a quick 2-minute call today? - Jitendra, PIKORUA Realty"
+
+Strict Guidelines:
+1. Target Name: Replace "[Client Name]" with the actual lead's name: "${leadName}". It must be dynamically populated (e.g. "Hi Amit,").
+2. Contextual Preference: Replace "[specific preference]" with a concise description based on the client's details: Category: "${category || ""}", Location: "${location || ""}", Budget: "${budget || ""}", Custom message: "${message || ""}".
+   - E.g. If category is "penthouse", write "a custom penthouse".
+   - E.g. If location is "Ambli" and budget is "5 Cr", write "a property in Ambli within a 5 Cr budget".
+   - E.g. If they filled a general enquiry, write "our private property advisory in Ahmedabad".
+   - Keep it short, natural, and concise.
+3. Call to Action: Always ask: "Are you free for a quick 2-minute call today?"
+4. Suffix: Conclude exactly with: " - Jitendra, PIKORUA Realty"
+5. Formatting: Do not use quotes, JSON, or markdown. Return ONLY the raw plain text of the WhatsApp message. Keep the message under 180 characters.`;
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://pikorua.in",
+        "X-Title": "PIKORUA Realty Console",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [{ role: "system", content: systemPrompt }],
+        temperature: 0.5,
+        max_tokens: 150
+      })
+    });
+
+    if (!response.ok) {
+      return { success: false, error: `API error: ${response.status}` };
+    }
+
+    const result = await response.json();
+    const replyText = result.choices?.[0]?.message?.content?.trim();
+    if (!replyText) {
+      return { success: false, error: "Empty response from AI." };
+    }
+
+    // Clean quotes if any
+    const cleanReply = replyText.replace(/^["']|["']$/g, "").trim();
+    return { success: true, replyText: cleanReply };
+  } catch (error: any) {
+    console.error("Error in generateLeadReplyAction:", error);
+    return { success: false, error: error.message || "Failed to generate lead reply." };
+  }
+}
+
+/**
+ * Signs a JWT using Node's native crypto module and exchanges it for a Google OAuth access token.
+ */
+async function getGoogleAuthToken(serviceAccountJson: string): Promise<string> {
+  const account = JSON.parse(serviceAccountJson);
+  const rawKey = account.private_key || "";
+  const privateKey = rawKey.replace(/\\n/g, "\n");
+  const clientEmail = account.client_email;
+
+  const header = {
+    alg: "RS256",
+    typ: "JWT"
+  };
+
+  const now = Math.floor(Date.now() / 1000);
+  const claimSet = {
+    iss: clientEmail,
+    scope: "https://www.googleapis.com/auth/indexing",
+    aud: "https://oauth2.googleapis.com/token",
+    exp: now + 3600,
+    iat: now
+  };
+
+  const base64UrlEncode = (str: string) => {
+    return Buffer.from(str)
+      .toString("base64")
+      .replace(/=/g, "")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_");
+  };
+
+  const encodedHeader = base64UrlEncode(JSON.stringify(header));
+  const encodedClaimSet = base64UrlEncode(JSON.stringify(claimSet));
+  const signatureInput = `${encodedHeader}.${encodedClaimSet}`;
+
+  // Sign using RS256
+  const sign = crypto.createSign("RSA-SHA256");
+  sign.update(signatureInput);
+  const signature = sign.sign(privateKey, "base64");
+  const encodedSignature = signature
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+
+  const jwt = `${signatureInput}.${encodedSignature}`;
+
+  // Exchange JWT for access token
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Failed to exchange JWT for token: ${text}`);
+  }
+
+  const data = await response.json();
+  return data.access_token;
+}
+
+/**
+ * Fires background requests to notify Google Indexing API when properties/blogs change.
+ */
+async function triggerGoogleIndexing(url: string, type: "URL_UPDATED" | "URL_DELETED") {
+  const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+  if (!serviceAccountJson) {
+    console.log("Google Indexing API is not configured (missing GOOGLE_SERVICE_ACCOUNT_JSON). Skipping ping for URL:", url);
+    return;
+  }
+
+  try {
+    const accessToken = await getGoogleAuthToken(serviceAccountJson);
+    const response = await fetch("https://indexing.googleapis.com/v3/urlNotifications:publish", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        url: url,
+        type: type
+      })
+    });
+
+    if (response.ok) {
+      console.log(`Successfully pinged Google Indexing API (${type}) for URL: ${url}`);
+    } else {
+      const errText = await response.text();
+      console.warn(`Google Indexing API returned error: ${response.status} - ${errText} for URL: ${url}`);
+    }
+  } catch (error) {
+    console.error("Failed to run Google Indexing API background ping:", error);
+  }
+}
+
+/**
+ * Test or manually trigger a Google Indexing API submission.
+ */
+export async function submitToGoogleIndexingAction(url: string, type: "URL_UPDATED" | "URL_DELETED") {
+  try {
+    await requireAuth();
+  } catch {
+    return { success: false, error: "Unauthorized." };
+  }
+
+  const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+  if (!serviceAccountJson) {
+    return {
+      success: false,
+      error: "GOOGLE_SERVICE_ACCOUNT_JSON is not configured in environment variables.",
+      instructions: [
+        "1. Create a project in Google Cloud Console.",
+        "2. Enable the Web Search Indexing API.",
+        "3. Create a Service Account and download the JSON key file.",
+        "4. In Google Search Console, add the Service Account email as an Owner of the property https://pikorua.in",
+        "5. Paste the entire JSON file contents as the GOOGLE_SERVICE_ACCOUNT_JSON environment variable."
+      ]
+    };
+  }
+
+  try {
+    const accessToken = await getGoogleAuthToken(serviceAccountJson);
+    const response = await fetch("https://indexing.googleapis.com/v3/urlNotifications:publish", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        url: url,
+        type: type
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return { success: false, error: `Google Indexing API error: ${response.status} - ${errText}` };
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error in submitToGoogleIndexingAction:", error);
+    return { success: false, error: error.message || "Failed to submit to Google Indexing." };
   }
 }
 

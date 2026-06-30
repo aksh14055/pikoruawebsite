@@ -208,7 +208,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
               />
 
               {/* Image Gallery */}
-              <PropertyGallery images={allImages} name={property.configuration} />
+              <PropertyGallery images={allImages} name={property.configuration} imageAlts={property.imageAlts} />
 
               {/* Description */}
               <div className="space-y-6 pt-4 border-t border-white/[0.06]">

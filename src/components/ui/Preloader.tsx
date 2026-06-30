@@ -2,109 +2,54 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 
 export function Preloader() {
-  const [loading, setLoading] = useState(true);
-  const [shouldRender, setShouldRender] = useState(true);
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    let dismissTimer: ReturnType<typeof setTimeout>;
-
-    // Hard cap: always dismiss after 950 ms so Speed Index isn't held hostage
-    // by slow CDN images or third-party scripts delaying window.onload.
-    // 950 ms gives the progress animation time to complete while still
-    // ensuring visual content is revealed well before the LCP window closes.
-    const maxTimer = setTimeout(() => setLoading(false), 950);
-
-    const handleLoad = () => {
-      // Small buffer after load for the animation to complete gracefully
-      dismissTimer = setTimeout(() => {
-        setLoading(false);
-        clearTimeout(maxTimer);
-      }, 200);
-    };
-
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-    }
-
-    return () => {
-      window.removeEventListener("load", handleLoad);
-      clearTimeout(dismissTimer);
-      clearTimeout(maxTimer);
-    };
+    // Remove from DOM after CSS animation completes (400ms) + small buffer.
+    // The CSS animation is what actually hides the element — this just cleans
+    // up the DOM node so it stops consuming memory.
+    const t = setTimeout(() => setGone(true), 460);
+    return () => clearTimeout(t);
   }, []);
 
-  // Prevent background scrolling while preloading
-  useEffect(() => {
-    if (loading && shouldRender) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [loading, shouldRender]);
-
-  if (!shouldRender) return null;
+  if (gone) return null;
 
   return (
-    <AnimatePresence onExitComplete={() => setShouldRender(false)}>
-      {loading && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.4, ease: "easeInOut" }
-          }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-lux-black select-none pointer-events-auto"
-        >
-          {/* Logo & Progress Bar Container */}
-          <div className="flex flex-col items-center">
-            {/* Logo fading and scaling up */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-48 sm:w-56 h-12 sm:h-14"
-            >
-              <Image
-                src="/logo.png"
-                alt="PIKORUA Realty"
-                fill
-                quality={75}
-                sizes="(max-width: 640px) 12rem, 14rem"
-                priority
-                className="object-contain"
-              />
-            </motion.div>
+    <div
+      aria-hidden="true"
+      // pointer-events: none from the start — the element is purely visual.
+      // This means the hero image can be interacted with immediately even while
+      // the preloader is visible, and Lighthouse can measure LCP unobstructed
+      // once the CSS animation fades it out at ~400ms from HTML parse time.
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-lux-black select-none pointer-events-none"
+      style={{ animation: "preloader-out 400ms ease-out forwards" }}
+    >
+      <div className="flex flex-col items-center">
+        <div className="relative w-48 sm:w-56 h-12 sm:h-14">
+          <Image
+            src="/logo.png"
+            alt=""
+            fill
+            quality={75}
+            sizes="(max-width: 640px) 12rem, 14rem"
+            priority
+            className="object-contain"
+          />
+        </div>
 
-            {/* Champagne Gold Hairline Progress Bar */}
-            <div className="w-32 h-[1px] bg-white/10 mt-6 relative overflow-hidden rounded-full">
-              <motion.div
-                initial={{ left: "-100%" }}
-                animate={{ left: "0%" }}
-                transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1], delay: 0.1 }}
-                className="absolute inset-0 bg-champagne-gold w-full"
-              />
-            </div>
+        <div className="w-32 h-px bg-white/10 mt-6 relative overflow-hidden">
+          <div
+            className="absolute inset-y-0 left-0 w-full bg-champagne-gold"
+            style={{ animation: "preloader-bar 280ms cubic-bezier(0.65,0,0.35,1) 60ms both" }}
+          />
+        </div>
 
-            {/* Subtle luxury brand signature */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.35 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="text-[9px] uppercase tracking-[0.3em] text-ivory font-sans mt-3.5"
-            >
-              Quietly Curated Residences
-            </motion.p>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        <p className="text-[9px] uppercase tracking-[0.3em] text-ivory/35 font-sans mt-3.5">
+          Quietly Curated Residences
+        </p>
+      </div>
+    </div>
   );
 }

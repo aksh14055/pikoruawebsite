@@ -22,6 +22,9 @@ import {
   generatePageSeoAction,
   fetchRealEstateNewsAction,
   generateBlogFromNewsAction,
+  generateImageAltAction,
+  generateLeadReplyAction,
+  submitToGoogleIndexingAction,
 } from "./actions";
 import { STATIC_PROPERTIES, type StaticProperty } from "@/lib/data/properties";
 import {
@@ -44,6 +47,7 @@ import {
   Globe,
   Home,
   HelpCircle,
+  Sparkles,
 } from "lucide-react";
 import type { Lead, Testimonial, GeneralFaq } from "@/types";
 import type { BlogPost } from "@/types/blog";
@@ -153,6 +157,9 @@ export default function AdminDashboard({
   const [leads, setLeads] = useState<any[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(false);
   const [selectedLead, setSelectedLead] = useState<any | null>(null);
+  const [waReplyLead, setWaReplyLead] = useState<any | null>(null);
+  const [waReplyMessage, setWaReplyMessage] = useState<string>("");
+  const [loadingWaReply, setLoadingWaReply] = useState<boolean>(false);
 
   // Properties state
   const [properties, setProperties] = useState<StaticProperty[]>(initialProperties);
@@ -185,6 +192,17 @@ export default function AdminDashboard({
   const [customNewsUrl, setCustomNewsUrl] = useState<string>("");
   const [customNewsText, setCustomNewsText] = useState<string>("");
   const [activeNewsTab, setActiveNewsTab] = useState<"feed" | "custom">("feed");
+
+  // Image tagging states
+  const [generatingImageAlts, setGeneratingImageAlts] = useState<Record<string, boolean>>({});
+  const [generatingAllImageAlts, setGeneratingAllImageAlts] = useState<boolean>(false);
+
+  const [generatingLeadReply, setGeneratingLeadReply] = useState<Record<string, boolean>>({});
+
+  // Google Indexing states
+  const [testIndexingUrl, setTestIndexingUrl] = useState<string>("https://pikorua.in");
+  const [testingIndexing, setTestingIndexing] = useState<boolean>(false);
+  const [indexingTestResult, setIndexingTestResult] = useState<any | null>(null);
 
   // About Page state
   const defaultAboutContent = {
@@ -562,6 +580,29 @@ export default function AdminDashboard({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const triggerBackgroundTagging = async (url: string) => {
+      setGeneratingImageAlts((prev) => ({ ...prev, [url]: true }));
+      try {
+        const res = await generateImageAltAction(
+          url,
+          editingProperty.name || undefined,
+          editingProperty.locationLabel || undefined,
+          editingProperty.configuration || undefined
+        );
+        if (res.success && res.altText) {
+          setEditingProperty((prev: any) => {
+            const alts = { ...(prev.imageAlts || {}) };
+            alts[url] = res.altText;
+            return { ...prev, imageAlts: alts };
+          });
+        }
+      } catch (err) {
+        console.error("Background auto-tagging failed:", err);
+      } finally {
+        setGeneratingImageAlts((prev) => ({ ...prev, [url]: false }));
+      }
+    };
+
     setUploadingImage(index);
     const formData = new FormData();
     formData.append("file", file);
@@ -569,21 +610,24 @@ export default function AdminDashboard({
     try {
       const result = await uploadImageAction(formData);
       if (result.success && result.url) {
+        const uploadedUrl = result.url;
         if (index === "cover") {
-          setEditingProperty((prev: any) => ({ ...prev, coverImage: result.url }));
+          setEditingProperty((prev: any) => ({ ...prev, coverImage: uploadedUrl }));
         } else if (index === -1) {
           // add to gallery
           setEditingProperty((prev: any) => ({
             ...prev,
-            images: [...(prev.images || []), result.url],
+            images: [...(prev.images || []), uploadedUrl],
           }));
+          triggerBackgroundTagging(uploadedUrl);
         } else {
           // update gallery index
           setEditingProperty((prev: any) => {
             const copy = [...(prev.images || [])];
-            copy[index] = result.url;
+            copy[index] = uploadedUrl;
             return { ...prev, images: copy };
           });
+          triggerBackgroundTagging(uploadedUrl);
         }
       } else if (!result.success) {
         alert("Upload failed: " + (result.error || "Unknown error"));
@@ -933,6 +977,147 @@ export default function AdminDashboard({
     }
   };
 
+  const handleTagSingleImage = async (imageUrl: string) => {
+    if (!editingProperty.name || !editingProperty.locationLabel) {
+      alert("Please enter Property Name and Location first so the AI has context.");
+      return;
+    }
+    setGeneratingImageAlts((prev) => ({ ...prev, [imageUrl]: true }));
+    try {
+      const result = await generateImageAltAction(
+        imageUrl,
+        editingProperty.name,
+        editingProperty.locationLabel,
+        editingProperty.configuration || ""
+      );
+      if (result.success && result.altText) {
+        const alts = { ...(editingProperty.imageAlts || {}) };
+        alts[imageUrl] = result.altText;
+        setEditingProperty((prev: any) => ({ ...prev, imageAlts: alts }));
+      } else {
+        alert("Failed to tag image: " + (result.error || "Unknown error"));
+      }
+    } catch (err: any) {
+      alert("Image tagging failed: " + err.message);
+    } finally {
+      setGeneratingImageAlts((prev) => ({ ...prev, [imageUrl]: false }));
+    }
+  };
+
+  const handleTagAllImages = async () => {
+    const images = editingProperty.images || [];
+    if (images.length === 0) {
+      alert("There are no images in the gallery to tag.");
+      return;
+    }
+    if (!editingProperty.name || !editingProperty.locationLabel) {
+      alert("Please enter Property Name and Location first so the AI has context.");
+      return;
+    }
+    setGeneratingAllImageAlts(true);
+    try {
+      const alts = { ...(editingProperty.imageAlts || {}) };
+      let successCount = 0;
+      for (const imgUrl of images) {
+        // Tag only if it doesn't already have an alt text
+        if (!alts[imgUrl]) {
+          const result = await generateImageAltAction(
+            imgUrl,
+            editingProperty.name,
+            editingProperty.locationLabel,
+            editingProperty.configuration || ""
+          );
+          if (result.success && result.altText) {
+            alts[imgUrl] = result.altText;
+            successCount++;
+          }
+        }
+      }
+      setEditingProperty((prev: any) => ({ ...prev, imageAlts: alts }));
+      alert(`Auto-tagging completed! Successfully tagged ${successCount} new images.`);
+    } catch (err: any) {
+      alert("Auto-tagging failed: " + err.message);
+    } finally {
+      setGeneratingAllImageAlts(false);
+    }
+  };
+
+  const handleWhatsAppAiReply = async (lead: any) => {
+    if (!lead.phone) {
+      alert("No phone number available for this lead.");
+      return;
+    }
+    
+    setWaReplyLead(lead);
+    setWaReplyMessage("");
+    setLoadingWaReply(true);
+    
+    try {
+      const result = await generateLeadReplyAction(
+        lead.name,
+        lead.category || undefined,
+        lead.location || undefined,
+        lead.budget_band || undefined,
+        lead.message || undefined
+      );
+
+      if (result.success && result.replyText) {
+        setWaReplyMessage(result.replyText);
+      } else {
+        setWaReplyMessage("Failed to draft AI reply: " + (result.error || "Unknown error"));
+      }
+    } catch (err: any) {
+      setWaReplyMessage("AI Reply Generation failed: " + err.message);
+    } finally {
+      setLoadingWaReply(false);
+    }
+  };
+
+  const sendWhatsAppMessage = () => {
+    if (!waReplyLead || !waReplyMessage) return;
+
+    // Clean phone number format
+    let cleanPhone = waReplyLead.phone.replace(/\D/g, "");
+    if (cleanPhone.length === 10) {
+      cleanPhone = "91" + cleanPhone;
+    }
+    
+    // Encode message for URL
+    const encodedText = encodeURIComponent(waReplyMessage);
+    
+    // Detect mobile vs desktop
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // On mobile, launch the native app directly
+      window.location.href = `whatsapp://send?phone=${cleanPhone}&text=${encodedText}`;
+    } else {
+      // On desktop, open WhatsApp Web directly in a new tab (bypassing the splash page)
+      window.open(`https://web.whatsapp.com/send?phone=${cleanPhone}&text=${encodedText}`, "_blank", "noopener,noreferrer");
+    }
+    
+    // Close the reply modal
+    setWaReplyLead(null);
+    setWaReplyMessage("");
+  };
+
+  const handleRunIndexingTest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testIndexingUrl) return;
+
+    setTestingIndexing(true);
+    setIndexingTestResult(null);
+
+    try {
+      const result = await submitToGoogleIndexingAction(testIndexingUrl, "URL_UPDATED");
+      setIndexingTestResult(result);
+    } catch (err: any) {
+      setIndexingTestResult({ success: false, error: err.message });
+    } finally {
+      setTestingIndexing(false);
+    }
+  };
+
   const handleGeneratePageSeo = async (pageId: string) => {
     setGeneratingPageSeo((prev) => ({ ...prev, [pageId]: true }));
     try {
@@ -998,7 +1183,7 @@ export default function AdminDashboard({
           slug: result.draft.slug,
           htmlContent: result.draft.htmlContent,
           content: [],
-          coverImage: "",
+          coverImage: result.draft.coverImage || "",
           excerpt: result.draft.excerpt || "",
           seoTitle: result.draft.seoTitle || "",
           seoDescription: result.draft.seoDescription || "",
@@ -1581,7 +1766,21 @@ export default function AdminDashboard({
                                 <option value="lost">Lost</option>
                               </select>
                             </td>
-                            <td className="p-4 text-right">
+                            <td className="p-4 text-right flex items-center justify-end gap-2">
+                              <button
+                                type="button"
+                                disabled={waReplyLead?.id === lead.id && loadingWaReply}
+                                onClick={() => handleWhatsAppAiReply(lead)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-emerald-600/30 hover:border-emerald-500 text-[10px] tracking-wider uppercase rounded-sm text-emerald-400 hover:text-emerald-300 bg-emerald-950/20 hover:bg-emerald-950/40 transition-all cursor-pointer disabled:cursor-wait disabled:opacity-50"
+                                title="Generate follow-up message & open WhatsApp chat"
+                              >
+                                {waReplyLead?.id === lead.id && loadingWaReply ? (
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                ) : (
+                                  <Sparkles className="w-3.5 h-3.5" />
+                                )}
+                                Reply
+                              </button>
                               <button
                                 onClick={() => setSelectedLead(lead)}
                                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-white/[0.08] hover:border-champagne-gold text-[10px] tracking-wider uppercase rounded-sm text-ivory hover:text-champagne-gold bg-lux-black transition-all cursor-pointer"
@@ -2647,6 +2846,90 @@ export default function AdminDashboard({
                 </div>
               </div>
 
+              {/* ── Google Indexing API Automation ── */}
+              <div className="mt-8 bg-soft-black border border-white/[0.06] rounded-sm p-6 space-y-4">
+                <div className="border-b border-white/[0.06] pb-3">
+                  <h3 className="font-display text-sm tracking-[0.2em] text-champagne-gold uppercase">
+                    ⚡ Google Indexing API Console
+                  </h3>
+                  <p className="text-[9px] text-ivory/30 mt-1 uppercase tracking-wider">
+                    Auto-ping Google search bots to index your properties and blogs instantly
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs leading-relaxed">
+                  <div className="space-y-3">
+                    <p className="text-ivory/70">
+                      This site automatically triggers a background request to Google's Search index whenever you save properties or publish AI-drafted blogs, reducing indexing time from days to just a few hours.
+                    </p>
+                    <div className="bg-white/[0.02] border border-white/[0.06] rounded-sm p-3 font-mono text-[9px] text-ivory/50 space-y-1.5">
+                      <span className="block text-[8px] uppercase tracking-wider text-ivory/30">Setup Requirements:</span>
+                      <p>1. Create a Google Cloud project & enable the <strong className="text-champagne-gold">Web Search Indexing API</strong>.</p>
+                      <p>2. Create a Service Account & download the private key JSON file.</p>
+                      <p>3. Add the Service Account email as an <strong className="text-champagne-gold">Owner</strong> in Search Console (https://pikorua.in).</p>
+                      <p>4. Set the key JSON contents as the <strong className="text-champagne-gold">GOOGLE_SERVICE_ACCOUNT_JSON</strong> environment variable.</p>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleRunIndexingTest} className="bg-lux-black border border-white/[0.04] p-4 rounded-sm space-y-3">
+                    <span className="block text-[9px] uppercase tracking-wider text-champagne-gold font-semibold">Test Connection Diagnostic</span>
+                    
+                    <div className="space-y-1">
+                      <label className="block text-[8px] uppercase tracking-wider text-ivory/40">Target Test URL</label>
+                      <input
+                        type="url"
+                        value={testIndexingUrl}
+                        onChange={(e) => setTestIndexingUrl(e.target.value)}
+                        className="w-full bg-soft-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none"
+                        required
+                        placeholder="https://pikorua.in"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={testingIndexing}
+                      className="w-full py-2 bg-champagne-gold hover:bg-antique-gold disabled:bg-champagne-gold/30 text-lux-black font-semibold text-[9px] uppercase tracking-widest rounded-sm cursor-pointer transition-all flex items-center justify-center gap-1.5"
+                    >
+                      {testingIndexing ? (
+                        <>
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                          Testing Connection...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          Run Test Submission
+                        </>
+                      )}
+                    </button>
+
+                    {indexingTestResult && (
+                      <div className={`p-3 rounded-sm text-[10px] ${
+                        indexingTestResult.success 
+                          ? "bg-emerald-950/20 border border-emerald-500/20 text-emerald-400" 
+                          : "bg-red-950/20 border border-red-500/20 text-red-400"
+                      }`}>
+                        {indexingTestResult.success ? (
+                          <p><strong>Success!</strong> Google API successfully authorized and scheduled the URL update for crawl.</p>
+                        ) : (
+                          <div className="space-y-1.5">
+                            <p><strong>Failed:</strong> {indexingTestResult.error}</p>
+                            {indexingTestResult.instructions && (
+                              <div className="mt-2 text-[9px] border-t border-red-500/10 pt-1.5 space-y-1 font-sans text-ivory/50">
+                                {indexingTestResult.instructions.map((inst: string) => (
+                                  <p key={inst}>{inst}</p>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </form>
+                </div>
+              </div>
+
             </div>
           )}
 
@@ -2901,11 +3184,88 @@ export default function AdminDashboard({
                 </select>
               </div>
 
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  disabled={waReplyLead?.id === selectedLead.id && loadingWaReply}
+                  onClick={() => handleWhatsAppAiReply(selectedLead)}
+                  className="px-4 py-2 border border-emerald-500 hover:border-emerald-400 text-emerald-400 hover:text-emerald-300 bg-emerald-950/20 text-xs font-sans uppercase tracking-wider rounded-sm cursor-pointer transition-all flex items-center gap-1.5 disabled:cursor-wait disabled:opacity-50"
+                >
+                  {waReplyLead?.id === selectedLead.id && loadingWaReply ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Sparkles className="w-3.5 h-3.5" />
+                  )}
+                  WhatsApp AI Reply
+                </button>
+                <button
+                  onClick={() => setSelectedLead(null)}
+                  className="px-5 py-2 bg-white/5 border border-white/10 hover:border-white/20 text-xs font-sans uppercase tracking-wider rounded-sm cursor-pointer hover:text-white transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── WhatsApp AI Reply Edit Modal ── */}
+      {waReplyLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={() => { setWaReplyLead(null); setWaReplyMessage(""); }} />
+          <div className="relative w-full max-w-lg bg-soft-black border border-white/[0.08] rounded-lg p-6 z-10 shadow-2xl space-y-4 animate-scale-up">
+            <div className="flex justify-between items-start border-b border-white/[0.06] pb-3">
+              <div>
+                <h3 className="font-display text-xs tracking-widest uppercase text-white">
+                  Review & Edit AI Reply
+                </h3>
+                <p className="text-[9px] text-champagne-gold uppercase tracking-widest mt-1">
+                  Recipient: {waReplyLead.name} ({waReplyLead.phone})
+                </p>
+              </div>
               <button
-                onClick={() => setSelectedLead(null)}
-                className="px-5 py-2 bg-white/5 border border-white/10 hover:border-white/20 text-xs font-sans uppercase tracking-wider rounded-sm cursor-pointer hover:text-white transition-all"
+                onClick={() => { setWaReplyLead(null); setWaReplyMessage(""); }}
+                className="p-1.5 border border-white/10 hover:border-white/20 hover:text-white text-ivory/60 rounded-sm bg-lux-black cursor-pointer transition-all"
               >
-                Close
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[9px] uppercase tracking-wider text-ivory/40">WhatsApp Message text (Click inside to customize)</label>
+              {loadingWaReply ? (
+                <div className="w-full min-h-[120px] bg-lux-black border border-white/[0.08] rounded-sm flex flex-col items-center justify-center gap-2 text-ivory/30 text-xs py-10">
+                  <Loader2 className="w-5 h-5 animate-spin text-champagne-gold" />
+                  <span>Drafting conversational reply...</span>
+                </div>
+              ) : (
+                <textarea
+                  rows={5}
+                  value={waReplyMessage}
+                  onChange={(e) => setWaReplyMessage(e.target.value)}
+                  className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-3 py-2.5 rounded-sm focus:outline-none font-sans leading-relaxed"
+                  placeholder="AI draft loading..."
+                />
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => { setWaReplyLead(null); setWaReplyMessage(""); }}
+                className="px-4 py-1.5 bg-white/5 border border-white/10 hover:border-white/20 text-[10px] font-sans uppercase tracking-wider rounded-sm cursor-pointer hover:text-white transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={loadingWaReply || !waReplyMessage}
+                onClick={sendWhatsAppMessage}
+                className="px-5 py-1.5 bg-emerald-600 border border-emerald-500 hover:bg-emerald-500 text-white text-[10px] font-sans uppercase tracking-wider rounded-sm cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                Send on WhatsApp
               </button>
             </div>
           </div>
@@ -3237,31 +3597,81 @@ export default function AdminDashboard({
               {/* Gallery Images */}
               <div className="bg-white/[0.01] p-4 border border-white/[0.04] rounded-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <label className="block text-[9px] uppercase tracking-wider text-champagne-gold font-medium">Gallery Images <span className="text-white/40 lowercase font-normal">(recommended: landscape 16:9 or 4:3, e.g. 1920x1080px)</span></label>
-                  {uploadingImage === -1 && (
-                    <span className="flex items-center gap-1.5 text-[10px] text-champagne-gold">
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading to gallery...
-                    </span>
-                  )}
+                  <div className="flex flex-col">
+                    <label className="block text-[9px] uppercase tracking-wider text-champagne-gold font-medium">Gallery Images <span className="text-white/40 lowercase font-normal">(recommended: landscape 16:9 or 4:3, e.g. 1920x1080px)</span></label>
+                    <span className="text-[8px] text-ivory/30 uppercase mt-0.5">Click sparkles to tag with AI, or edit Alt text below</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      disabled={generatingAllImageAlts}
+                      onClick={handleTagAllImages}
+                      className="px-2.5 py-1 border border-champagne-gold/40 hover:border-champagne-gold text-champagne-gold disabled:text-champagne-gold/30 disabled:border-champagne-gold/20 text-[8px] uppercase tracking-wider font-semibold rounded-sm transition-all cursor-pointer flex items-center gap-1 disabled:cursor-wait"
+                    >
+                      {generatingAllImageAlts ? (
+                        <>
+                          <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                          Tagging All...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-2.5 h-2.5" />
+                          Auto-Tag All Alts
+                        </>
+                      )}
+                    </button>
+                    {uploadingImage === -1 && (
+                      <span className="flex items-center gap-1.5 text-[10px] text-champagne-gold">
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading to gallery...
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
                   {(editingProperty.images || []).map((imgUrl: string, idx: number) => (
-                    <div key={idx} className="relative group aspect-[4/3] bg-lux-black border border-white/10 rounded-sm overflow-hidden">
-                      <Image
-                        src={imgUrl}
-                        alt={`Gallery ${idx}`}
-                        fill
-                        className="object-cover"
+                    <div key={idx} className="space-y-1.5">
+                      <div className="relative group aspect-[4/3] bg-lux-black border border-white/10 rounded-sm overflow-hidden">
+                        <Image
+                          src={imgUrl}
+                          alt={`Gallery ${idx}`}
+                          fill
+                          className="object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(idx)}
+                          className="absolute top-1 right-1 p-1 bg-red-600/90 text-white rounded-full opacity-0 group-hover:opacity-100 hover:bg-red-700 transition-all cursor-pointer z-10"
+                          title="Remove Image"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                        
+                        <button
+                          type="button"
+                          disabled={generatingImageAlts[imgUrl]}
+                          onClick={() => handleTagSingleImage(imgUrl)}
+                          className="absolute bottom-1 right-1 p-1 bg-champagne-gold text-lux-black rounded-full opacity-0 group-hover:opacity-100 hover:bg-white transition-all cursor-pointer z-10 disabled:cursor-wait disabled:bg-champagne-gold/30"
+                          title="Auto-Tag Alt Text with AI"
+                        >
+                          {generatingImageAlts[imgUrl] ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : (
+                            <Sparkles className="w-3 h-3" />
+                          )}
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        value={editingProperty.imageAlts?.[imgUrl] || ""}
+                        onChange={(e) => {
+                          const alts = { ...(editingProperty.imageAlts || {}) };
+                          alts[imgUrl] = e.target.value;
+                          setEditingProperty((p: any) => ({ ...p, imageAlts: alts }));
+                        }}
+                        placeholder="Alt text (SEO)..."
+                        className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-[10px] px-2 py-1 rounded-sm focus:outline-none text-ivory/80"
                       />
-                      <button
-                        type="button"
-                        onClick={() => removeGalleryImage(idx)}
-                        className="absolute top-1 right-1 p-1 bg-red-600/90 text-white rounded-full opacity-0 group-hover:opacity-100 hover:bg-red-700 transition-all cursor-pointer"
-                        title="Remove Image"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
                     </div>
                   ))}
 
@@ -3635,16 +4045,53 @@ export default function AdminDashboard({
                     />
                   </label>
                 </div>
-                {editingBlog.coverImage && (
-                  <div className="relative w-40 aspect-[16/10] rounded-sm overflow-hidden border border-white/10 bg-lux-black">
-                    <Image
-                      src={editingBlog.coverImage}
-                      alt="Cover Preview"
-                      fill
-                      className="object-cover"
-                    />
+                <div className="flex flex-col md:flex-row gap-4 items-start pt-1">
+                  {editingBlog.coverImage && (
+                    <div className="relative w-40 aspect-[16/10] rounded-sm overflow-hidden border border-white/10 bg-lux-black flex-shrink-0">
+                      <Image
+                        src={editingBlog.coverImage}
+                        alt="Cover Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 w-full space-y-1.5">
+                    <span className="block text-[8px] uppercase tracking-wider text-ivory/30">Or select a premium stock luxury image:</span>
+                    <div className="flex gap-2 overflow-x-auto pb-1 max-w-full">
+                      {[
+                        { url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", label: "Glass Villa" },
+                        { url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", label: "Dusk Mansion" },
+                        { url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80", label: "Luxury Lounge" },
+                        { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80", label: "Modern Estate" },
+                        { url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80", label: "Penthouse View" },
+                        { url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", label: "Contemporary Front" },
+                      ].map((img, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setEditingBlog((p: any) => ({ ...p, coverImage: img.url }))}
+                          className={`relative w-16 aspect-[16/10] rounded-sm overflow-hidden border transition-all flex-shrink-0 ${
+                            editingBlog.coverImage === img.url
+                              ? "border-champagne-gold ring-1 ring-champagne-gold"
+                              : "border-white/10 hover:border-white/30"
+                          }`}
+                        >
+                          <Image
+                            src={img.url}
+                            alt={img.label}
+                            fill
+                            sizes="64px"
+                            className="object-cover"
+                          />
+                          <span className="absolute bottom-0 inset-x-0 bg-black/60 text-[6px] py-0.5 text-center text-ivory/80 truncate">
+                            {img.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Article Content */}

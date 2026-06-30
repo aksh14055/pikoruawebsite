@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import type { MetadataRoute } from "next";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { ALL_GEO_LANDING_PAGES } from "@/lib/data/geo";
@@ -15,6 +18,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified,
     changeFrequency: "weekly" as const,
     priority: route === "" ? 1.0 : 0.8,
+  }));
+
+  const aiContextRoutes = ["/llms.txt", "/llms-full.txt"].map((route) => ({
+    url: absoluteUrl(route),
+    lastModified,
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
   }));
 
   const geoRoutes = ALL_GEO_LANDING_PAGES.map((page) => ({
@@ -61,5 +71,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.55,
   }));
 
-  return [...coreRoutes, ...geoRoutes, ...propertyRoutes, ...blogRoutes];
+  return [...coreRoutes, ...aiContextRoutes, ...geoRoutes, ...propertyRoutes, ...blogRoutes];
 }

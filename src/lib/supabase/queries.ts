@@ -89,6 +89,7 @@ function mapDbPropertyToStatic(db: any): StaticProperty {
     seoTitle: db.seo_title || staticProp?.seoTitle || undefined,
     seoDescription: db.seo_description || staticProp?.seoDescription || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,
+    imageAlts: db.image_alts || {},
   };
 }
 

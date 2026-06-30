@@ -142,6 +142,14 @@ const organizationSchema = {
           availableLanguage: ["en", "hi", "gu"],
         },
       ],
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5.0",
+        bestRating: "5",
+        worstRating: "1",
+        ratingCount: "6",
+        reviewCount: "6",
+      },
       makesOffer: [
         {
           "@type": "Offer",
@@ -187,6 +195,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="alternate" type="text/plain" title="PIKORUA Realty AI index" href={absoluteUrl("/llms.txt")} />
+        <link
+          rel="alternate"
+          type="text/plain"
+          title="PIKORUA Realty full AI content index"
+          href={absoluteUrl("/llms-full.txt")}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
         <GoogleAnalytics />

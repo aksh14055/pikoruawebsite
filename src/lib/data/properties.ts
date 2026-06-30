@@ -25,6 +25,7 @@ export interface StaticProperty {
   seoTitle?: string;
   seoDescription?: string;
   isActive?: boolean;
+  imageAlts?: Record<string, string>;
 }
 
 const ALL_STATIC_PROPERTIES: StaticProperty[] = [

@@ -34,7 +34,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://cdn.sanity.io https://lh3.googleusercontent.com https://rwtueiruyktjzvsgdcoh.supabase.co https://img.youtube.com https://i.ytimg.com",
+      "img-src 'self' data: blob: https: http:",
       "media-src 'self' https://cdn.sanity.io https://rwtueiruyktjzvsgdcoh.supabase.co",
       "connect-src 'self' https://*.supabase.co https://api.sanity.io https://cdn.sanity.io https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com",
       "frame-src https://www.youtube.com https://youtube.com https://www.google.com https://maps.google.com",
@@ -59,6 +59,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "rwtueiruyktjzvsgdcoh.supabase.co",
         pathname: "/storage/v1/object/public/media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
       },
     ],
     formats: ["image/avif", "image/webp"],

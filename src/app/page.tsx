@@ -17,7 +17,7 @@ import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { getFirstSentence } from "@/lib/utils";
-import { createMetadata } from "@/lib/seo";
+import { createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
@@ -57,8 +57,83 @@ export default async function HomePage() {
   const stats = homeContent?.stats || undefined;
   const tours = homeContent?.virtualTours || undefined;
 
+  const homepageFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is PIKORUA Realty?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty is Ahmedabad's private luxury residential real estate advisory. We curate exclusive apartments, penthouses, duplexes, villas, and bungalows for HNI and NRI buyers across premium corridors including Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, and SG Highway.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Which areas in Ahmedabad does PIKORUA Realty cover?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty specialises in Ahmedabad's top luxury residential corridors: Iskon-Ambli Road (Billionaires' Row), Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi Circle, and SG Highway. These are the most sought-after addresses for HNI families and NRI buyers in Gujarat.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does PIKORUA Realty assist NRI buyers purchasing property in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. PIKORUA Realty has extensive experience advising NRI clients — including Gujarati diaspora based in the US, UK, UAE, Canada, Singapore, and Australia — on purchasing residential property in Ahmedabad. We handle end-to-end advisory: property selection, legal due diligence, RERA verification, and transaction coordination.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What types of luxury properties are available in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty's curated collection includes 3 BHK, 4 BHK, and 5 BHK luxury apartments, duplex penthouses, sky villas, independent bungalows, and premium residential plots — all in Ahmedabad's most exclusive western corridors. Properties range from ₹2.5 crore to over ₹15 crore.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I find the best luxury real estate agent in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty is among Ahmedabad's most trusted private luxury real estate advisories. Unlike large portals, we work with a select number of clients at a time, ensuring deeply personalised advisory. You can reach us via WhatsApp, email at connect@pikorua.in, or by filling our private consultation form at pikorua.in/contact.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the price of luxury apartments on Iskon-Ambli Road, Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Premium apartments on Iskon-Ambli Road, Ahmedabad currently trade between ₹11,000 and ₹15,000 per sq.ft. A typical 4 BHK of 3,500–4,500 sq.ft ranges from ₹4 crore to ₹7 crore. Larger penthouses and sky villas can exceed ₹10 crore. Prices vary by floor, tower, and developer. Contact PIKORUA Realty for current off-market availability.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does PIKORUA Realty list properties on 99acres or MagicBricks?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty operates as a private advisory and does not list properties on public portals like 99acres, MagicBricks, or Housing.com. Our curated collection is shared exclusively with registered clients who contact us directly. This ensures complete privacy for both buyers and sellers.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I contact PIKORUA Realty to enquire about a luxury property in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You can reach PIKORUA Realty by WhatsApp, by emailing connect@pikorua.in, or by submitting an enquiry at pikorua.in/contact. We respond to all qualified enquiries within 24 hours and schedule a private consultation to understand your requirements before sharing curated options.",
+        },
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homepageFaqSchema) }}
+      />
       <Header />
       <main id="main-content">
 
