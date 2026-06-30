@@ -18,6 +18,15 @@ function hasSubmittedBefore(): boolean {
   return localStorage.getItem(SUBMITTED_KEY) !== null;
 }
 
+const DISMISSED_KEY = "pikorua_popup_dismissed_at";
+
+function hasDismissedRecently(): boolean {
+  if (typeof window === "undefined") return false;
+  const dismissedAt = sessionStorage.getItem(DISMISSED_KEY);
+  if (!dismissedAt) return false;
+  return Date.now() - Number(dismissedAt) < RESHOW_DELAY_MS;
+}
+
 type FormState = "idle" | "submitting" | "success" | "error";
 
 interface FieldError {
@@ -87,7 +96,19 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
       return () => cancelAnimationFrame(frame);
     }
 
-    if (typeof window !== "undefined" && hasSubmittedBefore()) {
+    if (typeof window !== "undefined" && (hasSubmittedBefore() || hasDismissedRecently())) {
+      // If they dismissed recently, set a timer for the remaining time
+      if (hasDismissedRecently()) {
+        const lastDismissed = Number(sessionStorage.getItem(DISMISSED_KEY) || 0);
+        const timePassed = Date.now() - lastDismissed;
+        const timeLeft = RESHOW_DELAY_MS - timePassed;
+        if (timeLeft > 0) {
+          clearReshowTimer();
+          reshowTimerRef.current = setTimeout(() => {
+            if (!hasSubmittedBefore()) setVisible(true);
+          }, timeLeft);
+        }
+      }
       return () => cancelAnimationFrame(frame);
     }
 
@@ -107,6 +128,9 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
 
   const dismiss = () => {
     setVisible(false);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(DISMISSED_KEY, String(Date.now()));
+    }
     // Keep nagging every couple of minutes until they either submit or leave.
     clearReshowTimer();
     reshowTimerRef.current = setTimeout(() => {

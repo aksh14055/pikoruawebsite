@@ -14,32 +14,43 @@ import { NextResponse } from "next/server";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
-import { getSupabaseBlogs, getSupabaseAllPropertySlugsWithDates } from "@/lib/supabase/queries";
+import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600; // Cache on CDN/edge for 1 hour (ISR) to protect database
 export const runtime = "nodejs";
 
 export async function GET() {
-  // Attempt to fetch live slugs from Supabase; fall back to static list
-  let dbPropertySlugs: string[] = [];
+  // Fetch live properties from Supabase; fall back to static list
+  let liveProperties = STATIC_PROPERTIES;
   try {
-    const rows = await getSupabaseAllPropertySlugsWithDates();
-    dbPropertySlugs = rows.map((r) => r.slug);
+    const dbProps = await getSupabaseProperties({ onlyActive: true });
+    if (dbProps.length > 0) liveProperties = dbProps;
   } catch {
     // Supabase unavailable — use static fallback
   }
-  const staticPropertySlugs = STATIC_PROPERTIES.map((p) => p.slug);
-  const allPropertySlugs = Array.from(new Set([...dbPropertySlugs, ...staticPropertySlugs]));
 
-  // Attempt to fetch live blog posts; fall back to static list
-  let blogSlugs: string[] = [];
+  // Fetch live blog posts; fall back to static list
+  let liveBlogPosts = STATIC_BLOG_POSTS;
   try {
     const dbBlogs = await getSupabaseBlogs(true);
-    blogSlugs = dbBlogs.length > 0 ? dbBlogs.map((p) => p.slug) : STATIC_BLOG_POSTS.map((p) => p.slug);
+    if (dbBlogs.length > 0) liveBlogPosts = dbBlogs;
   } catch {
-    blogSlugs = STATIC_BLOG_POSTS.map((p) => p.slug);
+    // Supabase unavailable — use static fallback
   }
+
+  const propertyLines = liveProperties.map((p) => {
+    const priceInfo = p.price && !p.priceOnRequest ? ` (Price: ${p.price})` : " (Price on Request)";
+    const sizeInfo = p.sizeRange ? `, Size: ${p.sizeRange}` : "";
+    const locInfo = p.locationLabel ? ` in ${p.locationLabel}` : "";
+    const desc = p.description?.[0] ? ` - ${p.description[0].substring(0, 160).trim()}...` : "";
+    return `- [${p.name || p.configuration}](${SITE_URL}/properties/${p.slug}): ${p.configuration}${sizeInfo}${locInfo}${priceInfo}${desc}`;
+  });
+
+  const blogLines = liveBlogPosts.map((post) => {
+    const category = post.categoryLabel ? ` [Category: ${post.categoryLabel}]` : "";
+    return `- [${post.title}](${SITE_URL}/blog/${post.slug}): ${post.excerpt}${category}`;
+  });
 
   const lines: string[] = [
     `# PIKORUA Realty`,
@@ -66,13 +77,13 @@ export async function GET() {
     ``,
     ...PROPERTY_TYPE_LANDING_PAGES.map((p) => `- [${p.label}](${SITE_URL}${p.href}): ${p.description}`),
     ``,
-    `## Properties (${allPropertySlugs.length} listings)`,
+    `## Properties (${liveProperties.length} listings)`,
     ``,
-    ...allPropertySlugs.map((slug) => `- [/properties/${slug}](${SITE_URL}/properties/${slug})`),
+    ...propertyLines,
     ``,
-    `## Insights (${blogSlugs.length} articles)`,
+    `## Insights (${liveBlogPosts.length} articles)`,
     ``,
-    ...blogSlugs.map((slug) => `- [/blog/${slug}](${SITE_URL}/blog/${slug})`),
+    ...blogLines,
     ``,
     `## Do Not Index`,
     ``,

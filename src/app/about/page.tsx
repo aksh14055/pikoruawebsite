@@ -95,7 +95,9 @@ export default async function AboutPage() {
   const founderStory = (dbContent?.founderStory || DEFAULT_FOUNDER_STORY).map((paragraph, index) =>
     index === 0 ? ABOUT_INTRO_COPY : withCelebritiesAudience(paragraph)
   );
-  const principles = dbContent?.principles || PRINCIPLES;
+  const principles = (dbContent?.principles && dbContent.principles.length > 0)
+    ? dbContent.principles
+    : PRINCIPLES;
 
   const renderTitle = (title: string) => {
     const parts = title.split(/(PIKORUA)/i);

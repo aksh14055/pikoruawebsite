@@ -120,6 +120,11 @@ const organizationSchema = {
         postalCode: "380058",
         addressCountry: "IN",
       },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: "23.0246",
+        longitude: "72.5074",
+      },
       // Google Maps URL — hasMap links the schema entity directly to the
       // verified Google Business Profile map listing (Local SEO signal)
       hasMap: GOOGLE_BUSINESS_PROFILE_URL,
