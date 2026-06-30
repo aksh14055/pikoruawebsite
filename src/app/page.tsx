@@ -237,14 +237,14 @@ export default async function HomePage() {
 
         <FeaturedResidences />
 
+        <LocationGrid />
+
         {/* About the Founder */}
         <FounderTeaser
           founderImageUrl={founderAvatar}
           founderName={FOUNDER_NAME}
           quote={founderGlimpse}
         />
-
-        <LocationGrid />
 
         <StatsStrip stats={stats} pauseOnHover={false} size="sm" className="pt-0 lg:pt-0 border-t-0" />
 
