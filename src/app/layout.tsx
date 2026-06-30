@@ -96,12 +96,20 @@ const organizationSchema = {
         // local GMB listing for local SEO knowledge-graph association
         GOOGLE_BUSINESS_PROFILE_URL,
       ],
-      areaServed: {
-        "@type": "City",
-        name: "Ahmedabad",
-        addressRegion: "Gujarat",
-        addressCountry: "IN",
-      },
+      areaServed: [
+        {
+          "@type": "City",
+          name: "Ahmedabad",
+          sameAs: [
+            "https://en.wikipedia.org/wiki/Ahmedabad",
+            "https://www.wikidata.org/wiki/Q1070",
+          ],
+        },
+        {
+          "@type": "GeoShape",
+          polygon: "23.00,72.44 23.08,72.44 23.08,72.54 23.00,72.54 23.00,72.44",
+        },
+      ],
       knowsAbout: [
         "Luxury apartments in Ahmedabad",
         "Penthouses in Ahmedabad",
