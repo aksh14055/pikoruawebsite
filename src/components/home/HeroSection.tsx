@@ -38,7 +38,6 @@ export function HeroSection({
           alt="Luxury residential property in Ahmedabad"
           fill
           priority
-          unoptimized
           quality={60}
           sizes="100vw"
           className="object-cover object-center brightness-75"
@@ -53,7 +52,6 @@ export function HeroSection({
           alt="Luxury residential property in Ahmedabad"
           fill
           priority
-          unoptimized
           quality={40}
           sizes="100vw"
           {...(posterBlur ? { placeholder: "blur" as const, blurDataURL: posterBlur } : {})}
