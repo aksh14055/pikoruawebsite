@@ -51,6 +51,13 @@ const nextConfig: NextConfig = {
   images: {
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [32, 48, 64, 96, 128, 256, 384],
+    localPatterns: [
+      { pathname: "/properties/**", search: "" },
+      { pathname: "/images/**", search: "" },
+      { pathname: "/blog/**", search: "" },
+      { pathname: "/logo.png", search: "" },
+      { pathname: "/logo-icon.png", search: "" },
+    ],
     remotePatterns: [
       {
         protocol: "https",
@@ -64,14 +71,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
       },
     ],
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
     qualities: [40, 60, 75],
     minimumCacheTTL: 2678400,
   },
