@@ -529,10 +529,9 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
                 src={images[currentImgIdx]}
                 alt={RESIDENTIAL_CATEGORY_LABELS[property.category]}
                 fill
-                quality={90}
+                quality={75}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 className="object-cover object-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                priority={currentImgIdx === 0}
               />
             ) : (
               <div className="absolute inset-0 bg-gradient-to-br from-soft-black via-lux-black to-soft-black flex items-center justify-center">

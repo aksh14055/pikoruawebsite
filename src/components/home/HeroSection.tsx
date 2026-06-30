@@ -35,22 +35,24 @@ export function HeroSection({
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    let cancelled = false;
 
     if (prefersReducedMotion) {
-      setTypedLineIndex(lines.length - 1);
-      setTypedCharIndex(lines[lines.length - 1]?.length ?? 0);
-      setTypingDone(true);
-      return;
+      timeout = setTimeout(() => {
+        if (cancelled) return;
+        setTypedLineIndex(lines.length - 1);
+        setTypedCharIndex(lines[lines.length - 1]?.length ?? 0);
+        setTypingDone(true);
+      }, 0);
+      return () => {
+        cancelled = true;
+        if (timeout) clearTimeout(timeout);
+      };
     }
 
-    let timeout: ReturnType<typeof setTimeout>;
-    let cancelled = false;
     let line = 0;
     let char = 0;
-
-    setTypedLineIndex(0);
-    setTypedCharIndex(0);
-    setTypingDone(false);
 
     const tick = () => {
       if (cancelled) return;
@@ -77,10 +79,17 @@ export function HeroSection({
       setTypingDone(true);
     };
 
-    timeout = setTimeout(tick, 260);
+    timeout = setTimeout(() => {
+      if (cancelled) return;
+      setTypedLineIndex(0);
+      setTypedCharIndex(0);
+      setTypingDone(false);
+      timeout = setTimeout(tick, 260);
+    }, 0);
+
     return () => {
       cancelled = true;
-      clearTimeout(timeout);
+      if (timeout) clearTimeout(timeout);
     };
   }, [headlineLines]);
 
@@ -94,6 +103,7 @@ export function HeroSection({
     ).connection;
     if (conn?.saveData || conn?.effectiveType === "slow-2g" || conn?.effectiveType === "2g") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(max-width: 767px)").matches) return;
     const video = videoRef.current;
     video.src = videoUrl;
     video.load();
@@ -111,14 +121,14 @@ export function HeroSection({
         aria-hidden="true"
       />
 
-      {/* LCP element: priority poster image — browser-discoverable at parse time.
+      {/* LCP element: preloaded poster image - browser-discoverable at parse time.
            This replaces the JS-deferred video.src pattern so Lighthouse/browsers
            can preload it immediately, driving LCP from ~4.7s → ~1.8s. */}
       <Image
         src={posterUrl ?? MEDIA.videos.heroPoster}
         alt="Luxury residential property in Ahmedabad"
         fill
-        priority
+        preload
         quality={40}
         sizes="100vw"
         className={cn(
@@ -135,6 +145,7 @@ export function HeroSection({
           autoPlay
           muted
           loop
+          preload="none"
           playsInline
           aria-hidden="true"
           className={cn(

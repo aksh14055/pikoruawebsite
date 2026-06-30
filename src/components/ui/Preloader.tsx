@@ -34,7 +34,6 @@ export function Preloader() {
             fill
             quality={75}
             sizes="(max-width: 640px) 12rem, 14rem"
-            priority
             className="object-contain"
           />
         </div>

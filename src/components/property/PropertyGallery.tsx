@@ -101,10 +101,10 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
               src={images[currentIndex]}
               alt={imageAlts?.[images[currentIndex]] || `${name} gallery view ${currentIndex + 1}`}
               fill
-              quality={90}
+              quality={75}
               sizes="(max-width: 1024px) 100vw, 60vw"
               className="object-cover object-center scale-[1.04]"
-              priority={currentIndex === 0}
+              preload={currentIndex === 0}
             />
           </motion.div>
         </AnimatePresence>
@@ -160,7 +160,7 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
                 src={img}
                 alt={imageAlts?.[img] || `${name} thumbnail ${idx + 1}`}
                 fill
-                quality={90}
+                quality={60}
                 sizes="100px"
                 className="object-cover object-center"
               />

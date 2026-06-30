@@ -26,8 +26,8 @@ export function LandingPageTemplate({ page, properties }: LandingPageTemplatePro
             src={page.heroImage}
             alt={page.h1}
             fill
-            quality={90}
-            priority
+            quality={75}
+            preload
             sizes="100vw"
             className="object-cover object-center"
           />
@@ -146,7 +146,7 @@ export function LandingPageTemplate({ page, properties }: LandingPageTemplatePro
                         src={property.coverImage}
                         alt={`${property.configuration} in ${property.locationLabel}`}
                         fill
-                        quality={90}
+                        quality={75}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
                       />

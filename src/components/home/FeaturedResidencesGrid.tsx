@@ -319,7 +319,6 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
                     quality={75}
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     className="object-cover object-center scale-[1.04]"
-                    priority
                   />
                 </motion.div>
               )}
@@ -542,9 +541,11 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
 
   useEffect(() => {
     if (!isHovered || images.length <= 1) {
-      setCurrentImgIdx(0);
-      setDirection(1);
-      return;
+      const resetTimer = setTimeout(() => {
+        setCurrentImgIdx(0);
+        setDirection(1);
+      }, 0);
+      return () => clearTimeout(resetTimer);
     }
     const interval = setInterval(() => {
       setDirection(1);
@@ -634,7 +635,6 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
                 quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover object-center transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
-                priority={currentImgIdx === 0}
               />
             ) : (
               <div className="absolute inset-0 bg-[#121212] flex items-center justify-center">
@@ -880,7 +880,6 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
                   fill
                   quality={75}
                   sizes="(max-width: 768px) 100vw, 58vw"
-                  priority={currentIndex === 0}
                   className="object-cover object-center scale-[1.04]"
                 />
               </motion.div>

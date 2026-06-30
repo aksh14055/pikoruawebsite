@@ -110,7 +110,6 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   height={48}
                   quality={75}
                   className="h-8 sm:h-9 lg:h-11 w-auto object-contain"
-                  priority
                 />
               </Link>
 

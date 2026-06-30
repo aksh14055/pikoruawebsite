@@ -196,8 +196,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 src={post.coverImage}
                 alt={post.title}
                 fill
-                quality={90}
-                priority
+                quality={75}
+                preload
                 sizes="(max-width: 1024px) 100vw, 800px"
                 className="object-cover object-center"
               />

@@ -49,6 +49,8 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
+    deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536, 1920],
+    imageSizes: [32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: "https",
@@ -70,7 +72,8 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
-    qualities: [75, 90],
+    qualities: [40, 60, 75],
+    minimumCacheTTL: 2678400,
   },
   async headers() {
     return [

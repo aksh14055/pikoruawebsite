@@ -248,7 +248,7 @@ export function CategoryCards() {
                             src={cat.imageUrl}
                             alt={cat.label}
                             fill
-                            quality={90}
+                            quality={75}
                             sizes="(max-width: 768px) 95vw, 40vw"
                             className="object-cover object-center"
                           />
@@ -297,13 +297,12 @@ export function CategoryCards() {
                     src={cat.imageUrl}
                     alt={cat.label}
                     fill
-                    quality={90}
+                    quality={75}
                     sizes="40vw"
                     className={cn(
                       "object-cover object-center transition-transform duration-[1000ms] ease-out",
                       isActive ? "scale-100" : "scale-105"
                     )}
-                    priority={idx === 0}
                   />
                   {/* Subtle dark overlay for premium depth */}
                   <div className="absolute inset-0 bg-gradient-to-t from-lux-black/80 via-lux-black/20 to-transparent z-20" />

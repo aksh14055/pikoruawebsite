@@ -205,10 +205,10 @@ export default async function AboutPage() {
                   src={founderAvatar}
                   alt={`${FOUNDER_NAME}, Founder of PIKORUA Realty`}
                   fill
-                  quality={90}
+                  quality={75}
                   className="object-cover object-center"
                   sizes="(max-width: 1024px) 90vw, 40vw"
-                  priority
+                  preload
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-lux-black/60 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute inset-4 border border-white/5 pointer-events-none rounded-sm" />
