@@ -87,6 +87,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "Yes. Under FEMA regulations, NRIs can buy residential properties using inward remittances. Capital gains repatriation is permitted for up to two residential properties, making Sindhu Bhavan Road a secure wealth preservation destination.",
       },
+      {
+        question: "SBR vs Iscon Ambli Road: which is better for luxury property in Ahmedabad?",
+        answer:
+          "Both are Ahmedabad's premium corridors, but they serve different buyer profiles. SBR (Sindhu Bhavan Road) has a more mature, mixed-use character — premium dining, retail, and private clubs within walking distance of residences, and a strong market for bungalows and large-format apartments. Iscon-Ambli Road is newer, quieter, and commands the highest per-sq.ft. pricing in the city — best for penthouses, sky mansions, and buyers who want the address prestige of the most exclusive corridor. PIKORUA Realty advises on both corridors and can guide you based on your specific property type, lifestyle preferences, and investment horizon.",
+      },
+      {
+        question: "What is the best luxury property consultant for Sindhu Bhavan Road?",
+        answer:
+          "PIKORUA Realty provides specialist luxury property advisory on Sindhu Bhavan Road, Ahmedabad. We represent both buyers and sellers through a private, relationship-led model — not public portal listing. Contact us at pikorua.in/contact.",
+      },
     ],
     relatedSlugs: ["iskon-ambli", "thaltej", "villas-bungalows-ahmedabad"],
     bodyContent: [
@@ -148,6 +158,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "NRIs can seamlessly execute transactions remotely via Power of Attorney (POA) for registration. At PIKORUA Realty, we handle the complete process—from video-walkthroughs and banking setup to legal title verification and post-handover management.",
       },
+      {
+        question: "Iscon Ambli Road vs SBR: which is better for luxury property in Ahmedabad?",
+        answer:
+          "Iscon-Ambli Road is Ahmedabad's highest-priced and most exclusive luxury corridor — best for penthouses, sky mansions, and buyers who want the city's most prestigious residential address. Sindhu Bhavan Road (SBR) is more established and mixed-use, with a broader choice of property types (apartments, bungalows) and stronger lifestyle access (dining, clubs, retail). IAR prices are higher; SBR has a wider market and deeper resale buyer pool. PIKORUA Realty advises on both.",
+      },
+      {
+        question: "Which are the best luxury projects on Iscon Ambli Road Ahmedabad?",
+        answer:
+          "The most sought-after luxury developments on Iscon-Ambli Road are characterised by fewer units per floor, private lift lobbies, full-floor sky villas, rooftop amenity decks, and basement parking. PIKORUA Realty maintains an advisory shortlist of recommended projects — both ready possession and under construction. Contact us at pikorua.in/contact for curated project recommendations.",
+      },
     ],
     relatedSlugs: ["sindhu-bhavan", "thaltej", "penthouses-duplexes-ahmedabad"],
     bodyContent: [
@@ -169,10 +189,10 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     href: "/locations/thaltej",
     label: "Thaltej",
     eyebrow: "Western Ahmedabad",
-    title: "Luxury Properties in Thaltej, Ahmedabad",
+    title: "Luxury Property in Thaltej, Ahmedabad",
     h1: "Luxury Properties in Thaltej",
     description:
-      "Private advisory for luxury apartments, duplexes, and penthouses in Thaltej, Ahmedabad's mature western residential market.",
+      "Curated luxury apartments, villas, and premium plots in Thaltej — one of western Ahmedabad's fastest-growing luxury residential corridors.",
     heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
     locationSlug: "thaltej",
     intro:
@@ -207,6 +227,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         question: "Are there specific tax benefits or rules for NRIs investing in Thaltej?",
         answer:
           "NRIs pay standard stamp duty and registration fees, and can avail of tax benefits on home loans under Section 24 and 80C. When buying from a resident Indian, tax withholding (TDS) under Section 195 must be carefully calculated based on capital gains.",
+      },
+      {
+        question: "Thaltej vs Bodakdev: which is better for luxury property in Ahmedabad?",
+        answer:
+          "Thaltej is better for buyers who want western Ahmedabad luxury positioning with more spacious residential surroundings, good SG Highway connectivity, and access to metro infrastructure — at prices typically 15–25% below Bodakdev. Bodakdev is better for buyers who prioritise the original HNI neighbourhood depth, Karnavati Club proximity, and mature school and social infrastructure. Both are strong choices; the right one depends on whether you value suburban spaciousness (Thaltej) or urban density and established address (Bodakdev).",
+      },
+      {
+        question: "Thaltej vs Iscon Ambli Road: which offers better value for luxury investment?",
+        answer:
+          "Thaltej offers better value on a price-per-sq.ft. basis — typically ₹6,500–₹12,000 vs Iscon-Ambli's ₹11,000–₹15,000. For buyers who want large-format apartments or duplex homes at a more accessible entry price in the western luxury belt, Thaltej is the rational choice. Iscon-Ambli's premium is justified for penthouses and sky mansions where the address itself is the product. PIKORUA Realty can model a corridor comparison for your specific requirement.",
       },
     ],
     relatedSlugs: ["iskon-ambli", "shilaj", "luxury-apartments-ahmedabad"],
@@ -349,10 +379,10 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     href: "/locations/sg-highway",
     label: "SG Highway",
     eyebrow: "Connectivity Spine",
-    title: "Luxury Properties near SG Highway, Ahmedabad",
+    title: "Luxury Property near SG Highway, Ahmedabad — Thaltej, Iscon Ambli, Sindhu Bhavan",
     h1: "Luxury Properties near SG Highway",
     description:
-      "Advisory for premium residential properties near SG Highway and connected western Ahmedabad corridors.",
+      "Advisory on luxury apartments and premium homes along the SG Highway corridor in Ahmedabad — covering Thaltej, Iskon-Ambli Road, Sindhu Bhavan Road, and Prahlad Nagar.",
     heroImage: "/properties/eminence-96/emini96-1.png",
     locationSlug: "sg-highway",
     intro:
@@ -911,10 +941,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     href: "/property-types/luxury-apartments-ahmedabad",
     label: "Luxury Apartments",
     eyebrow: "Property Type",
-    title: "Luxury Apartments in Ahmedabad",
+    title: "Luxury 4 BHK & 5 BHK Apartments in Ahmedabad",
     h1: "Luxury Apartments in Ahmedabad",
     description:
-      "Private advisory for luxury 4 BHK and 5 BHK apartments in Ahmedabad's premium residential corridors.",
+      "Private advisory for luxury 4 BHK and 5 BHK apartments, penthouses, and premium flats in Ahmedabad's top residential corridors — Iscon Ambli Road, Sindhu Bhavan Road, and Thaltej.",
     heroImage: "/properties/swati-senor/swati-senor-1.jpg",
     categories: ["apartment"],
     matchKeywords: ["apartment", "4 bhk", "5 bhk"],
@@ -970,10 +1000,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     href: "/property-types/penthouses-duplexes-ahmedabad",
     label: "Penthouses And Duplexes",
     eyebrow: "Property Type",
-    title: "Penthouses and Duplex Homes in Ahmedabad",
+    title: "Luxury Penthouses for Sale in Ahmedabad — Duplex Homes",
     h1: "Penthouses and Duplex Homes in Ahmedabad",
     description:
-      "Curated penthouses and duplex residences in Ahmedabad for buyers seeking scale, privacy, terraces, and skyline living.",
+      "Curated luxury penthouses and duplex apartments for sale in Ahmedabad — sky mansions, sky villas, and duplex residences across Iscon Ambli Road, Sindhu Bhavan Road, and Thaltej.",
     heroImage: "/properties/ikebana/ikebana1.png",
     categories: ["penthouse", "duplex", "apartment"],
     matchKeywords: ["penthouse", "duplex"],
@@ -1029,10 +1059,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     href: "/property-types/villas-bungalows-ahmedabad",
     label: "Villas And Bungalows",
     eyebrow: "Property Type",
-    title: "Luxury Villas and Bungalows in Ahmedabad",
+    title: "Luxury Villas and Bungalows for Sale in Ahmedabad",
     h1: "Luxury Villas and Bungalows in Ahmedabad",
     description:
-      "Private advisory for luxury villas, independent bungalows, and low-density residential estates in Ahmedabad.",
+      "Private advisory for luxury villas, bungalows, and farmhouses near Ahmedabad — including weekend villas, gated villa estates, and premium independent homes.",
     heroImage: "/properties/anurita/anurita-1.jpg",
     categories: ["villa", "bungalow"],
     matchKeywords: ["villa", "bungalow"],
@@ -1088,10 +1118,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     href: "/property-types/residential-plots-ahmedabad",
     label: "Residential Plots",
     eyebrow: "Property Type",
-    title: "Premium Residential Plots in Ahmedabad",
+    title: "Premium Residential Plots for Sale in Ahmedabad",
     h1: "Premium Residential Plots in Ahmedabad",
     description:
-      "Curated residential plots and land parcels in Ahmedabad for private homes, long-term assets, and family estates.",
+      "Advisory on premium residential plots and luxury land for sale in Ahmedabad — including plots near Sindhu Bhavan Road, Thaltej, Shilaj, and the western corridor.",
     heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
     categories: ["plot"],
     matchKeywords: ["plot", "land"],
@@ -1142,10 +1172,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     href: "/property-types/luxury-residential-investment-ahmedabad",
     label: "Residential Investment",
     eyebrow: "Property Type",
-    title: "Luxury Residential Investment in Ahmedabad",
+    title: "Luxury Property Investment in Ahmedabad — NRI Advisory",
     h1: "Luxury Residential Investment in Ahmedabad",
     description:
-      "Private advisory for HNI and NRI buyers evaluating luxury residential investment opportunities in Ahmedabad.",
+      "Investment advisory for luxury residential property in Ahmedabad — NRI property consultant, rental yield analysis, capital appreciation corridors, and buy-to-invest advisory.",
     heroImage: "/properties/eminence-96/eminence-96-3-pool.webp",
     categories: ["investment", "residential-investment", "apartment", "plot"],
     matchKeywords: ["investment", "plot", "near-possession", "ready"],
