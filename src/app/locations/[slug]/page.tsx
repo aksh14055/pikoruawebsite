@@ -49,9 +49,23 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
     url: pageUrl,
     name: page.title,
     description: page.description,
-    about: {
-      "@id": `${SITE_URL}#real-estate-agent`,
-    },
+    about: [
+      {
+        "@type": "Place",
+        "name": page.label,
+        ...(page.wikipediaUrl ? { "sameAs": page.wikipediaUrl } : {}),
+        ...(page.coordinates ? {
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": page.coordinates.latitude,
+            "longitude": page.coordinates.longitude,
+          }
+        } : {}),
+      },
+      {
+        "@id": `${SITE_URL}#real-estate-agent`,
+      },
+    ],
     mainEntity: {
       "@type": "ItemList",
       itemListElement: properties.slice(0, 12).map((property, index) => ({

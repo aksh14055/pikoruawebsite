@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import { GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -22,7 +23,7 @@ interface FooterProps {
 }
 
 export function Footer({
-  googleMapsUrl,
+  googleMapsUrl = GOOGLE_BUSINESS_PROFILE_URL,
   instagramUrl = "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
   facebookUrl = "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
   linkedinUrl = "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",

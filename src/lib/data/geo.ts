@@ -39,6 +39,11 @@ export interface GeoLandingPage {
   matchKeywords?: string[];
   relatedSlugs?: string[];
   collectionHref?: string;
+  wikipediaUrl?: string;
+  coordinates?: {
+    latitude: string;
+    longitude: string;
+  };
 }
 
 export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
@@ -53,6 +58,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Private advisory for luxury flats, penthouses, villas, and bungalows on Sindhu Bhavan Road — Ahmedabad's most recognised premium residential address.",
     heroImage: "/properties/anurita/anurita-1.jpg",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Bodakdev",
+    coordinates: {
+      latitude: "23.0384",
+      longitude: "72.5119",
+    },
     locationSlug: "sindhu-bhavan",
     intro:
       "Sindhu Bhavan Road is one of Ahmedabad's strongest luxury residential signals, preferred by HNI families who want immediate access to dining, private clubs, premium schools, and the western business belt without losing residential privacy.",
@@ -124,6 +134,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Curated luxury apartments, sky mansions, and penthouses on Iscon Ambli Road — Ahmedabad's highest-value luxury residential corridor.",
     heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Ambli",
+    coordinates: {
+      latitude: "23.0246",
+      longitude: "72.5074",
+    },
     locationSlug: "iskon-ambli",
     intro:
       "Iskon-Ambli is a core western Ahmedabad luxury corridor, valued for connectivity, premium social infrastructure, and a strong supply of large vertical residences with private club amenities.",
@@ -194,6 +209,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Curated luxury apartments, villas, and premium plots in Thaltej — one of western Ahmedabad's fastest-growing luxury residential corridors.",
     heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Thaltej",
+    coordinates: {
+      latitude: "23.0497",
+      longitude: "72.5112",
+    },
     locationSlug: "thaltej",
     intro:
       "Thaltej offers a mature luxury-residential environment with access to SG Highway, established neighborhoods, and a quieter rhythm than denser commercial-adjacent corridors.",
@@ -384,6 +404,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Advisory on luxury apartments and premium homes along the SG Highway corridor in Ahmedabad — covering Thaltej, Iskon-Ambli Road, Sindhu Bhavan Road, and Prahlad Nagar.",
     heroImage: "/properties/eminence-96/emini96-1.png",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Sarkhej%E2%80%93Gandhinagar_Highway",
+    coordinates: {
+      latitude: "23.0246",
+      longitude: "72.5074",
+    },
     locationSlug: "sg-highway",
     intro:
       "SG Highway acts as a connectivity spine for western Ahmedabad. Buyers usually evaluate it alongside Thaltej, Iskon-Ambli, Shilaj, and Vaishno Devi depending on lifestyle, commute, and privacy needs.",
@@ -444,6 +469,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Curated luxury apartments, penthouses, and premium residences in Vastrapur — one of Ahmedabad's most established western residential neighbourhoods.",
     heroImage: "/properties/eminence-96/emini96-1.png",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Vastrapur",
+    coordinates: {
+      latitude: "23.0350",
+      longitude: "72.5293",
+    },
     intro:
       "Vastrapur is a mature western Ahmedabad neighbourhood with a strong residential character, proximity to Vastrapur Lake, quality social infrastructure, and a buyer base that values urban depth over a single corridor brand.",
     marketSignals: [
@@ -793,6 +823,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Curated luxury flats, premium apartments, and exclusive residences in Bodakdev — one of Ahmedabad's most established and well-connected western neighbourhoods.",
     heroImage: "/properties/ikebana/ikebana1.png",
+    wikipediaUrl: "https://en.wikipedia.org/wiki/Bodakdev",
+    coordinates: {
+      latitude: "23.0367",
+      longitude: "72.5152",
+    },
     intro:
       "Bodakdev is among Ahmedabad's most mature and sought-after residential addresses — well-connected, socially dense, and home to a strong concentration of HNI families, premium schools, and corporate offices. Properties here offer a balance of established neighbourhood character with proximity to Karnavati Club, CG Road, and the SG Highway belt.",
     marketSignals: [
