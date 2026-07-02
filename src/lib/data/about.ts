@@ -3,7 +3,7 @@
 // the About page and the homepage founder teaser so the copy has one
 // source of truth.
 
-export const FOUNDER_NAME = "Jitendra";
+export const FOUNDER_NAME = "Jitendra Pareek";
 
 export const DEFAULT_HERO_TITLE = "About PIKORUA";
 

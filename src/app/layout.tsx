@@ -7,6 +7,7 @@ import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
 import { env } from "@/lib/env";
 import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL, GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
+import { FOUNDER_NAME } from "@/lib/data/about";
 import "./globals.css";
 
 const inter = Inter({
@@ -87,6 +88,9 @@ const organizationSchema = {
       image: absoluteUrl("/logo.png"),
       description:
         "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
+      founder: {
+        "@id": `${SITE_URL}#founder`,
+      },
       sameAs: [
         "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
         "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
@@ -320,6 +324,34 @@ const organizationSchema = {
             name: "NRI residential property advisory",
           },
         },
+      ],
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}#founder`,
+      name: FOUNDER_NAME,
+      jobTitle: "Founder & Managing Director",
+      description:
+        "Jitendra Pareek is the founder of PIKORUA Realty, Ahmedabad's private luxury residential real estate advisory. He specialises in curating off-market 4 BHK and 5 BHK apartments, penthouses, villas, and bungalows for HNI and NRI buyers across western Ahmedabad's premium corridors.",
+      image: absoluteUrl("/images/founder.jpg"),
+      url: absoluteUrl("/about"),
+      worksFor: {
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}#real-estate-agent`,
+        name: "PIKORUA Realty",
+      },
+      knowsAbout: [
+        "Luxury real estate advisory Ahmedabad",
+        "NRI property transactions India",
+        "FEMA compliance residential property",
+        "Off-market property advisory",
+        "Western Ahmedabad residential corridors",
+        "High net worth individual real estate",
+        "Private real estate consultation Gujarat",
+      ],
+      sameAs: [
+        "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
+        "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
       ],
     },
   ],
