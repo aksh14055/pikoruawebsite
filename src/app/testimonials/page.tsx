@@ -180,11 +180,24 @@ export default async function TestimonialsPage() {
         })),
       },
       {
-        // Reference the RealEstateAgent separately for local graph completion
+        // Reference the RealEstateAgent separately for local graph completion.
+        // Carries areaServed + geo so this page's RealEstateAgent node emits the
+        // local-search signals independently (not only via the sitewide layout).
         "@type": "RealEstateAgent",
         "@id": `${SITE_URL}#real-estate-agent`,
         name: "PIKORUA Realty",
         url: SITE_URL,
+        areaServed: {
+          "@type": "City",
+          name: "Ahmedabad",
+          addressRegion: "Gujarat",
+          addressCountry: "IN",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: "23.0246",
+          longitude: "72.5074",
+        },
       },
     ],
   };

@@ -139,6 +139,11 @@ export default async function AboutPage() {
           postalCode: "380058",
           addressCountry: "IN",
         },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: "23.0246",
+          longitude: "72.5074",
+        },
         knowsAbout: [
           "Luxury residential real estate in Ahmedabad",
           "HNI property advisory Gujarat",
