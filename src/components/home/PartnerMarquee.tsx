@@ -10,41 +10,49 @@ export function PartnerMarquee({ className }: PartnerMarqueeProps) {
     {
       name: "Adani Realty",
       logo: (
-        <svg viewBox="0 0 160 40" className="h-6 w-auto fill-current" aria-label="Adani Realty">
-          {/* Stylized rounded "adani" wordmark */}
-          <path d="M12 25.5c-3.5 0-5.5-1.8-5.5-4.5s2-4.5 5.5-4.5 5.5 1.8 5.5 4.5-2 4.5-5.5 4.5zm0-11c-6 0-9.5 3.5-9.5 8s3.5 8 9.5 8c2.2 0 4.2-.6 5.5-1.5v1.2c0 2.2-1.5 3.5-4.5 3.5-2.2 0-4-.8-4.8-1.8h-4c1.2 3.2 4.2 4.8 8.8 4.8 5.5 0 8.5-2.8 8.5-7.5V15h-4v1.5c-1.3-1.1-3.3-2-5.5-2zM33 9h-4v21h4V9zm11.5 16.5c-3.5 0-5.5-1.8-5.5-4.5s2-4.5 5.5-4.5 5.5 1.8 5.5 4.5-2 4.5-5.5 4.5zm0-11c-6 0-9.5 3.5-9.5 8s3.5 8 9.5 8c2.2 0 4.2-.6 5.5-1.5v1.2c0 2.2-1.5 3.5-4.5 3.5-2.2 0-4-.8-4.8-1.8h-4c1.2 3.2 4.2 4.8 8.8 4.8 5.5 0 8.5-2.8 8.5-7.5V15h-4v1.5c-1.3-1.1-3.3-2-5.5-2zM63.5 15c-2.2 0-4.2.9-5.5 2v-1.5h-4V30h4v-7.2c0-3 1.8-4.8 4.5-4.8s4.5 1.8 4.5 4.8V30h4v-8.2c0-4.5-3-6.8-7.5-6.8zM82 15h-4v15h4V15zm0-6h-4v3h4V9z" />
-          {/* Subtitle "REALTY" */}
-          <text x="96" y="27" className="font-sans text-[10px] font-bold tracking-[0.25em]" fill="currentColor">REALTY</text>
+        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Adani Realty">
+          {/* Custom vector circle emblem for Adani */}
+          <circle cx="16" cy="20" r="10" stroke="currentColor" strokeWidth="2.5" fill="none" />
+          <circle cx="16" cy="20" r="4" fill="currentColor" />
+          {/* Crisp, clean, authentic sans-serif adani typography */}
+          <text x="36" y="27" className="font-sans font-extrabold text-[22px] tracking-tighter" fill="currentColor">adani</text>
+          <line x1="94" y1="12" x2="94" y2="28" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+          <text x="104" y="24" className="font-sans text-[10px] font-bold tracking-[0.3em]" fill="currentColor">REALTY</text>
         </svg>
       ),
     },
     {
       name: "Capstone",
       logo: (
-        <svg viewBox="0 0 160 40" className="h-6 w-auto fill-current" aria-label="Capstone">
-          {/* Geometric hexagonal/architectural icon */}
-          <path d="M6 10l12-7 12 7v14l-12 7-12-7V10zm12-4.2L9.5 10l8.5 5 8.5-5-8.5-4.2zM27 12l-8.5 5v10l8.5-5V12zm-18 0v10l8.5 5V17L9 12z" />
-          {/* Typography "CAPSTONE" */}
-          <text x="44" y="25" className="font-display text-[15px] tracking-[0.18em] font-normal" fill="currentColor">CAPSTONE</text>
+        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Capstone">
+          {/* Architectural monogram/emblem C */}
+          <path d="M24 10a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10h4v-3h-4a7 7 0 0 1-7-7c0-3.9 3.1-7 7-7h4v-3h-4z" />
+          <rect x="25" y="18.5" width="12" height="3" fill="currentColor" />
+          {/* Balanced CAPSTONE typography */}
+          <text x="48" y="25" className="font-sans text-[14px] tracking-[0.35em] font-medium" fill="currentColor">CAPSTONE</text>
         </svg>
       ),
     },
     {
       name: "Venus",
       logo: (
-        <svg viewBox="0 0 160 40" className="h-5 w-auto fill-current" aria-label="Venus">
-          {/* Stylized premium logo for Venus */}
-          <path d="M5 6h4.5l8.5 19 8.5-19H31L18 34 5 6zm32 0h19v3.5H41v6.5h13V19.5H41V26.5h15V30H37V6zm25 0h4.5l11.5 15.5V6h3.5v24H77L65.5 14.5V30h-3.5V6zm25.5 0h4v15.5c0 3.2 2.2 5.5 5.5 5.5s5.5-2.3 5.5-5.5V6h4v15.5c0 5.5-4.2 9-9.5 9s-9.5-3.5-9.5-9V6zm29.5 15c1.8-1.2 4-2 6.5-2 4 0 7 2 7 5.5s-3 5.5-7 5.5c-4.5 0-7.2-2.8-7.5-6h-3.8c.2 5.2 4.5 9.5 11.3 9.5 6.5 0 11-4 11-9s-4-9-10.5-9c-3 0-5.8.8-7.5 2V15.5z" />
+        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Venus">
+          {/* Modern geometric wordmark for Venus */}
+          <text x="10" y="27" className="font-sans text-[21px] font-black tracking-[0.3em]" fill="currentColor">VENUS</text>
+          {/* Subtitle / tag */}
+          <text x="112" y="23" className="font-sans text-[7.5px] font-semibold tracking-[0.25em]" fill="currentColor">LIFESPACES</text>
         </svg>
       ),
     },
     {
       name: "Goyal & Co.",
       logo: (
-        <svg viewBox="0 0 180 40" className="h-5.5 w-auto fill-current" aria-label="Goyal & Co.">
-          {/* Modern corporate wordmark for Goyal & Co. */}
-          <text x="0" y="26" className="font-sans text-[13px] font-semibold tracking-[0.3em]" fill="currentColor">GOYAL & CO.</text>
-          <line x1="0" y1="33" x2="162" y2="33" stroke="currentColor" strokeWidth="1.5" opacity="0.3" />
+        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Goyal & Co.">
+          {/* Premium serif wordmark representing Goyal & Co.'s 50-year legacy */}
+          <text x="12" y="26" className="font-display italic text-[18px] font-semibold tracking-[0.05em]" fill="currentColor">Goyal &amp; Co.</text>
+          {/* Small decorative diamond mark */}
+          <rect x="135" y="17" width="6" height="6" transform="rotate(45 138 20)" fill="currentColor" />
+          <text x="150" y="24" className="font-sans text-[8px] font-bold tracking-[0.2em]" fill="currentColor">EST. 1971</text>
         </svg>
       ),
     },
