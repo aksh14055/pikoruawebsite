@@ -1,64 +1,24 @@
-﻿import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 interface PartnerMarqueeProps {
   className?: string;
 }
 
-export function PartnerMarquee({ className }: PartnerMarqueeProps) {
-  // We duplicate the logos array multiple times to ensure seamless infinite looping on ultra-wide screens
-  const partners = [
-    {
-      name: "Adani Realty",
-      logo: (
-        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Adani Realty">
-          {/* Custom vector circle emblem for Adani */}
-          <circle cx="16" cy="20" r="10" stroke="currentColor" strokeWidth="2.5" fill="none" />
-          <circle cx="16" cy="20" r="4" fill="currentColor" />
-          {/* Crisp, clean, authentic sans-serif adani typography */}
-          <text x="36" y="27" className="font-sans font-extrabold text-[22px] tracking-tighter" fill="currentColor">adani</text>
-          <line x1="94" y1="12" x2="94" y2="28" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-          <text x="104" y="24" className="font-sans text-[10px] font-bold tracking-[0.3em]" fill="currentColor">REALTY</text>
-        </svg>
-      ),
-    },
-    {
-      name: "Capstone",
-      logo: (
-        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Capstone">
-          {/* Architectural monogram/emblem C */}
-          <path d="M24 10a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10h4v-3h-4a7 7 0 0 1-7-7c0-3.9 3.1-7 7-7h4v-3h-4z" />
-          <rect x="25" y="18.5" width="12" height="3" fill="currentColor" />
-          {/* Balanced CAPSTONE typography */}
-          <text x="48" y="25" className="font-sans text-[14px] tracking-[0.35em] font-medium" fill="currentColor">CAPSTONE</text>
-        </svg>
-      ),
-    },
-    {
-      name: "Venus",
-      logo: (
-        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Venus">
-          {/* Modern geometric wordmark for Venus */}
-          <text x="10" y="27" className="font-sans text-[21px] font-black tracking-[0.3em]" fill="currentColor">VENUS</text>
-          {/* Subtitle / tag */}
-          <text x="112" y="23" className="font-sans text-[7.5px] font-semibold tracking-[0.25em]" fill="currentColor">LIFESPACES</text>
-        </svg>
-      ),
-    },
-    {
-      name: "Goyal & Co.",
-      logo: (
-        <svg viewBox="0 0 180 40" className="h-6 w-auto fill-current" aria-label="Goyal & Co.">
-          {/* Premium serif wordmark representing Goyal & Co.'s 50-year legacy */}
-          <text x="12" y="26" className="font-display italic text-[18px] font-semibold tracking-[0.05em]" fill="currentColor">Goyal &amp; Co.</text>
-          {/* Small decorative diamond mark */}
-          <rect x="135" y="17" width="6" height="6" transform="rotate(45 138 20)" fill="currentColor" />
-          <text x="150" y="24" className="font-sans text-[8px] font-bold tracking-[0.2em]" fill="currentColor">EST. 1971</text>
-        </svg>
-      ),
-    },
-  ];
+// Real developer logos, stored in /public/partners. Intrinsic dimensions are
+// declared so next/image reserves layout space (no CLS). Each mark keeps its
+// original colourway; because several logos are dark (Goyal, Capstone) they are
+// seated on an ivory chip so they stay legible on the dark luxury canvas while
+// preserving their true brand colours and proportions.
+const partners = [
+  { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
+  { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
+  { name: "Goyal & Co.", src: "/partners/goyal.png", width: 139, height: 68 },
+  { name: "The Capstone Developers", src: "/partners/capstone.png", width: 300, height: 107 },
+];
 
-  // Concatenate multiple times for infinite continuous loop
+export function PartnerMarquee({ className }: PartnerMarqueeProps) {
+  // Concatenate multiple times for a seamless continuous loop on wide screens.
   const repeatedPartners = [...partners, ...partners, ...partners, ...partners];
 
   return (
@@ -78,9 +38,15 @@ export function PartnerMarquee({ className }: PartnerMarqueeProps) {
           {repeatedPartners.map((partner, idx) => (
             <div
               key={`${partner.name}-${idx}`}
-              className="mx-10 sm:mx-16 flex-shrink-0 text-ivory/25 hover:text-champagne-gold transition-colors duration-300"
+              className="mx-6 sm:mx-8 flex-shrink-0 flex items-center justify-center bg-ivory rounded-md px-6 py-3.5 h-16 shadow-[0_4px_20px_rgba(0,0,0,0.25)] ring-1 ring-white/10"
             >
-              {partner.logo}
+              <Image
+                src={partner.src}
+                alt={partner.name}
+                width={partner.width}
+                height={partner.height}
+                className="h-8 w-auto max-w-[160px] object-contain"
+              />
             </div>
           ))}
         </div>
