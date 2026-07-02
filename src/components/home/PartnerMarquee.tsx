@@ -35,12 +35,12 @@ export function PartnerMarquee({ className }: PartnerMarqueeProps) {
         </p>
       </div>
 
-      <div className="w-full overflow-hidden relative marquee-container">
+      <div className="w-full overflow-hidden relative">
         {/* Soft edge masking for smooth fade edges */}
         <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-lux-black to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-lux-black to-transparent z-10 pointer-events-none" />
 
-        <div className="flex items-center w-max animate-marquee" style={{ animationDuration: "25s" }}>
+        <div className="flex items-center w-max animate-marquee-continuous" style={{ animationDuration: "25s" }}>
           {repeatedPartners.map((partner, idx) => (
             <div
               key={`${partner.name}-${idx}`}
