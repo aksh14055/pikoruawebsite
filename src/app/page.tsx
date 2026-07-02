@@ -215,6 +215,14 @@ export default async function HomePage() {
           text: "Luxury property valuation in Ahmedabad considers comparable recent transactions in the same corridor, the property's floor, view, and specification quality, current market supply and qualified buyer depth, and any legal or structural factors affecting salability. PIKORUA Realty provides private valuation assessments for sellers and buyers as part of our advisory process — integrated into our representation model, not as a standalone service.",
         },
       },
+      {
+        "@type": "Question",
+        name: "Which real estate developers does PIKORUA Realty partner with in Ahmedabad?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "PIKORUA Realty advises on premium properties from Ahmedabad's leading real estate developers, including Adani Realty, Goyal & Co., Venus Infrastructure, and The Capstone Developers. As an independent consultancy, we provide unbiased, relationship-led guidance rather than promoting any single builder's inventory.",
+        },
+      },
     ],
   };
 

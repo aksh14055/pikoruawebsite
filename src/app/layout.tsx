@@ -111,6 +111,11 @@ const organizationSchema = {
         },
       ],
       knowsAbout: [
+        // Developer alliances
+        "Adani Realty",
+        "Goyal & Co.",
+        "Venus Infrastructure",
+        "The Capstone Developers",
         // Core luxury advisory
         "Luxury real estate consultant Ahmedabad",
         "Luxury property consultant Ahmedabad",
