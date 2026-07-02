@@ -2,59 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
-
-const TOURS_DATA: { id: string; title: string; subtitle: string; location?: string }[] = [
-  {
-    id: "G17NU0mliT4",
-    title: "Off Thaltej - Shilaj Road",
-    subtitle: "Smart Sized Luxury 4 BHK Apartments"
-  },
-  {
-    id: "mAJ7w6keKSM",
-    title: "Vaishno Devi Circle",
-    subtitle: "Luxury 4 & 5 BHK Community"
-  },
-  {
-    id: "aWqhcmZqBdc",
-    title: "Off Sindhu Bhavan Road",
-    subtitle: "Smart Sized Luxury 4 & 5 BHK Apartments"
-  },
-  {
-    id: "i0k7ewRHgZk",
-    title: "Off Sindhu Bhavan Road",
-    subtitle: "Ultra Luxury 4 & 5 BHK Residences"
-  },
-  {
-    id: "aWjAEc_rAJU",
-    title: "Thaltej Shilaj Road",
-    subtitle: "Luxury 4 BHK Apartments"
-  },
-  {
-    id: "GwQq098ICLY",
-    title: "Iskon - Ambli Road",
-    subtitle: "Iconic 4 BHK & Penthouse"
-  },
-  {
-    id: "RVkRTQj4rw0",
-    title: "Iskon - Ambli Road",
-    subtitle: "Smart Sized Luxury 4 BHK Residences"
-  },
-  {
-    id: "Fbd5LFA6m3I",
-    title: "Ambli - Bopal Road",
-    subtitle: "Ultra Luxury Bungalow Collection"
-  },
-  {
-    id: "Mt3tY4SNJ_M",
-    title: "Science City Road",
-    subtitle: "Iconic 4 & 5 BHK with Panoramic Views"
-  },
-  {
-    id: "b2ZzzwdSbmQ",
-    title: "Sindhu Bhavan Road",
-    subtitle: "Large & Luxury 4 & 5 BHK Apartments"
-  }
-];
+import { STATIC_TOURS } from "@/lib/data/tours";
 
 interface VirtualToursProps {
   tours?: { id: string; title: string; subtitle: string; location?: string }[];
@@ -67,7 +15,7 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>();
   const validTours = (tours || []).filter(t => t && t.id && t.id.trim() !== "");
-  const displayedTours = validTours.length > 0 ? validTours : TOURS_DATA;
+  const displayedTours = validTours.length > 0 ? validTours : STATIC_TOURS;
 
   const handleMouseEnter = (id: string) => {
     setIsHovered(true);
