@@ -9,8 +9,9 @@ interface PartnerMarqueeProps {
 // declared so next/image reserves layout space (no CLS). Each mark keeps its
 // original colourway; because several logos are dark, they are seated on an
 // ivory chip so every brand stays legible on the dark luxury canvas.
-// Maruti and HN Safal ship only single-colour (white) marks upstream, so they
-// are rendered as dark monochrome variants to remain visible on the chip.
+// Maruti, HN Safal, A. Shridhar and Satyamev ship only single-colour (white)
+// marks upstream, so they are rendered as dark monochrome variants to remain
+// visible on the chip.
 const partners = [
   { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
   { name: "Godrej Properties", src: "/partners/godrej.png", width: 1783, height: 854 },
@@ -25,6 +26,8 @@ const partners = [
   { name: "Maruti Buildcon", src: "/partners/maruti-dark.png", width: 200, height: 52 },
   { name: "Triveni Infra Build", src: "/partners/triveni.png", width: 250, height: 139 },
   { name: "Constera Realty", src: "/partners/constera.png", width: 222, height: 50 },
+  { name: "A. Shridhar", src: "/partners/ashridhar.png", width: 600, height: 137 },
+  { name: "Satyamev Developers", src: "/partners/satyamev.png", width: 500, height: 129 },
   { name: "Ravi Desai", src: "/partners/ravidesai.png", width: 2640, height: 733 },
 ];
 
