@@ -235,6 +235,46 @@ export function LandingPageTemplate({ page, properties }: LandingPageTemplatePro
                   );
                 })}
               </div>
+
+              {/* Compliance & Reference Sources */}
+              {page.kind === "location" && (
+                <div className="mt-12 pt-8 border-t border-white/[0.06]">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold/60 font-sans mb-4">
+                    Regulatory & Compliance Resources
+                  </p>
+                  <div className="flex flex-wrap gap-x-8 gap-y-3 text-xs font-sans">
+                    <a
+                      href="https://gujrera.gujarat.gov.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ivory/50 hover:text-champagne-gold transition-colors duration-150 flex items-center gap-1.5"
+                    >
+                      <span className="w-1 h-1 rounded-full bg-champagne-gold/60" />
+                      Verify Projects on Gujarat RERA Portal &rarr;
+                    </a>
+                    <a
+                      href="https://ahmedabadcity.gov.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-ivory/50 hover:text-champagne-gold transition-colors duration-150 flex items-center gap-1.5"
+                    >
+                      <span className="w-1 h-1 rounded-full bg-champagne-gold/60" />
+                      Ahmedabad Municipal Corporation (AMC) Portal &rarr;
+                    </a>
+                    {page.wikipediaUrl && (
+                      <a
+                        href={page.wikipediaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-ivory/50 hover:text-champagne-gold transition-colors duration-150 flex items-center gap-1.5"
+                      >
+                        <span className="w-1 h-1 rounded-full bg-champagne-gold/60" />
+                        Explore {page.label} Wiki Geography &rarr;
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         )}
