@@ -352,6 +352,7 @@ const organizationSchema = {
       sameAs: [
         "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
         "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
+        "https://www.linkedin.com/in/jitendra-k-p-0b237021b/",
       ],
     },
   ],
