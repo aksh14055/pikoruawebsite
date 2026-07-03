@@ -14,9 +14,16 @@ export default function weservLoader({ src, width, quality }: { src: string; wid
   }
 
   // Convert relative paths to public absolute URLs for production proxying
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : "https://www.pikorua.in";
+  let baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? process.env.NEXT_PUBLIC_SITE_URL
+    : process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : "https://www.pikorua.in";
+
+  // Remove trailing slash if present to avoid double-slashes in paths
+  if (baseUrl.endsWith("/")) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
 
   const absoluteUrl = src.startsWith("http")
     ? src
