@@ -78,6 +78,16 @@ const organizationSchema = {
         "@id": `${SITE_URL}#real-estate-agent`,
       },
       inLanguage: "en-IN",
+      // Sitelinks Searchbox — targets the /properties collection, which reads the
+      // ?q= param and filters the residence list (see PropertiesGrid).
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/properties?q={search_term_string}`,
+        },
+        "query-input": "required name=search_term_string",
+      },
     },
     {
       "@type": ["RealEstateAgent", "LocalBusiness"],

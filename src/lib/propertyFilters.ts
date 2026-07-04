@@ -1,5 +1,32 @@
 import type { StaticProperty } from "@/lib/data/properties";
 import type { ResidentialCategory, BudgetBand } from "@/types";
+import { LOCATION_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
+
+/**
+ * Free-text search matcher for the collection page. Builds a searchable string
+ * from the property's configuration, location, category, size, floor, and
+ * suitability, then requires every whitespace-separated token in the query to
+ * appear somewhere in it (AND semantics). Powers /properties?q=… and the
+ * WebSite SearchAction (Sitelinks Searchbox) declared in the root layout.
+ */
+export function propertyMatchesSearch(property: StaticProperty, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const haystack = [
+    property.configuration,
+    property.locationLabel,
+    property.category,
+    RESIDENTIAL_CATEGORY_LABELS[property.category],
+    LOCATION_LABELS[property.location],
+    property.floor,
+    property.sizeRange,
+    property.suitableFor,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return q.split(/\s+/).every((token) => haystack.includes(token));
+}
 
 export function propertyMatchesCategoryIntent(property: StaticProperty, category: ResidentialCategory): boolean {
   const searchable = `${property.category} ${property.configuration} ${property.sizeRange} ${property.suitableFor ?? ""}`.toLowerCase();

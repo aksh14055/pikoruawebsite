@@ -9,9 +9,9 @@ import { cn, BUDGET_BAND_LABELS } from "@/lib/utils";
 import type { StaticProperty } from "@/lib/data/properties";
 import { LOCATION_LABELS, LOCATION_SLUGS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
 import type { LocationSlug, ResidentialCategory, BudgetBand } from "@/types";
-import { propertyMatchesCategoryIntent, propertyMatchesBudgetBand } from "@/lib/propertyFilters";
+import { propertyMatchesCategoryIntent, propertyMatchesBudgetBand, propertyMatchesSearch } from "@/lib/propertyFilters";
 import { ExpandedDetailPanel } from "@/components/home/FeaturedResidencesGrid";
-import { ChevronLeft, ChevronRight, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, ChevronDown, X, Search } from "lucide-react";
 
 const FILTERS: { label: string; value: "" | ResidentialCategory }[] = [
   { label: "All", value: "" },
@@ -54,6 +54,11 @@ function getAreaFromUrl(): string {
   return new URLSearchParams(window.location.search).get("area") ?? "";
 }
 
+function getSearchFromUrl(): string {
+  if (typeof window === "undefined") return "";
+  return new URLSearchParams(window.location.search).get("q") ?? "";
+}
+
 function getLocationFromUrl(): "" | LocationSlug {
   if (typeof window === "undefined") return "";
   const location = new URLSearchParams(window.location.search).get("location");
@@ -64,13 +69,15 @@ function getCollectionUrl(
   filter: "" | ResidentialCategory,
   location: "" | LocationSlug,
   area: string,
-  budget: "" | BudgetBand
+  budget: "" | BudgetBand,
+  search: string
 ): string {
   const params = new URLSearchParams();
   if (filter) params.set("category", filter);
   if (location) params.set("location", location);
   if (area) params.set("area", area);
   if (budget) params.set("budget", budget);
+  if (search.trim()) params.set("q", search.trim());
   const query = params.toString();
   return query ? `/properties?${query}` : "/properties";
 }
@@ -84,6 +91,8 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
   const [activeLocation, setActiveLocation] = useState<"" | LocationSlug>("");
   const [activeArea, setActiveArea] = useState<string>("");
   const [activeBudget, setActiveBudget] = useState<"" | BudgetBand>("");
+  const [activeSearch, setActiveSearch] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -96,6 +105,9 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
       setActiveLocation(getLocationFromUrl());
       setActiveArea(getAreaFromUrl());
       setActiveBudget(getBudgetFromUrl());
+      const urlSearch = getSearchFromUrl();
+      setActiveSearch(urlSearch);
+      setSearchInput(urlSearch);
 
       const pathParts = window.location.pathname.split("/").filter(Boolean);
       // Path format: /properties/[slug]
@@ -144,17 +156,17 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setExpandedSlug(null);
-        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
+        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeFilter, activeLocation, activeArea, activeBudget]);
+  }, [activeFilter, activeLocation, activeArea, activeBudget, activeSearch]);
 
   const handleToggleExpand = (slug: string) => {
     if (expandedSlug === slug) {
       setExpandedSlug(null);
-      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
+      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
     } else {
       setExpandedSlug(slug);
       window.history.pushState(null, "", `/properties/${slug}`);
@@ -163,31 +175,45 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
 
   const handleCloseProperty = () => {
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
   };
 
   const handleFilterChange = (filter: "" | ResidentialCategory) => {
     setActiveFilter(filter);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation, activeArea, activeBudget));
+    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation, activeArea, activeBudget, activeSearch));
   };
 
   const handleLocationClear = () => {
     setActiveLocation("");
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, "", activeArea, activeBudget));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, "", activeArea, activeBudget, activeSearch));
   };
 
   const handleAreaChange = (area: string) => {
     setActiveArea(area);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, area, activeBudget));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, area, activeBudget, activeSearch));
   };
 
   const handleBudgetChange = (budget: "" | BudgetBand) => {
     setActiveBudget(budget);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, budget));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, budget, activeSearch));
+  };
+
+  const handleSearchSubmit = (value: string) => {
+    const next = value.trim();
+    setActiveSearch(next);
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, next));
+  };
+
+  const handleSearchClear = () => {
+    setActiveSearch("");
+    setSearchInput("");
+    setExpandedSlug(null);
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, ""));
   };
 
   const filtered = currentProperties.filter((property) => {
@@ -195,12 +221,14 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     const matchesLocation = activeLocation ? property.location === activeLocation : true;
     const matchesArea = activeArea ? property.locationLabel === activeArea : true;
     const matchesBudget = activeBudget ? propertyMatchesBudgetBand(property, activeBudget) : true;
-    return matchesCategory && matchesLocation && matchesArea && matchesBudget;
+    const matchesSearch = activeSearch ? propertyMatchesSearch(property, activeSearch) : true;
+    return matchesCategory && matchesLocation && matchesArea && matchesBudget && matchesSearch;
   });
 
   const activeProperty = currentProperties.find((p) => p.slug === expandedSlug);
 
   const activeChips: { key: string; label: string; onClear: () => void }[] = [
+    ...(activeSearch ? [{ key: "search", label: `"${activeSearch}"`, onClear: handleSearchClear }] : []),
     ...(activeFilter ? [{ key: "category", label: FILTERS.find((f) => f.value === activeFilter)!.label, onClear: () => handleFilterChange("") }] : []),
     ...(activeArea ? [{ key: "area", label: activeArea, onClear: () => handleAreaChange("") }] : []),
     ...(activeBudget ? [{ key: "budget", label: BUDGET_BAND_LABELS[activeBudget], onClear: () => handleBudgetChange("") }] : []),
@@ -212,6 +240,8 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     setActiveLocation("");
     setActiveArea("");
     setActiveBudget("");
+    setActiveSearch("");
+    setSearchInput("");
     setExpandedSlug(null);
     window.history.pushState(null, "", "/properties");
   };
@@ -221,6 +251,51 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
       {/* Filter strip */}
       <div className="bg-lux-black border-b border-white/[0.06] sticky top-[64px] lg:top-[80px] z-30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          {/* Free-text search — powers /properties?q= and the Sitelinks Searchbox */}
+          <form
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearchSubmit(searchInput);
+            }}
+            className="pt-4"
+          >
+            <label htmlFor="property-search" className="sr-only">
+              Search luxury properties in Ahmedabad
+            </label>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ivory/35" />
+              <input
+                id="property-search"
+                type="search"
+                name="q"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search by area, type, or configuration — e.g. 4 BHK Sindhu Bhavan"
+                autoComplete="off"
+                className="w-full bg-soft-black/60 border border-white/[0.1] rounded-sm pl-9 pr-24 py-2.5 text-[13px] font-sans text-ivory placeholder:text-ivory/30 focus:outline-none focus:border-champagne-gold/50 transition-colors"
+              />
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                {searchInput && (
+                  <button
+                    type="button"
+                    onClick={handleSearchClear}
+                    aria-label="Clear search"
+                    className="p-1.5 text-ivory/40 hover:text-ivory transition-colors"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 text-[10px] font-sans uppercase tracking-[0.15em] text-champagne-gold border border-champagne-gold/35 rounded-sm hover:bg-champagne-gold hover:text-lux-black transition-colors"
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+          </form>
 
           {/* Toggle row: Filters button · result count · clear all */}
           <div className="flex items-center justify-between gap-4 py-4">
