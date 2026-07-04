@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
 
 interface PartnerMarqueeProps {
   className?: string;
@@ -7,19 +10,31 @@ interface PartnerMarqueeProps {
 
 // Real developer logos, stored in /public/partners. Intrinsic dimensions are
 // declared so next/image reserves layout space (no CLS). Each mark keeps its
-// original colourway; because several logos are dark (Goyal, Capstone) they are
-// seated on an ivory chip so they stay legible on the dark luxury canvas while
-// preserving their true brand colours and proportions.
+// original colourway; because several logos are dark (Goyal, Capstone, Maruti, HN Safal)
+// they are seated on an ivory chip so they stay legible on the dark luxury canvas
+// while preserving their true brand colours and proportions.
 const partners = [
   { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
-  { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
-  { name: "Goyal & Co.", src: "/partners/goyal.png", width: 139, height: 68 },
+  { name: "A. Shridhar", src: "/partners/ashridhar.png", width: 600, height: 137 },
   { name: "The Capstone Developers", src: "/partners/capstone.png", width: 300, height: 107 },
+  { name: "Constera Realty", src: "/partners/constera.png", width: 222, height: 50 },
+  { name: "Gala Group", src: "/partners/gala.png", width: 100, height: 133 },
+  { name: "Godrej Properties", src: "/partners/godrej.png", width: 1783, height: 854 },
+  { name: "Goyal & Co.", src: "/partners/goyal.png", width: 139, height: 68 },
+  { name: "HN Safal", src: "/partners/hnsafal-dark.png", width: 300, height: 165 },
+  { name: "Maruti Group", src: "/partners/maruti-dark.png", width: 200, height: 52 },
+  { name: "Ravi Desai Group", src: "/partners/ravidesai.png", width: 2640, height: 733 },
+  { name: "Satyamev Group", src: "/partners/satyamev.png", width: 500, height: 129 },
+  { name: "Shaligram Group", src: "/partners/shaligram.png", width: 600, height: 301 },
+  { name: "Sun Builders", src: "/partners/sun.png", width: 1200, height: 1314 },
+  { name: "Swati Procon", src: "/partners/swati.png", width: 1080, height: 142 },
+  { name: "Triveni Group", src: "/partners/triveni.png", width: 250, height: 139 },
+  { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
 ];
 
 export function PartnerMarquee({ className }: PartnerMarqueeProps) {
-  // Concatenate multiple times for a seamless continuous loop on wide screens.
-  const repeatedPartners = [...partners, ...partners, ...partners, ...partners];
+  const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>(45); // Smooth luxury pace
+  const repeatedPartners = [...partners, ...partners];
 
   return (
     <section className={cn("py-12 border-y border-white/[0.04] bg-soft-black/20 relative z-10 overflow-hidden", className)}>
@@ -40,7 +55,11 @@ export function PartnerMarquee({ className }: PartnerMarqueeProps) {
         <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-lux-black to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-lux-black to-transparent z-10 pointer-events-none" />
 
-        <div className="flex items-center w-max animate-marquee-continuous" style={{ animationDuration: "25s" }}>
+        <div
+          ref={marqueeRef}
+          className="flex items-center w-max animate-marquee-continuous"
+          style={durationSeconds ? { animationDuration: `${durationSeconds}s` } : { animationDuration: "60s" }}
+        >
           {repeatedPartners.map((partner, idx) => (
             <div
               key={`${partner.name}-${idx}`}

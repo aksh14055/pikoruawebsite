@@ -221,7 +221,7 @@ export default async function HomePage() {
         name: "Which real estate developers does PIKORUA Realty partner with in Ahmedabad?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "PIKORUA Realty advises on premium properties from Ahmedabad's leading real estate developers, including Adani Realty, Goyal & Co., Venus Infrastructure, and The Capstone Developers. As an independent consultancy, we provide unbiased, relationship-led guidance rather than promoting any single builder's inventory.",
+          text: "PIKORUA Realty advises on premium properties from Ahmedabad's leading real estate developers, including Adani Realty, Venus Infrastructure, Goyal & Co., The Capstone Developers, Swati Procon, HN Safal, Godrej Properties, Sun Builders, Shaligram Group, Maruti Group, Triveni Group, Gala Group, Constera Realty, A. Shridhar, Satyamev Group, and Ravi Desai Group. As an independent consultancy, we provide unbiased, relationship-led guidance rather than promoting any single builder's inventory.",
         },
       },
     ],

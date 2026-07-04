@@ -127,9 +127,21 @@ const organizationSchema = {
       knowsAbout: [
         // Developer alliances
         "Adani Realty",
-        "Goyal & Co.",
-        "Venus Infrastructure",
+        "A. Shridhar",
         "The Capstone Developers",
+        "Constera Realty",
+        "Gala Group",
+        "Godrej Properties",
+        "Goyal & Co.",
+        "HN Safal",
+        "Maruti Group",
+        "Ravi Desai Group",
+        "Satyamev Group",
+        "Shaligram Group",
+        "Sun Builders",
+        "Swati Procon",
+        "Triveni Group",
+        "Venus Infrastructure",
         // Core luxury advisory
         "Luxury real estate consultant Ahmedabad",
         "Luxury property consultant Ahmedabad",
