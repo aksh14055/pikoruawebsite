@@ -243,7 +243,7 @@ export function generatePropertySchema(property: PropertySchemaInput) {
     ...(floorSize ? { floorSize } : {}),
     ...(amenities ? { amenityFeature: amenities } : {}),
     ...(property.highlights?.length
-      ? { additionalProperty: property.highlights.map((h) => ({ "@type": "PropertyValue", value: h })) }
+      ? { additionalProperty: property.highlights.map((h) => ({ "@type": "PropertyValue", name: h, value: true })) }
       : {}),
     // NearbyAttraction entities anchor the listing to local knowledge-graph nodes
     // so that AI search engines can confidently cite it for geo-specific queries.

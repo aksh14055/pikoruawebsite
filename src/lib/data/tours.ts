@@ -14,16 +14,16 @@ export interface VirtualTour {
 }
 
 export const STATIC_TOURS: VirtualTour[] = [
-  { id: "G17NU0mliT4", title: "Off Thaltej - Shilaj Road",  subtitle: "Smart Sized Luxury 4 BHK Apartments",        uploadDate: "2025-08-11" },
-  { id: "mAJ7w6keKSM", title: "Vaishno Devi Circle",         subtitle: "Luxury 4 & 5 BHK Community",                  uploadDate: "2025-09-03" },
-  { id: "aWqhcmZqBdc", title: "Off Sindhu Bhavan Road",      subtitle: "Smart Sized Luxury 4 & 5 BHK Apartments",     uploadDate: "2025-09-02" },
-  { id: "i0k7ewRHgZk", title: "Off Sindhu Bhavan Road",      subtitle: "Ultra Luxury 4 & 5 BHK Residences",           uploadDate: "2025-08-14" },
-  { id: "aWjAEc_rAJU", title: "Thaltej Shilaj Road",         subtitle: "Luxury 4 BHK Apartments",                     uploadDate: "2025-08-04" },
-  { id: "GwQq098ICLY", title: "Iskon - Ambli Road",          subtitle: "Iconic 4 BHK & Penthouse",                    uploadDate: "2025-07-30" },
-  { id: "RVkRTQj4rw0", title: "Iskon - Ambli Road",          subtitle: "Smart Sized Luxury 4 BHK Residences",         uploadDate: "2025-07-30" },
-  { id: "Fbd5LFA6m3I", title: "Ambli - Bopal Road",          subtitle: "Ultra Luxury Bungalow Collection",            uploadDate: "2025-07-22" },
-  { id: "Mt3tY4SNJ_M", title: "Science City Road",           subtitle: "Iconic 4 & 5 BHK with Panoramic Views",       uploadDate: "2025-07-21" },
-  { id: "b2ZzzwdSbmQ", title: "Sindhu Bhavan Road",          subtitle: "Large & Luxury 4 & 5 BHK Apartments",         uploadDate: "2025-07-12" },
+  { id: "G17NU0mliT4", title: "Off Thaltej - Shilaj Road",  subtitle: "Smart Sized Luxury 4 BHK Apartments",        uploadDate: "2025-08-11T00:00:00+05:30" },
+  { id: "mAJ7w6keKSM", title: "Vaishno Devi Circle",         subtitle: "Luxury 4 & 5 BHK Community",                  uploadDate: "2025-09-03T00:00:00+05:30" },
+  { id: "aWqhcmZqBdc", title: "Off Sindhu Bhavan Road",      subtitle: "Smart Sized Luxury 4 & 5 BHK Apartments",     uploadDate: "2025-09-02T00:00:00+05:30" },
+  { id: "i0k7ewRHgZk", title: "Off Sindhu Bhavan Road",      subtitle: "Ultra Luxury 4 & 5 BHK Residences",           uploadDate: "2025-08-14T00:00:00+05:30" },
+  { id: "aWjAEc_rAJU", title: "Thaltej Shilaj Road",         subtitle: "Luxury 4 BHK Apartments",                     uploadDate: "2025-08-04T00:00:00+05:30" },
+  { id: "GwQq098ICLY", title: "Iskon - Ambli Road",          subtitle: "Iconic 4 BHK & Penthouse",                    uploadDate: "2025-07-30T00:00:00+05:30" },
+  { id: "RVkRTQj4rw0", title: "Iskon - Ambli Road",          subtitle: "Smart Sized Luxury 4 BHK Residences",         uploadDate: "2025-07-30T00:00:00+05:30" },
+  { id: "Fbd5LFA6m3I", title: "Ambli - Bopal Road",          subtitle: "Ultra Luxury Bungalow Collection",            uploadDate: "2025-07-22T00:00:00+05:30" },
+  { id: "Mt3tY4SNJ_M", title: "Science City Road",           subtitle: "Iconic 4 & 5 BHK with Panoramic Views",       uploadDate: "2025-07-21T00:00:00+05:30" },
+  { id: "b2ZzzwdSbmQ", title: "Sindhu Bhavan Road",          subtitle: "Large & Luxury 4 & 5 BHK Apartments",         uploadDate: "2025-07-12T00:00:00+05:30" },
 ];
 
 // Fast lookup of a known upload date by video id — used to attach a valid

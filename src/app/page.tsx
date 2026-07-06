@@ -20,7 +20,6 @@ import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { getFirstSentence } from "@/lib/utils";
 import { createMetadata, serializeJsonLd, absoluteUrl } from "@/lib/seo";
-import { STATIC_TOURS, TOUR_UPLOAD_DATES } from "@/lib/data/tours";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
@@ -227,51 +226,11 @@ export default async function HomePage() {
     ],
   };
 
-  // VideoObject schema for the homepage virtual-tour walkthroughs, exposing the
-  // YouTube library to Google video rich results (thumbnails/carousels in Search).
-  // Uses the displayed tour set, attaching each clip's real YouTube upload date.
-  const displayedTours: { id: string; title: string; subtitle: string }[] = tours?.length
-    ? tours.filter((t: { id?: string }) => Boolean(t && t.id && t.id.trim() !== ""))
-    : STATIC_TOURS;
-
-  const videoSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: displayedTours
-      .map((tour: { id: string; title: string; subtitle: string }, index: number) => {
-        const uploadDate = TOUR_UPLOAD_DATES[tour.id];
-        // Google requires uploadDate; skip any clip whose date we cannot vouch for.
-        if (!uploadDate) return null;
-        return {
-          "@type": "ListItem",
-          position: index + 1,
-          item: {
-            "@type": "VideoObject",
-            name: `${tour.subtitle} — ${tour.title}, Ahmedabad`,
-            description: `Virtual walkthrough of ${tour.subtitle.toLowerCase()} at ${tour.title}, Ahmedabad, presented by PIKORUA Realty.`,
-            thumbnailUrl: [
-              `https://i.ytimg.com/vi/${tour.id}/maxresdefault.jpg`,
-              `https://i.ytimg.com/vi/${tour.id}/hqdefault.jpg`,
-            ],
-            uploadDate,
-            contentUrl: `https://www.youtube.com/watch?v=${tour.id}`,
-            embedUrl: `https://www.youtube.com/embed/${tour.id}`,
-            publisher: { "@id": `${absoluteUrl()}#real-estate-agent` },
-          },
-        };
-      })
-      .filter(Boolean),
-  };
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(homepageFaqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(videoSchema) }}
       />
       <Header />
       <main id="main-content">
