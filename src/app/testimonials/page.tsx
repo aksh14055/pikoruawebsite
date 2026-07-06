@@ -137,13 +137,8 @@ export default async function TestimonialsPage() {
         "@type": "Service",
         "@id": `${SITE_URL}#advisory-service`,
         name: "Private Luxury Property Advisory",
-        provider: {
-          "@type": "RealEstateAgent",
-          "@id": `${SITE_URL}#real-estate-agent`,
-          name: "PIKORUA Realty",
-          url: SITE_URL,
-          logo: absoluteUrl("/logo-icon.png"),
-        },
+        // @id-only reference — full node declared below in the same @graph
+        provider: { "@id": `${SITE_URL}#real-estate-agent` },
         aggregateRating: {
           "@type": "AggregateRating",
           ratingValue: averageRating,
@@ -156,9 +151,6 @@ export default async function TestimonialsPage() {
           "@type": "Review",
           // itemReviewed intentionally omitted: each Review is nested under
           // Service.review, which already establishes what's being reviewed.
-          // Re-declaring itemReviewed with the same @id as this parent Service
-          // created a circular self-reference that Google's Rich Results
-          // parser rejected with "Invalid object type for field <parent_node>".
           author: {
             "@type": "Person",
             name: t.clientName,
@@ -172,11 +164,7 @@ export default async function TestimonialsPage() {
           },
           ...(t.reviewUrl ? { url: t.reviewUrl } : {}),
           ...(t.context ? { description: t.context } : {}),
-          publisher: {
-            "@type": "Organization",
-            "@id": `${SITE_URL}#real-estate-agent`,
-            name: "PIKORUA Realty",
-          },
+          // 'publisher' removed — not a valid property of Review (belongs to CreativeWork)
         })),
       },
       {
