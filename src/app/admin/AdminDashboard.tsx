@@ -268,6 +268,24 @@ export default function AdminDashboard({
       { id: "Mt3tY4SNJ_M", title: "Science City Road", subtitle: "Iconic 4 & 5 BHK with Panoramic Views" },
       { id: "b2ZzzwdSbmQ", title: "Sindhu Bhavan Road", subtitle: "Large & Luxury 4 & 5 BHK Apartments" },
     ],
+    partners: [
+      { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
+      { name: "A. Shridhar", src: "/partners/ashridhar.png", width: 600, height: 137 },
+      { name: "The Capstone Developers", src: "/partners/capstone.png", width: 300, height: 107 },
+      { name: "Constera Realty", src: "/partners/constera.png", width: 222, height: 50 },
+      { name: "Gala Group", src: "/partners/gala.png", width: 100, height: 133 },
+      { name: "Godrej Properties", src: "/partners/godrej.png", width: 1783, height: 854 },
+      { name: "Goyal & Co.", src: "/partners/goyal.png", width: 139, height: 68 },
+      { name: "HN Safal", src: "/partners/hnsafal-dark.png", width: 300, height: 165 },
+      { name: "Maruti Group", src: "/partners/maruti-dark.png", width: 200, height: 52 },
+      { name: "Ravi Desai Group", src: "/partners/ravidesai.png", width: 2640, height: 733 },
+      { name: "Satyamev Group", src: "/partners/satyamev.png", width: 500, height: 129 },
+      { name: "Shaligram Group", src: "/partners/shaligram.png", width: 600, height: 301 },
+      { name: "Sun Builders", src: "/partners/sun.png", width: 1200, height: 1314 },
+      { name: "Swati Procon", src: "/partners/swati.png", width: 1080, height: 142 },
+      { name: "Triveni Group", src: "/partners/triveni.png", width: 250, height: 139 },
+      { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
+    ],
   };
 
   const [homeContent, setHomeContent] = useState<any>(() => {
@@ -277,6 +295,7 @@ export default function AdminDashboard({
       ...raw,
       stats: raw.stats || defaultHomeContent.stats,
       virtualTours: raw.virtualTours || defaultHomeContent.virtualTours,
+      partners: raw.partners || defaultHomeContent.partners,
     };
   });
 
@@ -2438,6 +2457,170 @@ export default function AdminDashboard({
                   {(!homeContent.virtualTours || homeContent.virtualTours.length === 0) && (
                     <div className="text-center py-6 text-ivory/30 text-xs border border-dashed border-white/[0.08] rounded-sm">
                       No virtual tours added. Fallback data will be displayed on the website.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Developer Alliances (Partner Logos) */}
+              <div className="bg-soft-black border border-white/[0.06] rounded-sm p-6 space-y-4">
+                <div className="flex justify-between items-center border-b border-white/[0.06] pb-2">
+                  <h3 className="text-sm font-display uppercase tracking-wider text-champagne-gold font-medium">
+                    Developer Alliances (Partner Logos)
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHomeContent((p: any) => {
+                        const newPartners = [...(p?.partners || []), { name: "", src: "", width: 150, height: 50 }];
+                        return {
+                          ...p,
+                          partners: newPartners,
+                        };
+                      });
+                    }}
+                    className="inline-flex items-center gap-1.5 border border-champagne-gold/25 hover:border-champagne-gold bg-lux-black hover:text-champagne-gold text-[10px] uppercase tracking-wider font-semibold py-1.5 px-3 rounded-sm transition-all cursor-pointer text-ivory"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Add Developer Partner
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {(homeContent.partners || []).map((partner: any, idx: number) => {
+                    const handleUploadLogoFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+
+                      // Load locally first to read dimensions
+                      const img = new window.Image();
+                      img.src = URL.createObjectURL(file);
+                      img.onload = async () => {
+                        const width = img.naturalWidth;
+                        const height = img.naturalHeight;
+
+                        const formData = new FormData();
+                        formData.append("file", file);
+
+                        try {
+                          const result = await uploadImageAction(formData);
+                          if (result.success && result.url) {
+                            const newPartners = [...(homeContent.partners || [])];
+                            newPartners[idx] = {
+                              ...newPartners[idx],
+                              src: result.url,
+                              width,
+                              height
+                            };
+                            setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                            alert("Logo uploaded and dimensions updated!");
+                          } else {
+                            alert("Upload failed: " + (result.error || "Unknown error"));
+                          }
+                        } catch (err: any) {
+                          alert("Upload failed: " + err.message);
+                        }
+                      };
+                    };
+
+                    return (
+                      <div key={idx} className="flex gap-4 items-end bg-lux-black/45 p-4 border border-white/[0.04] rounded-sm text-xs relative group/partner">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
+                          <div className="space-y-1">
+                            <label className="block text-[8px] uppercase tracking-wider text-ivory/30">Developer / Partner Name</label>
+                            <input
+                              type="text"
+                              required
+                              value={partner.name}
+                              onChange={(e) => {
+                                const newPartners = [...(homeContent.partners || [])];
+                                newPartners[idx] = { ...partner, name: e.target.value };
+                                setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                              }}
+                              placeholder="e.g. Swati Procon"
+                              className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none"
+                            />
+                          </div>
+
+                          <div className="space-y-1 md:col-span-2">
+                            <label className="block text-[8px] uppercase tracking-wider text-ivory/30">Logo Image URL</label>
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                required
+                                value={partner.src}
+                                onChange={(e) => {
+                                  const newPartners = [...(homeContent.partners || [])];
+                                  newPartners[idx] = { ...partner, src: e.target.value };
+                                  setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                                }}
+                                placeholder="Upload an image or enter URL..."
+                                className="flex-1 bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none font-mono"
+                              />
+                              <label className="px-2.5 py-1.5 border border-white/10 hover:border-champagne-gold bg-lux-black hover:text-champagne-gold text-[9px] uppercase tracking-wider font-semibold rounded-sm transition-all cursor-pointer flex items-center gap-1 flex-shrink-0">
+                                <Upload className="w-3 h-3" />
+                                Upload
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={handleUploadLogoFile}
+                                />
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                              <label className="block text-[8px] uppercase tracking-wider text-ivory/30">Width (px)</label>
+                              <input
+                                type="number"
+                                required
+                                value={partner.width}
+                                onChange={(e) => {
+                                  const newPartners = [...(homeContent.partners || [])];
+                                  newPartners[idx] = { ...partner, width: parseInt(e.target.value) || 0 };
+                                  setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                                }}
+                                placeholder="e.g. 500"
+                                className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <label className="block text-[8px] uppercase tracking-wider text-ivory/30">Height (px)</label>
+                              <input
+                                type="number"
+                                required
+                                value={partner.height}
+                                onChange={(e) => {
+                                  const newPartners = [...(homeContent.partners || [])];
+                                  newPartners[idx] = { ...partner, height: parseInt(e.target.value) || 0 };
+                                  setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                                }}
+                                placeholder="e.g. 150"
+                                className="w-full bg-lux-black border border-white/[0.08] focus:border-champagne-gold text-ivory text-xs px-2.5 py-1.5 rounded-sm focus:outline-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newPartners = (homeContent.partners || []).filter((_: any, i: number) => i !== idx);
+                            setHomeContent((p: any) => ({ ...p, partners: newPartners }));
+                          }}
+                          className="p-1.5 border border-white/10 hover:border-red-500 hover:text-red-400 text-ivory/40 rounded-sm bg-lux-black cursor-pointer transition-all mb-0.5"
+                          title="Remove Partner"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {(!homeContent.partners || homeContent.partners.length === 0) && (
+                    <div className="text-center py-6 text-ivory/30 text-xs border border-dashed border-white/[0.08] rounded-sm">
+                      No developer partners added. Default partners will be displayed.
                     </div>
                   )}
                 </div>

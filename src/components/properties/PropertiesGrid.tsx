@@ -519,18 +519,16 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
   const images = property.images && property.images.length > 0 ? property.images : [property.coverImage];
 
   useEffect(() => {
-    if (!isHovered || images.length <= 1) return;
+    if (isHovered || images.length <= 1) return;
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentImgIdx((prev) => (prev + 1) % images.length);
-    }, 2500);
+    }, 3000);
     return () => clearInterval(interval);
-  }, [isHovered, images.length]);
+  }, [isHovered, images.length, currentImgIdx]);
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setCurrentImgIdx(0);
-    setDirection(1);
   };
 
   const handlePrevImg = (e: React.MouseEvent) => {

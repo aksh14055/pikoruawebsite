@@ -6,6 +6,7 @@ import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
 
 interface PartnerMarqueeProps {
   className?: string;
+  partners?: { name: string; src: string; width: number; height: number }[];
 }
 
 // Real developer logos, stored in /public/partners. Intrinsic dimensions are
@@ -13,7 +14,7 @@ interface PartnerMarqueeProps {
 // original colourway; because several logos are dark (Goyal, Capstone, Maruti, HN Safal)
 // they are seated on an ivory chip so they stay legible on the dark luxury canvas
 // while preserving their true brand colours and proportions.
-const partners = [
+const defaultPartners = [
   { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
   { name: "A. Shridhar", src: "/partners/ashridhar.png", width: 600, height: 137 },
   { name: "The Capstone Developers", src: "/partners/capstone.png", width: 300, height: 107 },
@@ -32,16 +33,27 @@ const partners = [
   { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
 ];
 
-export function PartnerMarquee({ className }: PartnerMarqueeProps) {
+const getPartnerLogoStyles = (name: string) => {
+  if (name.toLowerCase().includes("gala")) {
+    return "h-11 sm:h-12 max-w-[140px] sm:max-w-[155px] scale-110";
+  }
+  if (name.toLowerCase().includes("ravi desai")) {
+    return "h-11 sm:h-12 max-w-[160px] sm:max-w-[180px] scale-115";
+  }
+  return "h-9 sm:h-10 max-w-[140px] sm:max-w-[155px]";
+};
+
+export function PartnerMarquee({ className, partners: propPartners }: PartnerMarqueeProps) {
   const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>(45); // Smooth luxury pace
-  const repeatedPartners = [...partners, ...partners];
+  const activePartners = propPartners && propPartners.length > 0 ? propPartners : defaultPartners;
+  const repeatedPartners = [...activePartners, ...activePartners];
 
   return (
     <section className={cn("py-12 border-y border-white/[0.04] bg-soft-black/20 relative z-10 overflow-hidden", className)}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-6 text-center">
         <h2 className="sr-only">Luxury Property Developer Alliances in Ahmedabad</h2>
         <ul className="sr-only">
-          {partners.map((partner) => (
+          {activePartners.map((partner) => (
             <li key={partner.name}>{partner.name}</li>
           ))}
         </ul>
@@ -63,14 +75,17 @@ export function PartnerMarquee({ className }: PartnerMarqueeProps) {
           {repeatedPartners.map((partner, idx) => (
             <div
               key={`${partner.name}-${idx}`}
-              className="mx-6 sm:mx-8 flex-shrink-0 flex items-center justify-center bg-ivory rounded-md px-6 py-3.5 h-16 shadow-[0_4px_20px_rgba(0,0,0,0.25)] ring-1 ring-white/10"
+              className="mx-5 sm:mx-6 flex-shrink-0 flex items-center justify-center bg-ivory rounded-md px-7 py-4 h-16 shadow-[0_4px_16px_rgba(0,0,0,0.18)] border border-black/[0.03]"
             >
               <Image
                 src={partner.src}
                 alt={partner.name}
                 width={partner.width}
                 height={partner.height}
-                className="h-8 w-auto max-w-[160px] object-contain"
+                className={cn(
+                  "w-auto object-contain transition-all duration-300 filter contrast-[1.1] brightness-[0.96] drop-shadow-[0_1px_1px_rgba(0,0,0,0.06)]",
+                  getPartnerLogoStyles(partner.name)
+                )}
               />
             </div>
           ))}

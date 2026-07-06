@@ -15,6 +15,7 @@ interface PropertyGalleryProps {
 export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const [isPaused, setIsPaused] = useState(false);
 
   const total = images.length;
 
@@ -51,6 +52,16 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [total]);
 
+  // Auto-advance (3000ms, resetting timer on manual change)
+  useEffect(() => {
+    if (isPaused || total <= 1) return;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % total);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isPaused, total, currentIndex]);
+
   if (total === 0) {
     return (
       <div className="relative aspect-[16/10] w-full bg-soft-black border border-white/[0.06] flex flex-col items-center justify-center rounded-lg text-ivory/20 gap-3">
@@ -86,7 +97,11 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
   return (
     <div className="space-y-4">
       {/* Main Viewport */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-lux-black border border-white/[0.08] rounded-md group">
+      <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="relative aspect-[16/10] w-full overflow-hidden bg-lux-black border border-white/[0.08] rounded-md group"
+      >
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={currentIndex}

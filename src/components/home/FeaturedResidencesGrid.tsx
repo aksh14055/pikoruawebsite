@@ -121,21 +121,25 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
     manualMarqueeRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
   };
 
-  // Autoplay spotlight property index
-  useEffect(() => {
-    if (isTopPaused || top3.length <= 1) return;
-    const interval = setInterval(() => {
-      setTopDirection(1);
-      setActiveTopIndex((prev) => (prev + 1) % top3.length);
-      setActiveTopImageIndex(0);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isTopPaused, top3.length]);
-
   const activeTopProp = top3[activeTopIndex];
   const activePropertyImages = activeTopProp
     ? (activeTopProp.images && activeTopProp.images.length > 0 ? activeTopProp.images : [activeTopProp.coverImage])
     : [];
+
+  // Unified Autoplay for Spotlight properties and their images
+  useEffect(() => {
+    if (isTopPaused || top3.length <= 1) return;
+    const interval = setInterval(() => {
+      setTopDirection(1);
+      if (activeTopImageIndex < activePropertyImages.length - 1) {
+        setActiveTopImageIndex((prev) => prev + 1);
+      } else {
+        setActiveTopIndex((prev) => (prev + 1) % top3.length);
+        setActiveTopImageIndex(0);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isTopPaused, top3.length, activeTopIndex, activeTopImageIndex, activePropertyImages.length]);
 
   const topCategoryLabel = activeTopProp
     ? DISPLAY_CATEGORY_LABELS[activeTopProp.category] || "Luxury Residence"
@@ -496,19 +500,13 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
   const images = property.images && property.images.length > 0 ? property.images : [property.coverImage];
 
   useEffect(() => {
-    if (!isHovered || images.length <= 1) {
-      const resetTimer = setTimeout(() => {
-        setCurrentImgIdx(0);
-        setDirection(1);
-      }, 0);
-      return () => clearTimeout(resetTimer);
-    }
+    if (isHovered || images.length <= 1) return;
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentImgIdx((prev) => (prev + 1) % images.length);
-    }, 2500);
+    }, 3000);
     return () => clearInterval(interval);
-  }, [isHovered, images.length]);
+  }, [isHovered, images.length, currentImgIdx]);
 
   const handlePrevImg = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -806,6 +804,12 @@ export function ExpandedDetailPanel({ property, onClose }: ExpandedDetailPanelPr
 
       {/* Left — Cinematic Image Carousel */}
       <div
+        onMouseEnter={() => {
+          if (window.matchMedia("(hover: hover)").matches) setIsPaused(true);
+        }}
+        onMouseLeave={() => {
+          if (window.matchMedia("(hover: hover)").matches) setIsPaused(false);
+        }}
         className="relative w-full md:w-[58%] h-[40vh] md:h-full bg-[#080808] overflow-hidden flex-shrink-0 group/carousel"
       >
 

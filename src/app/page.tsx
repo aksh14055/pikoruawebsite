@@ -289,7 +289,7 @@ export default async function HomePage() {
 
         <LocationGrid />
 
-        <PartnerMarquee />
+        <PartnerMarquee partners={homeContent?.partners} />
 
         {/* About the Founder */}
         <FounderTeaser
