@@ -87,7 +87,7 @@ const organizationSchema = {
       },
     },
     {
-      "@type": ["RealEstateAgent", "LocalBusiness"],
+      "@type": ["Organization", "RealEstateAgent", "LocalBusiness"],
       "@id": `${SITE_URL}#real-estate-agent`,
       name: SITE_NAME,
       url: SITE_URL,
