@@ -154,11 +154,11 @@ export default async function TestimonialsPage() {
         },
         review: publishedTestimonials.map((t) => ({
           "@type": "Review",
-          itemReviewed: {
-            "@type": "Service",
-            "@id": `${SITE_URL}#advisory-service`,
-            name: "Private Luxury Property Advisory",
-          },
+          // itemReviewed intentionally omitted: each Review is nested under
+          // Service.review, which already establishes what's being reviewed.
+          // Re-declaring itemReviewed with the same @id as this parent Service
+          // created a circular self-reference that Google's Rich Results
+          // parser rejected with "Invalid object type for field <parent_node>".
           author: {
             "@type": "Person",
             name: t.clientName,
