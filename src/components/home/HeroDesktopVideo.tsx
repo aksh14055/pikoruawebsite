@@ -22,7 +22,6 @@ export function HeroDesktopVideo({ videoUrl }: HeroDesktopVideoProps) {
 
     if (conn?.saveData || conn?.effectiveType === "slow-2g" || conn?.effectiveType === "2g") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (window.matchMedia("(max-width: 767px)").matches) return;
 
     const video = videoRef.current;
     video.src = videoUrl;
@@ -41,7 +40,7 @@ export function HeroDesktopVideo({ videoUrl }: HeroDesktopVideoProps) {
       playsInline
       aria-hidden="true"
       className={cn(
-        "absolute inset-0 hidden h-full w-full object-cover object-center brightness-125 transition-opacity duration-1000 md:block",
+        "absolute inset-0 h-full w-full object-cover object-center brightness-125 transition-opacity duration-1000",
         ready ? "opacity-100" : "opacity-0"
       )}
       onCanPlay={() => setReady(true)}
