@@ -1,7 +1,9 @@
 import { defineField, defineType } from "sanity";
 
-// Residential categories only. This list is intentionally closed — no
-// commercial types (office, showroom, retail, warehouse) can be added here.
+// Core categories are residential. "office" and "showroom" exist as a
+// selective commercial-advisory add-on (see ResidentialCategory in
+// src/types/index.ts) — do not add further commercial types beyond those two
+// (e.g. retail, warehouse) without an explicit product decision.
 
 export const categorySchema = defineType({
   name: "category",

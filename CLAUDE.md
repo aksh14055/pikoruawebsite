@@ -10,7 +10,7 @@
 - **Validation**: Zod v4 — shared schemas in `src/lib/validations/lead.ts` used on both client and server
 
 ## Two non-negotiable constraints (from PRD)
-1. **Residential only** — `ResidentialCategory` type in `src/types/index.ts` is the single source of truth. Never add commercial types (office, showroom, retail). The union is closed.
+1. **Residential-first, with a selective commercial add-on** — `ResidentialCategory` type in `src/types/index.ts` is the single source of truth. Core business is residential; `office` and `showroom` exist as a deliberate, narrow commercial-advisory add-on (see `src/lib/data/geo.ts` commercial landing page). Do not add further commercial types (retail, warehouse, etc.) without an explicit product decision — the union is otherwise closed.
 2. **Five main pages only** — Home, Properties, About, Testimonials, Contact. No sixth nav item ever.
 
 ## Key patterns

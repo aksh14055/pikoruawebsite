@@ -84,6 +84,8 @@ export const CATEGORY_DISPLAY: Record<ResidentialCategory, string> = {
   plot: "Plot / Land",
   investment: "Investment Property",
   "residential-investment": "Investment Property",
+  office: "Office",
+  showroom: "Showroom",
 };
 
 // ─── renderListGuard ───────────────────────────────────────────────────────
