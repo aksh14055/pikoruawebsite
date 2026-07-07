@@ -10,7 +10,9 @@ export type ResidentialCategory =
   | "bungalow"
   | "plot"
   | "investment"
-  | "residential-investment";
+  | "residential-investment"
+  | "office"
+  | "showroom";
 
 export const RESIDENTIAL_CATEGORIES: ResidentialCategory[] = [
   "apartment",
@@ -21,6 +23,8 @@ export const RESIDENTIAL_CATEGORIES: ResidentialCategory[] = [
   "plot",
   "investment",
   "residential-investment",
+  "office",
+  "showroom",
 ];
 
 export const RESIDENTIAL_CATEGORY_LABELS: Record<ResidentialCategory, string> = {
@@ -32,6 +36,8 @@ export const RESIDENTIAL_CATEGORY_LABELS: Record<ResidentialCategory, string> = 
   plot: "Plot / Land",
   investment: "Investment Property",
   "residential-investment": "Investment Property",
+  office: "Office",
+  showroom: "Showroom",
 };
 
 // ─── Locations / Corridors ────────────────────────────────────────────────

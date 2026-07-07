@@ -126,20 +126,17 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
     ? (activeTopProp.images && activeTopProp.images.length > 0 ? activeTopProp.images : [activeTopProp.coverImage])
     : [];
 
-  // Unified Autoplay for Spotlight properties and their images
+  // Autoplay for the active Spotlight property's images (keeps cycling through images, but property remains static)
   useEffect(() => {
-    if (isTopPaused || top3.length <= 1) return;
+    if (isTopPaused || activePropertyImages.length <= 1) return;
     const interval = setInterval(() => {
       setTopDirection(1);
-      if (activeTopImageIndex < activePropertyImages.length - 1) {
-        setActiveTopImageIndex((prev) => prev + 1);
-      } else {
-        setActiveTopIndex((prev) => (prev + 1) % top3.length);
-        setActiveTopImageIndex(0);
-      }
+      setActiveTopImageIndex((prev) => (prev + 1) % activePropertyImages.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [isTopPaused, top3.length, activeTopIndex, activeTopImageIndex, activePropertyImages.length]);
+  }, [isTopPaused, activePropertyImages.length, activeTopImageIndex]);
+
+
 
   const topCategoryLabel = activeTopProp
     ? DISPLAY_CATEGORY_LABELS[activeTopProp.category] || "Luxury Residence"
@@ -410,13 +407,13 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
           <div className="relative">
             <div
               ref={manualMarqueeRef}
-              className="w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4"
+              className="w-full overflow-x-auto scroll-smooth scrollbar-none relative z-20 py-4 snap-x snap-mandatory"
             >
               <div className="flex gap-5 w-max">
                 {properties.map((property) => (
                   <div
                     key={`rem-${property.id}`}
-                    className="w-[260px] sm:w-[300px] lg:w-[320px] flex-shrink-0"
+                    className="w-[calc(100vw-32px)] sm:w-[300px] lg:w-[320px] flex-shrink-0 snap-start"
                   >
                     <StaticPropertyCard
                       property={property}
@@ -432,14 +429,14 @@ export function FeaturedResidencesGrid({ properties }: FeaturedResidencesGridPro
               <>
                 <button
                   onClick={() => handleMarqueeNav(-1)}
-                  className="absolute left-2 lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  className="hidden lg:flex absolute lg:-left-16 xl:-left-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
                   aria-label="Scroll residences left"
                 >
                   <ChevronLeft className="w-5 h-5 stroke-2" />
                 </button>
                 <button
                   onClick={() => handleMarqueeNav(1)}
-                  className="absolute right-2 lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
+                  className="hidden lg:flex absolute lg:-right-16 xl:-right-20 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full items-center justify-center text-white/80 hover:text-lux-black bg-lux-black/70 hover:bg-champagne-gold backdrop-blur-sm border border-white/20 hover:border-champagne-gold shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105 cursor-pointer"
                   aria-label="Scroll residences right"
                 >
                   <ChevronRight className="w-5 h-5 stroke-2" />
@@ -558,8 +555,6 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
       onClick={onToggle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ scale: 1.025 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={cn(
         "group bg-soft-black border text-left cursor-pointer rounded-2xl overflow-hidden flex flex-col justify-between h-full",
         isExpanded 
@@ -586,7 +581,7 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
                 fill
                 quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover object-center transition-transform duration-[1500ms] ease-out group-hover:scale-[1.04]"
+                className="object-cover object-center"
               />
             ) : (
               <div className="absolute inset-0 bg-[#121212] flex items-center justify-center">

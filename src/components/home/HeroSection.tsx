@@ -63,7 +63,7 @@ export function HeroSection({
         aria-hidden="true"
       />
 
-      <div className="relative w-full px-6 pb-20 sm:px-8 lg:px-12 lg:pb-24">
+      <div className="relative w-full px-6 pb-32 sm:pb-36 sm:px-8 md:pb-20 lg:px-12 lg:pb-24">
         <h1 className="mb-5 max-w-3xl font-display text-[clamp(1.75rem,3.8vw,3.25rem)] font-normal leading-[1.15] tracking-wide text-ivory">
           {headlineLines.map((line, i) => {
             const isGold = line.toLowerCase().includes("most luxury buyers");

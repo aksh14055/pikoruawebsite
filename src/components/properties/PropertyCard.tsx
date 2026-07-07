@@ -32,7 +32,7 @@ export function PropertyCard({ property, className }: PropertyCardProps) {
             alt={heroImage?.alt ?? title}
             fill={false}
             quality={75}
-            className="w-full h-full object-cover object-center group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-center"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (

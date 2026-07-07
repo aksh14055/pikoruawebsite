@@ -59,7 +59,7 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
           Explore Our Properties
         </h2>
         <p className="text-ivory/50 font-sans text-xs leading-relaxed max-w-md mx-auto">
-          Take a virtual tour of our exclusive luxury properties. Hover over a card to play in popup.
+          Take a virtual tour of our exclusive luxury properties.
         </p>
         <div className="w-12 h-px bg-champagne-gold/30 mx-auto mt-4" aria-hidden="true" />
       </div>
@@ -93,7 +93,7 @@ export function VirtualTours({ tours }: VirtualToursProps = {}) {
                 src={`https://img.youtube.com/vi/${tour.id}/maxresdefault.jpg`}
                 alt={tour.title && tour.title.trim() ? tour.title : "Property Walkthrough Video"}
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${tour.id}/hqdefault.jpg`;
                 }}

@@ -143,7 +143,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-06-18",
     readTime: "7 min read",
     excerpt: "A definitive walkthrough detailing FEMA compliance, TDS under Section 195, NRE/NRO account pathways, and private title verification protocol for overseas buyers.",
-    coverImage: "/blog/nri-guide-cover.jpg",
+    coverImage: "/properties/maruti-360/maruti-360-view.jpg",
     author: {
       name: "Jitendra",
       role: "PIKORUA Realty",
@@ -172,7 +172,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-06-24",
     readTime: "8 min read",
     excerpt: "A granular analysis of western Ahmedabad's fastest-growing residential micro-markets, outlining price trends, supply constraints, and future growth drivers.",
-    coverImage: "/blog/appreciation-hotspots-cover.jpg",
+    coverImage: "/properties/belagio/belagio-1.jpg",
     author: {
       name: "Jitendra",
       role: "PIKORUA Realty",
@@ -206,7 +206,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-06-20",
     readTime: "7 min read",
     excerpt: "A definitive guide to stamp duty rates, registration fees, and compliance steps for residential property purchases in Ahmedabad and Gujarat in 2026 — for both resident Indians and NRIs.",
-    coverImage: "/blog/nri-guide-cover.jpg",
+    coverImage: "/properties/belrosa/belrosa-1.jpg",
     author: {
       name: "Jitendra",
       role: "PIKORUA Realty",
@@ -280,7 +280,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-06-23",
     readTime: "6 min read",
     excerpt: "A detailed comparison of 5 BHK luxury apartments and penthouses in western Ahmedabad — covering pricing, layout, diligence, resale, and what each format is actually right for.",
-    coverImage: "/properties/swati-senor/swati-senor-1.jpg",
+    coverImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     author: {
       name: "Jitendra",
       role: "PIKORUA Realty",

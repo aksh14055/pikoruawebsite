@@ -16,12 +16,13 @@ const PURPOSES: { id: LeadPurpose; label: string; sub: string }[] = [
 ];
 
 const CATEGORIES: { id: ResidentialCategory; label: string }[] = [
-  { id: "apartment",              label: "Apartment" },
-  { id: "penthouse",              label: "Penthouse" },
-  { id: "villa",                  label: "Villa" },
-  { id: "bungalow",               label: "Bungalow" },
+  { id: "apartment",              label: "4 BHK, 5BHK apartment" },
+  { id: "penthouse",              label: "penthouse/ duplex" },
+  { id: "villa",                  label: "Villa/ Bunglow" },
   { id: "plot",                   label: "Premium Plot" },
-  { id: "residential-investment", label: "Investment Suite" },
+  { id: "residential-investment", label: "Investment" },
+  { id: "office",                 label: "office" },
+  { id: "showroom",               label: "showroom" },
 ];
 
 const LOCATION_OPTIONS: { id: LocationSlug; label: string }[] = [

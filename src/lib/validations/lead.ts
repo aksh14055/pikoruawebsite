@@ -115,6 +115,8 @@ export const discoverySchema = z.object({
     "bungalow",
     "plot",
     "residential-investment",
+    "office",
+    "showroom",
   ]),
   locations: z
     .array(
@@ -225,6 +227,8 @@ export const contactSchema = z.object({
       "bungalow",
       "plot",
       "residential-investment",
+      "office",
+      "showroom",
     ])
     .optional(),
   budgetBand: z

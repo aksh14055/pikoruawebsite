@@ -38,12 +38,13 @@ interface FieldError {
 }
 
 const CATEGORIES = [
-  { value: "apartment", label: "Apartment" },
-  { value: "penthouse", label: "Penthouse" },
-  { value: "villa", label: "Villa" },
-  { value: "bungalow", label: "Bungalow" },
+  { value: "apartment", label: "4 BHK, 5BHK apartment" },
+  { value: "penthouse", label: "penthouse/ duplex" },
+  { value: "villa", label: "Villa/ Bunglow" },
   { value: "plot", label: "Premium Plot" },
-  { value: "residential-investment", label: "Residential Investment" },
+  { value: "residential-investment", label: "Investment" },
+  { value: "office", label: "office" },
+  { value: "showroom", label: "showroom" },
 ];
 
 const BUDGETS = [
@@ -230,18 +231,6 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
               className="relative w-full max-w-[420px] pointer-events-auto bg-soft-black border border-white/[0.06] rounded-md overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Logo */}
-              <div className="absolute top-4 left-5 z-10">
-                <Image
-                  src="/logo.png"
-                  alt="PIKORUA Realty"
-                  width={224}
-                  height={48}
-                  quality={75}
-                  className="h-6 w-auto object-contain"
-                />
-              </div>
-
               {/* Close button */}
               <button
                 onClick={dismiss}
@@ -276,11 +265,20 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                 ) : (
                   // ── Form State ───────────────────────────────────────────
                   <>
+                    {/* Logo (Centered) */}
+                    <div className="flex justify-center mb-6">
+                      <Image
+                        src="/logo.png"
+                        alt="PIKORUA Realty"
+                        width={224}
+                        height={48}
+                        quality={75}
+                        className="h-6 w-auto object-contain"
+                      />
+                    </div>
+
                     {/* Title */}
                     <div className="text-center mb-6">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-champagne-gold font-sans font-medium mb-2">
-                        Private Access
-                      </p>
                       <h2
                         id="popup-title"
                         className="font-display text-2xl text-white font-normal leading-tight uppercase tracking-wide"

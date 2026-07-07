@@ -44,7 +44,7 @@ const getPartnerLogoStyles = (name: string) => {
 };
 
 export function PartnerMarquee({ className, partners: propPartners }: PartnerMarqueeProps) {
-  const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>(45); // Smooth luxury pace
+  const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>(110); // Increased flow speed
   const activePartners = propPartners && propPartners.length > 0 ? propPartners : defaultPartners;
   const repeatedPartners = [...activePartners, ...activePartners];
 

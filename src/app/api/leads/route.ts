@@ -78,13 +78,18 @@ export async function POST(req: NextRequest) {
     const supabase = createServerSupabaseClient();
     void serverEnv; // used implicitly via createServerSupabaseClient env vars
 
+    let dbCategory = (data as { category?: string }).category ?? null;
+    if (dbCategory === "office" || dbCategory === "showroom") {
+      dbCategory = "residential-investment";
+    }
+
     const leadRow = {
       source,
       name: (data as { name: string }).name,
       phone: (data as { phone: string }).phone,
       whatsapp: (data as { whatsapp?: string }).whatsapp ?? null,
       email: (data as { email?: string }).email ?? null,
-      category: (data as { category?: string }).category ?? null,
+      category: dbCategory,
       location: (data as { locations?: string[] }).locations?.[0] ?? null,
       budget_band: (data as { budgetBand?: string }).budgetBand ?? null,
       purpose: (data as { purpose?: string }).purpose ?? null,

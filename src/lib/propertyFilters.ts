@@ -64,7 +64,6 @@ function parsePriceRangeCr(price?: string): [number, number] | null {
 }
 
 export function propertyMatchesBudgetBand(property: StaticProperty, band: BudgetBand): boolean {
-  if (property.priceOnRequest) return false;
   const range = parsePriceRangeCr(property.price);
   if (!range) return false;
   const [bandMin, bandMax] = BUDGET_BAND_RANGES[band];
