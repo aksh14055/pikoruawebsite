@@ -5,11 +5,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn, BUDGET_BAND_LABELS } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { StaticProperty } from "@/lib/data/properties";
 import { LOCATION_LABELS, LOCATION_SLUGS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
-import type { LocationSlug, ResidentialCategory, BudgetBand } from "@/types";
-import { propertyMatchesCategoryIntent, propertyMatchesBudgetBand, propertyMatchesSearch } from "@/lib/propertyFilters";
+import type { LocationSlug, ResidentialCategory } from "@/types";
+import { propertyMatchesCategoryIntent, propertyMatchesSearch } from "@/lib/propertyFilters";
 import { ExpandedDetailPanel } from "@/components/home/FeaturedResidencesGrid";
 import { ChevronLeft, ChevronRight, SlidersHorizontal, ChevronDown, X, Search } from "lucide-react";
 
@@ -24,16 +24,8 @@ const FILTERS: { label: string; value: "" | ResidentialCategory }[] = [
   { label: "Investment", value: "investment" },
 ];
 
-const BUDGET_FILTERS: { label: string; value: "" | BudgetBand }[] = [
-  { label: "Any Budget", value: "" },
-  ...(Object.entries(BUDGET_BAND_LABELS) as [BudgetBand, string][]).map(([value, label]) => ({ label, value })),
-];
-
 const FILTER_VALUES = new Set<ResidentialCategory>(
   FILTERS.map((filter) => filter.value).filter((value): value is ResidentialCategory => Boolean(value))
-);
-const BUDGET_VALUES = new Set<BudgetBand>(
-  BUDGET_FILTERS.map((filter) => filter.value).filter((value): value is BudgetBand => Boolean(value))
 );
 const LOCATION_VALUES = new Set<LocationSlug>(LOCATION_SLUGS);
 
@@ -41,12 +33,6 @@ function getFilterFromUrl(): "" | ResidentialCategory {
   if (typeof window === "undefined") return "";
   const category = new URLSearchParams(window.location.search).get("category");
   return category && FILTER_VALUES.has(category as ResidentialCategory) ? (category as ResidentialCategory) : "";
-}
-
-function getBudgetFromUrl(): "" | BudgetBand {
-  if (typeof window === "undefined") return "";
-  const budget = new URLSearchParams(window.location.search).get("budget");
-  return budget && BUDGET_VALUES.has(budget as BudgetBand) ? (budget as BudgetBand) : "";
 }
 
 function getAreaFromUrl(): string {
@@ -69,14 +55,12 @@ function getCollectionUrl(
   filter: "" | ResidentialCategory,
   location: "" | LocationSlug,
   area: string,
-  budget: "" | BudgetBand,
   search: string
 ): string {
   const params = new URLSearchParams();
   if (filter) params.set("category", filter);
   if (location) params.set("location", location);
   if (area) params.set("area", area);
-  if (budget) params.set("budget", budget);
   if (search.trim()) params.set("q", search.trim());
   const query = params.toString();
   return query ? `/properties?${query}` : "/properties";
@@ -90,7 +74,6 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
   const [activeFilter, setActiveFilter] = useState<"" | ResidentialCategory>("");
   const [activeLocation, setActiveLocation] = useState<"" | LocationSlug>("");
   const [activeArea, setActiveArea] = useState<string>("");
-  const [activeBudget, setActiveBudget] = useState<"" | BudgetBand>("");
   const [activeSearch, setActiveSearch] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>("");
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -104,7 +87,6 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
       setActiveFilter(getFilterFromUrl());
       setActiveLocation(getLocationFromUrl());
       setActiveArea(getAreaFromUrl());
-      setActiveBudget(getBudgetFromUrl());
       const urlSearch = getSearchFromUrl();
       setActiveSearch(urlSearch);
       setSearchInput(urlSearch);
@@ -156,17 +138,17 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setExpandedSlug(null);
-        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
+        window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeSearch));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeFilter, activeLocation, activeArea, activeBudget, activeSearch]);
+  }, [activeFilter, activeLocation, activeArea, activeSearch]);
 
   const handleToggleExpand = (slug: string) => {
     if (expandedSlug === slug) {
       setExpandedSlug(null);
-      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
+      window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeSearch));
     } else {
       setExpandedSlug(slug);
       window.history.pushState(null, "", `/properties/${slug}`);
@@ -175,54 +157,47 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
 
   const handleCloseProperty = () => {
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, activeSearch));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeSearch));
   };
 
   const handleFilterChange = (filter: "" | ResidentialCategory) => {
     setActiveFilter(filter);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation, activeArea, activeBudget, activeSearch));
+    window.history.pushState(null, "", getCollectionUrl(filter, activeLocation, activeArea, activeSearch));
   };
 
   const handleLocationClear = () => {
     setActiveLocation("");
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, "", activeArea, activeBudget, activeSearch));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, "", activeArea, activeSearch));
   };
 
   const handleAreaChange = (area: string) => {
     setActiveArea(area);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, area, activeBudget, activeSearch));
-  };
-
-  const handleBudgetChange = (budget: "" | BudgetBand) => {
-    setActiveBudget(budget);
-    setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, budget, activeSearch));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, area, activeSearch));
   };
 
   const handleSearchSubmit = (value: string) => {
     const next = value.trim();
     setActiveSearch(next);
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, next));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, next));
   };
 
   const handleSearchClear = () => {
     setActiveSearch("");
     setSearchInput("");
     setExpandedSlug(null);
-    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, activeBudget, ""));
+    window.history.pushState(null, "", getCollectionUrl(activeFilter, activeLocation, activeArea, ""));
   };
 
   const filtered = currentProperties.filter((property) => {
     const matchesCategory = activeFilter ? propertyMatchesCategoryIntent(property, activeFilter) : true;
     const matchesLocation = activeLocation ? property.location === activeLocation : true;
     const matchesArea = activeArea ? property.locationLabel === activeArea : true;
-    const matchesBudget = activeBudget ? propertyMatchesBudgetBand(property, activeBudget) : true;
     const matchesSearch = activeSearch ? propertyMatchesSearch(property, activeSearch) : true;
-    return matchesCategory && matchesLocation && matchesArea && matchesBudget && matchesSearch;
+    return matchesCategory && matchesLocation && matchesArea && matchesSearch;
   });
 
   const activeProperty = currentProperties.find((p) => p.slug === expandedSlug);
@@ -231,7 +206,6 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     ...(activeSearch ? [{ key: "search", label: `"${activeSearch}"`, onClear: handleSearchClear }] : []),
     ...(activeFilter ? [{ key: "category", label: FILTERS.find((f) => f.value === activeFilter)!.label, onClear: () => handleFilterChange("") }] : []),
     ...(activeArea ? [{ key: "area", label: activeArea, onClear: () => handleAreaChange("") }] : []),
-    ...(activeBudget ? [{ key: "budget", label: BUDGET_BAND_LABELS[activeBudget], onClear: () => handleBudgetChange("") }] : []),
     ...(activeLocation ? [{ key: "location", label: LOCATION_LABELS[activeLocation], onClear: handleLocationClear }] : []),
   ];
 
@@ -239,7 +213,6 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
     setActiveFilter("");
     setActiveLocation("");
     setActiveArea("");
-    setActiveBudget("");
     setActiveSearch("");
     setSearchInput("");
     setExpandedSlug(null);
@@ -411,27 +384,6 @@ export function PropertiesGrid({ properties: currentProperties }: PropertiesGrid
                           )}
                         >
                           {area}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Budget */}
-                  <div>
-                    <p className="text-[9px] font-sans uppercase tracking-[0.2em] text-ivory/30 mb-2">Budget</p>
-                    <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
-                      {BUDGET_FILTERS.map((b) => (
-                        <button
-                          key={b.value}
-                          onClick={() => handleBudgetChange(b.value)}
-                          className={cn(
-                            "flex-shrink-0 px-4 py-1.5 text-[10px] font-sans uppercase tracking-[0.14em] border transition-all duration-150 rounded-sm",
-                            activeBudget === b.value
-                              ? "border-champagne-gold/60 text-ivory bg-champagne-gold/10"
-                              : "border-white/[0.07] text-ivory/40 hover:border-white/20 hover:text-ivory"
-                          )}
-                        >
-                          {b.label}
                         </button>
                       ))}
                     </div>
