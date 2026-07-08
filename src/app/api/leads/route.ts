@@ -9,6 +9,7 @@ import {
 } from "@/lib/validations/lead";
 import { createServerSupabaseClient } from "@/lib/supabase/client";
 import { getServerEnv } from "@/lib/env";
+import { sendNotificationEmail } from "@/lib/email";
 import { getClientIdentifier, leadRateLimit } from "@/lib/rate-limit";
 import type { LeadSource } from "@/types";
 
@@ -281,71 +282,7 @@ async function notifyTeamEmail(
     </div>
   `;
 
-  // 1. Try Brevo first if configured
-  if (serverEnv.BREVO_API_KEY) {
-    try {
-      console.log(`[leads] Dispatching email via Brevo SMTP API to: ${serverEnv.TEAM_NOTIFICATION_EMAIL}`);
-      const res = await fetch("https://api.brevo.com/v3/smtp/email", {
-        method: "POST",
-        headers: {
-          "api-key": serverEnv.BREVO_API_KEY,
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          sender: {
-            name: serverEnv.BREVO_SENDER_NAME,
-            email: serverEnv.BREVO_SENDER_EMAIL,
-          },
-          to: [
-            {
-              email: serverEnv.TEAM_NOTIFICATION_EMAIL,
-              name: "PIKORUA Realty Team",
-            },
-          ],
-          subject: subject,
-          htmlContent: htmlContent,
-        }),
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Brevo SMTP API status ${res.status}: ${errText}`);
-      }
-      console.log("[leads] Email notification sent successfully via Brevo.");
-      return;
-    } catch (err) {
-      console.error("[leads] Brevo email notification failed:", err);
-      // Fall through to Resend if also present
-    }
-  }
-
-  // 2. Fallback to Resend if configured
-  if (serverEnv.RESEND_API_KEY) {
-    try {
-      console.log(`[leads] Dispatching email via Resend to: ${serverEnv.TEAM_NOTIFICATION_EMAIL}`);
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${serverEnv.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: serverEnv.RESEND_FROM_EMAIL,
-          to: [serverEnv.TEAM_NOTIFICATION_EMAIL],
-          subject: subject,
-          html: htmlContent,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Resend ${res.status}`);
-      }
-      console.log("[leads] Email notification sent successfully via Resend.");
-    } catch (err) {
-      console.error("[leads] Resend email notification failed:", err);
-    }
-  }
+  await sendNotificationEmail({ subject, html: htmlContent, to: serverEnv.TEAM_NOTIFICATION_EMAIL });
 }
 
 async function pushToCrm(

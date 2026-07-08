@@ -294,6 +294,8 @@ function mapDbBlogToBlogPost(db: any): BlogPost {
     seoDescription: db.seo_description || undefined,
     isActive: db.is_active !== undefined ? db.is_active : true,
     updatedAt: db.updated_at || db.published_at,
+    pendingReview: db.pending_review ?? false,
+    source: db.source ?? "manual",
   };
 }
 
@@ -303,7 +305,7 @@ export const getSupabaseBlogs = cache(async function getSupabaseBlogs(onlyActive
     let query = supabase.from("blogs").select("*");
 
     if (onlyActive) {
-      query = query.eq("is_active", true);
+      query = query.eq("is_active", true).eq("pending_review", false);
     }
 
     const { data, error } = await query.order("created_at", { ascending: false });
@@ -327,6 +329,8 @@ export const getSupabaseBlogBySlug = cache(async function getSupabaseBlogBySlug(
       .from("blogs")
       .select("*")
       .or(`slug.eq.${slug},slug.eq./${slug}`)
+      .eq("is_active", true)
+      .eq("pending_review", false)
       .maybeSingle();
 
     if (error) {

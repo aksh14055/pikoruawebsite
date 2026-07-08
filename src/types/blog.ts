@@ -25,4 +25,8 @@ export interface BlogPost {
   htmlContent?: string;
   /** FAQ entries for AEO/rich results schema */
   faqs?: { question: string; answer: string }[];
+  /** True for AI-drafted posts awaiting admin approval; hidden from public queries via isActive */
+  pendingReview?: boolean;
+  /** 'ai_auto' for posts drafted by the automated news pipeline, 'manual' otherwise */
+  source?: "manual" | "ai_auto";
 }

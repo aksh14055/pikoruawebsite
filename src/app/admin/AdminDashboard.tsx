@@ -12,6 +12,7 @@ import {
   uploadImageAction,
   createOrUpdateBlogPost,
   deleteBlogPost,
+  approveBlogDraft,
   createOrUpdateAboutPage,
   createOrUpdatePageSeo,
   createOrUpdateHomePage,
@@ -48,6 +49,7 @@ import {
   Home,
   HelpCircle,
   Sparkles,
+  CheckCircle,
 } from "lucide-react";
 import type { Lead, Testimonial, GeneralFaq } from "@/types";
 import type { BlogPost } from "@/types/blog";
@@ -769,6 +771,32 @@ export default function AdminDashboard({
     setIsBlogModalOpen(true);
   };
 
+  const handleApproveBlog = async (id: string) => {
+    setActionLoading(true);
+    try {
+      await approveBlogDraft(id);
+      setBlogs((prev) =>
+        prev.map((b) => (b.id === id ? { ...b, pendingReview: false, isActive: true } : b))
+      );
+    } catch (err: any) {
+      alert("Error approving blog draft: " + err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Deep-link support: an "Approve & Publish" email links to /admin?reviewBlog=<id>
+  useEffect(() => {
+    const reviewId = new URLSearchParams(window.location.search).get("reviewBlog");
+    if (!reviewId || blogs.length === 0) return;
+    const target = blogs.find((b) => b.id === reviewId);
+    if (target) {
+      setActiveTab("blogs");
+      handleOpenEditBlog(target);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blogs]);
+
   const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingBlog.title || !editingBlog.slug) {
@@ -1175,7 +1203,7 @@ export default function AdminDashboard({
     setFetchingNews(true);
     try {
       const result = await fetchRealEstateNewsAction();
-      if (result.success && result.items) {
+      if (result.success) {
         setNewsFeed(result.items);
       } else {
         alert("Failed to load news feed: " + (result.error || "Unknown error"));
@@ -1195,7 +1223,7 @@ export default function AdminDashboard({
     setGeneratingBlogFromNews(true);
     try {
       const result = await generateBlogFromNewsAction(title, url, customText);
-      if (result.success && result.draft) {
+      if (result.success) {
         setEditingBlog({
           id: "blog-" + Math.random().toString(36).substring(2, 9),
           title: result.draft.title,
@@ -2106,17 +2134,32 @@ export default function AdminDashboard({
                           </span>
                         </td>
                         <td className="p-4">
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-[9px] uppercase tracking-widest ${
-                              blog.isActive !== false
-                                ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
-                                : "bg-red-500/10 text-red-300 border border-red-500/20 animate-pulse"
-                            }`}
-                          >
-                            {blog.isActive !== false ? "Active" : "Inactive"}
-                          </span>
+                          {blog.pendingReview ? (
+                            <span className="px-2 py-0.5 rounded-full text-[9px] uppercase tracking-widest bg-amber-500/10 text-amber-300 border border-amber-500/20 animate-pulse">
+                              Pending Review
+                            </span>
+                          ) : (
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[9px] uppercase tracking-widest ${
+                                blog.isActive !== false
+                                  ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20"
+                                  : "bg-red-500/10 text-red-300 border border-red-500/20"
+                              }`}
+                            >
+                              {blog.isActive !== false ? "Active" : "Inactive"}
+                            </span>
+                          )}
                         </td>
                         <td className="p-4 text-right space-x-2">
+                          {blog.pendingReview && (
+                            <button
+                              onClick={() => handleApproveBlog(blog.id)}
+                              className="p-2 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-emerald-200 rounded-sm bg-lux-black transition-all cursor-pointer inline-flex items-center"
+                              title="Approve & Publish"
+                            >
+                              <CheckCircle className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                           <button
                             onClick={() => handleOpenEditBlog(blog)}
                             className="p-2 border border-white/[0.08] hover:border-champagne-gold text-ivory hover:text-champagne-gold rounded-sm bg-lux-black transition-all cursor-pointer inline-flex items-center"
@@ -2127,7 +2170,7 @@ export default function AdminDashboard({
                           <button
                             onClick={() => handleDeleteBlog(blog.id, blog.slug, blog.title)}
                             className="p-2 border border-white/[0.08] hover:border-red-500 text-ivory hover:text-red-400 rounded-sm bg-lux-black transition-all cursor-pointer inline-flex items-center"
-                            title="Delete Post"
+                            title={blog.pendingReview ? "Discard Draft" : "Delete Post"}
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
