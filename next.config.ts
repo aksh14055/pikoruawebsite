@@ -180,6 +180,16 @@ const nextConfig: NextConfig = {
         destination: "/properties/5-bhk-3300-6300-sindhu-bhavan",
         permanent: true,
       },
+      {
+        source: "/nri-investment-ahmedabad",
+        destination: "/nri-property-investment-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/iskon-ambli-road-properties",
+        destination: "/iscon-ambli-road-properties",
+        permanent: true,
+      },
     ];
   },
   // Silence workspace-root detection warning when pnpm-lock exists at a parent level

@@ -13,7 +13,7 @@
 import { NextResponse } from "next/server";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
-import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
 
@@ -68,6 +68,10 @@ export async function GET() {
     `- [About](${SITE_URL}/about): About PIKORUA Realty and founder Jitendra`,
     `- [Testimonials](${SITE_URL}/testimonials): Client reviews from HNI buyers, NRI investors, and sellers`,
     `- [Contact](${SITE_URL}/contact): Private enquiry and advisory request`,
+    ``,
+    `## NRI Advisory Pages`,
+    ``,
+    ...NRI_LANDING_PAGES.map((p) => `- [${p.label}](${SITE_URL}${p.href}): ${p.description}`),
     ``,
     `## Location Corridors`,
     ``,

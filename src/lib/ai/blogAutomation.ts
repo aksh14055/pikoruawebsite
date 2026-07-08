@@ -23,7 +23,7 @@ export async function fetchRealEstateNews(): Promise<
   { success: true; items: NewsItem[] } | { success: false; error: string }
 > {
   try {
-    const rssUrl = "https://news.google.com/rss/search?q=Ahmedabad+real+estate+luxury+OR+Gujarat+RERA&hl=en-IN&gl=IN&ceid=IN:en";
+    const rssUrl = "https://news.google.com/rss/search?q=Ahmedabad+luxury+residential+OR+Gujarat+RERA+OR+Ahmedabad+Metro+expansion+OR+GIFT+City+infrastructure+OR+NRI+property+India&hl=en-IN&gl=IN&ceid=IN:en";
     const response = await fetch(rssUrl, {
       next: { revalidate: 300 } // Cache for 5 minutes
     });
@@ -226,7 +226,7 @@ Strict Guidelines:
 1. Tone: Advisory-led, authoritative, sophisticated, and targeted at HNIs (High Net Worth Individuals) and NRI investors. Write as a seasoned human real estate advisor, not a generic marketing writer.
 2. Focus: Strictly luxury residential properties, infrastructure, and real estate regulations in Ahmedabad. Ignore or pivot away from unrelated themes.
 3. Anti-AI Copywriting Rules:
-   - NEVER use AI clichés, buzzwords, or filler phrases. Specifically ban: "delve", "tapestry", "testament", "pivotal", "beacon", "redefining", "paradigm shift", "game-changer", "foster", "embark", "landscape", "look no further", "in today's fast-paced world", "ultimate guide", "not only... but also", "crucial role".
+   - NEVER use AI clichés, buzzwords, or filler phrases. Specifically ban: "delve", "tapestry", "testament", "pivotal", "beacon", "redefining", "paradigm shift", "game-changer", "foster", "embark", "landscape", "look no further", "in today's fast-paced world", "ultimate guide", "not only... but also", "crucial role", "leverage", "seamlessly", "unprecedented", "navigate", "robust", "holistic", "synergy", "cutting-edge", "bespoke", "transformative", "unlock".
    - Avoid robotic transitions: Do not start paragraphs with "Moreover", "Furthermore", "Additionally", "On the other hand", or "Lastly".
    - Do not write formulaic section-concluding summary sentences (e.g. avoid ending a section with "Ultimately, it remains to be seen...").
    - Write in a direct, active, and opinionated human voice. Use varied sentence lengths and human-like natural transitions.
@@ -246,6 +246,16 @@ Strict Guidelines:
 6. FAQs (3 to 5 pairs):
    - High-intent conversational questions about the topic/corridor.
    - Answers must be clear, specify actual details/facts, and be 1-2 sentences.
+7. Internal Linking: The following are key PIKORUA corridor pages with their exact URL paths. When you naturally mention any of these areas in the article, hyperlink the FIRST occurrence using an HTML anchor tag (e.g. <a href="/sindhu-bhavan-road-properties">Sindhu Bhavan Road</a>). Do NOT force mentions — only link where they occur naturally in the text. Do NOT add target or rel attributes.
+   - Sindhu Bhavan Road → /sindhu-bhavan-road-properties
+   - Iskon-Ambli Road OR Iscon Ambli Road → /iscon-ambli-road-properties
+   - Thaltej → /thaltej-properties
+   - Shilaj → /shilaj-properties
+   - Vaishno Devi → /vaishno-devi-properties
+   - SG Highway → /sg-highway-properties
+   - NRI advisory OR NRI property investment → /nri-property-investment-ahmedabad
+   - Luxury penthouses OR duplexes → /penthouses-duplexes-ahmedabad
+   - Luxury villas OR bungalows → /villas-bungalows-ahmedabad
 
 Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
 Return ONLY a single, valid JSON object matching the following structure:

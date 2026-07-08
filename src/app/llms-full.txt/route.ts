@@ -22,7 +22,7 @@
 import { NextResponse } from "next/server";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
-import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { FAQ_ITEMS } from "@/lib/data/faq";
 import {
   getSupabaseBlogs,
@@ -140,6 +140,19 @@ export async function GET() {
   ];
 
   // Property listings — rich AEO/GEO fact density
+  const nriAdvisoryPages = [
+    `## NRI Advisory Pages`,
+    ``,
+    ...NRI_LANDING_PAGES.flatMap((p) => [
+      `### ${p.label}`,
+      `- **URL:** ${SITE_URL}${p.href}`,
+      `- **Description:** ${p.description}`,
+      `- **Market Signals:** ${p.marketSignals.join(" | ")}`,
+      `- **Best Fit:** ${p.idealFor.join(" | ")}`,
+      ``,
+    ]),
+  ];
+
   const propertyListings = [
     `## Properties (${liveProperties.length} listings)`,
     ``,
@@ -212,6 +225,18 @@ export async function GET() {
     ),
   ];
 
+  const nriFaqSection = [
+    `## NRI Advisory FAQs`,
+    ``,
+    ...NRI_LANDING_PAGES.flatMap((page) =>
+      page.faqs.flatMap((faq) => [
+        `### ${faq.question}`,
+        faq.answer,
+        ``,
+      ])
+    ),
+  ];
+
   const contact = [
     `## Contact`,
     ``,
@@ -237,9 +262,11 @@ export async function GET() {
     ...services,
     ...corridors,
     ...propertyTypes,
+    ...nriAdvisoryPages,
     ...propertyListings,
     ...blogSection,
     ...faqSection,
+    ...nriFaqSection,
     ...(testimonialLines.length > 0 ? [...testimonialLines, ``] : []),
     ...contact,
   ];

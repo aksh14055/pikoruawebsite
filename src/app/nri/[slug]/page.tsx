@@ -3,25 +3,26 @@ import { notFound, redirect } from "next/navigation";
 import { LandingPageTemplate } from "@/components/seo/LandingPageTemplate";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import {
-  LOCATION_LANDING_PAGES,
+  NRI_LANDING_PAGES,
   getLandingProperties,
-  getLocationLandingPage,
+  getNriLandingPage,
 } from "@/lib/data/geo";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
+import { getExchangeRates } from "@/lib/exchange-rates";
 
-interface LocationPageProps {
+interface NriPageProps {
   params: Promise<{ slug: string }>;
 }
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return LOCATION_LANDING_PAGES.map((page) => ({ slug: page.slug }));
+  return NRI_LANDING_PAGES.map((page) => ({ slug: page.slug }));
 }
 
-export async function generateMetadata({ params }: LocationPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: NriPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = getLocationLandingPage(slug);
+  const page = getNriLandingPage(slug);
   if (!page) return {};
 
   return createMetadata({
@@ -32,20 +33,45 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
   });
 }
 
-export default async function LocationLandingPage({ params }: LocationPageProps) {
+export default async function NriLandingPage({ params }: NriPageProps) {
   const { slug } = await params;
-  const page = getLocationLandingPage(slug);
+  const page = getNriLandingPage(slug);
+  const { rates, isLive } = await getExchangeRates();
 
   if (!page) {
     notFound();
   }
 
-  if (page.href !== `/locations/${slug}`) {
+  if (page.href !== `/nri/${slug}`) {
     redirect(page.href);
   }
 
   const properties = getLandingProperties(page, STATIC_PROPERTIES);
   const pageUrl = absoluteUrl(page.href);
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
+    name: page.title,
+    description: page.description,
+    url: pageUrl,
+    serviceType: page.label,
+    provider: {
+      "@id": `${SITE_URL}#real-estate-agent`,
+    },
+    areaServed: {
+      "@type": "City",
+      name: "Ahmedabad",
+      addressRegion: "Gujarat",
+      addressCountry: "IN",
+    },
+    audience: {
+      "@type": "Audience",
+      audienceType: "Non-Resident Indian property buyers and investors",
+    },
+  };
+
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -55,26 +81,10 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
     description: page.description,
     about: [
       {
-        "@type": "Place",
-        "name": page.label,
-        ...(page.wikipediaUrl || page.wikidataUrl
-          ? {
-              "sameAs": [
-                page.wikipediaUrl,
-                page.wikidataUrl,
-              ].filter(Boolean),
-            }
-          : {}),
-        ...(page.coordinates ? {
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": page.coordinates.latitude,
-            "longitude": page.coordinates.longitude,
-          }
-        } : {}),
+        "@id": `${SITE_URL}#real-estate-agent`,
       },
       {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": `${pageUrl}#service`,
       },
     ],
     mainEntity: {
@@ -87,6 +97,7 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
       })),
     },
   };
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -100,8 +111,8 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
       {
         "@type": "ListItem",
         position: 2,
-        name: "Properties",
-        item: absoluteUrl("/properties"),
+        name: "NRI Advisory",
+        item: absoluteUrl("/nri/nri-property-consultant-ahmedabad"),
       },
       {
         "@type": "ListItem",
@@ -111,6 +122,7 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
       },
     ],
   };
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -128,6 +140,10 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionPageSchema) }}
       />
       <script
@@ -138,7 +154,7 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
       />
-      <LandingPageTemplate page={page} properties={properties} />
+      <LandingPageTemplate page={page} properties={properties} initialRates={rates} initialIsLive={isLive} />
     </>
   );
 }

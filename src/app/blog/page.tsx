@@ -5,17 +5,29 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { getSupabaseBlogs } from "@/lib/supabase/queries";
-import { createMetadata } from "@/lib/seo";
+import { createMetadata, SITE_URL } from "@/lib/seo";
 
-export const metadata: Metadata = createMetadata({
-  title: "Luxury Real Estate Insights",
-  description:
-    "Expert perspectives on Ahmedabad's luxury residential corridors, off-market advisory reports, and HNI/NRI real estate guides.",
-  path: "/blog",
-  image: "/blog/blog-pikorua-consulting-cover.png",
-});
+export const metadata: Metadata = {
+  ...createMetadata({
+    title: "Luxury Real Estate Insights",
+    description:
+      "Expert perspectives on Ahmedabad's luxury residential corridors, off-market advisory reports, and HNI/NRI real estate guides.",
+    path: "/blog",
+    image: "/blog/blog-pikorua-consulting-cover.png",
+  }),
+  // RSS auto-discovery: browsers, feed readers, and AI crawlers pick this up
+  // from the <link rel="alternate"> tag Next.js renders in the <head>.
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+    types: {
+      "application/rss+xml": `${SITE_URL}/blog/feed.xml`,
+    },
+  },
+};
 
-export const dynamic = "force-dynamic";
+// ISR: re-render at most every hour. Tag-based invalidation in admin/actions.ts
+// (revalidateTag("blogs")) flushes this cache immediately when a post is approved.
+export const revalidate = 3600;
 
 export default async function BlogListingPage() {
   let posts = await getSupabaseBlogs(true);

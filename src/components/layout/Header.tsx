@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: "/properties", label: "Properties" },
   { href: "/about", label: "About" },
   { href: "/testimonials", label: "Testimonials" },
+  { href: "/nri/nri-property-consultant-ahmedabad", label: "NRI Advisory" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -133,7 +134,14 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                 )}
               >
               {NAV_LINKS.map(({ href, label }) => {
-                const active = pathname === href || (label === "Properties" && (pathname.startsWith("/properties") || pathname.startsWith("/property-types") || pathname.startsWith("/locations")));
+                const active =
+                  pathname === href ||
+                  (label === "Properties" &&
+                    (pathname.startsWith("/properties") ||
+                      pathname.startsWith("/property-types") ||
+                      pathname.startsWith("/locations"))) ||
+                  (label === "NRI Advisory" &&
+                    (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
 
                 if (label === "Properties") {
                   return (
@@ -362,7 +370,14 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
 
         <nav aria-label="Mobile navigation" className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-1">
           {NAV_LINKS.map(({ href, label }) => {
-            const active = pathname === href || (label === "Properties" && (pathname.startsWith("/properties") || pathname.startsWith("/property-types") || pathname.startsWith("/locations")));
+            const active =
+              pathname === href ||
+              (label === "Properties" &&
+                (pathname.startsWith("/properties") ||
+                  pathname.startsWith("/property-types") ||
+                  pathname.startsWith("/locations"))) ||
+              (label === "NRI Advisory" &&
+                (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
 
             if (label === "Properties") {
               return (

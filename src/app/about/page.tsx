@@ -24,7 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const dynamic = "force-dynamic";
+// ISR: re-render at most every hour.
+// Admin actions call revalidatePath("/about") on every save, so the cache is
+// flushed immediately whenever about content actually changes.
+export const revalidate = 3600;
 
 const ABOUT_INTRO_COPY =
   "At PIKORUA Realty, we do not just deal in luxury real estate — we define it. Founded by Jitendra, a name built on trust, ethics, and expertise, we are among Ahmedabad’s most respected luxury real estate consultancies, known for creating meaningful relationships and delivering long-term value through every interaction. Our name, PIKORUA, is inspired by the Māori symbol of infinity, representing endless trust, lasting relationships, and a continuous journey of growth.";

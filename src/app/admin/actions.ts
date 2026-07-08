@@ -1,9 +1,15 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag as _revalidateTag } from "next/cache";
+// Next.js 16 added a second `profile` arg to revalidateTag — cast to the
+// traditional single-argument signature for standard ISR tag invalidation.
+const revalidateTag = _revalidateTag as (tag: string) => void;
 import { createServerSupabaseClient } from "@/lib/supabase/client";
 import { fetchRealEstateNews, generateBlogDraftFromNews } from "@/lib/ai/blogAutomation";
+import { submitToIndexNow } from "@/lib/index-now";
+import { notifyGoogleIndexing } from "@/lib/google-indexing";
+import { SITE_URL } from "@/lib/seo";
 
 import crypto, { createHash } from "crypto";
 
@@ -473,7 +479,20 @@ export async function approveBlogDraft(id: string) {
 
   revalidatePath("/blog");
   if (data?.slug) revalidatePath(`/blog/${data.slug}`);
+  revalidatePath("/blog/feed.xml");
   revalidatePath("/");
+  // Flush ISR cache so blog listing and post pages regenerate immediately
+  revalidateTag("blogs");
+
+  // Fire-and-forget: notify search engines of the new URL immediately.
+  // Must never block or throw — any failure is non-fatal.
+  if (data?.slug) {
+    const postUrl = `${SITE_URL}/blog/${data.slug}`;
+    Promise.all([
+      submitToIndexNow([postUrl, `${SITE_URL}/blog`]),
+      notifyGoogleIndexing([postUrl]),
+    ]).catch((err) => console.error("[indexing] blog approval submission error:", err));
+  }
 
   return { success: true };
 }

@@ -26,7 +26,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} - Ahmedabad's Finest Luxury Residences`,
+    default: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
     template: `%s | ${SITE_NAME}`,
   },
   icons: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     apple: "/logo-icon.png",
   },
   description:
-    "A private gateway to Ahmedabad's finest luxury residences, curated privately for buyers, NRIs, investors, and sellers.",
+    "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
@@ -45,15 +45,16 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} - Ahmedabad's Finest Luxury Residences`,
+    title: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
     description:
-      "A private gateway to Ahmedabad's finest luxury residences, curated privately for discerning buyers.",
+      "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
     images: [{ url: absoluteUrl("/logo.png") }],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
-    description: "A private gateway to Ahmedabad's finest luxury residences.",
+    title: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
+    description:
+      "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
     images: [absoluteUrl("/logo.png")],
   },
   robots: {

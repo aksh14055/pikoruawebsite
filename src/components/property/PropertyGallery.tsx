@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
@@ -10,26 +10,27 @@ interface PropertyGalleryProps {
   images: string[];
   name: string;
   imageAlts?: Record<string, string>;
+  preloadFirst?: boolean;
 }
 
-export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProps) {
+export function PropertyGallery({ images, name, imageAlts, preloadFirst = true }: PropertyGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
   const [isPaused, setIsPaused] = useState(false);
 
   const total = images.length;
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (total <= 1) return;
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + total) % total);
-  };
+  }, [total]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (total <= 1) return;
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % total);
-  };
+  }, [total]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -50,7 +51,7 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [total]);
+  }, [total, handlePrev, handleNext]);
 
   // Auto-advance (3000ms, resetting timer on manual change)
   useEffect(() => {
@@ -119,7 +120,7 @@ export function PropertyGallery({ images, name, imageAlts }: PropertyGalleryProp
               quality={75}
               sizes="(max-width: 1024px) 100vw, 60vw"
               className="object-cover object-center scale-[1.04]"
-              preload={currentIndex === 0}
+              preload={preloadFirst && currentIndex === 0}
             />
           </motion.div>
         </AnimatePresence>

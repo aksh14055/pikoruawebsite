@@ -2,7 +2,7 @@ import type { LocationSlug, ResidentialCategory } from "@/types";
 import type { StaticProperty } from "@/lib/data/properties";
 import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
 
-export type LandingPageKind = "location" | "property-type";
+export type LandingPageKind = "location" | "property-type" | "nri";
 
 export interface LandingFaq {
   question: string;
@@ -40,6 +40,7 @@ export interface GeoLandingPage {
   relatedSlugs?: string[];
   collectionHref?: string;
   wikipediaUrl?: string;
+  wikidataUrl?: string;
   coordinates?: {
     latitude: string;
     longitude: string;
@@ -50,7 +51,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "sindhu-bhavan",
-    href: "/locations/sindhu-bhavan",
+    href: "/sindhu-bhavan-road-properties",
     label: "Sindhu Bhavan Road",
     eyebrow: "Prime Corridor",
     title: "Luxury Property on Sindhu Bhavan Road (SBR), Ahmedabad",
@@ -59,6 +60,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Private advisory for luxury flats, penthouses, villas, and bungalows on Sindhu Bhavan Road — Ahmedabad's most recognised premium residential address.",
     heroImage: "/properties/anurita/anurita-1.jpg",
     wikipediaUrl: "https://en.wikipedia.org/wiki/Bodakdev",
+    wikidataUrl: "https://www.wikidata.org/wiki/Q6118753",
     coordinates: {
       latitude: "23.0384",
       longitude: "72.5119",
@@ -107,6 +109,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "PIKORUA Realty provides specialist luxury property advisory on Sindhu Bhavan Road, Ahmedabad. We represent both buyers and sellers through a private, relationship-led model — not public portal listing. Contact us at pikorua.in/contact.",
       },
+      {
+        question: "What is the typical price per sq.ft. on Sindhu Bhavan Road in 2026?",
+        answer:
+          "Premium apartments and penthouses on Sindhu Bhavan Road currently trade between ₹8,000 and ₹15,000 per sq.ft., depending on building age, floor level, and specification. The ₹13,000–₹15,000 band applies to the finest, newly delivered towers with low unit density.",
+      },
+      {
+        question: "What is the Jantri (circle rate) on Sindhu Bhavan Road Ahmedabad in 2026?",
+        answer:
+          "The Gujarat government's Jantri (guideline) value for Sindhu Bhavan Road is typically below actual market transactional prices. Stamp duty is therefore calculated on the actual transaction price in most premium resale and new-construction deals on this corridor.",
+      },
     ],
     relatedSlugs: ["iskon-ambli", "thaltej", "villas-bungalows-ahmedabad"],
     bodyContent: [
@@ -126,7 +138,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "iskon-ambli",
-    href: "/locations/iskon-ambli",
+    href: "/iscon-ambli-road-properties",
     label: "Iskon-Ambli Road",
     eyebrow: "Prime Corridor",
     title: "Luxury Property on Iscon Ambli Road, Ahmedabad",
@@ -135,6 +147,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Curated luxury apartments, sky mansions, and penthouses on Iscon Ambli Road — Ahmedabad's highest-value luxury residential corridor.",
     heroImage: "/properties/maruti-360/maruti-360-view.jpg",
     wikipediaUrl: "https://en.wikipedia.org/wiki/Ambli",
+    wikidataUrl: "https://www.wikidata.org/wiki/Q26781023",
     coordinates: {
       latitude: "23.0246",
       longitude: "72.5074",
@@ -183,6 +196,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "The most sought-after luxury developments on Iscon-Ambli Road are characterised by fewer units per floor, private lift lobbies, full-floor sky villas, rooftop amenity decks, and basement parking. PIKORUA Realty maintains an advisory shortlist of recommended projects — both ready possession and under construction. Contact us at pikorua.in/contact for curated project recommendations.",
       },
+      {
+        question: "What is the average price per sq.ft. on Iskon-Ambli Road in 2026?",
+        answer:
+          "Current transactional prices on Iskon-Ambli Road range from ₹11,000 to ₹15,000 per sq.ft. for premium apartments and sky mansions. Signature single-floor penthouses with exclusive terrace rights can exceed this band in best-in-class towers.",
+      },
+      {
+        question: "Are there good international schools near Iskon-Ambli Road, Ahmedabad?",
+        answer:
+          "Yes. The corridor is within 5–10 minutes of several top-ranked schools including DPS Bopal, Ahmedabad International School (AIS), PDPU School, and Calorx Public School — making it one of the strongest school-catchment corridors for HNI families with children.",
+      },
     ],
     relatedSlugs: ["sindhu-bhavan", "thaltej", "penthouses-duplexes-ahmedabad"],
     bodyContent: [
@@ -201,7 +224,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "thaltej",
-    href: "/locations/thaltej",
+    href: "/thaltej-properties",
     label: "Thaltej",
     eyebrow: "Western Ahmedabad",
     title: "Luxury Property in Thaltej, Ahmedabad",
@@ -210,6 +233,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Curated luxury apartments, villas, and premium plots in Thaltej — one of western Ahmedabad's fastest-growing luxury residential corridors.",
     heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
     wikipediaUrl: "https://en.wikipedia.org/wiki/Thaltej",
+    wikidataUrl: "https://www.wikidata.org/wiki/Q7712558",
     coordinates: {
       latitude: "23.0497",
       longitude: "72.5112",
@@ -257,6 +281,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         question: "Thaltej vs Iscon Ambli Road: which offers better value for luxury investment?",
         answer:
           "Thaltej offers better value on a price-per-sq.ft. basis — typically ₹6,500–₹12,000 vs Iscon-Ambli's ₹11,000–₹15,000. For buyers who want large-format apartments or duplex homes at a more accessible entry price in the western luxury belt, Thaltej is the rational choice. Iscon-Ambli's premium is justified for penthouses and sky mansions where the address itself is the product. PIKORUA Realty can model a corridor comparison for your specific requirement.",
+      },
+      {
+        question: "What is the average price per sq.ft. in Thaltej Ahmedabad in 2026?",
+        answer:
+          "Luxury apartments and duplex homes in Thaltej currently trade at ₹6,500–₹12,000 per sq.ft., roughly 15–25% below Iskon-Ambli Road — making Thaltej the best-value option for buyers who want western Ahmedabad luxury positioning without the Iskon-Ambli price premium.",
+      },
+      {
+        question: "How does the Ahmedabad Metro Phase II affect Thaltej property values?",
+        answer:
+          "The proposed Thaltej Metro Station on the east-west Phase II corridor is expected to trigger a 15–25% pricing re-rating, consistent with metro-adjacent residential re-ratings observed in other Indian markets. Early buyers in Thaltej before station completion stand to benefit from this infrastructure-led appreciation.",
       },
     ],
     relatedSlugs: ["iskon-ambli", "shilaj", "luxury-apartments-ahmedabad"],
@@ -396,15 +430,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "sg-highway",
-    href: "/locations/sg-highway",
+    href: "/sg-highway-properties",
     label: "SG Highway",
     eyebrow: "Connectivity Spine",
     title: "Luxury Property near SG Highway, Ahmedabad — Thaltej, Iscon Ambli, Sindhu Bhavan",
     h1: "Luxury Properties near SG Highway",
     description:
-      "Advisory on luxury apartments and premium homes along the SG Highway corridor in Ahmedabad — covering Thaltej, Iskon-Ambli Road, Sindhu Bhavan Road, and Prahlad Nagar.",
+      "Luxury property advisory near SG Highway, Ahmedabad covering Thaltej, Iscon Ambli, Sindhu Bhavan Road, and Prahlad Nagar homes.",
     heroImage: "/properties/eminence-96/emini96-1.png",
     wikipediaUrl: "https://en.wikipedia.org/wiki/Sarkhej%E2%80%93Gandhinagar_Highway",
+    wikidataUrl: "https://www.wikidata.org/wiki/Q7430143",
     coordinates: {
       latitude: "23.0246",
       longitude: "72.5074",
@@ -443,6 +478,16 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "NRIs must route all transactions through NRE/NRO accounts. No special permission is required from the RBI, but filing proper returns and ensuring clear developer-buyer agreements (RERA-aligned) is essential.",
       },
+      {
+        question: "What is the luxury property price range near SG Highway Ahmedabad in 2026?",
+        answer:
+          "Property prices along and adjacent to SG Highway span ₹5,000–₹15,000 per sq.ft., depending on the sub-corridor: Thaltej and Science City range from ₹6,500–₹12,000; Sindhu Bhavan Road from ₹8,000–₹15,000; and Iskon-Ambli Road from ₹11,000–₹15,000.",
+      },
+      {
+        question: "Can NRIs take a home loan for property near SG Highway and what are the applicable tax benefits?",
+        answer:
+          "Yes. Leading Indian banks — HDFC, ICICI, SBI Non-Resident Banking — offer NRI home loans at floating rates of 8.5–9.5% per annum. Interest repayment is deductible up to ₹2 Lakhs per year under Section 24(b), and principal repayment qualifies for Section 80C deduction up to ₹1.5 Lakhs, even for NRI borrowers.",
+      },
     ],
     relatedSlugs: ["thaltej", "iskon-ambli", "luxury-residential-investment-ahmedabad"],
     bodyContent: [
@@ -461,7 +506,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "vastrapur",
-    href: "/locations/vastrapur",
+    href: "/vastrapur-properties",
     label: "Vastrapur",
     eyebrow: "Established Corridor",
     title: "Luxury Property in Vastrapur, Ahmedabad",
@@ -470,6 +515,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Curated luxury apartments, penthouses, and premium residences in Vastrapur — one of Ahmedabad's most established western residential neighbourhoods.",
     heroImage: "/properties/eminence-96/emini96-1.png",
     wikipediaUrl: "https://en.wikipedia.org/wiki/Vastrapur",
+    wikidataUrl: "https://www.wikidata.org/wiki/Q7918982",
     coordinates: {
       latitude: "23.0350",
       longitude: "72.5293",
@@ -1071,16 +1117,192 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   },
   {
     kind: "property-type",
+    slug: "luxury-property-ahmedabad",
+    href: "/luxury-property-ahmedabad",
+    label: "Luxury Property",
+    eyebrow: "Luxury Advisory",
+    title: "Luxury Property in Ahmedabad | NRI Investment",
+    h1: "Luxury Property in Ahmedabad",
+    description:
+      "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    categories: ["apartment", "penthouse", "duplex", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "luxury property Ahmedabad",
+      "premium property Ahmedabad",
+      "luxury homes Ahmedabad",
+      "NRI investment Ahmedabad",
+      "high ROI property Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Luxury property in Ahmedabad should be evaluated by corridor strength, legal clarity, privacy, building quality, rental demand, and long-term family utility.",
+    marketSignals: [
+      "Prime demand is concentrated around Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, and selected western corridors.",
+      "The strongest assets usually combine privacy, scarcity, credible developers, clean paperwork, and resale demand from HNI and NRI buyers.",
+      "NRI buyers increasingly prefer advisory-led shortlists with virtual tours, document review, POA support, and post-purchase handover help.",
+    ],
+    idealFor: [
+      "HNI families comparing apartments, penthouses, villas, bungalows, plots, and investment-led residences.",
+      "NRIs seeking a trusted Ahmedabad real estate consultant for remote buying and long-term India exposure.",
+      "Investors who want corridor-level advice instead of public portal inventory volume.",
+    ],
+    faqs: [
+      {
+        question: "Which areas are best for luxury property in Ahmedabad?",
+        answer:
+          "Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, Bodakdev, and selected Shilaj and Vaishno Devi pockets are relevant for luxury property, depending on budget, format, and family use.",
+      },
+      {
+        question: "Can NRIs buy luxury property in Ahmedabad?",
+        answer:
+          "Yes, NRIs can buy residential and commercial property in Ahmedabad under India's general FEMA framework. Agricultural land, plantation property, and farmhouses need specific caution and legal review.",
+      },
+      {
+        question: "What luxury property types are available in Ahmedabad?",
+        answer:
+          "Ahmedabad offers luxury 4 BHK and 5 BHK apartments, penthouses, duplex homes, villas, bungalows, premium plots, and select commercial investment assets.",
+      },
+      {
+        question: "How does PIKORUA help luxury property buyers?",
+        answer:
+          "PIKORUA Realty helps with private shortlisting, corridor comparison, virtual tours, document coordination, negotiation support, NRI process guidance, and handover planning.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-investment-ahmedabad",
+      "luxury-4bhk-ahmedabad",
+      "luxury-5bhk-ahmedabad",
+      "penthouses-duplexes-ahmedabad",
+      "villas-bungalows-ahmedabad",
+    ],
+    bodyContent: [
+      "### How to Evaluate Luxury Property in Ahmedabad",
+      "The luxury property market in Ahmedabad is not one uniform market. A 4 BHK apartment on Iscon Ambli Road, a penthouse near Sindhu Bhavan Road, a bungalow in a private western pocket, and a residential plot in Shilaj all behave differently. The correct purchase depends on purpose: family residence, future return to India, rental income, capital preservation, or a long-term land-backed asset.",
+      "### Prime Corridors",
+      "The strongest luxury corridors are usually Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, Bodakdev, and selected Shilaj and Vaishno Devi pockets. Each corridor has a different value driver. Iscon Ambli is associated with new large-format towers and address prestige. Sindhu Bhavan Road has stronger lifestyle recall and mixed-use access. Thaltej and SG Highway offer connectivity and a wider price range.",
+      "### NRI Investment Lens",
+      "For NRIs, the best luxury property is not always the largest home. It is the asset that can be verified remotely, maintained reliably, rented or held without friction, and sold later into a deep buyer pool. That means title, RERA alignment, payment route, POA feasibility, builder credibility, society quality, and micro-market demand should be checked before price negotiation.",
+      "### PIKORUA Advisory View",
+      "PIKORUA Realty works as a private luxury real estate advisory for Ahmedabad buyers, sellers, investors, and NRI families. We prioritize curated inventory, discreet seller access, document-led evaluation, and clear micro-market comparison over high-volume portal browsing.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-4bhk-ahmedabad",
+    href: "/luxury-4bhk-ahmedabad",
+    label: "Luxury 4 BHK",
+    eyebrow: "Property Type",
+    title: "Luxury 4 BHK in Ahmedabad | PIKORUA",
+    h1: "Luxury 4 BHK Homes in Ahmedabad",
+    description:
+      "Curated luxury 4 BHK apartments and residences in Ahmedabad for HNI families, NRIs, and investors seeking premium western corridors.",
+    heroImage: "/properties/maruti-360/maruti-360-bedroom-2.png",
+    matchKeywords: ["4 bhk", "4 & 5 bhk", "4bhk", "four bedroom", "4 bedroom"],
+    collectionHref: "/properties?configuration=4bhk",
+    intro:
+      "Luxury 4 BHK homes in Ahmedabad are the practical upgrade format for families who want scale, privacy, amenity quality, and strong resale demand without moving into oversized inventory.",
+    marketSignals: [
+      "Demand is strongest in Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, Vastrapur, Bodakdev, and SG Highway-connected corridors.",
+      "Buyers compare lift privacy, balcony depth, servant access, parking, clubhouse quality, and construction readiness.",
+      "NRI families often prefer 4 BHK homes because they balance family use, maintenance practicality, and rental demand.",
+    ],
+    idealFor: [
+      "Families upgrading from 3 BHK apartments into premium larger homes.",
+      "NRIs buying an Ahmedabad base for parents, visits, or future relocation.",
+      "Investors seeking a liquid luxury-residential format with wider buyer depth.",
+    ],
+    faqs: [
+      {
+        question: "Where can I find luxury 4 BHK homes in Ahmedabad?",
+        answer:
+          "Luxury 4 BHK homes are commonly found around Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, Vastrapur, Bodakdev, and SG Highway-connected premium corridors.",
+      },
+      {
+        question: "Are luxury 4 BHK homes good for NRIs?",
+        answer:
+          "Yes, luxury 4 BHK homes can suit NRIs because they offer family utility, easier maintenance than very large homes, and stronger rental demand from senior executives and premium tenants.",
+      },
+      {
+        question: "What should buyers check before buying a 4 BHK luxury apartment?",
+        answer:
+          "Buyers should check RERA status, title, carpet and built-up area clarity, floor plan efficiency, lift access, parking, society maintenance, amenities, and future resale demand.",
+      },
+    ],
+    relatedSlugs: ["luxury-property-ahmedabad", "luxury-apartments-ahmedabad", "iskon-ambli", "sindhu-bhavan"],
+    bodyContent: [
+      "### Why 4 BHK Is a High-Intent Search",
+      "A luxury 4 BHK search usually comes from a buyer with a defined family requirement. The buyer is not browsing generic property inventory; they are comparing usable space, bedroom count, location, parking, staff access, and amenity quality against a real move-in or investment timeline.",
+      "### Corridor Fit",
+      "Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, Vastrapur, Bodakdev, and SG Highway-connected corridors provide the strongest 4 BHK inventory. The best choice depends on whether the buyer values address prestige, school access, airport connectivity, social clubs, rental demand, or future resale depth.",
+      "### NRI Fit",
+      "For NRIs, 4 BHK homes are often easier to own remotely than villas or very large penthouses. A managed building, strong society, verified documentation, and a practical maintenance profile can make the asset easier to hold, rent, and use during India visits.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-5bhk-ahmedabad",
+    href: "/luxury-5bhk-ahmedabad",
+    label: "Luxury 5 BHK",
+    eyebrow: "Property Type",
+    title: "Luxury 5 BHK in Ahmedabad | PIKORUA",
+    h1: "Luxury 5 BHK Homes in Ahmedabad",
+    description:
+      "Private advisory for luxury 5 BHK apartments, penthouses, duplexes, and sky villas in Ahmedabad's prime residential corridors.",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
+    matchKeywords: ["5 bhk", "4 & 5 bhk", "5bhk", "five bedroom", "5 bedroom"],
+    collectionHref: "/properties?configuration=5bhk",
+    intro:
+      "Luxury 5 BHK homes in Ahmedabad sit at the top end of the family-residence market, where privacy, arrival, floor plate quality, and corridor scarcity matter more than brochure size.",
+    marketSignals: [
+      "The strongest 5 BHK demand is concentrated around Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, and select SG Highway-connected pockets.",
+      "Premium buyers prioritize single-floor privacy, larger decks, better servant circulation, multiple parking bays, and low-density tower planning.",
+      "For NRIs, 5 BHK homes can combine long-term family utility with address-led wealth preservation.",
+    ],
+    idealFor: [
+      "Large families seeking a long-term Ahmedabad base.",
+      "NRIs comparing rare, high-specification homes for future India use.",
+      "Buyers upgrading from luxury 4 BHK homes into signature residences.",
+    ],
+    faqs: [
+      {
+        question: "Where can I buy luxury 5 BHK homes in Ahmedabad?",
+        answer:
+          "Luxury 5 BHK homes are most relevant around Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, and selected SG Highway-connected premium buildings.",
+      },
+      {
+        question: "Are 5 BHK homes in Ahmedabad usually ready to move?",
+        answer:
+          "Some 5 BHK homes are ready or near possession, while others are under construction in newer luxury towers. Availability changes quickly and should be checked project by project.",
+      },
+      {
+        question: "What makes a 5 BHK home worth the premium?",
+        answer:
+          "A 5 BHK home is worth the premium when it delivers privacy, efficient layout, strong building quality, adequate parking, legal clarity, corridor strength, and credible resale demand.",
+      },
+    ],
+    relatedSlugs: ["luxury-property-ahmedabad", "luxury-apartments-ahmedabad", "penthouses-duplexes-ahmedabad", "iskon-ambli"],
+    bodyContent: [
+      "### 5 BHK Is a Scarcity-Led Segment",
+      "Luxury 5 BHK homes in Ahmedabad are not simply larger apartments. The best options compete on privacy, layout depth, lift access, sundeck usability, servant circulation, parking allocation, and the quality of the building community.",
+      "### Where Supply Is Strongest",
+      "Iscon Ambli Road, Sindhu Bhavan Road, Thaltej, and select SG Highway-connected projects carry the strongest 5 BHK relevance. In these corridors, a well-planned 5 BHK can serve as a long-term family residence, NRI return-home asset, or wealth-preservation property.",
+      "### Buyer Diligence",
+      "Buyers should verify usable area, floor height, neighbouring unit count, private lift arrangements, terrace rights if any, parking allocation, maintenance cost, RERA details, and builder delivery history before committing.",
+    ],
+  },
+  {
+    kind: "property-type",
     slug: "penthouses-duplexes-ahmedabad",
-    href: "/property-types/penthouses-duplexes-ahmedabad",
+    href: "/penthouses-ahmedabad",
     label: "Penthouses And Duplexes",
     eyebrow: "Property Type",
     title: "Luxury Penthouses for Sale in Ahmedabad — Duplex Homes",
     h1: "Penthouses and Duplex Homes in Ahmedabad",
     description:
-      "Curated luxury penthouses and duplex apartments for sale in Ahmedabad — sky mansions, sky villas, and duplex residences across Iscon Ambli Road, Sindhu Bhavan Road, and Thaltej.",
+      "Curated luxury penthouses and duplex homes in Ahmedabad across Iscon Ambli Road, Sindhu Bhavan Road, and Thaltej.",
     heroImage: "/properties/ikebana/ikebana1.png",
-    categories: ["penthouse", "duplex", "apartment"],
+    categories: ["penthouse", "duplex"],
     matchKeywords: ["penthouse", "duplex"],
     intro:
       "Penthouses and duplex residences sit at the top end of Ahmedabad's vertical luxury market. The best opportunities are judged by privacy, ceiling height, terrace utility, view corridor, and building quality.",
@@ -1131,7 +1353,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "property-type",
     slug: "villas-bungalows-ahmedabad",
-    href: "/property-types/villas-bungalows-ahmedabad",
+    href: "/luxury-villas-ahmedabad",
     label: "Villas And Bungalows",
     eyebrow: "Property Type",
     title: "Luxury Villas and Bungalows for Sale in Ahmedabad",
@@ -1294,7 +1516,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "property-type",
     slug: "commercial-properties-ahmedabad",
-    href: "/property-types/commercial-properties-ahmedabad",
+    href: "/commercial-property-ahmedabad",
     label: "Commercial Properties",
     eyebrow: "Property Type",
     title: "Premium Commercial Property in Ahmedabad — Office & Showroom",
@@ -1353,9 +1575,900 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   },
 ];
 
+export const NRI_LANDING_PAGES: GeoLandingPage[] = [
+  {
+    kind: "nri",
+    slug: "nri-property-consultant-ahmedabad",
+    href: "/nri/nri-property-consultant-ahmedabad",
+    label: "NRI Property Consultant",
+    eyebrow: "NRI Advisory",
+    title: "NRI Property Consultant in Ahmedabad",
+    h1: "NRI Property Consultant in Ahmedabad",
+    description:
+      "Private NRI property consultant in Ahmedabad for luxury home buying, investment, verification, POA support, and remote advisory.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: ["apartment", "penthouse", "duplex", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "NRI property consultant Ahmedabad",
+      "NRI real estate consultant Ahmedabad",
+      "NRI property advisor Ahmedabad",
+      "NRI property advisory Ahmedabad",
+      "NRI real estate services Ahmedabad",
+      "trusted property consultant for NRI Ahmedabad",
+      "NRI luxury property Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "PIKORUA Realty advises NRI buyers who want a trusted local partner in Ahmedabad for shortlist curation, virtual walkthroughs, legal coordination, RERA checks, negotiation, registration, and post-purchase handover support.",
+    marketSignals: [
+      "NRI demand is strongest for recognised western Ahmedabad corridors such as Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, and SG Highway.",
+      "Remote buyers need document-led advisory, not just property discovery, because title, payment routing, POA, TDS, and handover details affect execution risk.",
+      "The most suitable NRI properties are often ready or near-possession residences, low-density luxury towers, penthouses, villas, and legally clear residential plots.",
+    ],
+    idealFor: [
+      "Gujarati and Indian NRIs based in the USA, UK, UAE, Canada, Australia, Singapore, and other overseas markets.",
+      "Families buying a future Ahmedabad base without being present for every site visit or negotiation.",
+      "NRI investors who want a private advisory instead of public portal browsing and unverified broker calls.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs buy property in Ahmedabad?",
+        answer:
+          "Yes, NRIs can buy residential and commercial property in Ahmedabad under India's general FEMA framework. Agricultural land, plantation property, and farmhouses are restricted categories, so buyers should verify the property type and take legal advice before committing.",
+      },
+      {
+        question: "How can NRIs buy property in India without visiting?",
+        answer:
+          "NRIs can buy property without repeated visits by using virtual tours, document review, verified local inspections, NRE/NRO banking coordination, and a properly executed Power of Attorney where signing or registration support is needed.",
+      },
+      {
+        question: "What documents are required for NRI property purchase?",
+        answer:
+          "NRIs usually need passport, PAN, overseas address proof, Indian address proof if available, photographs, NRE/NRO bank details, OCI or visa details where relevant, and Power of Attorney documents if a representative will act locally. Banks, developers, sellers, and registrars may ask for additional documents.",
+      },
+      {
+        question: "Is it safe to invest in Ahmedabad real estate for NRIs?",
+        answer:
+          "Yes, Ahmedabad can be a safe NRI real estate investment when the property has clear title, RERA alignment where applicable, verified ownership, realistic pricing, and strong corridor demand. The risk is usually not the city; it is poor due diligence, unclear documentation, or buying the wrong micro-market.",
+      },
+      {
+        question: "Can NRIs get home loans in India?",
+        answer:
+          "Yes, NRIs can get home loans from many Indian banks and housing finance companies, subject to income proof, residency documents, credit assessment, property eligibility, and bank policy. Loan paperwork can often be coordinated through POA support if the bank permits it.",
+      },
+      {
+        question: "How is rental income taxed for NRIs in India?",
+        answer:
+          "NRI rental income from Indian property is generally taxable in India. Tenants or payers may need to deduct TDS, and the NRI owner may need to file an Indian tax return depending on income and compliance position. A CA should review the structure before renting the property.",
+      },
+      {
+        question: "Can NRIs repatriate money after selling property?",
+        answer:
+          "Yes, NRIs can repatriate sale proceeds after selling property, subject to FEMA rules, bank documentation, tax payment, source-of-funds proof, and required forms or certificates. The repatriation route is cleaner when purchase payments were originally made through compliant banking channels.",
+      },
+      {
+        question: "Which are the best areas in Ahmedabad for NRI investment?",
+        answer:
+          "NRI buyers usually prefer Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi, Bodakdev, and selected SG Highway pockets because these corridors offer address recall, strong resale demand, social infrastructure, and airport connectivity.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-investment-ahmedabad",
+      "buy-property-in-ahmedabad-from-abroad",
+      "india-vs-usa-property-roi-for-nris",
+      "buy-property-in-ahmedabad-from-usa",
+      "nri-property-purchase-process-india",
+      "nri-property-management-ahmedabad",
+    ],
+    bodyContent: [
+      "### Private NRI Property Advisory in Ahmedabad",
+      "For an NRI buyer, the challenge is not finding a list of properties. The challenge is knowing which properties are worth trusting from abroad. PIKORUA Realty works as a private ground advisor for NRI buyers evaluating luxury homes, investment assets, and future family residences in Ahmedabad.",
+      "### What We Handle",
+      "Our advisory process covers requirement mapping, corridor selection, curated shortlist creation, virtual walkthrough coordination, RERA and title-document review with legal partners, negotiation support, payment milestone planning, Power of Attorney coordination, registration support, and handover follow-through.",
+      "### Why NRI Buyers Need a Local Specialist",
+      "A remote buyer faces different risks from a local buyer: incomplete project information, unclear resale title chains, inaccurate price guidance, pressure from unverified brokers, and difficulty judging whether a building or corridor has long-term liquidity. A local specialist reduces those risks by filtering inventory before the buyer spends time or money.",
+      "### Core Keywords Covered",
+      "This advisory page directly supports searches such as NRI property consultant Ahmedabad, NRI real estate consultant Ahmedabad, NRI property advisor Ahmedabad, NRI property advisory Ahmedabad, NRI property assistance Ahmedabad, and NRI luxury property Ahmedabad.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nri-property-investment-ahmedabad",
+    href: "/nri-property-investment-ahmedabad",
+    label: "NRI Property Investment",
+    eyebrow: "Investment Advisory",
+    title: "NRI Property Investment in Ahmedabad",
+    h1: "NRI Property Investment in Ahmedabad",
+    description:
+      "NRI property investment advisory in Ahmedabad covering luxury apartments, plots, rental yield, capital appreciation, and safe corridor selection.",
+    heroImage: "/properties/eminence-96/eminence-96-3-pool.webp",
+    categories: ["investment", "apartment", "penthouse", "villa", "plot"],
+    matchKeywords: [
+      "best property investment in Ahmedabad for NRI",
+      "Ahmedabad real estate investment for NRI",
+      "luxury property investment Ahmedabad NRI",
+      "NRI investment in Ahmedabad property",
+      "top areas to invest Ahmedabad NRI",
+      "rental yield property Ahmedabad NRI",
+      "capital appreciation property Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "NRI property investment in Ahmedabad should be evaluated by corridor scarcity, legal clarity, developer reliability, rental demand, exit liquidity, and future family-use value rather than brochure pricing alone.",
+    marketSignals: [
+      "Iskon-Ambli and Sindhu Bhavan Road remain defensive luxury corridors because address recall and supply scarcity support long-term demand.",
+      "Shilaj, Vaishno Devi, and selected plotted pockets can suit NRIs seeking land-backed appreciation with deeper due diligence.",
+      "Rental yield is usually secondary to capital preservation in luxury residential assets, but premium furnished homes can attract strong executive tenants.",
+    ],
+    idealFor: [
+      "NRI investors comparing capital appreciation, rental yield, and future self-use.",
+      "Families building a long-term India asset base across Ahmedabad's premium residential corridors.",
+      "Overseas buyers who want safe property investment in India with clear legal and handover processes.",
+    ],
+    faqs: [
+      {
+        question: "Is Ahmedabad a good city for NRI real estate investment?",
+        answer:
+          "Ahmedabad can be a strong NRI investment market when the asset is in a proven corridor, legally clear, well-built, and scarce. Western Ahmedabad offers the strongest luxury residential demand depth.",
+      },
+      {
+        question: "Which areas are best for NRI investment in Ahmedabad?",
+        answer:
+          "Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi, and SG Highway are among the most relevant corridors for NRI investors, depending on whether the goal is capital appreciation, rental demand, future self-use, or land exposure.",
+      },
+      {
+        question: "Should NRIs buy ready property or under-construction property?",
+        answer:
+          "Ready property offers quality certainty and immediate possession. Under-construction property can offer better entry pricing but carries timeline and developer risk. The right choice depends on the buyer's timeline, risk appetite, and legal review.",
+      },
+    ],
+    relatedSlugs: [
+      "luxury-residential-investment-ahmedabad",
+      "residential-plots-ahmedabad",
+      "india-vs-usa-property-roi-for-nris",
+      "buy-property-in-ahmedabad-from-dubai",
+      "buy-property-in-ahmedabad-from-abroad",
+    ],
+    bodyContent: [
+      "### Investment Lens for NRI Buyers",
+      "The strongest NRI investment decisions in Ahmedabad start with a clear asset thesis. A luxury apartment, penthouse, villa, bungalow, or residential plot can all be correct, but only when the micro-market, pricing, legal status, and exit profile match the buyer's horizon.",
+      "### Capital Appreciation Corridors",
+      "For capital appreciation, the highest-conviction corridors are usually those with limited new supply and strong buyer recall: Iskon-Ambli, Sindhu Bhavan Road, selected Thaltej pockets, Shilaj, Vaishno Devi, and land-backed western growth areas. PIKORUA Realty compares each corridor by real demand, not just advertised rates.",
+      "### Rental Yield and Tenant Profile",
+      "Luxury residential rental yields are generally lower than commercial assets, but quality tenants, low vacancy, and future self-use value can make premium homes attractive. Furnished 4 BHK and 5 BHK residences in strong corridors appeal to CXOs, founders, expat consultants, and GIFT City-linked executives.",
+      "### Risk Controls",
+      "NRI investors should verify RERA status, title chain, payment routing, possession timeline, TDS exposure, maintenance obligations, and resale liquidity before committing. We coordinate with qualified legal and tax professionals where formal advice is required.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-abroad",
+    href: "/nri/buy-property-in-ahmedabad-from-abroad",
+    label: "Buy From Abroad",
+    eyebrow: "Remote Buying",
+    title: "Buy Property in Ahmedabad from Abroad",
+    h1: "Buy Property in Ahmedabad from Abroad",
+    description:
+      "Remote property buying advisory for NRIs purchasing luxury homes in Ahmedabad from abroad, including virtual tours, POA, banking, and registration.",
+    heroImage: "/properties/anurita/anurita-1.jpg",
+    categories: ["apartment", "penthouse", "duplex", "villa", "bungalow", "plot"],
+    matchKeywords: [
+      "buy property in Ahmedabad from abroad",
+      "how to buy property in Ahmedabad NRI",
+      "remote property buying Ahmedabad",
+      "book property Ahmedabad from abroad",
+      "purchase property in India for NRI Ahmedabad",
+      "NRI buying luxury property Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Buying property in Ahmedabad from abroad is possible when the process is structured around remote shortlisting, verified documents, clear payment routing, Power of Attorney planning, and disciplined registration support.",
+    marketSignals: [
+      "Remote buying works best for ready, near-possession, or legally mature properties where documentation can be reviewed before travel.",
+      "Country-specific time zones and banking processes affect execution planning for USA, UK, Dubai, Canada, and Australia-based buyers.",
+      "Virtual tours should be paired with ground verification, neighbourhood context, and independent document checks.",
+    ],
+    idealFor: [
+      "NRIs who want to shortlist and reserve Ahmedabad property without repeated India visits.",
+      "Families buying a home for parents, future relocation, or long-term India exposure.",
+      "Buyers who want one advisory point for property, legal, banking, registration, and handover coordination.",
+    ],
+    faqs: [
+      {
+        question: "How can NRIs buy property in Ahmedabad remotely?",
+        answer:
+          "NRIs can begin with virtual consultations and video walkthroughs, then proceed through document review, negotiated terms, payment planning, Power of Attorney where required, registration coordination, and possession handover. Legal and tax professionals should review formal documents.",
+      },
+      {
+        question: "Can an NRI book property in Ahmedabad from abroad?",
+        answer:
+          "Yes, subject to project policy, seller terms, payment route, and document verification. Booking should only happen after the buyer has reviewed pricing, title or RERA documents, payment schedule, cancellation terms, and possession commitments.",
+      },
+      {
+        question: "Is Power of Attorney required for NRIs buying property?",
+        answer:
+          "Power of Attorney is not always required at the search stage, but it is commonly used when the NRI cannot be present for signing, registration, possession, or bank documentation. The format and attestation requirements should be confirmed with a lawyer.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-purchase-process-india",
+      "buy-property-in-ahmedabad-from-usa",
+      "buy-property-in-ahmedabad-from-uk",
+      "buy-property-in-ahmedabad-from-dubai",
+      "buy-property-in-ahmedabad-from-canada",
+      "buy-property-in-ahmedabad-from-australia",
+    ],
+    bodyContent: [
+      "### Remote Buying Workflow",
+      "A structured remote purchase starts with the buyer's purpose: self-use, parents' residence, future return, investment, or rental income. From there, we shortlist corridors, match property types, arrange video walkthroughs, and filter out weak options before the buyer spends travel time.",
+      "### Documents Before Commitment",
+      "Before any serious payment, NRI buyers should review RERA details where applicable, title documents, allotment or sale agreement terms, payment schedule, possession status, maintenance obligations, and seller identity. Independent legal review is strongly recommended.",
+      "### Country-Specific Execution",
+      "A buyer in the USA may require late-evening India calls and remittance planning; a Dubai buyer may move faster due to direct flight access; a UK or Canada buyer may need more coordination around consular POA and bank documentation. The advisory process should adapt to the buyer's base country.",
+      "### When to Travel",
+      "Many NRI buyers travel only after the shortlist is narrow and documentation is substantially reviewed. This makes the India visit focused on final inspection, family approval, bank or registration steps, and possession planning instead of broad property hunting.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nri-property-purchase-process-india",
+    href: "/nri/nri-property-purchase-process-india",
+    label: "NRI Purchase Process",
+    eyebrow: "Legal Process",
+    title: "NRI Property Purchase Process in India",
+    h1: "NRI Property Purchase Process in India",
+    description:
+      "Step-by-step NRI property purchase process for Ahmedabad: FEMA basics, documents, POA, home loan, TDS, stamp duty, and registration.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot"],
+    matchKeywords: [
+      "can NRI buy property in Ahmedabad",
+      "rules for NRI property purchase India",
+      "documents required for NRI property Ahmedabad",
+      "power of attorney property Ahmedabad NRI",
+      "home loan for NRI Ahmedabad property",
+      "legal process for NRI buying property",
+      "property registration Ahmedabad NRI",
+      "RERA rules for NRI buyers Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=nri",
+    intro:
+      "The NRI purchase process is manageable when legal, banking, tax, and registration steps are planned before property selection becomes emotional.",
+    marketSignals: [
+      "NRIs can generally buy residential and commercial property in India, but restricted land categories require caution.",
+      "POA, NRE/NRO payment routing, TDS, stamp duty, and registration details should be confirmed before signing.",
+      "RERA verification and title diligence are especially important for remote buyers who cannot inspect every document in person.",
+    ],
+    idealFor: [
+      "NRI buyers researching legal process before shortlisting Ahmedabad properties.",
+      "Families planning a Power of Attorney route for registration and handover.",
+      "Overseas buyers comparing home loan, TDS, stamp duty, and document requirements.",
+    ],
+    faqs: [
+      {
+        question: "What documents are required for NRI property purchase?",
+        answer:
+          "Common documents include passport, PAN, OCI or visa details where applicable, address proof, photographs, bank details, NRE/NRO account information, POA if used, and transaction documents. Requirements vary by bank, developer, seller, and registrar.",
+      },
+      {
+        question: "Can NRIs get home loans in India for property?",
+        answer:
+          "Yes. Many Indian banks offer NRI home loans subject to income proof, residency documents, credit assessment, property eligibility, and bank policy. Loan documentation often requires additional attestation or POA support.",
+      },
+      {
+        question: "How does property registration work for NRIs?",
+        answer:
+          "Registration usually happens at the relevant Sub-Registrar office after stamp duty and registration fees are paid. If the buyer cannot attend, a legally valid POA holder may be able to complete the process, subject to document and registrar requirements.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-consultant-ahmedabad",
+      "buy-property-in-ahmedabad-from-abroad",
+      "nri-property-management-ahmedabad",
+    ],
+    bodyContent: [
+      "### The Process in Plain English",
+      "An NRI purchase usually moves through six stages: requirement mapping, property shortlisting, document diligence, payment and banking setup, agreement and registration, and handover or property management. Each stage should be documented, not handled casually over calls.",
+      "### FEMA and Property Type Rules",
+      "Under FEMA, NRIs generally have permission to buy residential and commercial property in India. Agricultural land, plantation property, and farmhouses are restricted categories. A qualified lawyer should review edge cases before any payment is made.",
+      "### POA, Banking, and TDS",
+      "Power of Attorney is common when the buyer cannot be present for signing or registration. Payments are usually routed through NRE or NRO accounts depending on fund source and repatriation goals. TDS obligations differ depending on seller residency and transaction type, so tax advice matters.",
+      "### Ahmedabad Registration and RERA",
+      "For Ahmedabad transactions, buyers should verify Gujarat RERA details where applicable, builder permissions, title chain, possession status, and stamp duty or registration fee obligations. PIKORUA Realty coordinates the process with legal and tax professionals rather than replacing formal advice.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nri-property-management-ahmedabad",
+    href: "/nri/nri-property-management-ahmedabad",
+    label: "NRI Property Management",
+    eyebrow: "Post-Purchase Support",
+    title: "NRI Property Management in Ahmedabad",
+    h1: "NRI Property Management in Ahmedabad",
+    description:
+      "NRI property management support in Ahmedabad for verification, maintenance, rental coordination, resale advisory, site visits, and handover.",
+    heroImage: "/properties/ikebana/ikebana1.png",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "NRI property management Ahmedabad",
+      "NRI property maintenance Ahmedabad",
+      "NRI property resale Ahmedabad",
+      "manage property in Ahmedabad for NRI",
+      "rent property Ahmedabad NRI service",
+      "property verification Ahmedabad NRI",
+      "site visit assistance Ahmedabad NRI",
+      "virtual property tour Ahmedabad NRI",
+    ],
+    collectionHref: "/contact?purpose=nri",
+    intro:
+      "Owning property from overseas requires reliable ground coordination after the purchase: inspections, maintenance, tenant support, resale preparation, and document follow-up.",
+    marketSignals: [
+      "Many NRI-owned homes lose value through delayed maintenance, poor tenant screening, or incomplete possession follow-up.",
+      "Premium properties require periodic physical checks and society-level coordination, not only phone-based updates.",
+      "Resale of high-value NRI-owned homes works best through discreet buyer shortlists rather than broad public listing.",
+    ],
+    idealFor: [
+      "NRIs who already own a home, plot, or investment property in Ahmedabad.",
+      "Overseas families needing rental, maintenance, or resale coordination.",
+      "Owners preparing a property for handover, tenanting, renovation, or sale.",
+    ],
+    faqs: [
+      {
+        question: "How can NRIs manage property in Ahmedabad remotely?",
+        answer:
+          "Remote property management can include scheduled inspections, maintenance coordination, tenant screening, rental paperwork, society communication, document follow-up, and resale readiness. Scope depends on the property and owner requirement.",
+      },
+      {
+        question: "Can PIKORUA help with virtual property tours for NRI buyers?",
+        answer:
+          "Yes. PIKORUA Realty can coordinate virtual property walkthroughs and ground feedback for NRI buyers so they understand layout, approach road, building quality, neighbourhood context, and practical livability before travelling.",
+      },
+      {
+        question: "Can NRI-owned property in Ahmedabad be resold discreetly?",
+        answer:
+          "Yes. High-value NRI-owned properties are often best handled through a private shortlist of qualified buyers to protect privacy and avoid public overexposure.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-consultant-ahmedabad",
+      "nri-property-investment-ahmedabad",
+      "luxury-residential-investment-ahmedabad",
+    ],
+    bodyContent: [
+      "### After Purchase, Execution Still Matters",
+      "For NRI owners, the work does not end at registration. Possession, snag checks, interiors, utility activation, society onboarding, maintenance, and periodic inspections all require reliable local coordination.",
+      "### Rental and Tenant Support",
+      "If the property is held for rental income, tenant profile matters. Premium residences should be positioned for executives, business families, expats, or high-quality corporate tenants, with paperwork and maintenance expectations agreed in advance.",
+      "### Resale Advisory",
+      "When an NRI owner wants to sell, discretion is important. Public overexposure can weaken perceived scarcity for high-value homes. A private advisory model protects pricing by introducing the property only to qualified buyers.",
+      "### Verification and Site Visit Assistance",
+      "For buyers still evaluating properties, we can coordinate virtual tours, site visit assistance, neighbourhood notes, and document collection so the remote decision is based on evidence rather than brochure claims.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-usa",
+    href: "/nri-property-from-usa",
+    label: "USA to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Buy Property in Ahmedabad from USA",
+    h1: "Buy Property in Ahmedabad from USA",
+    description:
+      "Guide for USA-based NRIs buying property in Ahmedabad, covering remote shortlisting, time zones, POA, NRE/NRO payments, and luxury corridors.",
+    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "buy property in Ahmedabad from USA",
+      "Ahmedabad property for NRI USA",
+      "NRI property Ahmedabad USA buyers",
+      "USA se Ahmedabad property buy",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "USA-based NRIs often need a highly structured buying process because of time-zone gaps, remittance planning, POA attestation, limited travel windows, and family decision-making across India and the United States.",
+    marketSignals: [
+      "USA-based Gujarati families strongly recognise Iskon-Ambli, Sindhu Bhavan Road, Bodakdev, Thaltej, and Shilaj.",
+      "Late-evening India calls and recorded walkthroughs help maintain momentum across US time zones.",
+      "NRE/NRO account planning and POA attestation should be started early if the buyer cannot travel quickly.",
+    ],
+    idealFor: [
+      "NRI buyers in New Jersey, California, Texas, Illinois, Georgia, and other US Gujarati communities.",
+      "Families buying for parents in Ahmedabad or planning a future return.",
+      "USA-based investors comparing capital preservation and long-term India exposure.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs in the USA buy property in Ahmedabad remotely?",
+        answer:
+          "Yes. USA-based NRIs can begin with remote consultations, video walkthroughs, document review, and remittance planning. If they cannot travel, a properly executed Power of Attorney may be used for selected transaction steps.",
+      },
+      {
+        question: "Which Ahmedabad areas do USA-based NRI buyers prefer?",
+        answer:
+          "Common preferences include Iskon-Ambli Road, Sindhu Bhavan Road, Bodakdev, Thaltej, Shilaj, and premium SG Highway pockets because these areas have strong diaspora recognition and resale demand.",
+      },
+    ],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "sindhu-bhavan"],
+    bodyContent: [
+      "### USA-Based NRI Buyer Workflow",
+      "For USA-based buyers, the process should be built around time-zone discipline: clear requirement notes, recorded walkthroughs, short calls, document summaries, and scheduled decision checkpoints. This avoids slow, fragmented property hunting.",
+      "### Preferred Corridors",
+      "Gujarati families in the USA often ask first about Iskon-Ambli, Sindhu Bhavan Road, Bodakdev, Thaltej, and Shilaj because these names carry recognition within the diaspora. The correct corridor depends on budget, family use, investment horizon, and airport access needs.",
+      "### POA and Banking",
+      "If the buyer cannot travel, POA planning should begin early. Funds should be routed through compliant banking channels, usually NRE or NRO accounts depending on source and repatriation intent. Formal bank, legal, and tax advice should be taken before execution.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-uk",
+    href: "/nri-property-from-uk",
+    label: "UK to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Buy Property in Ahmedabad from UK",
+    h1: "Buy Property in Ahmedabad from UK",
+    description:
+      "Guide for UK-based NRIs buying Ahmedabad property remotely, including luxury corridors, POA, banking, legal verification, and India visit planning.",
+    heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "investment"],
+    matchKeywords: [
+      "buy property in Ahmedabad from UK",
+      "Ahmedabad property for NRI UK",
+      "UK se Ahmedabad flat buy",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "UK-based NRI buyers often combine family-use requirements with long-term asset preservation, especially when buying in recognised Ahmedabad corridors with strong community recall.",
+    marketSignals: [
+      "UK buyers tend to prioritise established neighbourhoods, family access, and clean legal execution.",
+      "Shorter travel time than North America can support one focused inspection trip after remote shortlisting.",
+      "Bodakdev, Satellite, Sindhu Bhavan Road, and Iskon-Ambli often fit UK-family use cases.",
+    ],
+    idealFor: [
+      "UK-based Gujarati and Indian families buying in Ahmedabad for parents, future return, or investment.",
+      "Buyers comparing flats, penthouses, villas, and bungalows in mature neighbourhoods.",
+      "Families who want legal verification before committing to travel.",
+    ],
+    faqs: [
+      {
+        question: "Can UK-based NRIs buy flats in Ahmedabad?",
+        answer:
+          "Yes. UK-based NRIs can buy residential property in Ahmedabad subject to standard FEMA rules, property due diligence, payment routing, and registration requirements.",
+      },
+      {
+        question: "Do UK NRIs need to travel to Ahmedabad for every step?",
+        answer:
+          "No. Much of the process can be handled remotely, though many families choose one focused visit for final inspection, family approval, bank steps, or registration planning.",
+      },
+    ],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "bodakdev", "satellite"],
+    bodyContent: [
+      "### UK-Based NRI Buying Pattern",
+      "UK-based buyers often value immediately livable corridors with family infrastructure: schools, clubs, healthcare, dining, and established neighbourhood quality. This makes Bodakdev, Satellite, Sindhu Bhavan Road, and Iskon-Ambli common starting points.",
+      "### Remote First, Visit Later",
+      "The strongest process is to shortlist remotely, review documents, compare corridors, and then travel only for a focused inspection and execution window. This saves time and reduces pressure during a short India trip.",
+      "### Advisory Support",
+      "PIKORUA Realty coordinates property curation, virtual tours, document collection, negotiation support, and local handover planning for UK-based NRI buyers who want a single accountable ground partner.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-dubai",
+    href: "/nri-property-from-dubai",
+    label: "Dubai to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Buy Property in Ahmedabad from Dubai",
+    h1: "Buy Property in Ahmedabad from Dubai",
+    description:
+      "Dubai-based NRI guide for buying Ahmedabad property, with fast remote shortlisting, direct travel planning, POA support, and luxury corridor advisory.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    categories: ["apartment", "penthouse", "duplex", "villa", "investment"],
+    matchKeywords: [
+      "buy property in Ahmedabad from Dubai",
+      "Ahmedabad property for NRI Dubai",
+      "property consultant Ahmedabad for NRI Dubai",
+      "Dubai se Ahmedabad property buy",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Dubai-based NRI buyers can move quickly because of short flight access, overlapping business hours, and strong Ahmedabad family ties, but legal and pricing discipline still matter.",
+    marketSignals: [
+      "Dubai buyers often act faster when the property is ready, legally clear, and aligned with family use.",
+      "Iskon-Ambli, Sindhu Bhavan Road, Thaltej, and SG Highway are frequent shortlist corridors.",
+      "Fast travel access makes final inspection easier, but document review should still happen before booking.",
+    ],
+    idealFor: [
+      "Dubai and UAE-based NRIs buying a premium Ahmedabad home for family use or investment.",
+      "Buyers who need quick shortlist creation before a short India visit.",
+      "Families comparing ready luxury apartments, penthouses, and villas.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs in Dubai buy property in Ahmedabad quickly?",
+        answer:
+          "Yes, the process can move quickly if requirements, banking, document review, and inspection planning are clear. However, speed should not replace legal diligence or price benchmarking.",
+      },
+      {
+        question: "Which Ahmedabad properties suit Dubai-based NRIs?",
+        answer:
+          "Dubai-based buyers often prefer ready or near-possession luxury apartments, penthouses, villas, and bungalows in Iskon-Ambli, Sindhu Bhavan Road, Thaltej, and SG Highway.",
+      },
+    ],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "iskon-ambli", "thaltej"],
+    bodyContent: [
+      "### Dubai-Based Buyer Advantage",
+      "Dubai-based NRIs benefit from short flight access, easier scheduling, and frequent family travel to Ahmedabad. This makes one-trip inspection and execution more practical than for buyers in North America or Australia.",
+      "### Still Verify Before Booking",
+      "Quick access should not lead to rushed booking. Pricing, RERA status, title chain, possession readiness, payment schedule, and maintenance obligations should be reviewed before any serious payment.",
+      "### Corridors and Property Types",
+      "Iskon-Ambli, Sindhu Bhavan Road, Thaltej, and SG Highway are frequent starting points for Dubai buyers seeking large apartments, penthouses, or villas with strong address value and family utility.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-canada",
+    href: "/nri/buy-property-in-ahmedabad-from-canada",
+    label: "Canada to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Buy Property in Ahmedabad from Canada",
+    h1: "Buy Property in Ahmedabad from Canada",
+    description:
+      "Canada-based NRI guide for Ahmedabad property buying, covering remote tours, time-zone planning, POA, NRE/NRO banking, and luxury areas.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "buy property in Ahmedabad from Canada",
+      "Ahmedabad real estate for NRI Canada",
+      "NRI property Ahmedabad Canada",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Canada-based NRI buyers usually need a documentation-first process because travel windows are limited and family decision-making may involve both Canada and Ahmedabad.",
+    marketSignals: [
+      "Remote walkthroughs and written comparison notes are important because Canada-India time zones can slow casual search.",
+      "Long-term family use and future return planning are common drivers for Canada-based buyers.",
+      "Recognised western Ahmedabad corridors offer the strongest combination of family utility and exit liquidity.",
+    ],
+    idealFor: [
+      "Canada-based NRI families buying in Ahmedabad for parents, future return, or long-term investment.",
+      "Buyers who want evidence-led shortlisting before travelling to India.",
+      "Investors comparing ready homes, under-construction assets, and residential plots.",
+    ],
+    faqs: [
+      {
+        question: "Can Canada-based NRIs buy Ahmedabad property without repeated visits?",
+        answer:
+          "Yes. Remote shortlisting, video tours, document review, and POA planning can reduce the need for repeated visits. Many buyers travel only for final inspection or key execution steps.",
+      },
+      {
+        question: "What areas suit Canada-based NRI buyers in Ahmedabad?",
+        answer:
+          "Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi, and Bodakdev are common choices depending on budget, family use, and investment horizon.",
+      },
+    ],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-investment-ahmedabad", "shilaj"],
+    bodyContent: [
+      "### Canada-Based Buying Process",
+      "For Canada-based buyers, the best process is written and structured: property comparison sheets, video walkthrough links, document status notes, and clear next-step timelines. This reduces delays caused by distance and time zones.",
+      "### Family and Investment Balance",
+      "Many Canada-based NRIs buy for a mix of future self-use, parents' residence, and long-term India exposure. The right property should therefore balance emotional comfort with resale liquidity and maintenance practicality.",
+      "### Execution Support",
+      "PIKORUA Realty supports remote shortlisting, local verification, family visit planning, POA coordination with legal professionals, and handover or management planning after purchase.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-australia",
+    href: "/nri/buy-property-in-ahmedabad-from-australia",
+    label: "Australia to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Buy Property in Ahmedabad from Australia",
+    h1: "Buy Property in Ahmedabad from Australia",
+    description:
+      "Australia-based NRI guide for buying Ahmedabad property remotely, covering virtual tours, POA, banking, inspection trips, and investment corridors.",
+    heroImage: "/properties/anurita/anurita-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "buy property in Ahmedabad from Australia",
+      "Ahmedabad property for NRI Australia",
+      "Australia NRI property Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Australia-based NRI buyers usually need early shortlisting and documentation because India visits are less frequent and travel time is longer.",
+    marketSignals: [
+      "Australia-based families often prefer a narrow, verified shortlist before committing to travel.",
+      "Airport access, family proximity, and future return planning are common decision filters.",
+      "Ready and near-possession properties reduce uncertainty for long-distance buyers.",
+    ],
+    idealFor: [
+      "Australia-based NRI families buying a future Ahmedabad residence or long-term investment.",
+      "Buyers who need remote due diligence before a limited India visit.",
+      "Families comparing premium apartments, penthouses, villas, and residential plots.",
+    ],
+    faqs: [
+      {
+        question: "Can Australian NRIs buy property in Ahmedabad remotely?",
+        answer:
+          "Yes. The process can start remotely with consultation, shortlist creation, video tours, document review, and POA planning. Final steps depend on the buyer's availability and legal structure.",
+      },
+      {
+        question: "Which property types suit Australia-based NRIs?",
+        answer:
+          "Ready luxury apartments, large 4 BHK or 5 BHK homes, penthouses, villas, and legally clear plots are common choices depending on whether the goal is family use, investment, or future relocation.",
+      },
+    ],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "ahmedabad-airport", "residential-plots-ahmedabad"],
+    bodyContent: [
+      "### Australia-Based Buyer Planning",
+      "Because Australia-India travel is less frequent for many families, the property search should be prepared before the trip. That means finalising budget, corridors, property type, legal checklist, and family decision-makers before inspections begin.",
+      "### Best-Fit Property Types",
+      "Ready or near-possession apartments, penthouses, villas, and clear-title plots reduce uncertainty for long-distance buyers. The right fit depends on whether the property is for parents, future return, investment, or a long-term family base.",
+      "### Ground Partner Role",
+      "PIKORUA Realty helps Australia-based NRIs by coordinating property discovery, virtual walkthroughs, neighbourhood context, document collection, local inspection support, and post-purchase handover planning.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "best-properties-in-ahmedabad-under-2-crore-for-nris",
+    href: "/nri/best-properties-in-ahmedabad-under-2-crore-for-nris",
+    label: "Under 2 Crore for NRIs",
+    eyebrow: "Budget Intent",
+    title: "Best Properties in Ahmedabad Under 2 Crore for NRIs",
+    h1: "Best Properties in Ahmedabad Under 2 Crore for NRIs",
+    description:
+      "NRI advisory for Ahmedabad properties under 2 crore, with realistic areas, compact homes, plots, due diligence, and remote buying support.",
+    heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
+    matchKeywords: [
+      "best properties in Ahmedabad under 2 crore for NRIs",
+      "Ahmedabad property under 2 crore for NRI",
+      "NRI property Ahmedabad under 2 crore",
+      "2 crore property Ahmedabad NRI",
+    ],
+    collectionHref: "/contact?purpose=nri&budget=1-2cr",
+    intro:
+      "An under 2 crore Ahmedabad brief can work for NRIs, but it must be handled with realistic expectations around location, size, possession, maintenance, and resale demand.",
+    marketSignals: [
+      "Prime large-format homes in Iskon-Ambli, Sindhu Bhavan Road, and Bodakdev usually sit above this budget, so the brief needs careful micro-market filtering.",
+      "The strongest under 2 crore options are often compact premium apartments, selected resale homes, smaller plotted opportunities, or emerging-corridor assets.",
+      "For NRIs, legal clarity, maintenance practicality, tenant demand, and family access matter more than chasing the lowest advertised price.",
+    ],
+    idealFor: [
+      "NRIs buying a practical Ahmedabad base for parents, future visits, or long-term India exposure.",
+      "Investors who want a lower-ticket property but still need clean paperwork and a credible micro-market.",
+      "Families who want private sourcing instead of public portal noise for the 1 to 2 crore budget band.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs buy good property in Ahmedabad under 2 crore?",
+        answer:
+          "Yes, NRIs can buy good Ahmedabad property under 2 crore, but the best fit is usually a practical apartment, selected resale home, smaller plot, or emerging-corridor asset rather than a prime luxury residence.",
+      },
+      {
+        question: "Which Ahmedabad areas should NRIs consider under 2 crore?",
+        answer:
+          "NRIs should compare Vastrapur, Satellite, Prahlad Nagar, Thaltej edges, Shilaj, Vaishno Devi, selected SG Highway pockets, and other verified micro-markets based on family use, rental demand, and paperwork quality.",
+      },
+      {
+        question: "Is under 2 crore better for rental income or appreciation?",
+        answer:
+          "It depends on the asset. Smaller well-located apartments may offer better rental practicality, while plots or emerging-corridor homes may depend more on appreciation. The exact choice should be benchmarked against vacancy, maintenance, and exit demand.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-investment-ahmedabad",
+      "high-rental-yield-properties-in-ahmedabad-for-nris",
+      "residential-plots-ahmedabad",
+      "buy-property-in-ahmedabad-from-abroad",
+    ],
+    bodyContent: [
+      "### Under 2 Crore Is a Specific NRI Brief",
+      "The phrase best properties in Ahmedabad under 2 crore for NRIs has strong search intent because it combines budget, location, and buyer status. The correct answer is not a generic list. Under 2 crore can be a sensible budget, but only when the buyer accepts clear trade-offs in size, corridor, building age, possession stage, or future upgrade potential.",
+      "### Where the Brief Usually Works",
+      "This budget is more realistic for compact apartments, selected resale homes, smaller residential plots, and developing western or northern Ahmedabad pockets. In prime large-format luxury corridors such as Iskon-Ambli, Sindhu Bhavan Road, and core Bodakdev, the same budget may not match the type of inventory most NRIs imagine when they search for luxury property.",
+      "### What NRIs Should Prioritise",
+      "For an overseas buyer, paperwork quality is more important than a low sticker price. Title chain, society dues, maintenance obligations, construction quality, tenant demand, power-of-attorney feasibility, and banking route should be checked before the buyer commits. A low-ticket property with weak documentation can become more expensive than a premium property with clean execution.",
+      "### PIKORUA Advisory View",
+      "PIKORUA Realty treats this as a private sourcing brief. If current public inventory does not match the under 2 crore requirement, we help the buyer define a realistic corridor, property type, and due-diligence checklist before looking at off-market or resale options.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "high-rental-yield-properties-in-ahmedabad-for-nris",
+    href: "/nri/high-rental-yield-properties-in-ahmedabad-for-nris",
+    label: "High Rental Yield for NRIs",
+    eyebrow: "Yield Intent",
+    title: "High Rental Yield Properties in Ahmedabad for NRIs",
+    h1: "High Rental Yield Properties in Ahmedabad for NRIs",
+    description:
+      "NRI guide to high rental yield properties in Ahmedabad, covering tenant demand, micro-markets, furnishing, vacancy, and due diligence.",
+    heroImage: "/properties/vastrapur/vastrapur-3-facade.jpg",
+    matchKeywords: [
+      "high rental yield properties in Ahmedabad for NRIs",
+      "rental yield property Ahmedabad NRI",
+      "best rental income property Ahmedabad NRI",
+      "Ahmedabad investment property for rental income",
+    ],
+    collectionHref: "/contact?purpose=nri-rental-yield",
+    intro:
+      "High rental yield in Ahmedabad depends less on buying the largest home and more on choosing the right unit size, tenant catchment, furnishing level, maintenance profile, and exit market.",
+    marketSignals: [
+      "Rental demand is strongest around employment, education, healthcare, business, and premium family corridors.",
+      "Compact, well-maintained, easy-to-rent homes can outperform oversized luxury assets on practical yield.",
+      "Furnished homes with professional management may lease faster, but furnishing cost, vacancy, repairs, and taxation must be included in the return calculation.",
+    ],
+    idealFor: [
+      "NRIs who want rental income while keeping a future Ahmedabad use option open.",
+      "Investors comparing Vastrapur, Prahlad Nagar, SG Highway, Bodakdev, Thaltej, and selected GIFT City-linked corridors.",
+      "Overseas owners who need tenant screening, documentation, and property management planning before purchase.",
+    ],
+    faqs: [
+      {
+        question: "Which Ahmedabad properties give better rental yield for NRIs?",
+        answer:
+          "Usually, practical apartments in strong tenant micro-markets perform better for rental yield than very large luxury homes. The best property depends on tenant pool, rentability, maintenance cost, vacancy risk, and purchase price.",
+      },
+      {
+        question: "Are luxury properties good for rental income in Ahmedabad?",
+        answer:
+          "Luxury properties can attract premium tenants, but the rental yield should be calculated after furnishing, maintenance, vacancy, taxes, brokerage, and management cost. Some luxury homes are better for capital preservation than pure yield.",
+      },
+      {
+        question: "Can PIKORUA help NRIs rent out property after purchase?",
+        answer:
+          "PIKORUA can help NRIs think through tenant profile, documentation, handover, and management readiness. Formal leasing, taxation, and legal paperwork should be handled with the relevant professionals.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-investment-ahmedabad",
+      "best-properties-in-ahmedabad-under-2-crore-for-nris",
+      "prahlad-nagar",
+      "sg-highway",
+    ],
+    bodyContent: [
+      "### Rental Yield Is a Micro-Market Decision",
+      "For NRI buyers, high rental yield properties in Ahmedabad are not always the most premium homes. Yield comes from the relationship between purchase price, tenant demand, furnishing quality, maintenance cost, vacancy, and exit liquidity. A smaller property in a deep tenant market can be more efficient than a large home with limited tenant depth.",
+      "### Tenant Demand Signals",
+      "The strongest rental micro-markets usually sit near business districts, hospitals, universities, retail nodes, and premium family corridors. Vastrapur, Prahlad Nagar, SG Highway, Bodakdev, Thaltej, and selected western Ahmedabad pockets can all work, but the right choice depends on whether the target tenant is a corporate executive, family, student household, expat consultant, or business owner.",
+      "### Furnishing and Management",
+      "NRIs should decide before purchase whether the asset will be rented unfurnished, semi-furnished, or fully furnished. Furnished homes may command better rent and faster absorption, but they also require maintenance, replacement cycles, inventory records, and a local management process.",
+      "### Return Calculation",
+      "A serious rental-yield calculation should include vacancy, maintenance, society charges, property tax, repairs, furnishing, brokerage, tenant turnover, and income-tax implications. PIKORUA Realty helps buyers shortlist assets where the rental thesis is practical rather than brochure-led.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "ahmedabad-vs-dubai-real-estate-investment",
+    href: "/nri/ahmedabad-vs-dubai-real-estate-investment",
+    label: "Ahmedabad vs Dubai",
+    eyebrow: "Comparison Guide",
+    title: "Ahmedabad vs Dubai Real Estate Investment for NRIs",
+    h1: "Ahmedabad vs Dubai Real Estate Investment",
+    description:
+      "Comparison guide for NRIs evaluating Ahmedabad vs Dubai real estate investment, including ROI, family use, rental demand, currency, and exit risk.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    matchKeywords: [
+      "Ahmedabad vs Dubai real estate investment",
+      "Dubai vs Ahmedabad property investment",
+      "Ahmedabad property vs Dubai property for NRI",
+      "NRI investment Ahmedabad or Dubai real estate",
+    ],
+    collectionHref: "/contact?purpose=nri-comparison",
+    intro:
+      "Ahmedabad and Dubai solve different NRI investment problems. Dubai is often a global, lifestyle-led, internationally liquid market; Ahmedabad is often a family-use, India-allocation, diaspora-trust market.",
+    marketSignals: [
+      "Dubai may appeal to NRIs seeking global rental demand, international liquidity, and non-India lifestyle exposure.",
+      "Ahmedabad may appeal to Gujarati NRIs seeking family utility, long-term India exposure, cultural proximity, and lower operational complexity near relatives.",
+      "The right answer depends on currency exposure, tax residency, end-use value, holding period, management support, and exit plan.",
+    ],
+    idealFor: [
+      "NRIs comparing India allocation with UAE property exposure.",
+      "Dubai-based Gujaratis deciding whether the next asset should be in Ahmedabad or Dubai.",
+      "Families balancing rental yield, future self-use, currency risk, and long-term inheritance planning.",
+    ],
+    faqs: [
+      {
+        question: "Is Ahmedabad better than Dubai for NRI property investment?",
+        answer:
+          "Ahmedabad is better when the buyer wants family use, India exposure, cultural familiarity, and local support. Dubai may be better when the buyer wants a global rental market and international liquidity. The better choice depends on the investor's purpose.",
+      },
+      {
+        question: "Which market gives better ROI: Ahmedabad or Dubai?",
+        answer:
+          "ROI cannot be answered responsibly without a specific property, entry price, rent, costs, tax position, currency exposure, and exit plan. Ahmedabad and Dubai have different risk and return drivers.",
+      },
+      {
+        question: "Should Dubai-based NRIs buy in Ahmedabad?",
+        answer:
+          "Dubai-based NRIs should consider Ahmedabad if they want a family base, long-term India allocation, or a property that relatives can inspect and use. They should still benchmark pricing, paperwork, and tenant demand before booking.",
+      },
+    ],
+    relatedSlugs: [
+      "buy-property-in-ahmedabad-from-dubai",
+      "nri-property-investment-ahmedabad",
+      "india-vs-usa-property-roi-for-nris",
+      "iskon-ambli",
+    ],
+    bodyContent: [
+      "### Ahmedabad and Dubai Are Different Investment Problems",
+      "The search for Ahmedabad vs Dubai real estate investment usually comes from NRIs who already understand both markets emotionally. Dubai is often seen as a global, lifestyle-led, externally managed property market. Ahmedabad is usually evaluated as an India base, family asset, or long-term Gujarat wealth allocation.",
+      "### Where Ahmedabad Can Win",
+      "Ahmedabad can be stronger when the buyer values family use, local relatives, lower emotional distance, cultural familiarity, and long-term connection with Gujarat. A home in Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, or SG Highway may not behave like a Dubai rental apartment, but it may solve a family and wealth-preservation problem that Dubai cannot.",
+      "### Where Dubai Can Win",
+      "Dubai can be attractive for buyers who want global tenant demand, international exposure, strong property-management infrastructure, and a market built for cross-border investors. It may also suit buyers already living in the UAE who can inspect, manage, and exit locally.",
+      "### How NRIs Should Compare",
+      "The comparison should include entry price, service charges, taxes, rental vacancy, furnishing cost, currency movement, financing, ownership rules, inheritance planning, and exit liquidity. PIKORUA Realty's role is to make the Ahmedabad side of this comparison specific, evidence-led, and locally verified.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "india-vs-usa-property-roi-for-nris",
+    href: "/nri/india-vs-usa-property-roi-for-nris",
+    label: "India vs USA ROI",
+    eyebrow: "Comparison Guide",
+    title: "India vs USA Property ROI for NRIs",
+    h1: "India vs USA Property ROI for NRIs",
+    description:
+      "NRI comparison guide for India vs USA property ROI, covering Ahmedabad real estate, rental income, taxes, currency, self-use, and exit planning.",
+    heroImage: "/properties/pashmina/pashmina.jpg",
+    matchKeywords: [
+      "India vs USA property ROI for NRIs",
+      "India property vs USA property investment NRI",
+      "Ahmedabad real estate vs USA property ROI",
+      "NRI invest in India or USA property",
+    ],
+    collectionHref: "/contact?purpose=nri-comparison",
+    intro:
+      "India vs USA property ROI is not only a rental-yield question. For NRIs, the comparison must include currency, taxes, management distance, self-use, family utility, and long-term exit planning.",
+    marketSignals: [
+      "USA property can offer dollar exposure and mature market transparency, but ownership costs, taxes, insurance, and management can materially affect net return.",
+      "Ahmedabad property can offer India exposure, family utility, and corridor-led appreciation, but rentability and documentation must be verified carefully.",
+      "For U.S.-based NRIs, personal tax residency and reporting obligations can materially change the comparison, so formal tax advice is essential.",
+    ],
+    idealFor: [
+      "USA-based NRIs deciding whether to allocate the next property investment to India or the United States.",
+      "Families comparing Ahmedabad self-use value with dollar-denominated rental assets.",
+      "Investors who want a framework before discussing a specific Ahmedabad shortlist.",
+    ],
+    faqs: [
+      {
+        question: "Is property ROI better in India or the USA for NRIs?",
+        answer:
+          "It depends on the property, taxes, currency, financing, vacancy, management cost, and exit plan. India may offer family utility and growth-market exposure; the USA may offer dollar exposure and mature market data.",
+      },
+      {
+        question: "Why do USA-based NRIs still buy property in Ahmedabad?",
+        answer:
+          "USA-based NRIs often buy in Ahmedabad for family use, parents, future return, cultural connection, inheritance planning, and long-term India allocation, not only for rental yield.",
+      },
+      {
+        question: "What should NRIs compare before choosing India or USA property?",
+        answer:
+          "NRIs should compare entry price, net rent after costs, tax position, currency movement, financing, legal complexity, management support, self-use value, and exit liquidity before choosing a market.",
+      },
+    ],
+    relatedSlugs: [
+      "buy-property-in-ahmedabad-from-usa",
+      "nri-property-investment-ahmedabad",
+      "ahmedabad-vs-dubai-real-estate-investment",
+      "buy-property-in-ahmedabad-from-abroad",
+    ],
+    bodyContent: [
+      "### ROI Is Not Only Rent Minus Cost",
+      "For NRIs, India vs USA property ROI must be evaluated as a complete ownership equation. Rent, appreciation, taxes, insurance, maintenance, financing, vacancy, property management, currency, and family utility all affect the real return.",
+      "### India and Ahmedabad ROI Drivers",
+      "In Ahmedabad, the investment thesis often depends on micro-market appreciation, scarcity, family use, and long-term India exposure. A property in Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, or SG Highway may be valuable because it combines address recall, family usability, and exit demand within the Gujarati diaspora.",
+      "### USA ROI Drivers",
+      "USA property may offer dollar exposure, mature data, and established rental markets, but ownership costs, local taxes, insurance, property management, financing, and regulatory requirements can reduce net returns. Foreign sellers of U.S. real property can also face specific U.S. tax withholding rules, so formal U.S. tax advice is important.",
+      "### Practical Decision Framework",
+      "If the buyer wants a family base, parent-use option, future return plan, and India wealth allocation, Ahmedabad may be more useful. If the buyer wants dollar income and has strong U.S. management support, a U.S. property may be more suitable. PIKORUA Realty helps clarify the Ahmedabad side with property-specific due diligence, not generic ROI promises.",
+    ],
+  },
+];
+
 export const ALL_GEO_LANDING_PAGES = [
   ...LOCATION_LANDING_PAGES,
   ...PROPERTY_TYPE_LANDING_PAGES,
+  ...NRI_LANDING_PAGES,
 ];
 
 export function getLocationLandingPage(slug: string): GeoLandingPage | undefined {
@@ -1364,6 +2477,22 @@ export function getLocationLandingPage(slug: string): GeoLandingPage | undefined
 
 export function getPropertyTypeLandingPage(slug: string): GeoLandingPage | undefined {
   return PROPERTY_TYPE_LANDING_PAGES.find((page) => page.slug === slug);
+}
+
+export function getNriLandingPage(slug: string): GeoLandingPage | undefined {
+  return NRI_LANDING_PAGES.find((page) => page.slug === slug);
+}
+
+function isRootLandingHref(href: string): boolean {
+  return /^\/[^/]+$/.test(href);
+}
+
+export function getRootLandingPages(): GeoLandingPage[] {
+  return ALL_GEO_LANDING_PAGES.filter((page) => isRootLandingHref(page.href));
+}
+
+export function getRootLandingPage(slug: string): GeoLandingPage | undefined {
+  return getRootLandingPages().find((page) => page.href === `/${slug}`);
 }
 
 export function getRelatedLandingPages(page: GeoLandingPage): GeoLandingPage[] {
@@ -1394,7 +2523,11 @@ export function getRelatedLandingPagesForText(
 ): GeoLandingPage[] {
   const haystack = text.toLowerCase().replace(/-/g, " ");
   const matches = ALL_GEO_LANDING_PAGES.filter((page) => {
-    const keywords = page.kind === "property-type" ? page.matchKeywords ?? [] : [slugToPhrase(page.slug)];
+    const keywords = page.matchKeywords?.length
+      ? page.matchKeywords
+      : page.kind === "property-type"
+        ? page.matchKeywords ?? []
+        : [slugToPhrase(page.slug)];
     return keywords.some((keyword) => haystack.includes(keyword.toLowerCase().replace(/-/g, " ")));
   });
   return matches.slice(0, limit);
