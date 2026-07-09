@@ -36,7 +36,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https: http:",
       "media-src 'self' https://cdn.sanity.io https://rwtueiruyktjzvsgdcoh.supabase.co",
-      "connect-src 'self' https://*.supabase.co https://api.sanity.io https://cdn.sanity.io https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com",
+      "connect-src 'self' https://*.supabase.co https://api.sanity.io https://cdn.sanity.io https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://open.er-api.com",
       "frame-src https://www.youtube.com https://youtube.com https://www.google.com https://maps.google.com",
     ].join("; "),
   },

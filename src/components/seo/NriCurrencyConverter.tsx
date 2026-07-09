@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRightLeft, Info } from "lucide-react";
+import { ArrowRightLeft, ChevronDown, Info } from "lucide-react";
 import type { ExchangeRates } from "@/lib/exchange-rates";
 
 // Fallback rates as of July 2026 in case API fetch fails
@@ -41,14 +41,17 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
     };
   });
   const [isLive, setIsLive] = useState<boolean>(initialIsLive);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchLiveRates() {
       try {
         const res = await fetch("https://open.er-api.com/v6/latest/INR");
         if (!res.ok) return;
         const data = await res.json();
-        if (data.result === "success" && data.rates) {
+        if (!cancelled && data.result === "success" && data.rates) {
           setRates({
             USD: 1 / (data.rates.USD || 0.010521),
             AED: 1 / (data.rates.AED || 0.038637),
@@ -58,16 +61,26 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
             SGD: 1 / (data.rates.SGD || 0.0136),
           });
           setIsLive(true);
+          setLastUpdated(new Date());
         }
       } catch (err) {
         console.error("Failed to fetch live exchange rates client-side:", err);
       }
     }
-    // Only fetch client-side if we didn't receive live rates from the server
-    if (!initialIsLive) {
-      fetchLiveRates();
-    }
-  }, [initialIsLive]);
+
+    // Fetch fresh rates on mount — the server-rendered page is cached for up
+    // to an hour (ISR), so `initialRates`/`initialIsLive` can already be
+    // stale by the time a visitor loads the page — then keep refreshing on
+    // an interval so the conversion stays current for as long as the page
+    // stays open, without needing a reload.
+    fetchLiveRates();
+    const interval = setInterval(fetchLiveRates, 15 * 60 * 1000); // 15 minutes
+
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   const activeRateInfo = FALLBACK_EXCHANGE_RATES[currency];
   const rateValue = rates[currency] || activeRateInfo.rate;
@@ -133,9 +146,10 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
                 ₹
               </span>
               <input
-                type="number"
-                value={inrAmount}
-                onChange={(e) => setInrAmount(Math.max(0, Number(e.target.value)))}
+                type="text"
+                inputMode="numeric"
+                value={inrAmount.toLocaleString("en-IN")}
+                onChange={(e) => setInrAmount(Math.max(0, Number(e.target.value.replace(/[^0-9]/g, ""))))}
                 className="w-full bg-lux-black border border-white/[0.08] rounded-sm pl-8 pr-4 py-3 text-sm font-sans text-white focus:border-champagne-gold/60 focus:outline-none focus:ring-1 focus:ring-champagne-gold/30"
                 placeholder="Enter value in INR"
               />
@@ -163,22 +177,25 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
             <label className="block text-[10px] font-sans uppercase tracking-wider text-ivory/50 mb-3">
               Your Home Currency
             </label>
-            <select
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="w-full bg-lux-black border border-white/[0.08] rounded-sm px-4 py-3 text-sm font-sans text-white focus:border-champagne-gold/60 focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 appearance-none cursor-pointer"
-            >
-              {Object.keys(FALLBACK_EXCHANGE_RATES).map((key) => (
-                <option key={key} value={key} className="bg-lux-black text-white">
-                  {FALLBACK_EXCHANGE_RATES[key].label}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="w-full bg-lux-black border border-white/[0.08] rounded-sm px-4 py-3 pr-10 text-sm font-sans text-white focus:border-champagne-gold/60 focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 appearance-none cursor-pointer"
+              >
+                {Object.keys(FALLBACK_EXCHANGE_RATES).map((key) => (
+                  <option key={key} value={key} className="bg-lux-black text-white">
+                    {FALLBACK_EXCHANGE_RATES[key].label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-champagne-gold/60" />
+            </div>
           </div>
         </div>
 
         {/* Right Output Section */}
-        <div className="bg-lux-black/45 border border-white/[0.04] rounded-sm p-6 flex flex-col justify-between">
+        <div className="bg-lux-black/45 border border-white/[0.06] rounded-sm p-5 sm:p-6 flex flex-col justify-between">
           <div className="space-y-5">
             <div>
               <p className="text-[10px] font-sans uppercase tracking-wider text-ivory/40">
@@ -204,7 +221,7 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
           <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-start gap-2.5">
             <Info className="w-4 h-4 text-ivory/30 flex-shrink-0 mt-0.5" />
             <p className="text-[10px] text-ivory/40 font-sans leading-normal">
-              Calculations are based on {isLive ? "live mid-market rates" : "typical stable exchange benchmarks"} (1 {currency} = {rateValue.toFixed(2)} INR). Actual market and banking transfer rates will vary.
+              Calculations are based on {isLive ? "live mid-market rates" : "typical stable exchange benchmarks"} (1 {currency} = {rateValue.toFixed(2)} INR){lastUpdated ? ` — refreshed at ${lastUpdated.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })} and every 15 min while this page is open` : ""}. Actual market and banking transfer rates will vary.
             </p>
           </div>
 

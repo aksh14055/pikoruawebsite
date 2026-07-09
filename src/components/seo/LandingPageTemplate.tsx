@@ -101,7 +101,7 @@ export function LandingPageTemplate({
       <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
 
         {/* ─── HERO ─── */}
-        <section className="relative min-h-[80vh] pt-28 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-white/[0.06]">
+        <section className="relative min-h-[85vh] sm:min-h-[80vh] pt-24 pb-16 sm:pt-28 lg:pt-40 lg:pb-24 overflow-hidden border-b border-white/[0.06]">
           <Image
             src={page.heroImage}
             alt={page.h1}
@@ -144,13 +144,13 @@ export function LandingPageTemplate({
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
                 <Link
                   href={collectionHref}
-                  className="inline-flex min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-lux-black bg-champagne-gold hover:bg-antique-gold transition-colors duration-200 rounded-sm"
+                  className="inline-flex w-full sm:w-auto min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-lux-black bg-champagne-gold hover:bg-antique-gold transition-colors duration-200 rounded-sm"
                 >
                   {isAdvisoryCta ? "Request NRI Advisory" : "View Matching Properties"}
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-champagne-gold border border-champagne-gold/45 hover:border-champagne-gold hover:bg-champagne-gold/[0.05] transition-colors duration-200 rounded-sm"
+                  className="inline-flex w-full sm:w-auto min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-champagne-gold border border-champagne-gold/45 hover:border-champagne-gold hover:bg-champagne-gold/[0.05] transition-colors duration-200 rounded-sm"
                 >
                   Request Private Advisory
                 </Link>
@@ -167,14 +167,20 @@ export function LandingPageTemplate({
                 {NRI_TRUST_STATS.map((stat, i) => (
                   <div
                     key={stat.label}
-                    className={`px-6 py-7 text-center ${
-                      i < 3 ? "border-r border-champagne-gold/10" : ""
+                    className={`px-4 sm:px-6 py-6 sm:py-7 text-center ${
+                      // On 2-col: right border on col 0 only; on 4-col: right border on cols 0-2
+                      i === 0 ? "border-r border-champagne-gold/10" :
+                      i === 1 ? "md:border-r md:border-champagne-gold/10" :
+                      i === 2 ? "border-r border-champagne-gold/10" : ""
+                    } ${
+                      // Bottom border between rows on mobile 2-col
+                      i < 2 ? "border-b border-champagne-gold/10 md:border-b-0" : ""
                     }`}
                   >
-                    <p className="font-display text-3xl sm:text-4xl text-champagne-gold font-light tracking-wide">
+                    <p className="font-display text-2xl sm:text-3xl md:text-4xl text-champagne-gold font-light tracking-wide">
                       {stat.label}
                     </p>
-                    <p className="mt-1.5 text-[9px] font-sans uppercase tracking-[0.2em] text-ivory/35">
+                    <p className="mt-1 sm:mt-1.5 text-[9px] font-sans uppercase tracking-[0.18em] text-ivory/35">
                       {stat.sub}
                     </p>
                   </div>
@@ -186,7 +192,7 @@ export function LandingPageTemplate({
 
         {/* ─── ADVISORY VIEW ─── */}
         <section className="py-20 lg:py-28 border-b border-white/[0.06]">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-center">
             <div className="lg:col-span-4">
               <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-4">
                 Advisory View
@@ -260,10 +266,10 @@ export function LandingPageTemplate({
             />
 
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
                 {/* Left: 6-step Process Timeline */}
-                <div className="lg:col-span-8 space-y-10">
+                <div className="lg:col-span-8 space-y-10 order-last lg:order-first">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-3">
                       Remote Advisory
@@ -310,8 +316,8 @@ export function LandingPageTemplate({
                   </div>
                 </div>
 
-                {/* Right: WhatsApp / Contact Card */}
-                <div className="lg:col-span-4 lg:sticky lg:top-28">
+                {/* Right: WhatsApp / Contact Card — shown first on mobile via order */}
+                <div className="lg:col-span-4 order-first lg:order-last lg:sticky lg:top-28">
                   <div className="relative overflow-hidden border border-champagne-gold/25 bg-lux-black/90 rounded-sm backdrop-blur-md shadow-2xl shadow-black/40">
                     {/* Top shimmer line */}
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/60 to-transparent" />
@@ -562,7 +568,7 @@ export function LandingPageTemplate({
         >
           {page.kind === "nri" ? (
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 lg:items-center">
                 {/* Left heading column */}
                 <div className="lg:col-span-4">
                   <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-4">
@@ -580,7 +586,7 @@ export function LandingPageTemplate({
                   </p>
                 </div>
                 {/* Right accordion column */}
-                <div className="lg:col-span-8 border-l border-white/[0.06] lg:pl-14">
+                <div className="lg:col-span-8 lg:border-l lg:border-white/[0.06] lg:pl-14">
                   <FaqAccordion items={page.faqs} />
                 </div>
               </div>
