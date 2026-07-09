@@ -101,7 +101,7 @@ export function LandingPageTemplate({
       <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
 
         {/* ─── HERO ─── */}
-        <section className="relative min-h-[85vh] sm:min-h-[80vh] pt-24 pb-16 sm:pt-28 lg:pt-40 lg:pb-24 overflow-hidden border-b border-white/[0.06]">
+        <section className="relative min-h-[85vh] sm:min-h-[80vh] pt-24 pb-28 sm:pt-28 sm:pb-32 lg:pt-40 lg:pb-40 overflow-hidden">
           <Image
             src={page.heroImage}
             alt={page.h1}
@@ -113,9 +113,9 @@ export function LandingPageTemplate({
           />
           {/* Stronger left overlay, gentle top fade */}
           <div className="absolute inset-0 bg-gradient-to-r from-lux-black via-lux-black/88 to-lux-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-lux-black/60 via-transparent to-lux-black/10" />
-          {/* Decorative bottom fade into next section */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-lux-black to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-lux-black/80 via-transparent to-lux-black/10" />
+          {/* Bottom fade blends into trust strip */}
+          <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-lux-black via-lux-black/60 to-transparent" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
@@ -175,31 +175,29 @@ export function LandingPageTemplate({
 
         {/* ─── NRI TRUST STRIP ─── */}
         {page.kind === "nri" && (
-          <div className="relative z-10 -mt-px border-y border-champagne-gold/10 bg-lux-black/95 backdrop-blur-sm">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-4">
-                {NRI_TRUST_STATS.map((stat, i) => (
-                  <div
-                    key={stat.label}
-                    className={`px-4 sm:px-6 py-6 sm:py-7 text-center ${
-                      // On 2-col: right border on col 0 only; on 4-col: right border on cols 0-2
-                      i === 0 ? "border-r border-champagne-gold/10" :
-                      i === 1 ? "md:border-r md:border-champagne-gold/10" :
-                      i === 2 ? "border-r border-champagne-gold/10" : ""
-                    } ${
-                      // Bottom border between rows on mobile 2-col
-                      i < 2 ? "border-b border-champagne-gold/10 md:border-b-0" : ""
-                    }`}
-                  >
-                    <p className="font-display text-2xl sm:text-3xl md:text-4xl text-champagne-gold font-light tracking-wide">
-                      {stat.label}
-                    </p>
-                    <p className="mt-1 sm:mt-1.5 text-[9px] font-sans uppercase tracking-[0.18em] text-ivory/35">
-                      {stat.sub}
-                    </p>
-                  </div>
-                ))}
-              </div>
+          <div className="relative z-10 -mt-20 sm:-mt-24 border border-champagne-gold/15 bg-lux-black/60 backdrop-blur-md mx-4 sm:mx-6 lg:mx-8 max-w-6xl xl:mx-auto">
+            {/* Top shimmer */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/40 to-transparent" />
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {NRI_TRUST_STATS.map((stat, i) => (
+                <div
+                  key={stat.label}
+                  className={`px-4 sm:px-6 py-6 sm:py-7 text-center ${
+                    i === 0 ? "border-r border-champagne-gold/10" :
+                    i === 1 ? "md:border-r md:border-champagne-gold/10" :
+                    i === 2 ? "border-r border-champagne-gold/10" : ""
+                  } ${
+                    i < 2 ? "border-b border-champagne-gold/10 md:border-b-0" : ""
+                  }`}
+                >
+                  <p className="font-display text-2xl sm:text-3xl md:text-4xl text-champagne-gold font-light tracking-wide">
+                    {stat.label}
+                  </p>
+                  <p className="mt-1 sm:mt-1.5 text-[9px] font-sans uppercase tracking-[0.18em] text-ivory/40">
+                    {stat.sub}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}
