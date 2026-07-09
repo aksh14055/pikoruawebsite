@@ -273,7 +273,7 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                         width={224}
                         height={48}
                         quality={75}
-                        className="h-6 w-auto object-contain"
+                        className="h-10 w-auto object-contain"
                       />
                     </div>
 

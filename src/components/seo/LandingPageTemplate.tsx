@@ -54,10 +54,10 @@ const NRI_TIMELINE_STEPS = [
 ];
 
 const NRI_TRUST_STATS = [
-  { label: "12+ Years", sub: "In the Ahmedabad market" },
-  { label: "100%", sub: "RERA-verified properties" },
-  { label: "8 Countries", sub: "NRI clients served" },
-  { label: "< 2 hrs", sub: "Advisory response time" },
+  { label: "12+", sub: "Years in the Ahmedabad market" },
+  { label: "100%", sub: "RERA-verified properties only" },
+  { label: "8", sub: "NRI client countries served" },
+  { label: "< 2 hrs", sub: "Typical advisory response" },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -101,12 +101,18 @@ export function LandingPageTemplate({
       <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
 
         {/* ─── HERO ─── */}
-        <section className="relative min-h-[85vh] sm:min-h-[80vh] pt-24 pb-28 sm:pt-28 sm:pb-32 lg:pt-40 lg:pb-40 overflow-hidden">
+        <section
+          className={
+            page.kind === "nri"
+              ? "relative min-h-[560px] overflow-hidden pt-24 pb-20 sm:min-h-[600px] sm:pt-28 sm:pb-24 lg:min-h-[680px] lg:pt-36 lg:pb-28"
+              : "relative min-h-[85vh] overflow-hidden pt-24 pb-28 sm:min-h-[80vh] sm:pt-28 sm:pb-32 lg:pt-40 lg:pb-40"
+          }
+        >
           <Image
             src={page.heroImage}
             alt={page.h1}
             fill
-            quality={80}
+            quality={75}
             preload
             sizes="100vw"
             className="object-cover object-center"
@@ -119,7 +125,7 @@ export function LandingPageTemplate({
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              {/* Breadcrumb — location pages only */}
+              {/* Breadcrumb — non-NRI pages only */}
               {page.kind !== "nri" && (
                 <Breadcrumb
                   items={[
@@ -141,32 +147,30 @@ export function LandingPageTemplate({
               <h1
                 className={
                   page.kind === "nri"
-                    ? "font-display text-[clamp(1.8rem,4vw,3.6rem)] font-light uppercase tracking-wider leading-[1.05]"
+                    ? "max-w-xl text-balance font-display text-[clamp(1.8rem,4vw,3.6rem)] font-light uppercase leading-[1.08] tracking-[0.04em]"
                     : "font-display text-[clamp(2.4rem,5.5vw,5rem)] font-light uppercase tracking-wider leading-[1.02]"
                 }
               >
                 {page.h1}
               </h1>
 
-              {/* Description — location pages only */}
-              {page.kind !== "nri" && (
-                <p className="mt-7 text-sm sm:text-base text-ivory/60 font-sans leading-relaxed max-w-xl">
-                  {page.description}
-                </p>
-              )}
+              {/* Description — all page kinds */}
+              <p className="mt-7 text-sm sm:text-base text-ivory/65 font-sans leading-relaxed max-w-xl">
+                {page.description}
+              </p>
 
-              <div className={`flex flex-col sm:flex-row gap-3 ${page.kind === "nri" ? "mt-8" : "mt-10"}`}>
+              <div className={`flex flex-col min-[560px]:flex-row gap-3 ${page.kind === "nri" ? "mt-8" : "mt-10"}`}>
                 <Link
                   href={collectionHref}
-                  className="inline-flex w-full sm:w-auto min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-lux-black bg-champagne-gold hover:bg-antique-gold transition-colors duration-200 rounded-sm"
+                  className="inline-flex min-h-[50px] w-full items-center justify-center rounded-sm bg-champagne-gold px-9 py-3 font-sans text-xs uppercase tracking-[0.2em] text-lux-black transition-colors duration-200 hover:bg-antique-gold min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.14em]"
                 >
-                  {isAdvisoryCta ? "Request NRI Advisory" : "View Matching Properties"}
+                  {isAdvisoryCta ? "Request Advisory" : "View Properties"}
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex w-full sm:w-auto min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-champagne-gold border border-champagne-gold/45 hover:border-champagne-gold hover:bg-champagne-gold/[0.05] transition-colors duration-200 rounded-sm"
+                  className="inline-flex min-h-[50px] w-full items-center justify-center rounded-sm border border-champagne-gold/45 px-9 py-3 font-sans text-xs uppercase tracking-[0.2em] text-champagne-gold transition-colors duration-200 hover:border-champagne-gold hover:bg-champagne-gold/[0.05] min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.14em]"
                 >
-                  Request Private Advisory
+                  Private Advisory
                 </Link>
               </div>
             </div>
@@ -175,25 +179,32 @@ export function LandingPageTemplate({
 
         {/* ─── NRI TRUST STRIP ─── */}
         {page.kind === "nri" && (
-          <div className="relative z-10 -mt-20 sm:-mt-24 border border-champagne-gold/15 bg-lux-black/60 backdrop-blur-md mx-4 sm:mx-6 lg:mx-8 max-w-6xl xl:mx-auto">
+          <div className="relative z-10 -mt-12 max-w-6xl bg-lux-black/85 backdrop-blur-md sm:-mt-16 lg:-mt-20 md:mx-8 xl:mx-auto border border-champagne-gold/15">
             {/* Top shimmer */}
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/40 to-transparent" />
-            <div className="grid grid-cols-2 md:grid-cols-4">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/50 to-transparent" />
+            {/* Bottom shimmer */}
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/20 to-transparent" />
+            {/* Ambient gold glow — top-left origin */}
+            <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-champagne-gold/[0.04] blur-[80px] pointer-events-none" />
+
+            <div className="grid grid-cols-2 min-[560px]:grid-cols-4">
               {NRI_TRUST_STATS.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`px-4 sm:px-6 py-6 sm:py-7 text-center ${
+                  className={`relative px-6 py-7 min-[560px]:py-8 sm:px-8 ${
                     i === 0 ? "border-r border-champagne-gold/10" :
-                    i === 1 ? "md:border-r md:border-champagne-gold/10" :
+                    i === 1 ? "min-[560px]:border-r min-[560px]:border-champagne-gold/10" :
                     i === 2 ? "border-r border-champagne-gold/10" : ""
                   } ${
-                    i < 2 ? "border-b border-champagne-gold/10 md:border-b-0" : ""
+                    i < 2 ? "border-b border-champagne-gold/10 min-[560px]:border-b-0" : ""
                   }`}
                 >
-                  <p className="font-display text-2xl sm:text-3xl md:text-4xl text-champagne-gold font-light tracking-wide">
+                  {/* Gold accent rule */}
+                  <div className="w-5 h-px bg-champagne-gold/50 mb-4" aria-hidden="true" />
+                  <p className="font-display text-2xl font-light tracking-wide text-champagne-gold min-[420px]:text-3xl min-[560px]:text-2xl md:text-3xl lg:text-[2.2rem] xl:text-[2.6rem] leading-none">
                     {stat.label}
                   </p>
-                  <p className="mt-1 sm:mt-1.5 text-[9px] font-sans uppercase tracking-[0.18em] text-ivory/40">
+                  <p className="mt-2.5 font-sans text-[9px] uppercase leading-[1.5] tracking-[0.16em] text-ivory/55 max-w-[10rem]">
                     {stat.sub}
                   </p>
                 </div>
@@ -302,6 +313,8 @@ export function LandingPageTemplate({
                           key={step.step}
                           className="group relative flex gap-4 items-start p-5 rounded-sm overflow-hidden border border-white/[0.07] bg-lux-black/60 hover:border-champagne-gold/30 hover:bg-lux-black/90 transition-all duration-300"
                         >
+                          {/* Top accent line on hover */}
+                          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/0 to-transparent group-hover:via-champagne-gold/40 transition-all duration-500" />
                           {/* Decorative large step number */}
                           <span
                             className="absolute right-3 bottom-2 font-display text-[6rem] leading-none font-light select-none pointer-events-none text-champagne-gold/[0.06]"
@@ -309,18 +322,13 @@ export function LandingPageTemplate({
                           >
                             {step.step}
                           </span>
-                          {/* Top accent line on hover */}
-                          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/0 to-transparent group-hover:via-champagne-gold/40 transition-all duration-500" />
 
                           <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-champagne-gold/[0.07] border border-champagne-gold/20 rounded-sm group-hover:border-champagne-gold/50 group-hover:bg-champagne-gold/[0.12] transition-all duration-300">
                             <IconComponent className="w-4 h-4 text-champagne-gold/80" />
                           </div>
                           <div className="relative z-10">
-                            <div className="flex items-baseline gap-2 mb-1.5">
-                              <span className="text-[9px] font-sans font-bold text-champagne-gold/40 tracking-[0.2em]">{step.step}</span>
-                              <h3 className="text-sm font-sans font-semibold text-white/90 tracking-wide">{step.title}</h3>
-                            </div>
-                            <p className="text-xs text-ivory/45 font-sans leading-relaxed">{step.description}</p>
+                            <h3 className="text-sm font-sans font-semibold text-white/90 tracking-wide mb-1.5">{step.title}</h3>
+                            <p className="text-xs text-ivory/55 font-sans leading-relaxed">{step.description}</p>
                           </div>
                         </div>
                       );
@@ -328,16 +336,14 @@ export function LandingPageTemplate({
                   </div>
                 </div>
 
-                {/* Right: WhatsApp / Contact Card — shown first on mobile via order */}
+                {/* Right: WhatsApp / Contact Card — shown first on mobile */}
                 <div className="lg:col-span-4 order-first lg:order-last lg:sticky lg:top-28">
                   <div className="relative overflow-hidden border border-champagne-gold/25 bg-lux-black/90 rounded-sm backdrop-blur-md shadow-2xl shadow-black/40">
                     {/* Top shimmer line */}
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/60 to-transparent" />
-                    {/* Subtle inner glow */}
                     <div className="absolute inset-0 bg-gradient-to-b from-champagne-gold/[0.03] to-transparent pointer-events-none" />
 
                     <div className="relative p-7 sm:p-8">
-                      {/* Online status */}
                       <div className="flex items-center gap-2 mb-5">
                         <span className="relative flex h-2.5 w-2.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
@@ -376,7 +382,7 @@ export function LandingPageTemplate({
                       </div>
 
                       <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center justify-between">
-                        <p className="text-[9px] font-sans text-ivory/35 uppercase tracking-[0.15em]">
+                        <p className="text-[9px] font-sans text-ivory/50 uppercase tracking-[0.15em]">
                           Typical response
                         </p>
                         <p className="text-[10px] font-sans text-champagne-gold/60 font-medium">
@@ -444,7 +450,7 @@ export function LandingPageTemplate({
                       </h3>
                       <p className="mt-2 text-sm text-ivory/50 font-sans">{property.sizeRange}</p>
                       <div className="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between gap-4">
-                        <span className="text-xs text-ivory/40 font-sans">
+                        <span className="text-xs text-ivory/50 font-sans">
                           {RESIDENTIAL_CATEGORY_LABELS[property.category]}
                         </span>
                         <span className="text-xs text-champagne-gold/80 font-sans uppercase tracking-[0.14em]">
@@ -478,7 +484,7 @@ export function LandingPageTemplate({
                     Currency Converter
                   </h2>
                 </div>
-                <p className="text-xs text-ivory/40 font-sans max-w-xs leading-relaxed">
+                <p className="text-xs text-ivory/50 font-sans max-w-xs leading-relaxed">
                   See what Ahmedabad luxury properties cost in your home currency, updated with live mid-market rates.
                 </p>
               </div>
@@ -635,7 +641,7 @@ export function LandingPageTemplate({
                     href={related.href}
                     className="group relative overflow-hidden border border-white/[0.07] rounded-sm p-6 hover:border-champagne-gold/35 hover:bg-gradient-to-br hover:from-champagne-gold/[0.04] hover:to-transparent transition-all duration-300"
                   >
-                    <span className="text-[9px] uppercase tracking-[0.2em] text-ivory/30 font-sans">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-ivory/50 font-sans">
                       {related.eyebrow}
                     </span>
                     <h3 className="mt-3 font-display text-lg uppercase tracking-wide text-ivory group-hover:text-champagne-gold transition-colors duration-200 leading-snug pr-6">

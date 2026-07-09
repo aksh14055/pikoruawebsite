@@ -1599,16 +1599,16 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     ],
     collectionHref: "/properties",
     intro:
-      "PIKORUA Realty advises NRI buyers who want a trusted local partner in Ahmedabad for shortlist curation, virtual walkthroughs, legal coordination, RERA checks, negotiation, registration, and post-purchase handover support.",
+      "PIKORUA Realty is a private NRI advisory in Ahmedabad — shortlist curation, virtual walkthroughs, RERA and legal checks, negotiation, registration, and handover.",
     marketSignals: [
-      "NRI demand is strongest for recognised western Ahmedabad corridors such as Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, and SG Highway.",
-      "Remote buyers need document-led advisory, not just property discovery, because title, payment routing, POA, TDS, and handover details affect execution risk.",
-      "The most suitable NRI properties are often ready or near-possession residences, low-density luxury towers, penthouses, villas, and legally clear residential plots.",
+      "Western corridors — Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, SG Highway — drive the highest NRI demand.",
+      "Remote buyers need document-led advisory: title, payment routing, POA, TDS, and handover each carry execution risk.",
+      "Ready or near-possession residences, low-density luxury towers, penthouses, villas, and clear-title plots fit NRI briefs best.",
     ],
     idealFor: [
-      "Gujarati and Indian NRIs based in the USA, UK, UAE, Canada, Australia, Singapore, and other overseas markets.",
-      "Families buying a future Ahmedabad base without being present for every site visit or negotiation.",
-      "NRI investors who want a private advisory instead of public portal browsing and unverified broker calls.",
+      "Gujarati and Indian NRIs based in the USA, UK, UAE, Canada, Australia, or Singapore.",
+      "Families buying a future Ahmedabad base without being present for every site visit.",
+      "NRI investors who want private advisory over public portal browsing.",
     ],
     faqs: [
       {
@@ -1662,13 +1662,9 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     ],
     bodyContent: [
       "### Private NRI Property Advisory in Ahmedabad",
-      "For an NRI buyer, the challenge is not finding a list of properties. The challenge is knowing which properties are worth trusting from abroad. PIKORUA Realty works as a private ground advisor for NRI buyers evaluating luxury homes, investment assets, and future family residences in Ahmedabad.",
-      "### What We Handle",
-      "Our advisory process covers requirement mapping, corridor selection, curated shortlist creation, virtual walkthrough coordination, RERA and title-document review with legal partners, negotiation support, payment milestone planning, Power of Attorney coordination, registration support, and handover follow-through.",
-      "### Why NRI Buyers Need a Local Specialist",
-      "A remote buyer faces different risks from a local buyer: incomplete project information, unclear resale title chains, inaccurate price guidance, pressure from unverified brokers, and difficulty judging whether a building or corridor has long-term liquidity. A local specialist reduces those risks by filtering inventory before the buyer spends time or money.",
-      "### Core Keywords Covered",
-      "This advisory page directly supports searches such as NRI property consultant Ahmedabad, NRI real estate consultant Ahmedabad, NRI property advisor Ahmedabad, NRI property advisory Ahmedabad, NRI property assistance Ahmedabad, and NRI luxury property Ahmedabad.",
+      "For an NRI buyer, the challenge is not finding a list of properties — it is knowing which ones are worth trusting from abroad. PIKORUA Realty works as a private ground advisor for NRI buyers evaluating luxury homes, investment assets, and future family residences in Ahmedabad.",
+      "### Why a Local Specialist Matters",
+      "A remote buyer faces risks a local buyer does not: unclear title chains, inaccurate price guidance, pressure from unverified brokers, and no reliable way to judge corridor liquidity. A local specialist filters inventory before the buyer spends time or money.",
     ],
   },
   {
