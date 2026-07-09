@@ -119,13 +119,16 @@ export function LandingPageTemplate({
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
-              <Breadcrumb
-                items={[
-                  { label: "Home", href: "/" },
-                  parentCrumb,
-                  { label: page.label },
-                ]}
-              />
+              {/* Breadcrumb — location pages only */}
+              {page.kind !== "nri" && (
+                <Breadcrumb
+                  items={[
+                    { label: "Home", href: "/" },
+                    parentCrumb,
+                    { label: page.label },
+                  ]}
+                />
+              )}
 
               {/* Eyebrow */}
               <div className="flex items-center gap-4 mb-6">
@@ -135,13 +138,24 @@ export function LandingPageTemplate({
                 </p>
               </div>
 
-              <h1 className="font-display text-[clamp(2.4rem,5.5vw,5rem)] font-light uppercase tracking-wider leading-[1.02]">
+              <h1
+                className={
+                  page.kind === "nri"
+                    ? "font-display text-[clamp(1.8rem,4vw,3.6rem)] font-light uppercase tracking-wider leading-[1.05]"
+                    : "font-display text-[clamp(2.4rem,5.5vw,5rem)] font-light uppercase tracking-wider leading-[1.02]"
+                }
+              >
                 {page.h1}
               </h1>
-              <p className="mt-7 text-sm sm:text-base text-ivory/60 font-sans leading-relaxed max-w-xl">
-                {page.description}
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-3">
+
+              {/* Description — location pages only */}
+              {page.kind !== "nri" && (
+                <p className="mt-7 text-sm sm:text-base text-ivory/60 font-sans leading-relaxed max-w-xl">
+                  {page.description}
+                </p>
+              )}
+
+              <div className={`flex flex-col sm:flex-row gap-3 ${page.kind === "nri" ? "mt-8" : "mt-10"}`}>
                 <Link
                   href={collectionHref}
                   className="inline-flex w-full sm:w-auto min-h-[50px] items-center justify-center px-9 py-3 text-xs font-sans uppercase tracking-[0.2em] text-lux-black bg-champagne-gold hover:bg-antique-gold transition-colors duration-200 rounded-sm"
