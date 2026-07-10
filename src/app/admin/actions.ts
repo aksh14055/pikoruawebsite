@@ -227,6 +227,30 @@ export async function createOrUpdateProperty(property: any) {
 }
 
 /**
+ * Updates only the image_alts column for a property. Used by the bulk
+ * "Generate Missing Alt Text" action so it doesn't have to resend every
+ * other property field (unlike createOrUpdateProperty's full upsert) just
+ * to persist AI-generated alt text.
+ */
+export async function updatePropertyImageAlts(id: string, imageAlts: Record<string, string>) {
+  await requireAuth();
+  const supabase = createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from("properties")
+    .update({ image_alts: imageAlts })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error updating property image alts:", error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/properties");
+  return { success: true };
+}
+
+/**
  * Deletes a property from the database.
  */
 export async function deleteProperty(id: string, slug: string) {

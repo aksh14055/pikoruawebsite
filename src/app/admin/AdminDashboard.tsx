@@ -7,6 +7,7 @@ import {
   updateLeadStatus,
   createOrUpdateProperty,
   deleteProperty,
+  updatePropertyImageAlts,
   createOrUpdateTestimonial,
   deleteTestimonial,
   uploadImageAction,
@@ -198,6 +199,12 @@ export default function AdminDashboard({
   // Image tagging states
   const [generatingImageAlts, setGeneratingImageAlts] = useState<Record<string, boolean>>({});
   const [generatingAllImageAlts, setGeneratingAllImageAlts] = useState<boolean>(false);
+  const [bulkAltProgress, setBulkAltProgress] = useState<{ current: number; total: number; active: boolean; propertyName: string }>({
+    current: 0,
+    total: 0,
+    active: false,
+    propertyName: "",
+  });
 
   const [generatingLeadReply, setGeneratingLeadReply] = useState<Record<string, boolean>>({});
 
@@ -1089,6 +1096,73 @@ export default function AdminDashboard({
     }
   };
 
+  // Bulk-tags every property in the portfolio that has at least one image
+  // missing alt text, persisting to Supabase after each property so partial
+  // progress survives if the browser tab closes mid-run.
+  const handleBulkGenerateMissingAlts = async () => {
+    const targets = properties.filter((p) => {
+      const images = Array.from(new Set([p.coverImage, ...(p.images || [])].filter(Boolean)));
+      const alts = p.imageAlts || {};
+      return images.some((img) => !alts[img]);
+    });
+
+    if (targets.length === 0) {
+      alert("Every property already has alt text on all its images.");
+      return;
+    }
+
+    const totalImages = targets.reduce((sum, p) => {
+      const images = Array.from(new Set([p.coverImage, ...(p.images || [])].filter(Boolean)));
+      const alts = p.imageAlts || {};
+      return sum + images.filter((img) => !alts[img]).length;
+    }, 0);
+
+    setBulkAltProgress({ current: 0, total: totalImages, active: true, propertyName: "" });
+
+    let processed = 0;
+    let taggedProperties = 0;
+    try {
+      for (const property of targets) {
+        const images = Array.from(new Set([property.coverImage, ...(property.images || [])].filter(Boolean)));
+        const alts = { ...(property.imageAlts || {}) };
+        let changed = false;
+
+        for (const imgUrl of images) {
+          if (!alts[imgUrl]) {
+            setBulkAltProgress((prev) => ({ ...prev, propertyName: property.name }));
+            try {
+              const result = await generateImageAltAction(
+                imgUrl,
+                property.name,
+                property.locationLabel,
+                property.configuration || ""
+              );
+              if (result.success && result.altText) {
+                alts[imgUrl] = result.altText;
+                changed = true;
+              }
+            } catch (err) {
+              console.error(`Failed alt text for ${imgUrl}:`, err);
+            }
+            processed++;
+            setBulkAltProgress((prev) => ({ ...prev, current: processed }));
+          }
+        }
+
+        if (changed) {
+          await updatePropertyImageAlts(property.id, alts);
+          setProperties((prev) => prev.map((p) => (p.id === property.id ? { ...p, imageAlts: alts } : p)));
+          taggedProperties++;
+        }
+      }
+      alert(`Alt text generated for ${taggedProperties} of ${targets.length} properties (${processed} images).`);
+    } catch (err: any) {
+      alert("Bulk alt-text generation stopped early: " + err.message);
+    } finally {
+      setBulkAltProgress({ current: 0, total: 0, active: false, propertyName: "" });
+    }
+  };
+
   const handleWhatsAppAiReply = async (lead: any) => {
     if (!lead.phone) {
       alert("No phone number available for this lead.");
@@ -1853,14 +1927,39 @@ export default function AdminDashboard({
                 <p className="text-xs text-ivory/40">
                   Manage the luxury residential portfolio displayed in the collection.
                 </p>
-                <button
-                  onClick={handleOpenAddProperty}
-                  className="inline-flex items-center gap-2 bg-champagne-gold text-lux-black text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:bg-antique-gold transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Property
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleBulkGenerateMissingAlts}
+                    disabled={bulkAltProgress.active}
+                    className="inline-flex items-center gap-2 border border-champagne-gold/40 text-champagne-gold text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:border-champagne-gold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Generate AI alt text for every property image that's missing it"
+                  >
+                    {bulkAltProgress.active ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4" />
+                    )}
+                    {bulkAltProgress.active
+                      ? `Tagging ${bulkAltProgress.current}/${bulkAltProgress.total}…`
+                      : "Generate Missing Alt Text"}
+                  </button>
+                  <button
+                    onClick={handleOpenAddProperty}
+                    className="inline-flex items-center gap-2 bg-champagne-gold text-lux-black text-xs uppercase tracking-wider font-semibold py-2 px-4 rounded-sm hover:bg-antique-gold transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Property
+                  </button>
+                </div>
               </div>
+              {bulkAltProgress.active && (
+                <div className="bg-soft-black border border-champagne-gold/20 rounded-sm px-4 py-3 text-xs text-ivory/60 flex items-center gap-3">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-champagne-gold flex-shrink-0" />
+                  <span>
+                    Generating alt text for <span className="text-champagne-gold">{bulkAltProgress.propertyName || "…"}</span> — image {bulkAltProgress.current} of {bulkAltProgress.total}
+                  </span>
+                </div>
+              )}
 
               <div className="bg-soft-black border border-white/[0.06] rounded-sm overflow-hidden shadow-xl">
                 <table className="w-full border-collapse text-left text-xs text-ivory/80">

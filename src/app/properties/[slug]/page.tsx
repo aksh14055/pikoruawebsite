@@ -22,6 +22,19 @@ interface PropertyPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Parses "₹5.50 Cr" or "₹5.50 Cr – ₹8.25 Cr" into INR values for structured
+// data. Returns null on anything that doesn't match — we'd rather omit a
+// numeric price from schema than emit one that doesn't match the visible copy.
+function parsePriceCrore(priceStr?: string): { low: number; high: number } | null {
+  if (!priceStr) return null;
+  const match = priceStr.match(/₹\s*([\d.]+)\s*Cr(?:\s*[–-]\s*₹?\s*([\d.]+)\s*Cr)?/i);
+  if (!match) return null;
+  const low = parseFloat(match[1]);
+  const high = match[2] ? parseFloat(match[2]) : low;
+  if (Number.isNaN(low) || Number.isNaN(high)) return null;
+  return { low: low * 10000000, high: high * 10000000 }; // Crore -> INR
+}
+
 export async function generateStaticParams() {
   let dbSlugs: string[] = [];
   try {
@@ -107,6 +120,44 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
     images: allImages,
   });
 
+  const priceRange = !property.priceOnRequest ? parsePriceCrore(property.price) : null;
+
+  const offers = priceRange
+    ? priceRange.low === priceRange.high
+      ? {
+          "@type": "Offer",
+          "@id": `${canonicalUrl}#offer`,
+          url: canonicalUrl,
+          availability: "https://schema.org/InStock",
+          price: priceRange.low,
+          priceCurrency: "INR",
+          seller: { "@id": `${SITE_URL}#real-estate-agent` },
+        }
+      : {
+          "@type": "AggregateOffer",
+          "@id": `${canonicalUrl}#offer`,
+          url: canonicalUrl,
+          availability: "https://schema.org/InStock",
+          lowPrice: priceRange.low,
+          highPrice: priceRange.high,
+          priceCurrency: "INR",
+          offerCount: 1,
+          seller: { "@id": `${SITE_URL}#real-estate-agent` },
+        }
+    : {
+        "@type": "Offer",
+        "@id": `${canonicalUrl}#offer`,
+        url: canonicalUrl,
+        availability: "https://schema.org/InStock",
+        priceCurrency: "INR",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          priceCurrency: "INR",
+          description: priceDisplay,
+        },
+        seller: { "@id": `${SITE_URL}#real-estate-agent` },
+      };
+
   const productSchema = {
     "@type": "Product",
     "@id": `${canonicalUrl}#product`,
@@ -119,21 +170,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
     brand: {
       "@id": `${SITE_URL}#real-estate-agent`,
     },
-    offers: {
-      "@type": "Offer",
-      "@id": `${canonicalUrl}#offer`,
-      url: canonicalUrl,
-      availability: "https://schema.org/InStock",
-      priceCurrency: "INR",
-      priceSpecification: {
-        "@type": "PriceSpecification",
-        priceCurrency: "INR",
-        description: priceDisplay,
-      },
-      seller: {
-        "@id": `${SITE_URL}#real-estate-agent`,
-      },
-    },
+    offers,
   };
 
   // Schema: BreadcrumbList
