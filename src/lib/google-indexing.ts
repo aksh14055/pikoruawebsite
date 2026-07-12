@@ -22,7 +22,16 @@ function base64url(str: string): string {
     .replace(/\//g, "_");
 }
 
-async function getGoogleAuthToken(serviceAccountJson: string): Promise<string> {
+/**
+ * Exchanges the service account for a bearer token scoped to the given API.
+ * Defaults to the Indexing API scope; pass a different scope (e.g. Search
+ * Console's webmasters.readonly) to reuse this for other Google APIs that
+ * accept the same service account.
+ */
+export async function getGoogleAuthToken(
+  serviceAccountJson: string,
+  scope: string = "https://www.googleapis.com/auth/indexing",
+): Promise<string> {
   const account = JSON.parse(serviceAccountJson);
   const privateKey = (account.private_key as string).replace(/\\n/g, "\n");
   const clientEmail = account.client_email as string;
@@ -32,7 +41,7 @@ async function getGoogleAuthToken(serviceAccountJson: string): Promise<string> {
   const payload = base64url(
     JSON.stringify({
       iss: clientEmail,
-      scope: "https://www.googleapis.com/auth/indexing",
+      scope,
       aud: TOKEN_ENDPOINT,
       exp: now + 3600,
       iat: now,
