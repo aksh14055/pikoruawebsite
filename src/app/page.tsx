@@ -19,12 +19,12 @@ import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData, getSupabaseHomePageContent } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
 import { getFirstSentence } from "@/lib/utils";
-import { createMetadata, serializeJsonLd, absoluteUrl } from "@/lib/seo";
+import { createMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
-  const defaultTitle = "Luxury Property Consultant Ahmedabad — PIKORUA Realty";
-  const defaultDesc = "PIKORUA Realty is a trusted luxury property consultant in Ahmedabad, specialising in 4 BHK, 5 BHK, penthouses, villas, and bungalows for HNI and NRI buyers. We advise on premium residential properties across Sindhu Bhavan Road, Iscon Ambli Road, Thaltej, Vastrapur, Bodakdev, and SG Highway.";
+  const defaultTitle = "PIKORUA Realty | Luxury Property Consultant in Ahmedabad";
+  const defaultDesc = "Private luxury property advisory in Ahmedabad for 4/5 BHK apartments, penthouses, villas, and NRI buyers across Iscon-Ambli, SBR, Thaltej, and SG Highway.";
 
   return createMetadata({
     title: seo?.seoTitle || defaultTitle,

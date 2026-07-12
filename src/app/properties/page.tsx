@@ -12,8 +12,8 @@ import type { GeneralFaq } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("properties");
-  const defaultTitle = "Curated Luxury Properties in Ahmedabad";
-  const defaultDesc = "Browse PIKORUA's curated portfolio of luxury real estate in Ahmedabad with a residential-first focus — apartments, penthouses, duplexes, villas, bungalows, premium plots, and strategic investments.";
+  const defaultTitle = "Luxury Properties in Ahmedabad | 4/5 BHK, Villas, Penthouses";
+  const defaultDesc = "Explore curated luxury homes in Ahmedabad across Iscon-Ambli, Sindhu Bhavan, Thaltej, and SG Highway. Private advisory for HNI and NRI buyers.";
 
   return createMetadata({
     title: seo?.seoTitle || defaultTitle,
@@ -60,13 +60,13 @@ export default async function PropertiesPage() {
   const finalFaqs = categoryFaqs.length > 0 ? categoryFaqs : FALLBACK_PROPERTY_FAQ_ITEMS;
 
   const pageDescription =
-    "A curated collection of luxury residential properties in Ahmedabad, including apartments, penthouses, villas, bungalows, plots, and investment-led residences.";
+    "Curated luxury residential properties in Ahmedabad, including 4/5 BHK apartments, penthouses, villas, bungalows, plots, and investment-led residences.";
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "@id": absoluteUrl("/properties#webpage"),
     url: absoluteUrl("/properties"),
-    name: "Curated Luxury Properties in Ahmedabad",
+    name: "Luxury Properties in Ahmedabad",
     description: pageDescription,
     about: {
       "@id": `${SITE_URL}#real-estate-agent`,

@@ -7,17 +7,18 @@ import type { LocationSlug } from "@/types";
 
 interface LocationItem {
   slug: Exclude<LocationSlug, "other">;
+  href: string;
   label: string;
   descriptor: string;
 }
 
 const LOCATIONS: LocationItem[] = [
-  { slug: "sg-highway",    label: "SG Highway",    descriptor: "Ahmedabad's premier luxury spine" },
-  { slug: "sindhu-bhavan", label: "Sindhu Bhavan", descriptor: "Wide boulevards, luxury towers, prime connectivity" },
-  { slug: "iskon-ambli",   label: "Iskon-Ambli",   descriptor: "West Corridor's established prestige address" },
-  { slug: "thaltej",       label: "Thaltej",        descriptor: "Quiet residential charm with premium neighbours" },
-  { slug: "shilaj",        label: "Shilaj",         descriptor: "Expanding luxury at Ahmedabad's growing edge" },
-  { slug: "vaishno-devi",  label: "Vaishno Devi",  descriptor: "Upcoming corridor with exceptional value" },
+  { slug: "sg-highway",    href: "/sg-highway-properties",          label: "SG Highway",    descriptor: "Ahmedabad's premier luxury spine" },
+  { slug: "sindhu-bhavan", href: "/sindhu-bhavan-road-properties",  label: "Sindhu Bhavan", descriptor: "Wide boulevards, luxury towers, prime connectivity" },
+  { slug: "iskon-ambli",   href: "/iscon-ambli-road-properties",    label: "Iskon-Ambli",   descriptor: "West Corridor's established prestige address" },
+  { slug: "thaltej",       href: "/thaltej-properties",             label: "Thaltej",        descriptor: "Quiet residential charm with premium neighbours" },
+  { slug: "shilaj",        href: "/locations/shilaj",               label: "Shilaj",         descriptor: "Expanding luxury at Ahmedabad's growing edge" },
+  { slug: "vaishno-devi",  href: "/locations/vaishno-devi",         label: "Vaishno Devi",  descriptor: "Upcoming corridor with exceptional value" },
 ];
 
 export function LocationGrid() {
@@ -42,7 +43,7 @@ export function LocationGrid() {
           {LOCATIONS.map((loc, i) => (
             <Link
               key={loc.slug}
-              href={`/locations/${loc.slug}`}
+              href={loc.href}
               className={cn(
                 "group bg-soft-black p-5 sm:p-8 border border-transparent hover:border-champagne-gold/40 transition-all duration-300",
                 "hover:bg-lux-black",

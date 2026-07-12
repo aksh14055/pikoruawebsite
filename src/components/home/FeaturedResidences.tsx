@@ -3,6 +3,13 @@ import { getSupabaseFeaturedProperties } from "@/lib/supabase/queries";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { LazyFeaturedResidencesGrid } from "./LazyFeaturedResidencesGrid";
 
+const POPULAR_PROPERTY_LINKS = [
+  { href: "/luxury-apartments-ahmedabad", label: "Luxury apartments" },
+  { href: "/penthouses-ahmedabad", label: "Penthouses" },
+  { href: "/luxury-villas-ahmedabad", label: "Villas & bungalows" },
+  { href: "/nri-property-investment-ahmedabad", label: "NRI advisory" },
+] as const;
+
 export async function FeaturedResidences() {
   let properties: Awaited<ReturnType<typeof getSupabaseFeaturedProperties>> = [];
   try {
@@ -41,6 +48,18 @@ export async function FeaturedResidences() {
               <p className="text-[11px] font-sans text-ivory/50 leading-relaxed">
                 Each property is curated for its location, lifestyle value, privacy, and long-term potential.
               </p>
+
+              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+                {POPULAR_PROPERTY_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-[10px] font-sans uppercase tracking-[0.14em] text-ivory/45 transition-colors duration-150 hover:text-champagne-gold"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
             {/* Right: View all link */}

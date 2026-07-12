@@ -25,7 +25,7 @@ const CATEGORIES: Category[] = [
     cta: "Explore Apartments",
     imageUrl: "/properties/anamika/anamika.jpg",
     location: "Iskon-Ambli Road",
-    href: "/property-types/luxury-apartments-ahmedabad"
+    href: "/luxury-apartments-ahmedabad"
   },
   { 
     slug: "penthouse", 
@@ -34,7 +34,7 @@ const CATEGORIES: Category[] = [
     cta: "Explore Penthouses",
     imageUrl: "/properties/belrosa/belrosa-3-view.jpg",
     location: "Sindhu Bhavan",
-    href: "/property-types/penthouses-duplexes-ahmedabad"
+    href: "/penthouses-ahmedabad"
   },
   { 
     slug: "duplex", 
@@ -43,7 +43,7 @@ const CATEGORIES: Category[] = [
     cta: "Explore Duplex Homes",
     imageUrl: "/properties/ikebana/ikebana1.png",
     location: "Science City",
-    href: "/property-types/penthouses-duplexes-ahmedabad"
+    href: "/penthouses-ahmedabad"
   },
   { 
     slug: "villa", 
@@ -52,7 +52,7 @@ const CATEGORIES: Category[] = [
     cta: "Explore Villas",
     imageUrl: "/properties/belagio/belagio-pool.jpg",
     location: "Shilaj",
-    href: "/property-types/villas-bungalows-ahmedabad"
+    href: "/luxury-villas-ahmedabad"
   },
   { 
     slug: "plot", 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { LandingPageTemplate } from "@/components/seo/LandingPageTemplate";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import {
@@ -41,7 +41,7 @@ export default async function PropertyTypeLandingPage({ params }: PropertyTypePa
   }
 
   if (page.href !== `/property-types/${slug}`) {
-    redirect(page.href);
+    permanentRedirect(page.href);
   }
 
   const properties = getLandingProperties(page, STATIC_PROPERTIES);

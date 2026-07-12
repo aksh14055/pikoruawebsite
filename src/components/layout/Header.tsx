@@ -19,12 +19,22 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+const PROPERTY_ROOT_PATHS = [
+  "/luxury-apartments-ahmedabad",
+  "/penthouses-ahmedabad",
+  "/luxury-villas-ahmedabad",
+  "/sg-highway-properties",
+  "/sindhu-bhavan-road-properties",
+  "/iscon-ambli-road-properties",
+  "/thaltej-properties",
+];
+
 const PROPERTY_CATEGORIES = [
-  { slug: "apartment", label: "Apartments", href: "/property-types/luxury-apartments-ahmedabad" },
-  { slug: "penthouse", label: "Penthouses", href: "/property-types/penthouses-duplexes-ahmedabad" },
-  { slug: "duplex", label: "Duplexes", href: "/property-types/penthouses-duplexes-ahmedabad" },
-  { slug: "villa", label: "Villas", href: "/property-types/villas-bungalows-ahmedabad" },
-  { slug: "bungalow", label: "Bungalows", href: "/property-types/villas-bungalows-ahmedabad" },
+  { slug: "apartment", label: "Apartments", href: "/luxury-apartments-ahmedabad" },
+  { slug: "penthouse", label: "Penthouses", href: "/penthouses-ahmedabad" },
+  { slug: "duplex", label: "Duplexes", href: "/penthouses-ahmedabad" },
+  { slug: "villa", label: "Villas", href: "/luxury-villas-ahmedabad" },
+  { slug: "bungalow", label: "Bungalows", href: "/luxury-villas-ahmedabad" },
   { slug: "plot", label: "Plots / Land", href: "/property-types/residential-plots-ahmedabad" },
   { slug: "investment", label: "Investment Properties", href: "/property-types/luxury-residential-investment-ahmedabad" },
 ];
@@ -139,7 +149,8 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   (label === "Properties" &&
                     (pathname.startsWith("/properties") ||
                       pathname.startsWith("/property-types") ||
-                      pathname.startsWith("/locations"))) ||
+                      pathname.startsWith("/locations") ||
+                      PROPERTY_ROOT_PATHS.includes(pathname))) ||
                   (label === "NRI Advisory" &&
                     (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
 
@@ -183,19 +194,19 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                             </h4>
                             <div className="flex flex-col gap-2">
                               <HeaderLink
-                                href="/property-types/luxury-apartments-ahmedabad"
+                                href="/luxury-apartments-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Apartments
                               </HeaderLink>
                               <HeaderLink
-                                href="/property-types/penthouses-duplexes-ahmedabad"
+                                href="/penthouses-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Penthouses
                               </HeaderLink>
                               <HeaderLink
-                                href="/property-types/penthouses-duplexes-ahmedabad"
+                                href="/penthouses-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Duplexes
@@ -210,13 +221,13 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                             </h4>
                             <div className="flex flex-col gap-2">
                               <HeaderLink
-                                href="/property-types/villas-bungalows-ahmedabad"
+                                href="/luxury-villas-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Villas
                               </HeaderLink>
                               <HeaderLink
-                                href="/property-types/villas-bungalows-ahmedabad"
+                                href="/luxury-villas-ahmedabad"
                                 className="text-xs font-sans tracking-wider text-ivory/60 hover:text-champagne-gold transition-colors duration-150"
                               >
                                 Bungalows
@@ -375,7 +386,8 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
               (label === "Properties" &&
                 (pathname.startsWith("/properties") ||
                   pathname.startsWith("/property-types") ||
-                  pathname.startsWith("/locations"))) ||
+                  pathname.startsWith("/locations") ||
+                  PROPERTY_ROOT_PATHS.includes(pathname))) ||
               (label === "NRI Advisory" &&
                 (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
 
