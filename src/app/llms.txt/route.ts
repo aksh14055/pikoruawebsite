@@ -11,6 +11,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { AI_ANSWER_BLOCKS } from "@/lib/ai/answer-blocks";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
@@ -60,6 +61,11 @@ export async function GET() {
     `## Site Overview`,
     ``,
     `- [Full content index](${SITE_URL}/llms-full.txt)`,
+    `- [Structured AI facts](${SITE_URL}/ai/facts.json)`,
+    ``,
+    `## Direct Answer Topics`,
+    ``,
+    ...AI_ANSWER_BLOCKS.map((block) => `- ${block.question} Source: ${SITE_URL}${block.sourcePath}`),
     ``,
     `## Key Pages`,
     ``,

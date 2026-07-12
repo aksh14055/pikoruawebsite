@@ -10,6 +10,8 @@ const PROTECTED_PATHS = ["/studio/", "/api/", "/admin/", "/demo/"];
 // endpoints on the site. Explicitly allow all AI bots to access them.
 const AI_ALLOW_PATHS = [
   "/",
+  "/ai/",
+  "/ai/facts.json",
   "/properties",
   "/locations",
   "/property-types",
@@ -36,8 +38,11 @@ export default function robots(): MetadataRoute.Robots {
       // to the pages most valuable for synthesised answer citations
       {
         userAgent: [
-          "GPTBot",            // ChatGPT / OpenAI Search
-          "ChatGPT-User",      // ChatGPT browsing plugin
+          "OAI-SearchBot",     // OpenAI / ChatGPT Search
+          "GPTBot",            // OpenAI model-training crawler
+          "ChatGPT-User",      // ChatGPT user-triggered retrieval
+          "Claude-SearchBot",  // Claude search indexing
+          "Claude-User",       // Claude user-triggered retrieval
           "PerplexityBot",     // Perplexity AI
           "Google-Extended",   // Google Gemini / Bard training & search
           "ClaudeBot",         // Anthropic Claude search

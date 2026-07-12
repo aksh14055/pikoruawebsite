@@ -13,11 +13,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   // Core static pages
-  const coreRoutes = ["", "/properties", "/about", "/testimonials", "/blog", "/contact", "/privacy", "/terms"].map((route) => ({
+  const coreRoutes = [
+    "",
+    "/properties",
+    "/about",
+    "/testimonials",
+    "/blog",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/llms.txt",
+    "/llms-full.txt",
+    "/ai/facts.json",
+  ].map((route) => ({
     url: absoluteUrl(route),
     lastModified,
     changeFrequency: "weekly" as const,
-    priority: route === "" ? 1.0 : 0.8,
+    priority: route === "" ? 1.0 : route.startsWith("/llms") || route.startsWith("/ai/") ? 0.65 : 0.8,
   }));
 
   const geoRoutes = ALL_GEO_LANDING_PAGES.map((page) => ({

@@ -403,6 +403,12 @@ export default function RootLayout({
           title="PIKORUA Realty full AI content index"
           href={absoluteUrl("/llms-full.txt")}
         />
+        <link
+          rel="alternate"
+          type="application/json"
+          title="PIKORUA Realty structured AI facts"
+          href={absoluteUrl("/ai/facts.json")}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
         <GoogleAnalytics />

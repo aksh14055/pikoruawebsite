@@ -4,12 +4,13 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import { getLandingShortAnswer } from "@/lib/ai/answer-blocks";
 import type { GeoLandingPage } from "@/lib/data/geo";
 import { getLandingFilterHref, getRelatedLandingPages } from "@/lib/data/geo";
 import type { StaticProperty } from "@/lib/data/properties";
 import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
 import { env } from "@/lib/env";
-import { buildWhatsAppUrl } from "@/lib/utils";
+import { buildWhatsAppUrl, cn } from "@/lib/utils";
 import { ArrowRight, PhoneCall, MapPin, ShieldCheck, Landmark, FileText, CheckCircle2 } from "lucide-react";
 import { NriCurrencyConverter } from "./NriCurrencyConverter";
 import type { ExchangeRates } from "@/lib/exchange-rates";
@@ -54,10 +55,10 @@ const NRI_TIMELINE_STEPS = [
 ];
 
 const NRI_TRUST_STATS = [
-  { label: "12+", sub: "Years in the Ahmedabad market" },
-  { label: "100%", sub: "RERA-verified properties only" },
-  { label: "8", sub: "NRI client countries served" },
-  { label: "< 2 hrs", sub: "Typical advisory response" },
+  { label: "12+", sub: "Years in the Ahmedabad market", shortSub: "Years in Ahmedabad" },
+  { label: "100%", sub: "RERA-verified properties only", shortSub: "RERA verified" },
+  { label: "8", sub: "NRI client countries served", shortSub: "NRI countries served" },
+  { label: "< 2 hrs", sub: "Typical advisory response", shortSub: "Advisory response" },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -84,6 +85,7 @@ export function LandingPageTemplate({
   const relatedPages = getRelatedLandingPages(page);
   const collectionHref = getLandingFilterHref(page);
   const isAdvisoryCta = collectionHref.startsWith("/contact");
+  const landingAnswer = getLandingShortAnswer(page);
   const whatsappUrl = buildWhatsAppUrl(
     env.WHATSAPP_NUMBER,
     `Hi PIKORUA Realty, I am inquiring from abroad regarding the NRI residential advisory page: "${page.title}". I would like to schedule a private video consultation.`
@@ -94,6 +96,12 @@ export function LandingPageTemplate({
       : page.kind === "nri"
         ? { label: "NRI Advisory", href: "/nri/nri-property-consultant-ahmedabad" }
         : { label: "Properties", href: "/properties" };
+  const primaryCtaLabel = isAdvisoryCta
+    ? "Request Advisory"
+    : page.kind === "nri"
+      ? "View Matching Properties"
+      : "View Properties";
+  const secondaryCtaLabel = page.kind === "nri" ? "Request Private Advisory" : "Private Advisory";
 
   return (
     <>
@@ -104,7 +112,7 @@ export function LandingPageTemplate({
         <section
           className={
             page.kind === "nri"
-              ? "relative min-h-[560px] overflow-hidden pt-24 pb-20 sm:min-h-[600px] sm:pt-28 sm:pb-24 lg:min-h-[680px] lg:pt-36 lg:pb-28"
+              ? "relative min-h-[640px] overflow-hidden pt-24 pb-16 sm:min-h-[620px] sm:pt-28 sm:pb-24 lg:min-h-[680px] lg:pt-36 lg:pb-28"
               : "relative min-h-[85vh] overflow-hidden pt-24 pb-28 sm:min-h-[80vh] sm:pt-28 sm:pb-32 lg:pt-40 lg:pb-40"
           }
         >
@@ -115,11 +123,14 @@ export function LandingPageTemplate({
             quality={75}
             preload
             sizes="100vw"
-            className="object-cover object-center"
+            className={cn(
+              "object-cover",
+              page.kind === "nri" ? "object-[62%_center] sm:object-center" : "object-center"
+            )}
           />
           {/* Stronger left overlay, gentle top fade */}
-          <div className="absolute inset-0 bg-gradient-to-r from-lux-black via-lux-black/88 to-lux-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-lux-black/80 via-transparent to-lux-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-lux-black via-lux-black/90 to-lux-black/35 sm:via-lux-black/85 sm:to-lux-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-lux-black/80 via-lux-black/10 to-lux-black/15" />
           {/* Bottom fade blends into trust strip */}
           <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-lux-black via-lux-black/60 to-transparent" />
 
@@ -147,7 +158,7 @@ export function LandingPageTemplate({
               <h1
                 className={
                   page.kind === "nri"
-                    ? "max-w-xl text-balance font-display text-[clamp(1.8rem,4vw,3.6rem)] font-light uppercase leading-[1.08] tracking-[0.04em]"
+                    ? "max-w-xl text-balance font-display text-[clamp(2rem,6vw,3.6rem)] font-light uppercase leading-[1.05] tracking-[0.03em]"
                     : "font-display text-[clamp(2.4rem,5.5vw,5rem)] font-light uppercase tracking-wider leading-[1.02]"
                 }
               >
@@ -155,31 +166,62 @@ export function LandingPageTemplate({
               </h1>
 
               {/* Description — all page kinds */}
-              <p className="mt-7 text-sm sm:text-base text-ivory/65 font-sans leading-relaxed max-w-xl">
+              <p
+                className={cn(
+                  "font-sans leading-relaxed max-w-xl",
+                  page.kind === "nri"
+                    ? "mt-5 text-[13px] text-ivory/70 sm:mt-6 sm:text-base"
+                    : "mt-7 text-sm sm:text-base text-ivory/65"
+                )}
+              >
                 {page.description}
               </p>
 
               <div className={`flex flex-col min-[560px]:flex-row gap-3 ${page.kind === "nri" ? "mt-8" : "mt-10"}`}>
                 <Link
                   href={collectionHref}
-                  className="inline-flex min-h-[50px] w-full items-center justify-center rounded-sm bg-champagne-gold px-9 py-3 font-sans text-xs uppercase tracking-[0.2em] text-lux-black transition-colors duration-200 hover:bg-antique-gold min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.14em]"
+                  className="inline-flex min-h-[52px] w-full items-center justify-center rounded-sm bg-champagne-gold px-7 py-3 font-sans text-[11px] uppercase tracking-[0.18em] text-lux-black shadow-[0_14px_34px_rgba(200,164,93,0.16)] transition-colors duration-200 hover:bg-antique-gold min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.13em]"
                 >
-                  {isAdvisoryCta ? "Request Advisory" : "View Properties"}
+                  {primaryCtaLabel}
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-[50px] w-full items-center justify-center rounded-sm border border-champagne-gold/45 px-9 py-3 font-sans text-xs uppercase tracking-[0.2em] text-champagne-gold transition-colors duration-200 hover:border-champagne-gold hover:bg-champagne-gold/[0.05] min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.14em]"
+                  className="inline-flex min-h-[52px] w-full items-center justify-center rounded-sm border border-white/15 bg-lux-black/35 px-7 py-3 font-sans text-[11px] uppercase tracking-[0.18em] text-ivory/70 backdrop-blur-sm transition-colors duration-200 hover:border-champagne-gold/55 hover:bg-champagne-gold/[0.05] hover:text-champagne-gold min-[560px]:w-auto min-[560px]:flex-1 min-[560px]:px-5 min-[560px]:tracking-[0.13em]"
                 >
-                  Private Advisory
+                  {secondaryCtaLabel}
                 </Link>
               </div>
+
+              {page.kind === "nri" && (
+                <div
+                  className="mt-6 grid grid-cols-2 gap-2 sm:hidden"
+                  aria-label="NRI advisory trust signals"
+                >
+                  {NRI_TRUST_STATS.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-sm border border-champagne-gold/15 bg-lux-black/40 px-4 py-3 backdrop-blur-sm"
+                    >
+                      <p className="font-display text-[1.35rem] font-light leading-none text-champagne-gold">
+                        {stat.label}
+                      </p>
+                      <p className="mt-1.5 font-sans text-[8.5px] uppercase leading-snug tracking-[0.13em] text-ivory/60">
+                        {stat.shortSub}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
 
         {/* ─── NRI TRUST STRIP ─── */}
         {page.kind === "nri" && (
-          <div className="relative z-10 -mt-12 max-w-6xl bg-lux-black/85 backdrop-blur-md sm:-mt-16 lg:-mt-20 md:mx-8 xl:mx-auto border border-champagne-gold/15">
+          <div
+            className="relative z-10 hidden -mt-14 max-w-6xl border border-champagne-gold/15 bg-lux-black/90 backdrop-blur-md sm:block sm:-mt-16 md:mx-8 lg:-mt-20 xl:mx-auto"
+            aria-label="NRI advisory trust signals"
+          >
             {/* Top shimmer */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne-gold/50 to-transparent" />
             {/* Bottom shimmer */}
@@ -187,24 +229,21 @@ export function LandingPageTemplate({
             {/* Ambient gold glow — top-left origin */}
             <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-champagne-gold/[0.04] blur-[80px] pointer-events-none" />
 
-            <div className="grid grid-cols-2 min-[560px]:grid-cols-4">
+            <div className="grid grid-cols-4">
               {NRI_TRUST_STATS.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`relative px-6 py-7 min-[560px]:py-8 sm:px-8 ${
-                    i === 0 ? "border-r border-champagne-gold/10" :
-                    i === 1 ? "min-[560px]:border-r min-[560px]:border-champagne-gold/10" :
-                    i === 2 ? "border-r border-champagne-gold/10" : ""
-                  } ${
-                    i < 2 ? "border-b border-champagne-gold/10 min-[560px]:border-b-0" : ""
-                  }`}
+                  className={cn(
+                    "relative px-5 py-6 sm:px-6 lg:px-8 lg:py-7",
+                    i < NRI_TRUST_STATS.length - 1 && "border-r border-champagne-gold/10"
+                  )}
                 >
                   {/* Gold accent rule */}
-                  <div className="w-5 h-px bg-champagne-gold/50 mb-4" aria-hidden="true" />
-                  <p className="font-display text-2xl font-light tracking-wide text-champagne-gold min-[420px]:text-3xl min-[560px]:text-2xl md:text-3xl lg:text-[2.2rem] xl:text-[2.6rem] leading-none">
+                  <div className="w-5 h-px bg-champagne-gold/45 mb-4" aria-hidden="true" />
+                  <p className="font-display text-2xl font-light leading-none tracking-wide text-champagne-gold md:text-3xl lg:text-[2rem] xl:text-[2.3rem]">
                     {stat.label}
                   </p>
-                  <p className="mt-2.5 font-sans text-[9px] uppercase leading-[1.5] tracking-[0.16em] text-ivory/55 max-w-[10rem]">
+                  <p className="mt-2.5 max-w-[10rem] font-sans text-[9px] uppercase leading-[1.45] tracking-[0.15em] text-ivory/65">
                     {stat.sub}
                   </p>
                 </div>
@@ -214,6 +253,42 @@ export function LandingPageTemplate({
         )}
 
         {/* ─── ADVISORY VIEW ─── */}
+        <section
+          className="border-y border-white/[0.06] bg-soft-black/30 py-8 sm:py-10"
+          aria-labelledby="landing-short-answer-heading"
+        >
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8">
+            <div className="lg:col-span-4">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-champagne-gold font-sans mb-3">
+                {landingAnswer.eyebrow}
+              </p>
+              <h2
+                id="landing-short-answer-heading"
+                className="font-display text-[clamp(1.25rem,2.2vw,1.8rem)] font-light uppercase tracking-wider leading-tight text-ivory"
+              >
+                {landingAnswer.heading}
+              </h2>
+            </div>
+            <div className="lg:col-span-8">
+              <p className="max-w-3xl font-sans text-sm leading-relaxed text-ivory/70 sm:text-base">
+                {landingAnswer.answer}
+              </p>
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {landingAnswer.facts.map((fact) => (
+                  <div
+                    key={fact}
+                    className="border-l border-champagne-gold/30 bg-lux-black/30 px-4 py-3"
+                  >
+                    <p className="font-sans text-[11px] leading-relaxed text-ivory/60">
+                      {fact}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="py-20 lg:py-28 border-b border-white/[0.06]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-center">
             <div className="lg:col-span-4">

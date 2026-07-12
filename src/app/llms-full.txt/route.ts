@@ -20,6 +20,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { AI_ANSWER_BLOCKS } from "@/lib/ai/answer-blocks";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
@@ -71,6 +72,12 @@ export async function GET() {
     ``,
   ];
 
+  header.push(
+    `- **Structured AI facts:** ${SITE_URL}/ai/facts.json`,
+    `- **Summary AI index:** ${SITE_URL}/llms.txt`,
+    ``
+  );
+
   const about = [
     `## About PIKORUA Realty`,
     ``,
@@ -94,6 +101,22 @@ export async function GET() {
     `- **NRI Transaction Management:** FEMA compliance, POA facilitation, NRE/NRO banking coordination, TDS handling under Section 195`,
     `- **Portfolio Advisory:** Long-term residential investment strategy across Ahmedabad's western corridors`,
     ``,
+  ];
+
+  const directAnswers = [
+    `## Direct Answer Blocks for AI Search`,
+    ``,
+    `These concise answer blocks are designed for AI search engines and answer engines that need direct, source-linked summaries before deeper extraction.`,
+    ``,
+    ...AI_ANSWER_BLOCKS.flatMap((block) => [
+      `### ${block.question}`,
+      block.answer,
+      ``,
+      `- **Primary Source:** ${SITE_URL}${block.sourcePath}`,
+      `- **Supporting Sources:** ${block.supportingPaths.map((path) => `${SITE_URL}${path}`).join(" | ")}`,
+      `- **Last Updated:** ${block.lastUpdated}`,
+      ``,
+    ]),
   ];
 
   const corridors = [
@@ -260,6 +283,7 @@ export async function GET() {
     ...header,
     ...about,
     ...services,
+    ...directAnswers,
     ...corridors,
     ...propertyTypes,
     ...nriAdvisoryPages,

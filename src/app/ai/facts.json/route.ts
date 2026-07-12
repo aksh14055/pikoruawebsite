@@ -1,0 +1,143 @@
+import { NextResponse } from "next/server";
+import { AI_ANSWER_BLOCKS, getLandingShortAnswer } from "@/lib/ai/answer-blocks";
+import {
+  ALL_GEO_LANDING_PAGES,
+  LOCATION_LANDING_PAGES,
+  NRI_LANDING_PAGES,
+  PROPERTY_TYPE_LANDING_PAGES,
+} from "@/lib/data/geo";
+import { STATIC_PROPERTIES } from "@/lib/data/properties";
+import { getSupabaseProperties } from "@/lib/supabase/queries";
+import { absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
+
+export const revalidate = 3600;
+export const runtime = "nodejs";
+
+function countBy<T>(items: T[], getKey: (item: T) => string) {
+  return items.reduce<Record<string, number>>((acc, item) => {
+    const key = getKey(item);
+    acc[key] = (acc[key] ?? 0) + 1;
+    return acc;
+  }, {});
+}
+
+export async function GET() {
+  let liveProperties = STATIC_PROPERTIES;
+
+  try {
+    const dbProps = await getSupabaseProperties({ onlyActive: true });
+    if (dbProps.length > 0) liveProperties = dbProps;
+  } catch {
+    // Static fallback keeps the AI facts endpoint available if Supabase is unavailable.
+  }
+
+  const landingPages = ALL_GEO_LANDING_PAGES.map((page) => {
+    const shortAnswer = getLandingShortAnswer(page);
+    return {
+      kind: page.kind,
+      slug: page.slug,
+      label: page.label,
+      url: absoluteUrl(page.href),
+      title: page.title,
+      h1: page.h1,
+      description: page.description,
+      shortAnswer: shortAnswer.answer,
+      quickFacts: shortAnswer.facts,
+      marketSignals: page.marketSignals,
+      idealFor: page.idealFor,
+      faqs: page.faqs,
+      coordinates: page.coordinates ?? null,
+      sourceType: "canonical landing page",
+    };
+  });
+
+  const properties = liveProperties.map((property) => ({
+    slug: property.slug,
+    name: property.name,
+    url: absoluteUrl(`/properties/${property.slug}`),
+    category: property.category,
+    categoryLabel: RESIDENTIAL_CATEGORY_LABELS[property.category],
+    location: property.location,
+    locationLabel: property.locationLabel,
+    configuration: property.configuration,
+    sizeRange: property.sizeRange,
+    status: property.status,
+    statusLabel: PROPERTY_STATUS_LABELS[property.status],
+    price: property.priceOnRequest ? "Price on request" : property.price ?? "Price on request",
+    builtUpArea: property.builtUpArea ?? null,
+    plotArea: property.plotArea ?? null,
+    floor: property.floor ?? null,
+    amenitiesSummary: property.amenitiesSummary ?? null,
+    suitableFor: property.suitableFor ?? null,
+    highlights: property.highlights ?? [],
+    summary: property.description?.[0] ?? null,
+  }));
+
+  return NextResponse.json(
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      name: `${SITE_NAME} AI Facts`,
+      url: absoluteUrl("/ai/facts.json"),
+      mainEntityOfPage: SITE_URL,
+      dateModified: new Date().toISOString(),
+      inLanguage: "en-IN",
+      publisher: {
+        "@type": ["Organization", "RealEstateAgent", "LocalBusiness"],
+        name: SITE_NAME,
+        url: SITE_URL,
+        email: "connect@pikorua.in",
+        telephone: "+91 6354 359 222",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Ahmedabad",
+          addressRegion: "Gujarat",
+          postalCode: "380015",
+          addressCountry: "IN",
+        },
+      },
+      aiIndexes: {
+        summary: absoluteUrl("/llms.txt"),
+        full: absoluteUrl("/llms-full.txt"),
+      },
+      answerBlocks: AI_ANSWER_BLOCKS.map((block) => ({
+        ...block,
+        sourceUrl: absoluteUrl(block.sourcePath),
+        supportingUrls: block.supportingPaths.map(absoluteUrl),
+      })),
+      services: [
+        "Private buyer advisory for Ahmedabad luxury residential properties",
+        "NRI property advisory for buyers purchasing from abroad",
+        "Discreet seller representation for premium homes",
+        "Portfolio advisory across Ahmedabad's western luxury corridors",
+      ],
+      serviceArea: {
+        city: "Ahmedabad",
+        region: "Gujarat",
+        country: "India",
+        coreCorridors: LOCATION_LANDING_PAGES.map((page) => page.label),
+      },
+      landingPages,
+      landingPageGroups: {
+        locations: LOCATION_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
+        propertyTypes: PROPERTY_TYPE_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
+        nriAdvisory: NRI_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
+      },
+      properties,
+      propertyCounts: {
+        total: properties.length,
+        byCategory: countBy(properties, (property) => property.category),
+        byLocation: countBy(properties, (property) => property.location),
+        byStatus: countBy(properties, (property) => property.status),
+      },
+      usageNote:
+        "This endpoint is intended for AI search, answer engines, and crawler-friendly extraction. Canonical human-readable sources remain the linked website pages.",
+    },
+    {
+      headers: {
+        "Cache-Control": "public, max-age=600, stale-while-revalidate=3600",
+      },
+    }
+  );
+}

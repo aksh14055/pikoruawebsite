@@ -40,6 +40,9 @@ export async function GET(req: NextRequest) {
     "/testimonials",
     "/blog",
     "/contact",
+    "/llms.txt",
+    "/llms-full.txt",
+    "/ai/facts.json",
   ].map((path) => `${SITE_URL}${path}`);
 
   // Geo landing pages
