@@ -4,6 +4,7 @@ import { Preloader } from "@/components/ui/Preloader";
 import { LazyLeadCapturePopup } from "@/components/ui/LazyLeadCapturePopup";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
+import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
 import {
   BUSINESS_EMAIL,
@@ -344,6 +345,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="alternate" type="text/plain" title="PIKORUA Realty AI index" href={absoluteUrl("/llms.txt")} />
         <link
           rel="alternate"
@@ -361,6 +363,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-lux-black text-ivory antialiased">
         <GoogleAnalytics />
         <GoogleTagManager />
+        <MicrosoftClarity />
         <WebVitalsReporter />
         <script
           type="application/ld+json"

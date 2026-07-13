@@ -37,6 +37,12 @@ export default function PrivacyPage() {
                 </p>
               </section>
               <section>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-champagne-gold mb-3">Analytics</h2>
+                <p>
+                  We may use analytics tools, including Google Analytics, Google Tag Manager, and Microsoft Clarity, to understand site performance, page usage, and visitor experience. These tools may collect device, browser, interaction, and approximate location information to help us improve the website.
+                </p>
+              </section>
+              <section>
                 <h2 className="text-xs uppercase tracking-[0.2em] text-champagne-gold mb-3">Confidentiality</h2>
                 <p>
                   PIKORUA Realty operates as a private advisory. Buyer, seller, and property information is handled with discretion and shared only where needed to progress a requested consultation or transaction.

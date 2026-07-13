@@ -55,6 +55,7 @@ See [`.env.local.example`](.env.local.example) for the full list. Key variables:
 | `ADMIN_EMAIL` | Admin login email |
 | `ADMIN_PASSWORD` | Admin login password |
 | `BREVO_API_KEY` | Email notifications (Brevo/Sendinblue) |
+| `NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID` | Microsoft Clarity project ID |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp FAB phone number |
 | `NEXT_PUBLIC_SITE_LIVE` | `true` = full site, `false` = holding page |
 

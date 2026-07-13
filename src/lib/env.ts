@@ -31,6 +31,7 @@ export const env = {
   get SITE_URL() { return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.pikorua.in"; },
   get GTM_ID() { return process.env.NEXT_PUBLIC_GTM_ID ?? ""; },
   get GA4_MEASUREMENT_ID() { return process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ?? ""; },
+  get MICROSOFT_CLARITY_PROJECT_ID() { return process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_PROJECT_ID ?? ""; },
   // WhatsApp contact — public so client components can build wa.me links
   get WHATSAPP_NUMBER() { return process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "916354359222"; },
   get WHATSAPP_DEFAULT_MESSAGE() {
