@@ -6,6 +6,7 @@ import {
   NRI_LANDING_PAGES,
   PROPERTY_TYPE_LANDING_PAGES,
 } from "@/lib/data/geo";
+import { getAiEntitySnapshot, getRealEstateAgentSchema } from "@/lib/entity-profile";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabaseProperties } from "@/lib/supabase/queries";
 import { absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -24,6 +25,7 @@ function countBy<T>(items: T[], getKey: (item: T) => string) {
 
 export async function GET() {
   let liveProperties = STATIC_PROPERTIES;
+  const entity = getAiEntitySnapshot();
 
   try {
     const dbProps = await getSupabaseProperties({ onlyActive: true });
@@ -84,18 +86,26 @@ export async function GET() {
       dateModified: new Date().toISOString(),
       inLanguage: "en-IN",
       publisher: {
-        "@type": ["Organization", "RealEstateAgent", "LocalBusiness"],
-        name: SITE_NAME,
-        url: SITE_URL,
-        email: "connect@pikorua.in",
-        telephone: "+91 6354 359 222",
+        "@id": entity.entityId,
+        "@type": entity.type,
+        name: entity.name,
+        url: entity.url,
+        logo: entity.logo,
+        email: entity.contact.email,
+        telephone: entity.contact.whatsapp,
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Ahmedabad",
-          addressRegion: "Gujarat",
-          postalCode: "380015",
-          addressCountry: "IN",
+          ...entity.address,
         },
+        geo: {
+          "@type": "GeoCoordinates",
+          ...entity.geo,
+        },
+        sameAs: entity.sameAs,
+      },
+      entity,
+      entityGraph: {
+        realEstateAgent: getRealEstateAgentSchema(),
       },
       aiIndexes: {
         summary: absoluteUrl("/llms.txt"),
@@ -106,12 +116,7 @@ export async function GET() {
         sourceUrl: absoluteUrl(block.sourcePath),
         supportingUrls: block.supportingPaths.map(absoluteUrl),
       })),
-      services: [
-        "Private buyer advisory for Ahmedabad luxury residential properties",
-        "NRI property advisory for buyers purchasing from abroad",
-        "Discreet seller representation for premium homes",
-        "Portfolio advisory across Ahmedabad's western luxury corridors",
-      ],
+      services: entity.services,
       serviceArea: {
         city: "Ahmedabad",
         region: "Gujarat",

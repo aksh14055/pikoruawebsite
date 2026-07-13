@@ -3,6 +3,9 @@ import type { ResidentialCategory, LocationSlug, PropertyStatus } from "@/types"
 
 export const SITE_URL = "https://www.pikorua.in";
 export const SITE_NAME = "PIKORUA Realty";
+export const WEBSITE_ENTITY_ID = `${SITE_URL}#website`;
+export const REAL_ESTATE_AGENT_ENTITY_ID = `${SITE_URL}#real-estate-agent`;
+export const FOUNDER_ENTITY_ID = `${SITE_URL}#founder`;
 export const DEFAULT_OG_IMAGE = "/logo.png";
 const META_DESCRIPTION_MIN_LENGTH = 25;
 const META_DESCRIPTION_MAX_LENGTH = 160;
@@ -283,7 +286,7 @@ export function generatePropertySchema(property: PropertySchemaInput) {
         priceCurrency: "INR",
         description: priceDisplay,
       },
-      seller: { "@id": `${SITE_URL}#real-estate-agent` },
+      seller: { "@id": REAL_ESTATE_AGENT_ENTITY_ID },
     },
   };
 }

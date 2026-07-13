@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error google-news-url-decoder does not ship TypeScript declarations.
 import { GoogleDecoder } from "google-news-url-decoder";
 
 /**
@@ -13,6 +13,18 @@ export interface NewsItem {
   link: string;
   pubDate: string;
   source: string;
+}
+
+interface OpenRouterChatResponse {
+  choices?: Array<{
+    message?: {
+      content?: string;
+    };
+  }>;
+}
+
+function getErrorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
 }
 
 /**
@@ -51,7 +63,7 @@ export async function fetchRealEstateNews(): Promise<
         let title = titleMatch[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, "$1").trim();
         const link = linkMatch[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, "$1").trim();
         const pubDate = dateMatch ? dateMatch[1].trim() : "";
-        let source = sourceMatch ? sourceMatch[1].trim() : "News Source";
+        const source = sourceMatch ? sourceMatch[1].trim() : "News Source";
 
         // Clean title if it ends with " - Source Name"
         if (title.endsWith(` - ${source}`)) {
@@ -65,9 +77,9 @@ export async function fetchRealEstateNews(): Promise<
     }
 
     return { success: true, items };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error in fetchRealEstateNews:", error);
-    return { success: false, error: error.message || "Failed to load news." };
+    return { success: false, error: getErrorMessage(error, "Failed to load news.") };
   }
 }
 
@@ -164,7 +176,7 @@ async function scrapeUrlText(url: string): Promise<{ text: string; ogImage: stri
     }
 
     // Strip scripts, styles, and tags to keep only readable text
-    let cleanText = html
+    const cleanText = html
       .replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, "")
       .replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, "")
       .replace(/<[^>]+>/g, " ")
@@ -175,7 +187,7 @@ async function scrapeUrlText(url: string): Promise<{ text: string; ogImage: stri
       text: cleanText.substring(0, 8000), // Return first 8k characters
       ogImage
     };
-  } catch (err) {
+  } catch {
     clearTimeout(timeoutId);
     console.log("Scraping URL timed out or failed:", url);
     return { text: "", ogImage: null };
@@ -254,7 +266,7 @@ Strict Guidelines:
    - Vaishno Devi → /vaishno-devi-properties
    - SG Highway → /sg-highway-properties
    - NRI advisory OR NRI property investment → /nri-property-investment-ahmedabad
-   - Luxury penthouses OR duplexes → /penthouses-duplexes-ahmedabad
+   - Luxury penthouses OR duplexes → /penthouses-ahmedabad
    - Luxury villas OR bungalows → /villas-bungalows-ahmedabad
 
 Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
@@ -304,7 +316,7 @@ ${articleContext ? articleContext.substring(0, 7500) : "No extra context provide
       return { success: false, error: `OpenRouter API error: ${response.status} - ${errText}` };
     }
 
-    const result = await response.json();
+    const result = (await response.json()) as OpenRouterChatResponse;
     const responseText = result.choices?.[0]?.message?.content;
     if (!responseText) {
       return { success: false, error: "OpenRouter returned an empty response." };
@@ -317,13 +329,13 @@ ${articleContext ? articleContext.substring(0, 7500) : "No extra context provide
       cleanJson = cleanJson.substring(firstBraceIdx, lastBraceIdx + 1);
     }
 
-    const draft = JSON.parse(cleanJson);
+    const draft = JSON.parse(cleanJson) as BlogDraft;
     if (ogImage) {
       draft.coverImage = ogImage;
     }
     return { success: true, draft };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error in generateBlogDraftFromNews:", error);
-    return { success: false, error: error.message || "Failed to generate blog post." };
+    return { success: false, error: getErrorMessage(error, "Failed to generate blog post.") };
   }
 }

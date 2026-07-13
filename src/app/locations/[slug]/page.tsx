@@ -7,6 +7,7 @@ import {
   getLandingProperties,
   getLocationLandingPage,
 } from "@/lib/data/geo";
+import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 interface LocationPageProps {
@@ -74,7 +75,7 @@ export default async function LocationLandingPage({ params }: LocationPageProps)
         } : {}),
       },
       {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
       },
     ],
     mainEntity: {

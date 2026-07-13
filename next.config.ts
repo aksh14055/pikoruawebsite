@@ -186,6 +186,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/nri-property-consultant-ahmedabad",
+        destination: "/nri/nri-property-consultant-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/buy-property-in-ahmedabad-from-abroad",
+        destination: "/nri/buy-property-in-ahmedabad-from-abroad",
+        permanent: true,
+      },
+      {
+        source: "/nri-property-legal-process-india",
+        destination: "/nri/nri-property-purchase-process-india",
+        permanent: true,
+      },
+      {
         source: "/iskon-ambli-road-properties",
         destination: "/iscon-ambli-road-properties",
         permanent: true,

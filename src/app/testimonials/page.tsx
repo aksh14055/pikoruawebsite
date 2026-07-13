@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { getSupabaseAllTestimonials, getPageSeoData } from "@/lib/supabase/queries";
+import { ENTITY_IDS, getAhmedabadAreaServedSchema, getGeoCoordinatesSchema } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import type { Testimonial } from "@/types";
 
@@ -141,7 +142,7 @@ export default async function TestimonialsPage() {
         "@id": `${SITE_URL}#advisory-service`,
         name: "Private Luxury Property Advisory",
         // @id-only reference — full node declared below in the same @graph
-        provider: { "@id": `${SITE_URL}#real-estate-agent` },
+        provider: { "@id": ENTITY_IDS.realEstateAgent },
         aggregateRating: {
           "@type": "AggregateRating",
           ratingValue: averageRating,
@@ -175,20 +176,11 @@ export default async function TestimonialsPage() {
         // Carries areaServed + geo so this page's RealEstateAgent node emits the
         // local-search signals independently (not only via the sitewide layout).
         "@type": ["Organization", "RealEstateAgent"],
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
         name: "PIKORUA Realty",
         url: SITE_URL,
-        areaServed: {
-          "@type": "City",
-          name: "Ahmedabad",
-          addressRegion: "Gujarat",
-          addressCountry: "IN",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: "23.0246",
-          longitude: "72.5074",
-        },
+        areaServed: getAhmedabadAreaServedSchema(),
+        geo: getGeoCoordinatesSchema(),
       },
     ],
   };

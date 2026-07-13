@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { getSupabaseBlogs, getSupabaseBlogBySlug } from "@/lib/supabase/queries";
 import { renderFormattedText } from "@/lib/utils";
+import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getLandingPagesBySlugs, getRelatedLandingPagesForText } from "@/lib/data/geo";
 
@@ -85,13 +86,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       name: post.author.name,
       worksFor: {
         "@type": "RealEstateAgent",
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
         name: SITE_NAME,
       },
     },
     publisher: {
       "@type": "Organization",
-      "@id": `${SITE_URL}#real-estate-agent`,
+      "@id": ENTITY_IDS.realEstateAgent,
       name: SITE_NAME,
       logo: {
         "@type": "ImageObject",

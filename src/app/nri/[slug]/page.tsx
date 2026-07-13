@@ -7,6 +7,7 @@ import {
   getLandingProperties,
   getNriLandingPage,
 } from "@/lib/data/geo";
+import { ENTITY_IDS, getNriAdvisoryServiceSchema } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { getExchangeRates } from "@/lib/exchange-rates";
 
@@ -49,28 +50,12 @@ export default async function NriLandingPage({ params }: NriPageProps) {
   const properties = getLandingProperties(page, STATIC_PROPERTIES);
   const pageUrl = absoluteUrl(page.href);
 
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "@id": `${pageUrl}#service`,
+  const serviceSchema = getNriAdvisoryServiceSchema({
+    pageUrl,
     name: page.title,
     description: page.description,
-    url: pageUrl,
     serviceType: page.label,
-    provider: {
-      "@id": `${SITE_URL}#real-estate-agent`,
-    },
-    areaServed: {
-      "@type": "City",
-      name: "Ahmedabad",
-      addressRegion: "Gujarat",
-      addressCountry: "IN",
-    },
-    audience: {
-      "@type": "Audience",
-      audienceType: "Non-Resident Indian property buyers and investors",
-    },
-  };
+  });
 
   const collectionPageSchema = {
     "@context": "https://schema.org",
@@ -81,7 +66,7 @@ export default async function NriLandingPage({ params }: NriPageProps) {
     description: page.description,
     about: [
       {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
       },
       {
         "@id": `${pageUrl}#service`,

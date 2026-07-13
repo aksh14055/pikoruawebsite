@@ -5,8 +5,19 @@ import { LazyLeadCapturePopup } from "@/components/ui/LazyLeadCapturePopup";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { WebVitalsReporter } from "@/components/analytics/WebVitalsReporter";
-import { env } from "@/lib/env";
-import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL, GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
+import {
+  BUSINESS_EMAIL,
+  BUSINESS_MAP_URL,
+  BUSINESS_PHONE_E164,
+  ENTITY_IDS,
+  SOCIAL_PROFILES,
+  getAhmedabadAreaServedSchema,
+  getBusinessContactPoints,
+  getBusinessOfferCatalog,
+  getGeoCoordinatesSchema,
+  getPostalAddressSchema,
+} from "@/lib/entity-profile";
+import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { FOUNDER_NAME } from "@/lib/data/about";
 import "./globals.css";
 
@@ -72,11 +83,11 @@ const organizationSchema = {
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": `${SITE_URL}#website`,
+      "@id": ENTITY_IDS.website,
       url: SITE_URL,
       name: SITE_NAME,
       publisher: {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
       },
       inLanguage: "en-IN",
       // Sitelinks Searchbox — targets the /properties collection, which reads the
@@ -89,7 +100,7 @@ const organizationSchema = {
     },
     {
       "@type": ["Organization", "RealEstateAgent", "LocalBusiness"],
-      "@id": `${SITE_URL}#real-estate-agent`,
+      "@id": ENTITY_IDS.realEstateAgent,
       name: SITE_NAME,
       url: SITE_URL,
       logo: absoluteUrl("/logo-icon.png"),
@@ -97,26 +108,11 @@ const organizationSchema = {
       description:
         "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
       founder: {
-        "@id": `${SITE_URL}#founder`,
+        "@id": ENTITY_IDS.founder,
       },
-      sameAs: [
-        "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",
-        "https://www.facebook.com/share/18tH6uh55f/?mibextid=wwXIfr",
-        "https://www.linkedin.com/company/pikorua-realty/posts/?feedView=all",
-        "https://youtube.com/@pikorua_realty_official?si=M3r65vxOcgUvdGfi",
-        // Google Business Profile — links the schema entity to the verified
-        // local GMB listing for local SEO knowledge-graph association
-        GOOGLE_BUSINESS_PROFILE_URL,
-      ],
+      sameAs: [...SOCIAL_PROFILES],
       areaServed: [
-        {
-          "@type": "City",
-          name: "Ahmedabad",
-          sameAs: [
-            "https://en.wikipedia.org/wiki/Ahmedabad",
-            "https://www.wikidata.org/wiki/Q1070",
-          ],
-        },
+        getAhmedabadAreaServedSchema(),
         {
           "@type": "GeoShape",
           polygon: "23.00,72.44 23.08,72.44 23.08,72.54 23.00,72.54 23.00,72.44",
@@ -255,20 +251,9 @@ const organizationSchema = {
         "Trusted property broker Ahmedabad",
       ],
 
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Iskon-Ambli Road",
-        addressLocality: "Ahmedabad",
-        addressRegion: "Gujarat",
-        postalCode: "380058",
-        addressCountry: "IN",
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: "23.0246",
-        longitude: "72.5074",
-      },
-      hasMap: GOOGLE_BUSINESS_PROFILE_URL,
+      address: getPostalAddressSchema(),
+      geo: getGeoCoordinatesSchema(),
+      hasMap: BUSINESS_MAP_URL,
       review: [
         {
           "@type": "Review",
@@ -295,25 +280,10 @@ const organizationSchema = {
           reviewBody: "Navigating the complexities of luxury real estate requires not just expertise, but a rare blend of patience, discernment, and unwavering integrity; qualities that Jitendra embodies effortlessly.",
         },
       ],
-      email: "connect@pikorua.in",
-      telephone: `+${env.WHATSAPP_NUMBER}`,
+      email: BUSINESS_EMAIL,
+      telephone: BUSINESS_PHONE_E164,
       priceRange: "₹₹₹₹",
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          telephone: `+${env.WHATSAPP_NUMBER}`,
-          contactType: "sales",
-          areaServed: ["IN", "AE", "US", "GB", "SG", "CA", "AU"],
-          availableLanguage: ["en", "hi", "gu"],
-        },
-        {
-          "@type": "ContactPoint",
-          email: "connect@pikorua.in",
-          contactType: "customer support",
-          areaServed: "IN",
-          availableLanguage: ["en", "hi", "gu"],
-        },
-      ],
+      contactPoint: getBusinessContactPoints(),
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: "5.0",
@@ -322,33 +292,11 @@ const organizationSchema = {
         ratingCount: "6",
         reviewCount: "6",
       },
-      makesOffer: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Private luxury property buying advisory",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Discreet seller representation",
-          },
-        },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "NRI residential property advisory",
-          },
-        },
-      ],
+      makesOffer: getBusinessOfferCatalog(),
     },
     {
       "@type": "Person",
-      "@id": `${SITE_URL}#founder`,
+      "@id": ENTITY_IDS.founder,
       name: FOUNDER_NAME,
       jobTitle: "Founder & Managing Director",
       description:
@@ -357,7 +305,7 @@ const organizationSchema = {
       url: absoluteUrl("/about"),
       worksFor: {
         "@type": "RealEstateAgent",
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
         name: "PIKORUA Realty",
       },
       knowsAbout: [

@@ -7,7 +7,8 @@ import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { LOCATION_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabaseProperties, getPageSeoData, getSupabaseGeneralFaqs } from "@/lib/supabase/queries";
-import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
+import { ENTITY_IDS } from "@/lib/entity-profile";
+import { absoluteUrl, createMetadata, serializeJsonLd } from "@/lib/seo";
 import type { GeneralFaq } from "@/types";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -69,7 +70,7 @@ export default async function PropertiesPage() {
     name: "Luxury Properties in Ahmedabad",
     description: pageDescription,
     about: {
-      "@id": `${SITE_URL}#real-estate-agent`,
+      "@id": ENTITY_IDS.realEstateAgent,
     },
     mainEntity: {
       "@type": "ItemList",

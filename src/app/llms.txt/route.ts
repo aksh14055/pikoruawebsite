@@ -15,6 +15,7 @@ import { AI_ANSWER_BLOCKS } from "@/lib/ai/answer-blocks";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
 
@@ -22,6 +23,8 @@ export const revalidate = 3600; // Cache on CDN/edge for 1 hour (ISR) to protect
 export const runtime = "nodejs";
 
 export async function GET() {
+  const entity = getAiEntitySnapshot();
+
   // Fetch live properties from Supabase; fall back to static list
   let liveProperties = STATIC_PROPERTIES;
   try {
@@ -63,9 +66,23 @@ export async function GET() {
     `- [Full content index](${SITE_URL}/llms-full.txt)`,
     `- [Structured AI facts](${SITE_URL}/ai/facts.json)`,
     ``,
+    `## Entity Identity`,
+    ``,
+    `- **Canonical Entity:** ${entity.name}`,
+    `- **Entity ID:** ${entity.entityId}`,
+    `- **Type:** ${entity.type.join(", ")}`,
+    `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,
+    `- **Address:** ${entity.address.streetAddress}, ${entity.address.addressLocality}, ${entity.address.addressRegion} ${entity.address.postalCode}, India`,
+    `- **Contact:** ${entity.contact.email}; ${entity.contact.telephone}`,
+    `- **Languages:** ${entity.contact.languages.join(", ")}`,
+    `- **SameAs:** ${entity.sameAs.join(" | ")}`,
+    `- **Core Services:** ${entity.services.map((service) => service.name).join(" | ")}`,
+    ``,
     `## Direct Answer Topics`,
     ``,
-    ...AI_ANSWER_BLOCKS.map((block) => `- ${block.question} Source: ${SITE_URL}${block.sourcePath}`),
+    ...AI_ANSWER_BLOCKS.map(
+      (block) => `- ${block.question} Key fact: ${block.citationFacts[0]} Source: ${SITE_URL}${block.sourcePath}`
+    ),
     ``,
     `## Key Pages`,
     ``,

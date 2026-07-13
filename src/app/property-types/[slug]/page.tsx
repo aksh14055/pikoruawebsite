@@ -7,6 +7,7 @@ import {
   getLandingProperties,
   getPropertyTypeLandingPage,
 } from "@/lib/data/geo";
+import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 interface PropertyTypePageProps {
@@ -54,7 +55,7 @@ export default async function PropertyTypeLandingPage({ params }: PropertyTypePa
     name: page.title,
     description: page.description,
     about: {
-      "@id": `${SITE_URL}#real-estate-agent`,
+      "@id": ENTITY_IDS.realEstateAgent,
     },
     mainEntity: {
       "@type": "ItemList",

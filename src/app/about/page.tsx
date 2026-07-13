@@ -7,6 +7,12 @@ import { StatsStrip } from "@/components/ui/StatsStrip";
 import { MEDIA } from "@/lib/media";
 import { getSupabaseAboutPageContent, getPageSeoData } from "@/lib/supabase/queries";
 import { FOUNDER_NAME, DEFAULT_HERO_TITLE, DEFAULT_FOUNDER_STORY } from "@/lib/data/about";
+import {
+  ENTITY_IDS,
+  getAhmedabadAreaServedSchema,
+  getGeoCoordinatesSchema,
+  getPostalAddressSchema,
+} from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { cn, renderFormattedText } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
@@ -34,9 +40,6 @@ const ABOUT_INTRO_COPY =
 
 const INFINITY_SENTENCE =
   "Our name, PIKORUA, is inspired by the Māori symbol of infinity, representing endless trust, lasting relationships, and a continuous journey of growth.";
-
-const ARRIVAL_SENTENCE =
-  "At PIKORUA Realty, luxury isn't just where you live — it's how you feel when you arrive home.";
 
 const ARRIVAL_SENTENCE_PATTERN =
   /(At PIKORUA Realty,\s+luxury isn['’]t just where you live\s*[-—]\s*it's how you feel when you arrive home\.)/;
@@ -122,31 +125,15 @@ export default async function AboutPage() {
         // Full RealEstateAgent entity — re-declares core fields on this page
         // so the about page can independently anchor the entity
         "@type": ["RealEstateAgent", "LocalBusiness"],
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
         name: "PIKORUA Realty",
         url: SITE_URL,
         image: absoluteUrl(founderAvatar),
         description:
           "Private luxury residential real estate advisory founded by Jitendra Pareek. We curate exclusive apartments, penthouses, villas, and bungalows for HNI and NRI buyers across Ahmedabad's premier western corridors.",
-        areaServed: {
-          "@type": "City",
-          name: "Ahmedabad",
-          addressRegion: "Gujarat",
-          addressCountry: "IN",
-        },
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Iskon-Ambli Road",
-          addressLocality: "Ahmedabad",
-          addressRegion: "Gujarat",
-          postalCode: "380058",
-          addressCountry: "IN",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: "23.0246",
-          longitude: "72.5074",
-        },
+        areaServed: getAhmedabadAreaServedSchema(),
+        address: getPostalAddressSchema(),
+        geo: getGeoCoordinatesSchema(),
         knowsAbout: [
           "Luxury residential real estate in Ahmedabad",
           "HNI property advisory Gujarat",
@@ -161,14 +148,14 @@ export default async function AboutPage() {
         ],
         founder: {
           "@type": "Person",
-          "@id": `${SITE_URL}#founder`,
+          "@id": ENTITY_IDS.founder,
         },
       },
       {
         // Rich Person entity for Jitendra — allows AI engines to build
         // a knowledge-graph node for the founder independently of the firm
         "@type": "Person",
-        "@id": `${SITE_URL}#founder`,
+        "@id": ENTITY_IDS.founder,
         name: FOUNDER_NAME,
         jobTitle: "Founder & Managing Director",
         description:
@@ -177,7 +164,7 @@ export default async function AboutPage() {
         url: absoluteUrl("/about"),
         worksFor: {
           "@type": "RealEstateAgent",
-          "@id": `${SITE_URL}#real-estate-agent`,
+          "@id": ENTITY_IDS.realEstateAgent,
           name: "PIKORUA Realty",
         },
         knowsAbout: [

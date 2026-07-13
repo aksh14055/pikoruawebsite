@@ -8,6 +8,7 @@ import {
   getRootLandingPage,
   getRootLandingPages,
 } from "@/lib/data/geo";
+import { ENTITY_IDS, getNriAdvisoryServiceSchema } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { getExchangeRates } from "@/lib/exchange-rates";
 
@@ -56,7 +57,7 @@ function getCollectionAbout(page: GeoLandingPage, pageUrl: string) {
           : {}),
       },
       {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
       },
     ];
   }
@@ -64,7 +65,7 @@ function getCollectionAbout(page: GeoLandingPage, pageUrl: string) {
   if (page.kind === "nri") {
     return [
       {
-        "@id": `${SITE_URL}#real-estate-agent`,
+        "@id": ENTITY_IDS.realEstateAgent,
       },
       {
         "@id": `${pageUrl}#service`,
@@ -73,35 +74,19 @@ function getCollectionAbout(page: GeoLandingPage, pageUrl: string) {
   }
 
   return {
-    "@id": `${SITE_URL}#real-estate-agent`,
+    "@id": ENTITY_IDS.realEstateAgent,
   };
 }
 
 function getServiceSchema(page: GeoLandingPage, pageUrl: string) {
   if (page.kind !== "nri") return null;
 
-  return {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "@id": `${pageUrl}#service`,
+  return getNriAdvisoryServiceSchema({
+    pageUrl,
     name: page.title,
     description: page.description,
-    url: pageUrl,
     serviceType: page.label,
-    provider: {
-      "@id": `${SITE_URL}#real-estate-agent`,
-    },
-    areaServed: {
-      "@type": "City",
-      name: "Ahmedabad",
-      addressRegion: "Gujarat",
-      addressCountry: "IN",
-    },
-    audience: {
-      "@type": "Audience",
-      audienceType: "Non-Resident Indian property buyers and investors",
-    },
-  };
+  });
 }
 
 export default async function RootLandingPage({ params }: RootLandingPageProps) {

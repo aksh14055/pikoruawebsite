@@ -25,6 +25,7 @@ import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { FAQ_ITEMS } from "@/lib/data/faq";
+import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import {
   getSupabaseBlogs,
   getSupabaseProperties,
@@ -36,6 +37,8 @@ export const revalidate = 3600; // Cache on CDN/edge for 1 hour (ISR) to protect
 export const runtime = "nodejs";
 
 export async function GET() {
+  const entity = getAiEntitySnapshot();
+
   // ── Live data from Supabase ──────────────────────────────────────────────
   let liveProperties = STATIC_PROPERTIES;
   try {
@@ -78,12 +81,27 @@ export async function GET() {
     ``
   );
 
+  const entityIdentity = [
+    `## Entity Identity`,
+    ``,
+    `- **Canonical Entity:** ${entity.name}`,
+    `- **Entity ID:** ${entity.entityId}`,
+    `- **Type:** ${entity.type.join(", ")}`,
+    `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,
+    `- **Address:** ${entity.address.streetAddress}, ${entity.address.addressLocality}, ${entity.address.addressRegion} ${entity.address.postalCode}, India`,
+    `- **Contact:** ${entity.contact.email}; ${entity.contact.telephone}`,
+    `- **Languages:** ${entity.contact.languages.join(", ")}`,
+    `- **SameAs:** ${entity.sameAs.join(" | ")}`,
+    `- **Specializations:** ${entity.specializations.join(" | ")}`,
+    ``,
+  ];
+
   const about = [
     `## About PIKORUA Realty`,
     ``,
     `PIKORUA Realty is a private, advisory-first real estate firm founded by Jitendra Pareek, based in Iskon-Ambli, Ahmedabad, Gujarat, India. We do not operate as a traditional listing portal. Instead, we curate a private collection of exclusive luxury residential properties and match them to financially vetted, serious buyers — preserving confidentiality for both sellers and buyers at every stage. Our name, PIKORUA, is inspired by the Māori symbol of infinity, representing endless trust, lasting relationships, and a continuous journey of growth.`,
     ``,
-    `- **Founder:** Jitendra Pareek`,
+    `- **Founder:** ${entity.founder.name}`,
     `- **Specialization:** Luxury residential real estate, HNI and NRI buyers`,
     `- **Website:** ${SITE_URL}`,
     `- **Enquiry:** ${SITE_URL}/contact`,
@@ -96,10 +114,7 @@ export async function GET() {
   const services = [
     `## Services`,
     ``,
-    `- **Private Buyer Advisory:** Helping HNI and NRI clients identify and acquire premium residential properties in Ahmedabad`,
-    `- **Discreet Seller Representation:** Off-market or quietly-listed high-value properties, shielded from speculative exposure`,
-    `- **NRI Transaction Management:** FEMA compliance, POA facilitation, NRE/NRO banking coordination, TDS handling under Section 195`,
-    `- **Portfolio Advisory:** Long-term residential investment strategy across Ahmedabad's western corridors`,
+    ...entity.services.map((service) => `- **${service.name}:** ${service.description}`),
     ``,
   ];
 
@@ -112,6 +127,8 @@ export async function GET() {
       `### ${block.question}`,
       block.answer,
       ``,
+      `- **Citation Facts:**`,
+      ...block.citationFacts.map((fact) => `  - ${fact}`),
       `- **Primary Source:** ${SITE_URL}${block.sourcePath}`,
       `- **Supporting Sources:** ${block.supportingPaths.map((path) => `${SITE_URL}${path}`).join(" | ")}`,
       `- **Last Updated:** ${block.lastUpdated}`,
@@ -265,9 +282,9 @@ export async function GET() {
     ``,
     `- **Website:** ${SITE_URL}`,
     `- **Enquiry Form:** ${SITE_URL}/contact`,
-    `- **Email:** connect@pikorua.in`,
-    `- **Phone:** +91 6354 359 222`,
-    `- **Address:** Iskon-Ambli, Ahmedabad, Gujarat 380015, India`,
+    `- **Email:** ${entity.contact.email}`,
+    `- **Phone:** ${entity.contact.telephone}`,
+    `- **Address:** ${entity.address.streetAddress}, ${entity.address.addressLocality}, ${entity.address.addressRegion} ${entity.address.postalCode}, India`,
     `- **Social:** Instagram @pikorua.realty, Facebook, LinkedIn, YouTube @pikorua_realty_official`,
     ``,
     `## Do Not Index`,
@@ -281,6 +298,7 @@ export async function GET() {
 
   const allLines = [
     ...header,
+    ...entityIdentity,
     ...about,
     ...services,
     ...directAnswers,

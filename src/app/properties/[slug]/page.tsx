@@ -13,6 +13,7 @@ import { getSupabasePropertyBySlug, getSupabaseAllPropertySlugs } from "@/lib/su
 import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
 import { ArrowLeft, ArrowRight, Building2, CalendarCheck, IndianRupee, MapPin, Ruler, ShieldCheck } from "lucide-react";
 import { renderFormattedText } from "@/lib/utils";
+import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, generatePropertySchema, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
 // Note: LOCATION_COORDINATES and getResidenceSchemaType have been moved to @/lib/seo
@@ -131,7 +132,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
           availability: "https://schema.org/InStock",
           price: priceRange.low,
           priceCurrency: "INR",
-          seller: { "@id": `${SITE_URL}#real-estate-agent` },
+          seller: { "@id": ENTITY_IDS.realEstateAgent },
         }
       : {
           "@type": "AggregateOffer",
@@ -142,7 +143,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
           highPrice: priceRange.high,
           priceCurrency: "INR",
           offerCount: 1,
-          seller: { "@id": `${SITE_URL}#real-estate-agent` },
+          seller: { "@id": ENTITY_IDS.realEstateAgent },
         }
     : {
         "@type": "Offer",
@@ -155,7 +156,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
           priceCurrency: "INR",
           description: priceDisplay,
         },
-        seller: { "@id": `${SITE_URL}#real-estate-agent` },
+        seller: { "@id": ENTITY_IDS.realEstateAgent },
       };
 
   const productSchema = {
@@ -168,7 +169,7 @@ export default async function PropertyDetailPage({ params }: PropertyPageProps) 
     image: (allImages.length > 0 ? allImages : [heroImage]).map((image) => absoluteUrl(image)),
     category: categoryLabel,
     brand: {
-      "@id": `${SITE_URL}#real-estate-agent`,
+      "@id": ENTITY_IDS.realEstateAgent,
     },
     offers,
   };
