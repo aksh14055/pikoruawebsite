@@ -24,7 +24,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const KEY_PAGES = ["", "/properties", "/about", "/testimonials", "/blog", "/contact"];
-const ROTATING_BATCH_SIZE = 15;
+const ROTATING_BATCH_SIZE = 25;
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
