@@ -9,6 +9,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/lib/seo";
+import { PARTNER_SCHEMA_KNOWS_ABOUT } from "@/lib/data/developer-partners";
 
 export const ENTITY_IDS = {
   website: WEBSITE_ENTITY_ID,
@@ -64,6 +65,7 @@ export const AI_SPECIALIZATIONS = [
   "SG Highway luxury residential market",
   "Luxury 4 BHK and 5 BHK apartments Ahmedabad",
   "Penthouses, duplexes, villas, bungalows, and premium residential plots",
+  ...PARTNER_SCHEMA_KNOWS_ABOUT,
 ] as const;
 
 export const AI_SERVICE_CATALOG = [

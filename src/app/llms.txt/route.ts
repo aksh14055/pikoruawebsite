@@ -14,6 +14,7 @@ import { NextResponse } from "next/server";
 import { AI_ANSWER_BLOCKS } from "@/lib/ai/answer-blocks";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
+import { PARTNER_DEVELOPER_NAMES, PORTFOLIO_PROJECT_NAMES } from "@/lib/data/developer-partners";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
@@ -77,6 +78,12 @@ export async function GET() {
     `- **Languages:** ${entity.contact.languages.join(", ")}`,
     `- **SameAs:** ${entity.sameAs.join(" | ")}`,
     `- **Core Services:** ${entity.services.map((service) => service.name).join(" | ")}`,
+    ``,
+    `## Developer And Project Entity Coverage`,
+    ``,
+    `- **Developer Alliances:** ${PARTNER_DEVELOPER_NAMES.join(" | ")}`,
+    `- **Project Entities:** ${PORTFOLIO_PROJECT_NAMES.join(" | ")}`,
+    `- **Relevant Query Classes:** Ahmedabad developer projects | luxury residential projects Ahmedabad | trusted builder projects Ahmedabad | NRI investment in developer-led Ahmedabad projects`,
     ``,
     `## Direct Answer Topics`,
     ``,

@@ -14,6 +14,12 @@ const FALLBACK_META_DESCRIPTION =
   "PIKORUA Realty offers private luxury residential real estate advisory in Ahmedabad.";
 const SHORT_META_DESCRIPTION_SUFFIX =
   " PIKORUA Realty offers private luxury residential advisory in Ahmedabad.";
+const DEFAULT_METADATA_KEYWORDS = [
+  "luxury property Ahmedabad",
+  "NRI property investment Ahmedabad",
+  "premium residential projects Ahmedabad",
+  "Ahmedabad real estate developers",
+];
 
 /**
  * Google Business Profile URL — used in the organization schema's sameAs
@@ -57,6 +63,7 @@ export function createMetadata({
   image = DEFAULT_OG_IMAGE,
   type = "website",
   noIndex = false,
+  keywords = [],
 }: {
   title: string;
   description: string;
@@ -64,15 +71,18 @@ export function createMetadata({
   image?: string;
   type?: OpenGraphType;
   noIndex?: boolean;
+  keywords?: string[];
 }): Metadata {
   const url = absoluteUrl(path);
   const imageUrl = absoluteUrl(image);
   const pageTitle = title.replace(BRAND_TITLE_PATTERN, "").trim() || title;
   const metaDescription = normalizeMetaDescription(description);
+  const pageKeywords = Array.from(new Set([...DEFAULT_METADATA_KEYWORDS, ...keywords]));
 
   return {
     title: pageTitle,
     description: metaDescription,
+    keywords: pageKeywords,
     alternates: { canonical: url },
     openGraph: {
       title: pageTitle,

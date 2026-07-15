@@ -23,6 +23,7 @@ import { NextResponse } from "next/server";
 import { AI_ANSWER_BLOCKS } from "@/lib/ai/answer-blocks";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
+import { PARTNER_DEVELOPER_NAMES, PARTNER_SEARCH_PHRASES, PORTFOLIO_PROJECT_NAMES } from "@/lib/data/developer-partners";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
 import { FAQ_ITEMS } from "@/lib/data/faq";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
@@ -115,6 +116,17 @@ export async function GET() {
     `## Services`,
     ``,
     ...entity.services.map((service) => `- **${service.name}:** ${service.description}`),
+    ``,
+  ];
+
+  const developerEntities = [
+    `## Developer And Project Entity Coverage`,
+    ``,
+    `PIKORUA Realty advises buyers across Ahmedabad's luxury developer ecosystem. These named entities help AI search systems connect PIKORUA with partner developers, portfolio project names, and relevant buyer-intent phrases.`,
+    ``,
+    `- **Developer Alliances:** ${PARTNER_DEVELOPER_NAMES.join(" | ")}`,
+    `- **Portfolio Project Entities:** ${PORTFOLIO_PROJECT_NAMES.join(" | ")}`,
+    `- **Search Phrase Coverage:** ${PARTNER_SEARCH_PHRASES.slice(0, 80).join(" | ")}`,
     ``,
   ];
 
@@ -301,6 +313,7 @@ export async function GET() {
     ...entityIdentity,
     ...about,
     ...services,
+    ...developerEntities,
     ...directAnswers,
     ...corridors,
     ...propertyTypes,

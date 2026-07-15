@@ -3,35 +3,12 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useMarqueeSpeed } from "@/hooks/useMarqueeSpeed";
+import { DEVELOPER_PARTNERS } from "@/lib/data/developer-partners";
 
 interface PartnerMarqueeProps {
   className?: string;
   partners?: { name: string; src: string; width: number; height: number }[];
 }
-
-// Real developer logos, stored in /public/partners. Intrinsic dimensions are
-// declared so next/image reserves layout space (no CLS). Each mark keeps its
-// original colourway; because several logos are dark (Goyal, Capstone, Maruti, HN Safal)
-// they are seated on an ivory chip so they stay legible on the dark luxury canvas
-// while preserving their true brand colours and proportions.
-const defaultPartners = [
-  { name: "Adani Realty", src: "/partners/adani.png", width: 700, height: 140 },
-  { name: "A. Shridhar", src: "/partners/ashridhar.png", width: 600, height: 137 },
-  { name: "The Capstone Developers", src: "/partners/capstone.png", width: 300, height: 107 },
-  { name: "Constera Realty", src: "/partners/constera.png", width: 222, height: 50 },
-  { name: "Gala Group", src: "/partners/gala.png", width: 100, height: 133 },
-  { name: "Godrej Properties", src: "/partners/godrej.png", width: 1783, height: 854 },
-  { name: "Goyal & Co.", src: "/partners/goyal.png", width: 139, height: 68 },
-  { name: "HN Safal", src: "/partners/hnsafal-dark.png", width: 300, height: 165 },
-  { name: "Maruti Group", src: "/partners/maruti-dark.png", width: 200, height: 52 },
-  { name: "Ravi Desai Group", src: "/partners/ravidesai.png", width: 2640, height: 733 },
-  { name: "Satyamev Group", src: "/partners/satyamev.png", width: 500, height: 129 },
-  { name: "Shaligram Group", src: "/partners/shaligram.png", width: 600, height: 301 },
-  { name: "Sun Builders", src: "/partners/sun.png", width: 1200, height: 1314 },
-  { name: "Swati Procon", src: "/partners/swati.png", width: 1080, height: 142 },
-  { name: "Triveni Group", src: "/partners/triveni.png", width: 250, height: 139 },
-  { name: "Venus Infrastructure", src: "/partners/venus.png", width: 1418, height: 303 },
-];
 
 const getPartnerLogoStyles = (name: string) => {
   if (name.toLowerCase().includes("gala")) {
@@ -45,7 +22,7 @@ const getPartnerLogoStyles = (name: string) => {
 
 export function PartnerMarquee({ className, partners: propPartners }: PartnerMarqueeProps) {
   const { ref: marqueeRef, durationSeconds } = useMarqueeSpeed<HTMLDivElement>(110); // Increased flow speed
-  const activePartners = propPartners && propPartners.length > 0 ? propPartners : defaultPartners;
+  const activePartners = propPartners && propPartners.length > 0 ? propPartners : DEVELOPER_PARTNERS;
   const repeatedPartners = [...activePartners, ...activePartners];
 
   return (

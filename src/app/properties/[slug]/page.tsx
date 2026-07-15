@@ -59,12 +59,21 @@ export async function generateMetadata({ params }: PropertyPageProps): Promise<M
   const title = property.seoTitle || `${property.configuration} ${property.sizeRange} in ${property.locationLabel}`;
   const description = property.seoDescription || property.description?.[0] || 
     `Explore this exclusive ${property.configuration} · ${property.sizeRange} located in ${property.locationLabel}, Ahmedabad. Request private details from PIKORUA Realty.`;
+  const categoryLabel = RESIDENTIAL_CATEGORY_LABELS[property.category] || "Luxury Residence";
 
   return createMetadata({
     title,
     description,
     path: `/properties/${property.slug}`,
     image: property.coverImage || "/logo.png",
+    keywords: [
+      property.name,
+      property.configuration,
+      property.locationLabel,
+      categoryLabel,
+      `${property.name} Ahmedabad`,
+      `${property.configuration} ${property.locationLabel}`,
+    ],
   });
 }
 

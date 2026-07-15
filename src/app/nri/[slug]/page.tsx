@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: NriPageProps): Promise<Metada
     description: page.description,
     path: page.href,
     image: page.heroImage,
+    keywords: [page.label, page.title, ...(page.matchKeywords ?? []), ...(page.seoKeywords ?? [])],
   });
 }
 

@@ -20,6 +20,12 @@ import {
 } from "@/lib/entity-profile";
 import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { FOUNDER_NAME } from "@/lib/data/about";
+import {
+  DEVELOPER_PARTNERS,
+  PARTNER_METADATA_KEYWORDS,
+  PARTNER_SCHEMA_KNOWS_ABOUT,
+  PORTFOLIO_PROJECT_NAMES,
+} from "@/lib/data/developer-partners";
 import "./globals.css";
 
 const inter = Inter({
@@ -48,6 +54,14 @@ export const metadata: Metadata = {
   },
   description:
     "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
+  keywords: [
+    "luxury property Ahmedabad",
+    "NRI property investment Ahmedabad",
+    "luxury real estate consultant Ahmedabad",
+    "premium residential projects Ahmedabad",
+    "Ahmedabad real estate developers",
+    ...PARTNER_METADATA_KEYWORDS,
+  ],
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
@@ -120,23 +134,8 @@ const organizationSchema = {
         },
       ],
       knowsAbout: [
-        // Developer alliances
-        "Adani Realty",
-        "A. Shridhar",
-        "The Capstone Developers",
-        "Constera Realty",
-        "Gala Group",
-        "Godrej Properties",
-        "Goyal & Co.",
-        "HN Safal",
-        "Maruti Group",
-        "Ravi Desai Group",
-        "Satyamev Group",
-        "Shaligram Group",
-        "Sun Builders",
-        "Swati Procon",
-        "Triveni Group",
-        "Venus Infrastructure",
+        // Developer and project entity coverage
+        ...PARTNER_SCHEMA_KNOWS_ABOUT,
         // Core luxury advisory
         "Luxury real estate consultant Ahmedabad",
         "Luxury property consultant Ahmedabad",
@@ -294,6 +293,38 @@ const organizationSchema = {
         reviewCount: "6",
       },
       makesOffer: getBusinessOfferCatalog(),
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${SITE_URL}#developer-partner-entities`,
+      name: "Ahmedabad real estate developer entities PIKORUA Realty advises across",
+      itemListElement: DEVELOPER_PARTNERS.map((partner, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Organization",
+          name: partner.name,
+          knowsAbout: [
+            `${partner.name} luxury projects Ahmedabad`,
+            `${partner.name} residential projects Ahmedabad`,
+            ...(partner.projectNames ?? []).map((projectName) => `${projectName} Ahmedabad`),
+          ],
+        },
+      })),
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${SITE_URL}#portfolio-project-entities`,
+      name: "Luxury residential project entities in the PIKORUA Realty discovery surface",
+      itemListElement: PORTFOLIO_PROJECT_NAMES.map((projectName, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Thing",
+          name: projectName,
+          description: `${projectName} is part of the PIKORUA Realty luxury property discovery surface for Ahmedabad buyers and NRI investors.`,
+        },
+      })),
     },
     {
       "@type": "Person",

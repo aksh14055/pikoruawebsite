@@ -1,6 +1,7 @@
 import type { LocationSlug, ResidentialCategory } from "@/types";
 import type { StaticProperty } from "@/lib/data/properties";
 import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
+import { PARTNER_SEARCH_PHRASES } from "@/lib/data/developer-partners";
 
 export type LandingPageKind = "location" | "property-type" | "nri";
 
@@ -36,7 +37,19 @@ export interface GeoLandingPage {
   bodyContent?: string[];
   locationSlug?: LocationSlug;
   categories?: ResidentialCategory[];
+  /**
+   * matchKeywords — dual-purpose: (1) merged into page <meta keywords>, and
+   * (2) used by getLandingProperties() to filter which properties appear on
+   * this page via substring match against category/configuration/location.
+   * Keep entries here narrow and property-relevant (e.g. "villa", "4 bhk").
+   */
   matchKeywords?: string[];
+  /**
+   * seoKeywords — meta-keywords only, never used for property filtering.
+   * Use this for broad SEO terms (brand names, entity phrases) that would
+   * cause false-positive property matches if placed in matchKeywords.
+   */
+  seoKeywords?: string[];
   relatedSlugs?: string[];
   collectionHref?: string;
   wikipediaUrl?: string;
@@ -1146,6 +1159,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "NRI investment Ahmedabad",
       "high ROI property Ahmedabad",
     ],
+    // Developer/project brand phrases — SEO metadata only. Kept out of
+    // matchKeywords so they can't cause unrelated properties to match via
+    // substring comparison in getLandingProperties().
+    seoKeywords: PARTNER_SEARCH_PHRASES,
     collectionHref: "/properties",
     intro:
       "Luxury property in Ahmedabad should be evaluated by corridor strength, legal clarity, privacy, building quality, rental demand, and long-term family utility.",
