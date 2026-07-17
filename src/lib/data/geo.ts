@@ -24,6 +24,15 @@ export interface NriExecutionDetails {
   commonQuestions?: string[];
 }
 
+export interface LocationMarketGuide {
+  priceContext: string;
+  inventoryProfile: string;
+  buyerProfile: string;
+  diligenceFocus: string;
+  investmentOutlook: string;
+  localAnchors: string[];
+}
+
 export interface GeoLandingPage {
   kind: LandingPageKind;
   slug: string;
@@ -67,6 +76,7 @@ export interface GeoLandingPage {
   relatedSlugs?: string[];
   collectionHref?: string;
   nriDetails?: NriExecutionDetails;
+  marketGuide?: LocationMarketGuide;
   wikipediaUrl?: string;
   wikidataUrl?: string;
   coordinates?: {
@@ -146,6 +156,12 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       longitude: "72.5119",
     },
     locationSlug: "sindhu-bhavan",
+    seoKeywords: [
+      "luxury property Sindhu Bhavan Road",
+      "Sindhu Bhavan Road luxury homes",
+      "luxury property near Rajpath Club",
+      "luxury homes near Karnavati Club",
+    ],
     intro:
       "Sindhu Bhavan Road is one of Ahmedabad's strongest luxury residential signals, preferred by HNI families who want immediate access to dining, private clubs, premium schools, and the western business belt without losing residential privacy.",
     marketSignals: [
@@ -158,6 +174,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "NRIs seeking a recognizable luxury address with strong resale recall.",
       "Sellers who want discreet representation instead of public portal exposure.",
     ],
+    marketGuide: {
+      priceContext:
+        "Premium apartments and penthouses usually trade in the upper western-Ahmedabad band, with value driven by building age, floor height, terrace rights, privacy, and immediate SBR frontage versus inner-lane positioning.",
+      inventoryProfile:
+        "Large apartments, duplexes, penthouses, and bungalow estates dominate. The best inventory is often privately circulated because owners and developers avoid broad public exposure.",
+      buyerProfile:
+        "Best fit for HNI families and NRIs who want a recognised Ahmedabad address with social infrastructure, dining, schools, and resale recall.",
+      diligenceFocus:
+        "Verify title chain, RERA alignment where applicable, parking allocation, terrace or deck rights, society maintenance, and whether the quoted area matches usable livability.",
+      investmentOutlook:
+        "Defensive luxury corridor with strong recall; resale depth is usually better than emerging pockets, but overpaying for mediocre buildings can still weaken returns.",
+      localAnchors: ["Sindhu Bhavan Road high street", "Bodakdev and SBR dining belt", "SG Highway access", "Premium school and club ecosystem"],
+    },
     faqs: [
       {
         question: "Is Sindhu Bhavan Road a good location for luxury homes in Ahmedabad?",
@@ -233,6 +262,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       longitude: "72.5074",
     },
     locationSlug: "iskon-ambli",
+    seoKeywords: [
+      "luxury homes Iscon Ambli Road",
+      "luxury apartments near SG Highway Ahmedabad",
+      "high-end residential projects in Ahmedabad",
+    ],
     intro:
       "Iskon-Ambli is a core western Ahmedabad luxury corridor, valued for connectivity, premium social infrastructure, and a strong supply of large vertical residences with private club amenities.",
     marketSignals: [
@@ -245,6 +279,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Buyers seeking tower residences with scale, views, and private amenities.",
       "Investors evaluating proven western Ahmedabad residential demand.",
     ],
+    marketGuide: {
+      priceContext:
+        "Iscon-Ambli sits in Ahmedabad's highest-recognition luxury band, with premiums for low-density towers, private lobbies, higher floors, large decks, and penthouse rights.",
+      inventoryProfile:
+        "The corridor is strongest for large-format 4 BHK and 5 BHK apartments, sky villas, duplexes, and select bungalow plots in adjacent lanes.",
+      buyerProfile:
+        "Best fit for buyers who want address prestige, new-generation amenities, private arrival, and strong NRI recall within western Ahmedabad.",
+      diligenceFocus:
+        "Check unit density, lift-lobby privacy, deck legality, parking format, developer delivery record, and the gap between brochure area and usable space.",
+      investmentOutlook:
+        "Scarcity and buyer recall support long-term value, but the corridor rewards only best-in-class buildings; average towers can look expensive quickly.",
+      localAnchors: ["ISKCON Temple Ahmedabad", "Ambli-Bopal access", "SG Highway", "Premium western Ahmedabad school belt"],
+    },
     faqs: [
       {
         question: "Why do luxury buyers prefer Iskon-Ambli Road?",
@@ -319,6 +366,11 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       longitude: "72.5112",
     },
     locationSlug: "thaltej",
+    seoKeywords: [
+      "premium flats Thaltej Ahmedabad",
+      "luxury apartments near SG Highway Ahmedabad",
+      "high-end homes SG Highway Ahmedabad",
+    ],
     intro:
       "Thaltej offers a mature luxury-residential environment with access to SG Highway, established neighborhoods, and a quieter rhythm than denser commercial-adjacent corridors.",
     marketSignals: [
@@ -331,6 +383,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Families comparing Thaltej, Shilaj, and Iskon-Ambli.",
       "Buyers looking for premium duplex homes and penthouses in western Ahmedabad.",
     ],
+    marketGuide: {
+      priceContext:
+        "Thaltej offers a wider value band than Iscon-Ambli and SBR, with premiums for newer towers, quiet inner roads, metro access, and stronger SG Highway connectivity.",
+      inventoryProfile:
+        "Premium apartments, duplexes, penthouses, and select villa or bungalow options coexist, making Thaltej a practical comparison corridor rather than a single-format market.",
+      buyerProfile:
+        "Best fit for families who want western-Ahmedabad access, calmer residential character, and better value-to-quality balance than the highest-priced corridors.",
+      diligenceFocus:
+        "Compare exact lane quality, traffic exposure, tower density, parking, construction age, and whether the property sits in a residential pocket or highway-adjacent stretch.",
+      investmentOutlook:
+        "Stable, lower-volatility corridor with good end-user depth; strongest returns usually come from correctly priced, well-managed buildings near core access points.",
+      localAnchors: ["Thaltej Metro Station", "SG Highway", "Science City access", "Bopal and SBR school belt"],
+    },
     faqs: [
       {
         question: "Is Thaltej considered a luxury residential area?",
@@ -411,6 +476,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Buyers comparing Shilaj, Vaishno Devi, and Thaltej for long-term growth.",
       "NRIs planning a future private residence in Ahmedabad.",
     ],
+    marketGuide: {
+      priceContext:
+        "Shilaj pricing is highly micro-location sensitive: gated villa communities, NA residential plots, inner-village access, and Bopal-Ambli connectivity create very different value bands.",
+      inventoryProfile:
+        "Best known for villas, bungalows, plotted land, and lower-density gated communities rather than high-rise apartment volume.",
+      buyerProfile:
+        "Best fit for buyers who want land, privacy, future custom construction, or a more independent western-Ahmedabad lifestyle.",
+      diligenceFocus:
+        "NA status, title chain, AUDA/AMC jurisdiction, access-road width, utility connections, society governance, and boundary clarity are the main diligence issues.",
+      investmentOutlook:
+        "Land-backed upside can be strong over longer horizons, but the corridor requires stricter legal and infrastructure checks than mature apartment markets.",
+      localAnchors: ["Bopal-Ambli Road", "Thaltej access", "SP Ring Road connection", "Western villa and plotted-land belt"],
+    },
     faqs: [
       {
         question: "Is Shilaj good for villas and bungalows?",
@@ -471,6 +549,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Investors evaluating growth-led residential pockets.",
       "Families comparing villa communities and premium plotted assets.",
     ],
+    marketGuide: {
+      priceContext:
+        "Vaishno Devi usually offers lower entry pricing than core SBR or Iscon-Ambli, with value depending on gated-community maturity, road access, and proximity to SP Ring Road.",
+      inventoryProfile:
+        "Large homes, villa communities, plotted developments, and under-construction residential formats define the corridor.",
+      buyerProfile:
+        "Best fit for buyers seeking larger formats, long-horizon appreciation, or a quieter northern-western Ahmedabad base.",
+      diligenceFocus:
+        "Check project completion, utility readiness, road width, land classification, RERA status where applicable, and exact distance from noisy highway stretches.",
+      investmentOutlook:
+        "Growth-led corridor with upside tied to infrastructure maturity; quality gaps between projects are large, so selection discipline matters.",
+      localAnchors: ["Vaishno Devi Circle", "SP Ring Road", "Ahmedabad-Gandhinagar corridor", "GIFT City access route"],
+    },
     faqs: [
       {
         question: "Is Vaishno Devi suitable for luxury property investment?",
@@ -525,6 +616,12 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       longitude: "72.5074",
     },
     locationSlug: "sg-highway",
+    seoKeywords: [
+      "SG highway luxury property",
+      "high-end homes SG Highway Ahmedabad",
+      "luxury apartments near SG Highway Ahmedabad",
+      "Where should I invest in Ahmedabad real estate",
+    ],
     intro:
       "SG Highway acts as a connectivity spine for western Ahmedabad. Buyers usually evaluate it alongside Thaltej, Iskon-Ambli, Shilaj, and Vaishno Devi depending on lifestyle, commute, and privacy needs.",
     marketSignals: [
@@ -537,6 +634,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Investors comparing western Ahmedabad access-led residential assets.",
       "Families who want advisory across nearby corridors rather than one fixed micro-market.",
     ],
+    marketGuide: {
+      priceContext:
+        "SG Highway is not one price market. Residential value changes sharply between direct highway exposure, quieter feeder roads, Thaltej edges, Prahlad Nagar, and Iscon-Ambli adjacency.",
+      inventoryProfile:
+        "Premium apartments, corporate-adjacent residences, mixed-use assets, and nearby luxury pockets make SG Highway a comparison spine rather than a single neighbourhood.",
+      buyerProfile:
+        "Best fit for buyers prioritising commute, airport and business access, tenant demand, and optionality across multiple western corridors.",
+      diligenceFocus:
+        "Assess noise, entry/exit flow, service-road quality, parking, commercial spillover, and whether the building feels residential despite highway proximity.",
+      investmentOutlook:
+        "Connectivity-led demand is resilient, but residential livability depends on being near the highway without being compromised by it.",
+      localAnchors: ["Sarkhej-Gandhinagar Highway", "Prahlad Nagar Corporate Road", "Thaltej access", "Airport and Gandhinagar movement"],
+    },
     faqs: [
       {
         question: "Should I buy directly on SG Highway or nearby?",
@@ -600,6 +710,10 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       latitude: "23.0350",
       longitude: "72.5293",
     },
+    seoKeywords: [
+      "luxury apartments Vastrapur Ahmedabad",
+      "Vastrapur premium property",
+    ],
     intro:
       "Vastrapur is a mature western Ahmedabad neighbourhood with a strong residential character, proximity to Vastrapur Lake, quality social infrastructure, and a buyer base that values urban depth over a single corridor brand.",
     marketSignals: [
@@ -612,6 +726,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Families who value social density, dining access, and institutional schools in close proximity.",
       "NRIs who want a recognisable Ahmedabad address with lifestyle infrastructure already in place.",
     ],
+    marketGuide: {
+      priceContext:
+        "Vastrapur pricing depends on lake proximity, building age, redevelopment quality, parking, and whether the property offers genuine quiet despite the neighbourhood's urban density.",
+      inventoryProfile:
+        "Premium apartments, select penthouses, older high-value buildings, and redevelopment-led residences define the market more than large new township-style supply.",
+      buyerProfile:
+        "Best fit for buyers who value established lifestyle infrastructure, walkability, social density, and immediate livability over a newer corridor brand.",
+      diligenceFocus:
+        "Check building age, maintenance fund, parking, lift condition, society governance, road noise, and redevelopment risk or opportunity.",
+      investmentOutlook:
+        "Strong end-user and rental depth because of centrality; upside is more selective and tied to building quality than broad corridor expansion.",
+      localAnchors: ["Vastrapur Lake", "IIM Ahmedabad area", "Satellite and Bodakdev access", "CG Road and SG Highway connectivity"],
+    },
     faqs: [
       {
         question: "Is Vastrapur a good area to buy luxury property in Ahmedabad?",
@@ -921,7 +1048,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     title: "Luxury Property near Ahmedabad Airport",
     h1: "Luxury Property near Ahmedabad Airport",
     description:
-      "Premium residential properties and luxury homes near Sardar Vallabhbhai Patel International Airport, Ahmedabad — ideal for frequent flyers, NRI buyers, and senior executives.",
+      "Luxury homes near Ahmedabad Airport for frequent flyers, NRI buyers, and executives seeking fast access from western Ahmedabad corridors.",
     heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
     intro:
       "Properties near Ahmedabad's Sardar Vallabhbhai Patel International Airport combine city connectivity with a premium address on the city's western growth axis. Frequent-traveller buyers and senior executives consistently rank airport proximity as a key filter, and the western Ahmedabad luxury belt sits within 20–25 minutes of the airport.",
@@ -994,6 +1121,19 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Families who value school proximity, corporate access, and mature neighbourhood infrastructure.",
       "NRIs seeking a recognisable Ahmedabad address with immediate livability.",
     ],
+    marketGuide: {
+      priceContext:
+        "Bodakdev pricing is shaped by lane quality, proximity to clubs and schools, building age, parking, and scarcity of large-format apartments in mature pockets.",
+      inventoryProfile:
+        "The market includes established luxury apartments, select bungalows, redevelopment-led homes, and private resales that rarely behave like a public inventory market.",
+      buyerProfile:
+        "Best fit for HNI families who want mature neighbourhood credibility, school access, club proximity, and central-western Ahmedabad convenience.",
+      diligenceFocus:
+        "Review building age, society records, parking, redevelopment potential, title chain, and whether a mature building's maintenance profile matches the asking price.",
+      investmentOutlook:
+        "High livability and resale depth support the corridor, but appreciation is asset-specific because new land supply is limited.",
+      localAnchors: ["Karnavati Club", "Sindhu Bhavan Road access", "CG Road business belt", "Premium school and hospital ecosystem"],
+    },
     faqs: [
       {
         question: "Is Bodakdev a good location to buy luxury property in Ahmedabad?",
@@ -1088,7 +1228,7 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     title: "Premium Property in Prahlad Nagar, Ahmedabad",
     h1: "Premium Property in Prahlad Nagar",
     description:
-      "Luxury residences and premium apartments in Prahlad Nagar, Ahmedabad — a premier corporate and residential corridor anchored by Ahmedabad's most prominent office district.",
+      "Premium residences in Prahlad Nagar, Ahmedabad for executives, investors, and families seeking corporate access and strong tenant demand.",
     heroImage: "/properties/eminence-96/emini96-1.png",
     intro:
       "Prahlad Nagar is Ahmedabad's most prominent corporate district and a strong residential corridor for senior executives, business families, and professionals who want to live within minutes of their offices. Premium residential buildings here attract both self-use buyers and investors seeking the city's best professional tenant profile.",
@@ -1167,6 +1307,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "premium apartments Ahmedabad",
       "4 BHK luxury apartments Ahmedabad",
       "5 BHK luxury apartments Ahmedabad",
+      "high-end apartments Ahmedabad",
+      "gated luxury community Ahmedabad",
+      "smart luxury homes Ahmedabad",
+      "vastu compliant luxury homes Ahmedabad",
+      "ready to move luxury apartments Ahmedabad",
+      "new launch luxury projects Ahmedabad",
+      "skyline view apartments Ahmedabad",
     ],
     intro:
       "Luxury apartment buying in Ahmedabad is no longer about size alone. The strongest residences combine privacy, arrival experience, floor plate quality, security, amenity depth, and corridor strength.",
@@ -1232,6 +1379,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "luxury homes Ahmedabad",
       "NRI investment Ahmedabad",
       "high ROI property Ahmedabad",
+      "boutique real estate consultant Ahmedabad",
+      "curated luxury properties Ahmedabad",
+      "rare luxury properties Ahmedabad",
+      "limited inventory luxury homes Ahmedabad",
     ],
     // Developer/project brand phrases — SEO metadata only. Kept out of
     // matchKeywords so they can't cause unrelated properties to match via
@@ -1275,6 +1426,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     relatedSlugs: [
       "nri-property-investment-ahmedabad",
       "luxury-real-estate-ahmedabad",
+      "luxury-real-estate-consultants-ahmedabad",
       "luxury-property-consultant-ahmedabad",
       "luxury-4bhk-ahmedabad",
       "luxury-5bhk-ahmedabad",
@@ -1315,6 +1467,12 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "Ahmedabad luxury real estate market",
       "luxury residential real estate Ahmedabad",
       "premium real estate advisory Ahmedabad",
+      "luxury real estate expert Ahmedabad",
+      "signature luxury residences Ahmedabad",
+      "investment grade real estate Ahmedabad",
+      "trophy properties Ahmedabad",
+      "best luxury homes in Ahmedabad for families",
+      "top areas for luxury living in Ahmedabad",
     ],
     collectionHref: "/properties",
     intro:
@@ -1345,9 +1503,15 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "NRIs should evaluate legal clarity, RERA status where applicable, payment route, POA feasibility, maintenance support, rental demand, and exit liquidity before choosing a property.",
       },
+      {
+        question: "Which is the best luxury property in Ahmedabad?",
+        answer:
+          "There is no single best property — the right choice depends on corridor, format, and budget. PIKORUA Realty compares Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, and Vastrapur options against the buyer's family-use, investment, and resale goals before recommending a shortlist.",
+      },
     ],
     relatedSlugs: [
       "luxury-property-ahmedabad",
+      "luxury-real-estate-consultants-ahmedabad",
       "luxury-property-consultant-ahmedabad",
       "nri-property-investment-ahmedabad",
       "iskon-ambli",
@@ -1362,6 +1526,95 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "NRI and HNI families drive a large part of Ahmedabad's upper-end residential demand. Many are buying for parents, future return, investment allocation, or a long-term family base. Their search needs remote walkthroughs, documented comparison notes, legal coordination, and a clear view of which corridors will remain desirable five to ten years from now.",
       "### PIKORUA Advisory View",
       "PIKORUA Realty works with luxury real estate as a private advisory category: curated shortlists, off-market access where relevant, corridor comparison, document-led evaluation, and discreet negotiation. The goal is not to show more options; it is to remove unsuitable options before the buyer spends time and capital.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-real-estate-consultants-ahmedabad",
+    href: "/luxury-real-estate-consultants-ahmedabad",
+    label: "Luxury Real Estate Consultants",
+    eyebrow: "HNI & NRI Advisory",
+    title: "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
+    h1: "Luxury Real Estate Consultants in Ahmedabad",
+    description:
+      "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium access.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: BROAD_LUXURY_CATEGORIES,
+    matchKeywords: [
+      "luxury real estate consultants Ahmedabad",
+      "luxury real estate consultant Ahmedabad",
+      "HNI property consultant Ahmedabad",
+      "NRI property consultant Ahmedabad",
+      "private luxury property advisory Ahmedabad",
+    ],
+    seoKeywords: [
+      "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
+      "luxury property consultancy Ahmedabad",
+      "HNI real estate consultant Ahmedabad",
+      "NRI real estate consultant Ahmedabad",
+      "boutique luxury real estate advisory Ahmedabad",
+      "private wealth real estate Ahmedabad",
+      "family office real estate Ahmedabad",
+      "discreet property deals Ahmedabad",
+      "confidential property transactions Ahmedabad",
+      "top rated property consultant Ahmedabad",
+      "highly recommended real estate agent Ahmedabad",
+      "certified property consultant Ahmedabad",
+      "experienced luxury property advisor Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=luxury-consultancy",
+    intro:
+      "PIKORUA Realty works as a private luxury real estate consultancy for HNI families and NRI buyers who need judgement, discretion, and verified access rather than a public list of properties.",
+    marketSignals: [
+      "The strongest Ahmedabad luxury decisions are made through corridor comparison, developer verification, legal clarity, and private buyer-seller alignment.",
+      "HNI and NRI buyers usually need different execution support: private access and negotiation for HNIs; virtual tours, POA, banking, and handover support for NRIs.",
+      "Consultancy quality matters most when inventory is scarce, off-market, high-value, or difficult to compare through public portals.",
+    ],
+    idealFor: [
+      "HNI families comparing Iscon-Ambli, Sindhu Bhavan Road, Thaltej, Bodakdev, SG Highway, and Shilaj before committing capital.",
+      "NRIs who need Ahmedabad ground representation for shortlisting, video inspections, documentation, registration, and post-purchase support.",
+      "Sellers of high-value homes who need discreet buyer access without broad public exposure.",
+    ],
+    faqs: [
+      {
+        question: "What does a luxury real estate consultant in Ahmedabad do?",
+        answer:
+          "A luxury real estate consultant filters inventory, compares corridors, verifies developer and document readiness, plans site visits or virtual tours, supports negotiation, and coordinates transaction steps for high-value buyers and sellers.",
+      },
+      {
+        question: "Why should HNIs use a private property consultant instead of a portal?",
+        answer:
+          "HNIs often need privacy, qualified introductions, off-market access, and sharper market context. A portal shows volume; a consultant should reduce noise and protect the buyer's or seller's negotiating position.",
+      },
+      {
+        question: "Does PIKORUA advise NRI buyers as well as local HNI buyers?",
+        answer:
+          "Yes. PIKORUA Realty advises both HNI and NRI buyers, with NRI support covering remote shortlisting, video walkthroughs, POA coordination, payment-route guidance, registration assistance, and property management planning.",
+      },
+      {
+        question: "How should I choose a real estate consultant in Ahmedabad?",
+        answer:
+          "Look for corridor-specific track record, verified access to off-market or discreetly marketed homes, clear documentation process, and client references shared privately rather than broad public testimonials alone.",
+      },
+    ],
+    relatedSlugs: [
+      "luxury-property-consultant-ahmedabad",
+      "luxury-real-estate-ahmedabad",
+      "nri-property-consultant-ahmedabad",
+      "ultra-luxury-properties-ahmedabad",
+      "ahmedabad-luxury-property-market-report",
+      "iskon-ambli",
+      "sindhu-bhavan",
+    ],
+    bodyContent: [
+      "### Consultancy, Not Listing Volume",
+      "A serious luxury search in Ahmedabad is not solved by seeing more options. It is solved by filtering out unsuitable options early: weak title, inflated pricing, poor floor plate, low resale depth, wrong society profile, builder risk, maintenance complexity, or a location mismatch. This is the difference between brokerage volume and consultancy judgement.",
+      "### HNI Advisory Lens",
+      "For HNI families, privacy and fit matter as much as price. The advisory process should understand family structure, lifestyle, school and club access, parking and staff requirements, entertaining habits, future liquidity, and how visible or private the transaction must remain.",
+      "### NRI Advisory Lens",
+      "For NRIs, the consultancy layer adds execution control: video inspections, documentation coordination, bank and POA sequencing, family review calls, registration planning, and property management after possession. The right consultant reduces distance risk.",
+      "### Why PIKORUA",
+      "PIKORUA Realty is positioned for high-intent, low-noise advisory: curated shortlists, developer and project context, confidential seller access where appropriate, and market judgement shaped around Ahmedabad's premium western corridors.",
     ],
   },
   {
@@ -1387,6 +1640,14 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "luxury property advisor Ahmedabad",
       "private real estate advisory Ahmedabad",
       "off market luxury property Ahmedabad",
+      "elite real estate consultant Ahmedabad",
+      "bespoke property consultant Ahmedabad",
+      "high-end property consultant Ahmedabad",
+      "luxury real estate for HNI Ahmedabad",
+      "legacy homes Ahmedabad",
+      "generational homes Ahmedabad",
+      "best luxury real estate consultant for NRI Ahmedabad",
+      "trusted luxury property advisor near me Ahmedabad",
     ],
     collectionHref: "/contact?purpose=luxury-advisory",
     intro:
@@ -1416,6 +1677,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "Can a luxury property consultant help NRI buyers?",
         answer:
           "Yes. NRI buyers can use PIKORUA for remote shortlisting, video walkthroughs, RERA and title-check coordination, POA planning, payment-flow guidance, registration support, and handover coordination.",
+      },
+      {
+        question: "Who is the best luxury real estate consultant in Ahmedabad?",
+        answer:
+          "The right consultant depends on the buyer's need — private access, discretion, and documentation discipline matter more than portal size. PIKORUA Realty focuses specifically on HNI and NRI luxury advisory rather than volume brokerage.",
       },
     ],
     relatedSlugs: [
@@ -1458,6 +1724,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "real estate consultant Ahmedabad",
       "property consultant Ahmedabad",
       "real estate advisory Ahmedabad",
+      "premium real estate consultant Ahmedabad",
+      "real estate consultant Ahmedabad trusted",
+      "client-focused real estate consultant Ahmedabad",
+      "premium real estate advisory Ahmedabad",
+      "how to choose a real estate consultant in Ahmedabad",
     ],
     collectionHref: "/contact?purpose=real-estate-advisory",
     intro:
@@ -1487,6 +1758,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "Which Ahmedabad areas does PIKORUA advise on?",
         answer:
           "PIKORUA advises across Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, Bodakdev, Shilaj, Vaishno Devi, and other premium western Ahmedabad corridors.",
+      },
+      {
+        question: "How do I choose the right real estate consultant in Ahmedabad?",
+        answer:
+          "Check corridor-specific track record, whether they represent both buyers and sellers transparently, documentation discipline, and whether references are verifiable rather than generic testimonials.",
       },
     ],
     relatedSlugs: [
@@ -1534,6 +1810,15 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "signature residences Ahmedabad",
       "premium penthouses Ahmedabad",
       "luxury bungalows Ahmedabad",
+      "ultra premium homes Ahmedabad",
+      "curated luxury properties Ahmedabad",
+      "rare luxury properties Ahmedabad",
+      "limited inventory luxury homes Ahmedabad",
+      "trophy properties Ahmedabad",
+      "legacy homes Ahmedabad",
+      "generational homes Ahmedabad",
+      "skyline view apartments Ahmedabad",
+      "gated luxury community Ahmedabad",
     ],
     collectionHref: "/properties",
     intro:
@@ -1563,6 +1848,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "Are ultra luxury homes usually publicly listed?",
         answer:
           "Some are publicly visible, but many serious ultra-luxury mandates are shared privately because sellers and developers prefer qualified buyer access and controlled confidentiality.",
+      },
+      {
+        question: "Are luxury properties in Ahmedabad a good investment?",
+        answer:
+          "Scarce, well-located ultra-luxury assets in corridors like Iscon-Ambli Road and Sindhu Bhavan Road have historically held resale demand well, but returns depend on title clarity, developer credibility, and exit liquidity rather than the price tag alone.",
       },
     ],
     relatedSlugs: [
@@ -1606,6 +1896,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "premium homes Ahmedabad",
       "high end homes Ahmedabad",
       "luxury family homes Ahmedabad",
+      "designer homes Ahmedabad",
+      "luxury lifestyle homes Ahmedabad",
+      "smart luxury homes Ahmedabad",
+      "vastu compliant luxury homes Ahmedabad",
+      "ready to move luxury apartments Ahmedabad",
+      "new launch luxury projects Ahmedabad",
+      "high-end residential projects in Ahmedabad",
     ],
     collectionHref: "/properties",
     intro:
@@ -1635,6 +1932,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
         question: "Can NRIs buy luxury homes in Ahmedabad remotely?",
         answer:
           "Yes. NRIs can buy luxury homes remotely when virtual tours, document checks, POA planning, payment routing, registration coordination, and handover support are properly managed.",
+      },
+      {
+        question: "Where can I buy luxury homes in Ahmedabad?",
+        answer:
+          "Iscon-Ambli Road, Sindhu Bhavan Road, SG Highway, Thaltej, and Vastrapur carry the strongest concentration of luxury apartments, penthouses, villas, and bungalows, with Shilaj and Vaishno Devi relevant for land-backed homes.",
       },
     ],
     relatedSlugs: [
@@ -1667,6 +1969,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "Curated luxury 4 BHK apartments and residences in Ahmedabad for HNI families, NRIs, and investors seeking premium western corridors.",
     heroImage: "/properties/maruti-360/maruti-360-bedroom-2.png",
     matchKeywords: ["4 bhk", "4 & 5 bhk", "4bhk", "four bedroom", "4 bedroom"],
+    seoKeywords: [
+      "4 BHK luxury apartments Ahmedabad",
+      "ready to move luxury apartments Ahmedabad",
+      "vastu compliant luxury homes Ahmedabad",
+      "gated luxury community Ahmedabad",
+      "new launch luxury projects Ahmedabad",
+    ],
     collectionHref: "/properties?configuration=4bhk",
     intro:
       "Luxury 4 BHK homes in Ahmedabad are the practical upgrade format for families who want scale, privacy, amenity quality, and strong resale demand without moving into oversized inventory.",
@@ -1719,6 +2028,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "Private advisory for luxury 5 BHK apartments, penthouses, duplexes, and sky villas in Ahmedabad's prime residential corridors.",
     heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     matchKeywords: ["5 bhk", "4 & 5 bhk", "5bhk", "five bedroom", "5 bedroom"],
+    seoKeywords: [
+      "5 BHK luxury apartments Ahmedabad",
+      "skyline view apartments Ahmedabad",
+      "signature luxury residences Ahmedabad",
+      "designer homes Ahmedabad",
+      "trophy properties Ahmedabad",
+    ],
     collectionHref: "/properties?configuration=5bhk",
     intro:
       "Luxury 5 BHK homes in Ahmedabad sit at the top end of the family-residence market, where privacy, arrival, floor plate quality, and corridor scarcity matter more than brochure size.",
@@ -1778,6 +2094,10 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "duplex homes Ahmedabad",
       "sky villas Ahmedabad",
       "penthouse for sale Ahmedabad",
+      "skyline view apartments Ahmedabad",
+      "riverfront luxury apartments Ahmedabad",
+      "signature luxury residences Ahmedabad",
+      "rare luxury properties Ahmedabad",
     ],
     intro:
       "Penthouses and duplex residences sit at the top end of Ahmedabad's vertical luxury market. The best opportunities are judged by privacy, ceiling height, terrace utility, view corridor, and building quality.",
@@ -1844,6 +2164,9 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "gated villas Ahmedabad",
       "luxury bungalows Ahmedabad",
       "independent luxury homes Ahmedabad",
+      "gated luxury community Ahmedabad",
+      "legacy homes Ahmedabad",
+      "generational homes Ahmedabad",
     ],
     intro:
       "Luxury villas and bungalows in Ahmedabad are bought for privacy, land, identity, and long-term family utility. The right option depends as much on title and neighborhood maturity as it does on architecture.",
@@ -1918,6 +2241,8 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "independent bungalow Ahmedabad",
       "premium bungalows Ahmedabad",
       "off market bungalows Ahmedabad",
+      "legacy homes Ahmedabad",
+      "confidential property transactions Ahmedabad",
     ],
     collectionHref: "/properties",
     intro:
@@ -1986,6 +2311,8 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "premium residential plots Ahmedabad",
       "residential land Ahmedabad",
       "NA plots Ahmedabad",
+      "gated luxury community Ahmedabad",
+      "limited inventory luxury homes Ahmedabad",
     ],
     intro:
       "Premium residential plots require more diligence than finished homes. The right parcel should balance title strength, access, permissible use, neighborhood maturity, infrastructure, and long-term family or investment plans.",
@@ -2047,6 +2374,11 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "NRI investment property Ahmedabad",
       "rental yield property Ahmedabad",
       "real estate investment Ahmedabad",
+      "investment grade real estate Ahmedabad",
+      "high ROI luxury real estate Ahmedabad",
+      "dollar income investment India property",
+      "ROI property Ahmedabad for NRI",
+      "safe property investment India for NRIs",
     ],
     collectionHref: "/properties",
     intro:
@@ -2175,6 +2507,13 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "NRI property advisor Ahmedabad",
       "property consultant for NRI Ahmedabad",
       "NRI property buying support Ahmedabad",
+      "end-to-end NRI property services Ahmedabad",
+      "remote property buying Ahmedabad",
+      "video call property tour Ahmedabad",
+      "NRI home buying assistance Ahmedabad",
+      "India luxury property investment NRI",
+      "legal process to buy property in India for NRI",
+      "NRI property documentation Ahmedabad",
     ],
     collectionHref: "/contact?purpose=nri",
     nriDetails: {
@@ -2239,6 +2578,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
         answer:
           "NRI buyers usually prefer Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi, Bodakdev, and selected SG Highway pockets because these corridors offer address recall, strong resale demand, social infrastructure, and airport connectivity.",
       },
+      {
+        question: "Do I need to visit India to buy property?",
+        answer:
+          "No, not for every step. Shortlisting, video inspections, document review, and even parts of registration can be coordinated remotely through a properly executed Power of Attorney, though many families still choose one focused visit for final inspection or family approval.",
+      },
     ],
     relatedSlugs: [
       "nri-property-investment-ahmedabad",
@@ -2277,6 +2621,15 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "rental yield property Ahmedabad NRI",
       "capital appreciation property Ahmedabad",
     ],
+    seoKeywords: [
+      "invest in Ahmedabad real estate from USA",
+      "property investment Ahmedabad for Dubai residents",
+      "India luxury property investment NRI",
+      "best city in India for NRI property investment",
+      "Ahmedabad vs Mumbai property investment NRI",
+      "safe property investment India for NRIs",
+      "high ROI luxury real estate Ahmedabad",
+    ],
     collectionHref: "/contact?purpose=nri-investment",
     nriDetails: {
       ...NRI_BASE_DETAILS,
@@ -2314,6 +2667,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
         question: "Should NRIs buy ready property or under-construction property?",
         answer:
           "Ready property offers quality certainty and immediate possession. Under-construction property can offer better entry pricing but carries timeline and developer risk. The right choice depends on the buyer's timeline, risk appetite, and legal review.",
+      },
+      {
+        question: "Is Ahmedabad good for NRI investment compared to other Indian cities?",
+        answer:
+          "Ahmedabad offers lower entry pricing than Mumbai with strong appreciation in scarce western corridors, plus a large Gujarati diaspora base that supports resale demand. The right comparison depends on the buyer's budget, rental goals, and family-use plans across cities.",
       },
     ],
     relatedSlugs: [
@@ -2370,6 +2728,13 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "purchase property in India for NRI Ahmedabad",
       "NRI buying luxury property Ahmedabad",
     ],
+    seoKeywords: [
+      "buy luxury home in Ahmedabad from UK",
+      "power of attorney property purchase India",
+      "video call property tour Ahmedabad",
+      "end-to-end NRI property services Ahmedabad",
+      "NRI home buying assistance Ahmedabad",
+    ],
     collectionHref: "/contact?purpose=nri-buying",
     nriDetails: {
       ...NRI_LEGAL_DETAILS,
@@ -2407,6 +2772,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
         question: "Is Power of Attorney required for NRIs buying property?",
         answer:
           "Power of Attorney is not always required at the search stage, but it is commonly used when the NRI cannot be present for signing, registration, possession, or bank documentation. The format and attestation requirements should be confirmed with a lawyer.",
+      },
+      {
+        question: "How can I buy property in Ahmedabad from abroad?",
+        answer:
+          "Start with a private video consultation to define the brief, review a curated shortlist through recorded walkthroughs, complete document and title checks remotely, then plan Power of Attorney, payment routing, and registration before or during a single focused India visit.",
       },
     ],
     relatedSlugs: [
@@ -2452,6 +2822,12 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "property registration Ahmedabad NRI",
       "RERA rules for NRI buyers Ahmedabad",
     ],
+    seoKeywords: [
+      "legal process to buy property in India for NRI",
+      "NRI property documentation Ahmedabad",
+      "power of attorney property purchase India",
+      "NRI real estate advisor Ahmedabad",
+    ],
     collectionHref: "/contact?purpose=nri",
     nriDetails: {
       ...NRI_LEGAL_DETAILS,
@@ -2489,6 +2865,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
         question: "How does property registration work for NRIs?",
         answer:
           "Registration usually happens at the relevant Sub-Registrar office after stamp duty and registration fees are paid. If the buyer cannot attend, a legally valid POA holder may be able to complete the process, subject to document and registrar requirements.",
+      },
+      {
+        question: "What is the legal process to buy property in India for an NRI?",
+        answer:
+          "In outline: confirm FEMA eligibility for the property type, complete title and RERA diligence, agree terms and payment schedule, route funds through NRE/NRO accounts, execute POA if needed, pay stamp duty, and register at the Sub-Registrar office. A lawyer should review each transaction-specific step.",
       },
     ],
     relatedSlugs: [
@@ -2607,6 +2988,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "NRI property Ahmedabad USA buyers",
       "USA se Ahmedabad property buy",
     ],
+    seoKeywords: [
+      "invest in Ahmedabad real estate from USA",
+      "dollar income investment India property",
+      "NRI real estate advisor Ahmedabad",
+    ],
     collectionHref: "/contact?purpose=nri-usa",
     nriDetails: {
       ...NRI_BASE_DETAILS,
@@ -2676,6 +3062,10 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy property in Ahmedabad from UK",
       "Ahmedabad property for NRI UK",
       "UK se Ahmedabad flat buy",
+    ],
+    seoKeywords: [
+      "buy luxury home in Ahmedabad from UK",
+      "NRI real estate advisor Ahmedabad",
     ],
     collectionHref: "/contact?purpose=nri-uk",
     nriDetails: {
@@ -2748,6 +3138,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "property consultant Ahmedabad for NRI Dubai",
       "Dubai se Ahmedabad property buy",
     ],
+    seoKeywords: [
+      "property investment Ahmedabad for Dubai residents",
+      "Ahmedabad vs Dubai property investment NRI",
+      "NRI real estate advisor Ahmedabad",
+    ],
     collectionHref: "/contact?purpose=nri-dubai",
     nriDetails: {
       ...NRI_BASE_DETAILS,
@@ -2818,6 +3213,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy property in Ahmedabad from UAE",
       "NRI property Ahmedabad UAE",
       "UAE to Ahmedabad property consultant",
+    ],
+    seoKeywords: [
+      "property investment Ahmedabad for Dubai residents",
+      "safe property investment India for NRIs",
+      "NRI real estate advisor Ahmedabad",
     ],
     collectionHref: "/contact?purpose=nri-uae",
     nriDetails: {
@@ -2899,6 +3299,10 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "Ahmedabad real estate for NRI Canada",
       "NRI property Ahmedabad Canada",
     ],
+    seoKeywords: [
+      "NRI real estate advisor Ahmedabad",
+      "safe property investment India for NRIs",
+    ],
     collectionHref: "/contact?purpose=nri-canada",
     nriDetails: {
       ...NRI_BASE_DETAILS,
@@ -2969,6 +3373,10 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy property in Ahmedabad from Singapore",
       "NRI property Ahmedabad Singapore",
       "Singapore NRI property consultant Ahmedabad",
+    ],
+    seoKeywords: [
+      "NRI real estate advisor Ahmedabad",
+      "safe property investment India for NRIs",
     ],
     collectionHref: "/contact?purpose=nri-singapore",
     nriDetails: {
@@ -3049,6 +3457,10 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy property in Ahmedabad from Australia",
       "Ahmedabad property for NRI Australia",
       "Australia NRI property Ahmedabad",
+    ],
+    seoKeywords: [
+      "NRI real estate advisor Ahmedabad",
+      "safe property investment India for NRIs",
     ],
     collectionHref: "/contact?purpose=nri-australia",
     nriDetails: {
