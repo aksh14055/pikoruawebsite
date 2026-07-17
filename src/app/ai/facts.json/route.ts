@@ -6,6 +6,10 @@ import {
   NRI_LANDING_PAGES,
   PROPERTY_TYPE_LANDING_PAGES,
 } from "@/lib/data/geo";
+import {
+  RESIDENTIAL_CATEGORY_KEYWORD_CLUSTERS,
+  getKeywordClusterSummaryForSlug,
+} from "@/lib/data/keyword-clusters";
 import { getAiEntitySnapshot, getRealEstateAgentSchema } from "@/lib/entity-profile";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabaseProperties } from "@/lib/supabase/queries";
@@ -50,6 +54,7 @@ export async function GET() {
       idealFor: page.idealFor,
       faqs: page.faqs,
       coordinates: page.coordinates ?? null,
+      keywordCluster: getKeywordClusterSummaryForSlug(page.slug),
       sourceType: "canonical landing page",
     };
   });
@@ -129,6 +134,7 @@ export async function GET() {
         propertyTypes: PROPERTY_TYPE_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
         nriAdvisory: NRI_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
       },
+      categoryKeywordClusters: RESIDENTIAL_CATEGORY_KEYWORD_CLUSTERS,
       properties,
       propertyCounts: {
         total: properties.length,

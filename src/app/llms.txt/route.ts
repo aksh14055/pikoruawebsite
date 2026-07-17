@@ -21,6 +21,7 @@ import {
   MARKET_REPORT_PATH,
   PRESS_ROOM_PATH,
 } from "@/lib/data/market-report";
+import { getKeywordClusterSummaryForSlug } from "@/lib/data/keyword-clusters";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
@@ -118,7 +119,11 @@ export async function GET() {
     ``,
     `## Property Types`,
     ``,
-    ...PROPERTY_TYPE_LANDING_PAGES.map((p) => `- [${p.label}](${SITE_URL}${p.href}): ${p.description}`),
+    ...PROPERTY_TYPE_LANDING_PAGES.map((p) => {
+      const cluster = getKeywordClusterSummaryForSlug(p.slug);
+      const primaryTerms = cluster ? ` Target keywords: ${cluster.primary.slice(0, 4).join(" | ")}` : "";
+      return `- [${p.label}](${SITE_URL}${p.href}): ${p.description}${primaryTerms}`;
+    }),
     ``,
     `## Properties (${liveProperties.length} listings)`,
     ``,

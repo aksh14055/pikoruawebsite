@@ -1,7 +1,8 @@
 import { AI_ANSWER_BLOCKS } from "../src/lib/ai/answer-blocks";
-import { ALL_GEO_LANDING_PAGES } from "../src/lib/data/geo";
+import { ALL_GEO_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "../src/lib/data/geo";
 import { STATIC_BLOG_POSTS } from "../src/lib/data/blog";
 import { STATIC_PROPERTIES } from "../src/lib/data/properties";
+import { PROPERTY_TYPE_KEYWORD_CLUSTERS } from "../src/lib/data/keyword-clusters";
 
 const STATIC_PUBLIC_ROUTES = [
   "/",
@@ -21,6 +22,9 @@ const STATIC_PUBLIC_ROUTES = [
 
 const MIN_ANSWER_LENGTH = 120;
 const MIN_CITATION_FACTS = 2;
+const MIN_CLUSTER_PRIMARY_TERMS = 4;
+const MIN_CLUSTER_TRANSACTIONAL_TERMS = 5;
+const MIN_CLUSTER_LONG_TAIL_TERMS = 5;
 
 function isValidDateString(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -59,6 +63,7 @@ function main() {
   const failures: string[] = [];
   const knownPublicRoutes = buildKnownPublicRoutes();
   const blockIds = new Set<string>();
+  const keywordClusterSlugs = new Set(Object.keys(PROPERTY_TYPE_KEYWORD_CLUSTERS));
 
   if (AI_ANSWER_BLOCKS.length < 10) {
     addFailure(
@@ -125,6 +130,45 @@ function main() {
     if (!isValidDateString(block.lastUpdated)) {
       addFailure(failures, `${prefix} lastUpdated must be a valid YYYY-MM-DD date.`);
     }
+  }
+
+  for (const page of PROPERTY_TYPE_LANDING_PAGES) {
+    const prefix = `Property type keyword cluster "${page.slug}"`;
+    const cluster = PROPERTY_TYPE_KEYWORD_CLUSTERS[page.slug as keyof typeof PROPERTY_TYPE_KEYWORD_CLUSTERS];
+
+    if (!cluster) {
+      addFailure(failures, `${prefix} is missing.`);
+      continue;
+    }
+
+    keywordClusterSlugs.delete(page.slug);
+
+    if (cluster.primary.length < MIN_CLUSTER_PRIMARY_TERMS) {
+      addFailure(failures, `${prefix} must include at least ${MIN_CLUSTER_PRIMARY_TERMS} primary terms.`);
+    }
+
+    if (cluster.transactional.length < MIN_CLUSTER_TRANSACTIONAL_TERMS) {
+      addFailure(
+        failures,
+        `${prefix} must include at least ${MIN_CLUSTER_TRANSACTIONAL_TERMS} transactional terms.`
+      );
+    }
+
+    if (cluster.longTail.length < MIN_CLUSTER_LONG_TAIL_TERMS) {
+      addFailure(failures, `${prefix} must include at least ${MIN_CLUSTER_LONG_TAIL_TERMS} long-tail terms.`);
+    }
+
+    if (cluster.nri.length < 3 || cluster.hni.length < 3) {
+      addFailure(failures, `${prefix} must include at least 3 NRI and 3 HNI terms.`);
+    }
+
+    if (cluster.questions.length < 3 || cluster.comparisons.length < 2) {
+      addFailure(failures, `${prefix} must include at least 3 questions and 2 comparison terms.`);
+    }
+  }
+
+  for (const staleSlug of keywordClusterSlugs) {
+    addFailure(failures, `Property type keyword cluster "${staleSlug}" does not match a current property type page.`);
   }
 
   if (failures.length > 0) {

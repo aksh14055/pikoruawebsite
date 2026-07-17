@@ -30,6 +30,7 @@ import {
   MARKET_REPORT_PATH,
   PRESS_ROOM_PATH,
 } from "@/lib/data/market-report";
+import { getKeywordClusterSummaryForSlug } from "@/lib/data/keyword-clusters";
 import { FAQ_ITEMS } from "@/lib/data/faq";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import {
@@ -215,12 +216,29 @@ export async function GET() {
   const propertyTypes = [
     `## Property Types`,
     ``,
-    ...PROPERTY_TYPE_LANDING_PAGES.flatMap((p) => [
-      `### ${p.label}`,
-      `- **URL:** ${SITE_URL}${p.href}`,
-      `- **Description:** ${p.description}`,
-      ``,
-    ]),
+    ...PROPERTY_TYPE_LANDING_PAGES.flatMap((p) => {
+      const cluster = getKeywordClusterSummaryForSlug(p.slug);
+
+      return [
+        `### ${p.label}`,
+        `- **URL:** ${SITE_URL}${p.href}`,
+        `- **Description:** ${p.description}`,
+        ...(cluster
+          ? [
+              `- **Keyword Pillar:** ${cluster.pillar}`,
+              `- **Primary Keywords:** ${cluster.primary.join(" | ")}`,
+              `- **Transactional Keywords:** ${cluster.transactional.join(" | ")}`,
+              `- **Long-Tail Keywords:** ${cluster.longTail.join(" | ")}`,
+              `- **NRI Keywords:** ${cluster.nri.join(" | ")}`,
+              `- **HNI Keywords:** ${cluster.hni.join(" | ")}`,
+              `- **Question Keywords:** ${cluster.questions.join(" | ")}`,
+              `- **Comparison Keywords:** ${cluster.comparisons.join(" | ")}`,
+              `- **Content Angles:** ${cluster.contentAngles.join(" | ")}`,
+            ]
+          : []),
+        ``,
+      ];
+    }),
   ];
 
   // Property listings — rich AEO/GEO fact density

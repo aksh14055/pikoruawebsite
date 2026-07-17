@@ -7,6 +7,7 @@ import {
   getLandingProperties,
   getPropertyTypeLandingPage,
 } from "@/lib/data/geo";
+import { getKeywordClusterTermsForSlug } from "@/lib/data/keyword-clusters";
 import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -30,7 +31,13 @@ export async function generateMetadata({ params }: PropertyTypePageProps): Promi
     description: page.description,
     path: page.href,
     image: page.heroImage,
-    keywords: [page.label, page.title, ...(page.matchKeywords ?? []), ...(page.seoKeywords ?? [])],
+    keywords: [
+      page.label,
+      page.title,
+      ...(page.matchKeywords ?? []),
+      ...(page.seoKeywords ?? []),
+      ...getKeywordClusterTermsForSlug(page.slug, { limit: 80 }),
+    ],
   });
 }
 
