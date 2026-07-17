@@ -55,6 +55,17 @@ export const AI_SPECIALIZATIONS = [
   "Luxury property consultant Ahmedabad",
   "Real estate consultant Ahmedabad",
   "NRI property advisory Ahmedabad",
+  "NRI property investment Ahmedabad",
+  "NRI property consultant Ahmedabad",
+  "NRI buying property in Ahmedabad",
+  "NRI home-buying process in India",
+  "NRI property inspection service Ahmedabad",
+  "Virtual property tours Ahmedabad",
+  "Property management for NRIs",
+  "NRI home loans in India",
+  "TDS on property purchase by NRI",
+  "Repatriation of property-sale proceeds for NRIs",
+  "Selling inherited property for NRIs",
   "NRI property transactions India",
   "FEMA-aware residential purchase coordination",
   "Power of Attorney coordination for NRI buyers",
@@ -82,9 +93,30 @@ export const AI_SERVICE_CATALOG = [
   {
     name: "NRI residential property advisory",
     serviceType: "NRI property purchase advisory",
-    url: absoluteUrl("/nri-property-consultant-ahmedabad"),
+    url: absoluteUrl("/nri-property-investment-ahmedabad"),
     description:
       "Remote requirement mapping, virtual walkthroughs, RERA and title-check coordination, POA planning, NRE/NRO payment guidance, registration support, and handover assistance.",
+  },
+  {
+    name: "NRI property consultant Ahmedabad",
+    serviceType: "NRI property consultant",
+    url: absoluteUrl("/nri-property-consultant-ahmedabad"),
+    description:
+      "One trusted Ahmedabad team for project shortlisting, video inspections, developer verification, negotiation support, documentation coordination, registration assistance, and post-purchase property management.",
+  },
+  {
+    name: "NRI property inspection and virtual tours",
+    serviceType: "Remote property inspection",
+    url: absoluteUrl("/nri-property-inspection-service"),
+    description:
+      "Ground inspections, live or recorded video walkthroughs, neighbourhood context, snag notes, and shortlist evidence for NRI buyers evaluating Ahmedabad property remotely.",
+  },
+  {
+    name: "Property management for NRIs",
+    serviceType: "Post-purchase property management",
+    url: absoluteUrl("/property-management-for-nris"),
+    description:
+      "Inspection, maintenance, tenant, society, handover, resale, and document coordination for NRI-owned property in Ahmedabad.",
   },
   {
     name: "Discreet seller representation",
@@ -262,11 +294,15 @@ export function getNriAdvisoryServiceSchema({
     },
     serviceOutput: [
       "curated Ahmedabad property shortlist",
-      "remote walkthrough coordination",
+      "video inspection and remote walkthrough coordination",
+      "developer verification coordination",
       "RERA and title-check coordination",
+      "negotiation support",
+      "documentation coordination",
       "Power of Attorney planning support",
       "NRE/NRO payment workflow guidance",
       "registration and handover coordination",
+      "post-purchase property management coordination",
     ],
     availableChannel: {
       "@type": "ServiceChannel",

@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const geoRoutes = ALL_GEO_LANDING_PAGES.map((page) => ({
     url: absoluteUrl(page.href),
-    lastModified: new Date("2026-07-08T12:00:00Z"),
+    lastModified: new Date("2026-07-17T12:00:00Z"),
     changeFrequency: "monthly" as const,
     priority: 0.72,
   }));

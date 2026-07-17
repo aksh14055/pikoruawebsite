@@ -17,7 +17,7 @@ export interface LandingShortAnswer {
   facts: string[];
 }
 
-const FACTS_LAST_UPDATED = "2026-07-12";
+const FACTS_LAST_UPDATED = "2026-07-17";
 
 export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
   {
@@ -51,9 +51,9 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     ],
     sourcePath: "/nri-property-consultant-ahmedabad",
     supportingPaths: [
-      "/nri/buy-property-in-ahmedabad-from-abroad",
+      "/nri-buying-property-in-ahmedabad",
       "/nri-property-investment-ahmedabad",
-      "/nri/nri-property-purchase-process-india",
+      "/nri-home-buying-process-india",
     ],
     lastUpdated: FACTS_LAST_UPDATED,
   },
@@ -149,10 +149,10 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
       "Power of Attorney is commonly used when the buyer cannot be present for signing, registration, possession, or bank documentation.",
       "TDS, stamp duty, registration, seller residency, and repatriation rules should be reviewed by qualified legal and tax professionals.",
     ],
-    sourcePath: "/nri/nri-property-purchase-process-india",
+    sourcePath: "/nri-home-buying-process-india",
     supportingPaths: [
       "/nri-property-consultant-ahmedabad",
-      "/nri/buy-property-in-ahmedabad-from-abroad",
+      "/nri-buying-property-in-ahmedabad",
       "/nri-property-investment-ahmedabad",
       "/contact",
     ],
@@ -206,10 +206,10 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
       "Power of Attorney is not always needed during search, but it is commonly used when the buyer cannot attend signing, registration, possession, or bank documentation.",
       "Clear payment routing through NRE/NRO accounts and legal review before signing reduce avoidable transaction risk.",
     ],
-    sourcePath: "/nri/buy-property-in-ahmedabad-from-abroad",
+    sourcePath: "/nri-buying-property-in-ahmedabad",
     supportingPaths: [
       "/nri-property-consultant-ahmedabad",
-      "/nri/nri-property-purchase-process-india",
+      "/nri-home-buying-process-india",
       "/nri-property-investment-ahmedabad",
     ],
     lastUpdated: FACTS_LAST_UPDATED,

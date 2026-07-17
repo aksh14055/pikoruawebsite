@@ -207,12 +207,37 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/buy-property-in-ahmedabad-from-abroad",
-        destination: "/nri/buy-property-in-ahmedabad-from-abroad",
+        destination: "/nri-buying-property-in-ahmedabad",
         permanent: true,
       },
       {
         source: "/nri-property-legal-process-india",
-        destination: "/nri/nri-property-purchase-process-india",
+        destination: "/nri-home-buying-process-india",
+        permanent: true,
+      },
+      {
+        source: "/nri/buy-property-in-ahmedabad-from-abroad",
+        destination: "/nri-buying-property-in-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/nri/nri-property-purchase-process-india",
+        destination: "/nri-home-buying-process-india",
+        permanent: true,
+      },
+      {
+        source: "/nri/nri-property-management-ahmedabad",
+        destination: "/property-management-for-nris",
+        permanent: true,
+      },
+      {
+        source: "/nri/buy-property-in-ahmedabad-from-canada",
+        destination: "/nri-property-from-canada",
+        permanent: true,
+      },
+      {
+        source: "/nri/buy-property-in-ahmedabad-from-australia",
+        destination: "/nri-property-from-australia",
         permanent: true,
       },
       {

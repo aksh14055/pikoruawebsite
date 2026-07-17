@@ -10,6 +10,20 @@ export interface LandingFaq {
   answer: string;
 }
 
+export interface NriExecutionDetails {
+  heading?: string;
+  servicePromise?: string;
+  callingHours?: string;
+  timeZoneContact?: string;
+  documentationChecklist?: string[];
+  videoConsultation?: string;
+  testimonialsNote?: string;
+  whatsappFormat?: string;
+  internationalPhoneFormat?: string;
+  reviewNote?: string;
+  commonQuestions?: string[];
+}
+
 export interface GeoLandingPage {
   kind: LandingPageKind;
   slug: string;
@@ -52,6 +66,7 @@ export interface GeoLandingPage {
   seoKeywords?: string[];
   relatedSlugs?: string[];
   collectionHref?: string;
+  nriDetails?: NriExecutionDetails;
   wikipediaUrl?: string;
   wikidataUrl?: string;
   coordinates?: {
@@ -70,6 +85,47 @@ const BROAD_LUXURY_CATEGORIES: ResidentialCategory[] = [
   "investment",
   "residential-investment",
 ];
+
+const NRI_COMMON_DOCUMENT_CHECKLIST = [
+  "Passport and PAN",
+  "OCI, visa, or residency status document where applicable",
+  "Overseas address proof and Indian address proof if available",
+  "NRE/NRO account details and source-of-funds note",
+  "Recent photographs and contact details",
+  "Power of Attorney draft if a local representative will sign",
+];
+
+const NRI_LEGAL_TAX_REVIEW_NOTE =
+  "Last editorial update: July 17, 2026. This page is for advisory education only and should be reviewed by a qualified Indian lawyer, chartered accountant, or bank officer before any legal, tax, remittance, or registration action.";
+
+const NRI_SERVICE_PROMISE =
+  "One trusted Ahmedabad team for project shortlisting, video inspections, developer verification, negotiation support, documentation coordination, registration assistance and post-purchase property management.";
+
+const NRI_REFERENCE_NOTE =
+  "Country-specific client references are shared privately only where clients have approved. Public reviews remain available on the testimonials page.";
+
+const NRI_PHONE_FORMAT = "+91 6354 359 222";
+
+const NRI_BASE_DETAILS: NriExecutionDetails = {
+  servicePromise: NRI_SERVICE_PROMISE,
+  callingHours: "Global video calls are available by appointment across USA, UK, UAE, Canada, Singapore, Australia, and India time zones.",
+  timeZoneContact: "Share your country, city, and preferred call window; the Ahmedabad team confirms a matching WhatsApp, Zoom, or Google Meet slot.",
+  documentationChecklist: NRI_COMMON_DOCUMENT_CHECKLIST,
+  videoConsultation: "Private video consultation with shortlist screen-share, corridor comparison, and next-step documentation notes.",
+  testimonialsNote: NRI_REFERENCE_NOTE,
+  whatsappFormat: NRI_PHONE_FORMAT,
+  internationalPhoneFormat: `${NRI_PHONE_FORMAT} from overseas phones`,
+  commonQuestions: [
+    "Can my family in Ahmedabad inspect the shortlist before I travel?",
+    "Can documentation move ahead if I am not physically in India?",
+    "Which payment route should I confirm with my bank before booking?",
+  ],
+};
+
+const NRI_LEGAL_DETAILS: NriExecutionDetails = {
+  ...NRI_BASE_DETAILS,
+  reviewNote: NRI_LEGAL_TAX_REVIEW_NOTE,
+};
 
 export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
@@ -2121,6 +2177,15 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "NRI property buying support Ahmedabad",
     ],
     collectionHref: "/contact?purpose=nri",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "NRI Consultant Delivery Scope",
+      commonQuestions: [
+        "Can PIKORUA shortlist properties before my India visit?",
+        "Can the team coordinate with my lawyer, CA, bank, and local family member?",
+        "Can post-purchase property management continue after registration?",
+      ],
+    },
     intro:
       "PIKORUA Realty is a private NRI advisory in Ahmedabad — shortlist curation, virtual walkthroughs, RERA and legal checks, negotiation, registration, and handover.",
     marketSignals: [
@@ -2182,6 +2247,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy-property-in-ahmedabad-from-usa",
       "nri-property-purchase-process-india",
       "nri-property-management-ahmedabad",
+      "virtual-property-tours-ahmedabad",
     ],
     bodyContent: [
       "### Private NRI Property Advisory in Ahmedabad",
@@ -2211,7 +2277,16 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "rental yield property Ahmedabad NRI",
       "capital appreciation property Ahmedabad",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-investment",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Complete NRI Property Centre",
+      commonQuestions: [
+        "Which Ahmedabad corridor suits my country, currency, family use, and investment horizon?",
+        "Can PIKORUA coordinate developer verification, negotiation, documentation, registration, and handover?",
+        "Can the property be managed locally after purchase if I remain overseas?",
+      ],
+    },
     intro:
       "NRI property investment in Ahmedabad should be evaluated by corridor scarcity, legal clarity, developer reliability, rental demand, exit liquidity, and future family-use value rather than brochure pricing alone.",
     marketSignals: [
@@ -2242,13 +2317,29 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       },
     ],
     relatedSlugs: [
-      "luxury-residential-investment-ahmedabad",
-      "residential-plots-ahmedabad",
-      "india-vs-usa-property-roi-for-nris",
-      "buy-property-in-ahmedabad-from-dubai",
+      "nri-property-consultant-ahmedabad",
       "buy-property-in-ahmedabad-from-abroad",
+      "nri-property-purchase-process-india",
+      "power-of-attorney-for-nri-property-purchase",
+      "nre-vs-nro-property-payment",
+      "nri-home-loans-india",
+      "tds-on-property-purchase-by-nri",
+      "nri-property-inspection-service",
+      "virtual-property-tours-ahmedabad",
+      "nri-property-management-ahmedabad",
+      "selling-inherited-property-for-nris",
+      "repatriation-of-property-sale-proceeds-nri",
+      "buy-property-in-ahmedabad-from-usa",
+      "buy-property-in-ahmedabad-from-uk",
+      "buy-property-in-ahmedabad-from-dubai",
+      "buy-property-in-ahmedabad-from-uae",
+      "buy-property-in-ahmedabad-from-canada",
+      "buy-property-in-ahmedabad-from-singapore",
+      "buy-property-in-ahmedabad-from-australia",
     ],
     bodyContent: [
+      "### One Ahmedabad Team for NRI Execution",
+      NRI_SERVICE_PROMISE,
       "### Investment Lens for NRI Buyers",
       "The strongest NRI investment decisions in Ahmedabad start with a clear asset thesis. A luxury apartment, penthouse, villa, bungalow, or residential plot can all be correct, but only when the micro-market, pricing, legal status, and exit profile match the buyer's horizon.",
       "### Capital Appreciation Corridors",
@@ -2262,11 +2353,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "nri",
     slug: "buy-property-in-ahmedabad-from-abroad",
-    href: "/nri/buy-property-in-ahmedabad-from-abroad",
-    label: "Buy From Abroad",
+    href: "/nri-buying-property-in-ahmedabad",
+    label: "NRI Buying Property",
     eyebrow: "Remote Buying",
-    title: "Buy Property in Ahmedabad from Abroad",
-    h1: "Buy Property in Ahmedabad from Abroad",
+    title: "NRI Buying Property in Ahmedabad",
+    h1: "NRI Buying Property in Ahmedabad",
     description:
       "Remote property buying advisory for NRIs purchasing luxury homes in Ahmedabad from abroad, including virtual tours, POA, banking, and registration.",
     heroImage: "/properties/anurita/anurita-1.jpg",
@@ -2279,7 +2370,16 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "purchase property in India for NRI Ahmedabad",
       "NRI buying luxury property Ahmedabad",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-buying",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Remote Buying Readiness",
+      commonQuestions: [
+        "Can I reserve a property after only a video walkthrough?",
+        "Should POA be prepared before or after shortlisting?",
+        "Can my Ahmedabad family inspect the final two options locally?",
+      ],
+    },
     intro:
       "Buying property in Ahmedabad from abroad is possible when the process is structured around remote shortlisting, verified documents, clear payment routing, Power of Attorney planning, and disciplined registration support.",
     marketSignals: [
@@ -2314,7 +2414,9 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "buy-property-in-ahmedabad-from-usa",
       "buy-property-in-ahmedabad-from-uk",
       "buy-property-in-ahmedabad-from-dubai",
+      "buy-property-in-ahmedabad-from-uae",
       "buy-property-in-ahmedabad-from-canada",
+      "buy-property-in-ahmedabad-from-singapore",
       "buy-property-in-ahmedabad-from-australia",
     ],
     bodyContent: [
@@ -2331,11 +2433,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "nri",
     slug: "nri-property-purchase-process-india",
-    href: "/nri/nri-property-purchase-process-india",
-    label: "NRI Purchase Process",
+    href: "/nri-home-buying-process-india",
+    label: "NRI Home-Buying Process",
     eyebrow: "Legal Process",
-    title: "NRI Property Purchase Process in India",
-    h1: "NRI Property Purchase Process in India",
+    title: "NRI Home-Buying Process in India",
+    h1: "NRI Home-Buying Process in India",
     description:
       "Step-by-step NRI property purchase process for Ahmedabad: FEMA basics, documents, POA, home loan, TDS, stamp duty, and registration.",
     heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
@@ -2351,6 +2453,15 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "RERA rules for NRI buyers Ahmedabad",
     ],
     collectionHref: "/contact?purpose=nri",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Legal, Banking, and Registration Readiness",
+      commonQuestions: [
+        "Which transaction steps can be handled through Power of Attorney?",
+        "What should my lawyer verify before I sign or remit funds?",
+        "Which bank account route should I confirm before booking?",
+      ],
+    },
     intro:
       "The NRI purchase process is manageable when legal, banking, tax, and registration steps are planned before property selection becomes emotional.",
     marketSignals: [
@@ -2399,11 +2510,11 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "nri",
     slug: "nri-property-management-ahmedabad",
-    href: "/nri/nri-property-management-ahmedabad",
-    label: "NRI Property Management",
+    href: "/property-management-for-nris",
+    label: "Property Management for NRIs",
     eyebrow: "Post-Purchase Support",
-    title: "NRI Property Management in Ahmedabad",
-    h1: "NRI Property Management in Ahmedabad",
+    title: "Property Management for NRIs in Ahmedabad",
+    h1: "Property Management for NRIs",
     description:
       "NRI property management support in Ahmedabad for verification, maintenance, rental coordination, resale advisory, site visits, and handover.",
     heroImage: "/properties/ikebana/ikebana1.png",
@@ -2419,6 +2530,20 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "virtual property tour Ahmedabad NRI",
     ],
     collectionHref: "/contact?purpose=nri",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Post-Purchase Management Scope",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Property allotment, sale deed, possession letter, and society contact record",
+        "Maintenance bills, utility details, keys, access cards, and inventory record",
+      ],
+      commonQuestions: [
+        "Can inspections be scheduled when I am overseas?",
+        "Can PIKORUA coordinate tenant, society, maintenance, or resale preparation?",
+        "Can I receive video proof after each inspection or handover check?",
+      ],
+    },
     intro:
       "Owning property from overseas requires reliable ground coordination after the purchase: inspections, maintenance, tenant support, resale preparation, and document follow-up.",
     marketSignals: [
@@ -2470,8 +2595,8 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     href: "/nri-property-from-usa",
     label: "USA to Ahmedabad",
     eyebrow: "Country Guide",
-    title: "Buy Property in Ahmedabad from USA",
-    h1: "Buy Property in Ahmedabad from USA",
+    title: "Ahmedabad Property for NRIs in USA",
+    h1: "Ahmedabad Property for NRIs in USA",
     description:
       "Guide for USA-based NRIs buying property in Ahmedabad, covering remote shortlisting, time zones, POA, NRE/NRO payments, and luxury corridors.",
     heroImage: "/properties/swati-senor/swati-senor-1.jpg",
@@ -2482,7 +2607,25 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "NRI property Ahmedabad USA buyers",
       "USA se Ahmedabad property buy",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-usa",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "USA-Based Buyer Coordination",
+      callingHours: "7:30-10:00 AM IST works for US evening calls; 8:30-10:30 PM IST works for US morning decision calls.",
+      timeZoneContact: "EST, CST, MST, and PST slots can be scheduled through WhatsApp, Google Meet, or Zoom with written follow-up notes.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "US address proof, employment or business proof where the bank asks for it",
+        "Consular or apostille route for Power of Attorney if the buyer cannot travel",
+      ],
+      videoConsultation: "Recorded walkthroughs with layout commentary, neighbourhood drive-bys, and a written comparison note for families spread across US states.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from US phones`,
+      commonQuestions: [
+        "Can my US-based family review recorded walkthroughs before the India family visits?",
+        "Should I remit from the US directly or route through an existing NRE/NRO account?",
+        "How early should I start POA or consular planning if I cannot travel?",
+      ],
+    },
     intro:
       "USA-based NRIs often need a highly structured buying process because of time-zone gaps, remittance planning, POA attestation, limited travel windows, and family decision-making across India and the United States.",
     marketSignals: [
@@ -2507,7 +2650,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
           "Common preferences include Iskon-Ambli Road, Sindhu Bhavan Road, Bodakdev, Thaltej, Shilaj, and premium SG Highway pockets because these areas have strong diaspora recognition and resale demand.",
       },
     ],
-    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "sindhu-bhavan"],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "nre-vs-nro-property-payment", "sindhu-bhavan"],
     bodyContent: [
       "### USA-Based NRI Buyer Workflow",
       "For USA-based buyers, the process should be built around time-zone discipline: clear requirement notes, recorded walkthroughs, short calls, document summaries, and scheduled decision checkpoints. This avoids slow, fragmented property hunting.",
@@ -2523,8 +2666,8 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     href: "/nri-property-from-uk",
     label: "UK to Ahmedabad",
     eyebrow: "Country Guide",
-    title: "Buy Property in Ahmedabad from UK",
-    h1: "Buy Property in Ahmedabad from UK",
+    title: "Ahmedabad Property for NRIs in UK",
+    h1: "Ahmedabad Property for NRIs in UK",
     description:
       "Guide for UK-based NRIs buying Ahmedabad property remotely, including luxury corridors, POA, banking, legal verification, and India visit planning.",
     heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
@@ -2534,7 +2677,25 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "Ahmedabad property for NRI UK",
       "UK se Ahmedabad flat buy",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-uk",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "UK-Based Buyer Coordination",
+      callingHours: "2:30-5:30 PM IST works for UK morning calls; 8:30-10:00 PM IST works for UK afternoon or early evening reviews.",
+      timeZoneContact: "UK time-zone calls can be held over WhatsApp, Google Meet, or Zoom with concise comparison notes before a focused India visit.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "UK address proof and proof of Indian-origin status where requested",
+        "Power of Attorney attestation route through the Indian High Commission or relevant consulate if needed",
+      ],
+      videoConsultation: "Shortlist calls can combine live screen-share, pre-recorded walkthroughs, and a visit plan for one concentrated Ahmedabad trip.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from UK phones`,
+      commonQuestions: [
+        "Can I shortlist remotely and travel only for the final inspection?",
+        "Which documents should be ready before a UK-to-India remittance?",
+        "Can local family members join the same virtual consultation from Ahmedabad?",
+      ],
+    },
     intro:
       "UK-based NRI buyers often combine family-use requirements with long-term asset preservation, especially when buying in recognised Ahmedabad corridors with strong community recall.",
     marketSignals: [
@@ -2559,7 +2720,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
           "No. Much of the process can be handled remotely, though many families choose one focused visit for final inspection, family approval, bank steps, or registration planning.",
       },
     ],
-    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "bodakdev", "satellite"],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "bodakdev", "satellite"],
     bodyContent: [
       "### UK-Based NRI Buying Pattern",
       "UK-based buyers often value immediately livable corridors with family infrastructure: schools, clubs, healthcare, dining, and established neighbourhood quality. This makes Bodakdev, Satellite, Sindhu Bhavan Road, and Iskon-Ambli common starting points.",
@@ -2587,7 +2748,25 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "property consultant Ahmedabad for NRI Dubai",
       "Dubai se Ahmedabad property buy",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-dubai",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Dubai-Based Buyer Coordination",
+      callingHours: "10:30 AM-7:30 PM IST overlaps well with Dubai workdays, with evening IST calls available for family decision meetings.",
+      timeZoneContact: "Dubai buyers can use WhatsApp-first coordination, quick video calls, and fast shortlists before a short Ahmedabad inspection trip.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "UAE residence or Emirates ID copy where a bank or developer asks for local proof",
+        "Consulate or attestation route for Power of Attorney if execution will be handled from Dubai",
+      ],
+      videoConsultation: "Fast shortlist review with direct flight-aware inspection planning, pricing notes, and same-week document collection where available.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from UAE phones`,
+      commonQuestions: [
+        "Can I inspect the best options during a short Ahmedabad trip?",
+        "Can documents be reviewed before I book flights from Dubai?",
+        "Should I use AED-to-INR timing as part of the purchase plan?",
+      ],
+    },
     intro:
       "Dubai-based NRI buyers can move quickly because of short flight access, overlapping business hours, and strong Ahmedabad family ties, but legal and pricing discipline still matter.",
     marketSignals: [
@@ -2612,7 +2791,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
           "Dubai-based buyers often prefer ready or near-possession luxury apartments, penthouses, villas, and bungalows in Iskon-Ambli, Sindhu Bhavan Road, Thaltej, and SG Highway.",
       },
     ],
-    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "iskon-ambli", "thaltej"],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "buy-property-in-ahmedabad-from-uae", "iskon-ambli", "thaltej"],
     bodyContent: [
       "### Dubai-Based Buyer Advantage",
       "Dubai-based NRIs benefit from short flight access, easier scheduling, and frequent family travel to Ahmedabad. This makes one-trip inspection and execution more practical than for buyers in North America or Australia.",
@@ -2624,12 +2803,93 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   },
   {
     kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-uae",
+    href: "/nri-property-from-uae",
+    label: "UAE to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Ahmedabad Property for NRIs in UAE",
+    h1: "Ahmedabad Property for NRIs in UAE",
+    description:
+      "UAE-based NRI guide for Ahmedabad property buying, covering AED planning, direct-flight inspections, POA, NRE/NRO payments, and luxury corridors.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    categories: ["apartment", "penthouse", "duplex", "villa", "investment"],
+    matchKeywords: [
+      "Ahmedabad property for NRIs in UAE",
+      "buy property in Ahmedabad from UAE",
+      "NRI property Ahmedabad UAE",
+      "UAE to Ahmedabad property consultant",
+    ],
+    collectionHref: "/contact?purpose=nri-uae",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "UAE-Based Buyer Coordination",
+      callingHours: "10:30 AM-7:30 PM IST gives strong UAE overlap, with early evening UAE slots for family reviews.",
+      timeZoneContact: "Abu Dhabi, Dubai, Sharjah, and wider UAE buyers can coordinate through WhatsApp, Zoom, or Google Meet before booking direct flights.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "UAE residence proof or Emirates ID copy where requested by bank, developer, or seller",
+        "Power of Attorney attestation plan through the relevant Indian mission or approved attestation route",
+      ],
+      videoConsultation: "AED-to-INR budget review, shortlist screen-share, recorded walkthroughs, and a compact one-trip inspection plan.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from UAE phones`,
+      commonQuestions: [
+        "Can I complete shortlisting before a weekend or short UAE-to-Ahmedabad trip?",
+        "Should payment be planned in AED, INR, NRE, or NRO terms before booking?",
+        "Can my Ahmedabad family inspect the property while I join by video call?",
+      ],
+    },
+    intro:
+      "UAE-based NRIs can execute Ahmedabad property decisions quickly when the shortlist, documents, AED-to-INR budget, and inspection schedule are prepared before travel.",
+    marketSignals: [
+      "Short flight access from UAE cities supports one-trip inspections, but legal and pricing checks should still happen before booking.",
+      "Ahmedabad's premium western corridors remain the first shortlist for UAE-based Gujarati families seeking family use and investment optionality.",
+      "Currency timing, NRE/NRO routing, and POA attestation should be planned early to avoid execution delays.",
+    ],
+    idealFor: [
+      "UAE-based families buying a premium Ahmedabad home for parents, future return, or investment.",
+      "Buyers who want fast private shortlisting before a focused inspection trip.",
+      "NRIs comparing AED savings with Ahmedabad luxury residential opportunities.",
+    ],
+    faqs: [
+      {
+        question: "Can UAE-based NRIs buy property in Ahmedabad remotely?",
+        answer:
+          "Yes. UAE-based NRIs can shortlist remotely with video tours, document collection, pricing review, and POA planning, then travel for final inspection or execution where required.",
+      },
+      {
+        question: "Which Ahmedabad areas suit UAE-based NRI buyers?",
+        answer:
+          "Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Bodakdev, Shilaj, and SG Highway pockets are common starting points for UAE-based buyers seeking premium family-use homes.",
+      },
+      {
+        question: "Can AED savings be used for Ahmedabad property purchase?",
+        answer:
+          "AED earnings are usually converted and routed through compliant banking channels such as inward remittance or NRE/NRO accounts. The buyer should confirm the exact route with their bank before payment.",
+      },
+    ],
+    relatedSlugs: [
+      "buy-property-in-ahmedabad-from-dubai",
+      "buy-property-in-ahmedabad-from-abroad",
+      "nre-vs-nro-property-payment",
+      "nri-property-investment-ahmedabad",
+    ],
+    bodyContent: [
+      "### UAE-Based NRI Buying Pattern",
+      "UAE-based NRIs often have strong family ties in Ahmedabad and can travel more quickly than buyers from North America or Australia. This creates an execution advantage only when shortlisting and document review are completed before the buyer lands in India.",
+      "### AED Budget and Banking Flow",
+      "The budget should be translated from AED into INR early, then checked against payment schedule, remittance route, NRE/NRO account availability, and bank documentation. Currency movement should not be the only driver, but it can affect booking timing and cash-flow planning.",
+      "### Inspection and Family Coordination",
+      "A practical process is to create a verified shortlist, let local family inspect the strongest options, and bring the overseas buyer into video reviews before a short final inspection trip.",
+    ],
+  },
+  {
+    kind: "nri",
     slug: "buy-property-in-ahmedabad-from-canada",
-    href: "/nri/buy-property-in-ahmedabad-from-canada",
+    href: "/nri-property-from-canada",
     label: "Canada to Ahmedabad",
     eyebrow: "Country Guide",
-    title: "Buy Property in Ahmedabad from Canada",
-    h1: "Buy Property in Ahmedabad from Canada",
+    title: "Ahmedabad Property for NRIs in Canada",
+    h1: "Ahmedabad Property for NRIs in Canada",
     description:
       "Canada-based NRI guide for Ahmedabad property buying, covering remote tours, time-zone planning, POA, NRE/NRO banking, and luxury areas.",
     heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
@@ -2639,7 +2899,25 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "Ahmedabad real estate for NRI Canada",
       "NRI property Ahmedabad Canada",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-canada",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Canada-Based Buyer Coordination",
+      callingHours: "7:00-9:30 AM IST works for Canada evening calls; 8:30-10:00 PM IST works for Canada morning or midday reviews.",
+      timeZoneContact: "Toronto, Vancouver, Calgary, Edmonton, Ottawa, and Montreal buyers can receive recorded walkthroughs and scheduled decision calls.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Canada address proof and employment or business documentation where requested",
+        "POA attestation or consular planning if the buyer cannot be present for signing or registration",
+      ],
+      videoConsultation: "Recorded walkthroughs, written comparison sheets, CAD-to-INR budget framing, and India-visit planning for limited travel windows.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from Canada phones`,
+      commonQuestions: [
+        "Can I narrow the shortlist before travelling from Canada?",
+        "Can family in Ahmedabad inspect while I join by video?",
+        "How should I plan NRE/NRO banking before sending money from Canada?",
+      ],
+    },
     intro:
       "Canada-based NRI buyers usually need a documentation-first process because travel windows are limited and family decision-making may involve both Canada and Ahmedabad.",
     marketSignals: [
@@ -2664,7 +2942,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
           "Iskon-Ambli, Sindhu Bhavan Road, Thaltej, Shilaj, Vaishno Devi, and Bodakdev are common choices depending on budget, family use, and investment horizon.",
       },
     ],
-    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-investment-ahmedabad", "shilaj"],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "nri-property-investment-ahmedabad", "shilaj"],
     bodyContent: [
       "### Canada-Based Buying Process",
       "For Canada-based buyers, the best process is written and structured: property comparison sheets, video walkthrough links, document status notes, and clear next-step timelines. This reduces delays caused by distance and time zones.",
@@ -2676,12 +2954,93 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   },
   {
     kind: "nri",
+    slug: "buy-property-in-ahmedabad-from-singapore",
+    href: "/nri-property-from-singapore",
+    label: "Singapore to Ahmedabad",
+    eyebrow: "Country Guide",
+    title: "Ahmedabad Property for NRIs in Singapore",
+    h1: "Ahmedabad Property for NRIs in Singapore",
+    description:
+      "Singapore NRI guide for Ahmedabad property buying, covering SGD budgets, time-zone calls, POA, virtual tours, and luxury corridors.",
+    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "Ahmedabad property for NRIs in Singapore",
+      "buy property in Ahmedabad from Singapore",
+      "NRI property Ahmedabad Singapore",
+      "Singapore NRI property consultant Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=nri-singapore",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Singapore-Based Buyer Coordination",
+      callingHours: "8:30 AM-12:30 PM IST and 5:30-8:30 PM IST both work well for Singapore-based buyer calls.",
+      timeZoneContact: "Singapore buyers can use tight weekday calls, weekend family reviews, and recorded walkthroughs before a focused Ahmedabad visit.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Singapore address proof and work-pass or residency document where relevant",
+        "Power of Attorney attestation route through the Indian High Commission in Singapore if needed",
+      ],
+      videoConsultation: "SGD-to-INR budget framing, shortlist screen-share, video walkthrough review, and a compact inspection itinerary.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from Singapore phones`,
+      commonQuestions: [
+        "Can I finish most shortlisting before a short Singapore-to-India trip?",
+        "Can PIKORUA coordinate with my Ahmedabad family during Singapore working hours?",
+        "Which documents should be ready before a bank or developer asks for KYC?",
+      ],
+    },
+    intro:
+      "Singapore-based NRIs usually benefit from close time-zone alignment with India, which makes structured calls, video walkthroughs, and quick family reviews easier than for many long-haul markets.",
+    marketSignals: [
+      "Time-zone overlap allows faster shortlist refinement and same-day follow-up from the Ahmedabad team.",
+      "Singapore-based buyers often prefer managed apartments and penthouses where maintenance and handover are easier to coordinate remotely.",
+      "SGD-to-INR planning, POA readiness, and developer documentation should be checked before any booking payment.",
+    ],
+    idealFor: [
+      "Singapore-based Indian and Gujarati families buying in Ahmedabad for parents, future return, or investment.",
+      "Buyers who want a managed property format and predictable handover process.",
+      "NRIs who prefer video-first shortlisting before a concise India inspection trip.",
+    ],
+    faqs: [
+      {
+        question: "Can Singapore-based NRIs buy Ahmedabad property remotely?",
+        answer:
+          "Yes. Singapore-based NRIs can use video consultations, recorded walkthroughs, document review, and POA planning to reduce travel and keep the process moving.",
+      },
+      {
+        question: "Which property types suit Singapore-based NRIs?",
+        answer:
+          "Managed luxury apartments, penthouses, and selected villas usually suit Singapore-based NRIs because maintenance, security, and handover are easier to coordinate remotely.",
+      },
+      {
+        question: "Do Singapore NRIs need Power of Attorney for purchase?",
+        answer:
+          "Power of Attorney is not always needed for search, but it may be useful for signing, bank documentation, possession, or registration if the buyer cannot be present in India.",
+      },
+    ],
+    relatedSlugs: [
+      "buy-property-in-ahmedabad-from-abroad",
+      "nri-property-purchase-process-india",
+      "nri-property-inspection-service",
+      "virtual-property-tours-ahmedabad",
+    ],
+    bodyContent: [
+      "### Singapore-Based Buyer Workflow",
+      "Singapore's time-zone proximity helps NRI buyers keep a tighter execution rhythm: morning India calls, evening family reviews, and quick written follow-ups. The risk is moving too quickly without documentation discipline, so shortlist quality still matters.",
+      "### Property Fit",
+      "Managed apartments, penthouses, and selected gated villas are usually easier for Singapore-based buyers than complex land-heavy assets. The right property should be easy to inspect, maintain, rent if needed, and exit in the future.",
+      "### Documentation and Travel",
+      "Before a short India visit, the buyer should know the KYC list, payment route, POA need, inspection plan, and likely registration timeline. PIKORUA Realty coordinates these moving parts with the buyer's advisors and family.",
+    ],
+  },
+  {
+    kind: "nri",
     slug: "buy-property-in-ahmedabad-from-australia",
-    href: "/nri/buy-property-in-ahmedabad-from-australia",
+    href: "/nri-property-from-australia",
     label: "Australia to Ahmedabad",
     eyebrow: "Country Guide",
-    title: "Buy Property in Ahmedabad from Australia",
-    h1: "Buy Property in Ahmedabad from Australia",
+    title: "Ahmedabad Property for NRIs in Australia",
+    h1: "Ahmedabad Property for NRIs in Australia",
     description:
       "Australia-based NRI guide for buying Ahmedabad property remotely, covering virtual tours, POA, banking, inspection trips, and investment corridors.",
     heroImage: "/properties/anurita/anurita-1.jpg",
@@ -2691,7 +3050,25 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "Ahmedabad property for NRI Australia",
       "Australia NRI property Ahmedabad",
     ],
-    collectionHref: "/properties",
+    collectionHref: "/contact?purpose=nri-australia",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Australia-Based Buyer Coordination",
+      callingHours: "6:30-9:30 AM IST works for Australia midday or afternoon calls; 4:00-6:30 PM IST works for Australia evening reviews.",
+      timeZoneContact: "Sydney, Melbourne, Brisbane, Perth, Adelaide, and Canberra buyers can receive recorded walkthroughs plus scheduled family calls.",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Australia address proof and income or business documents where requested by bank or developer",
+        "POA attestation planning if signing, possession, or registration will happen without the buyer in India",
+      ],
+      videoConsultation: "AUD-to-INR budget framing, recorded walkthroughs, neighbourhood context videos, and inspection-trip sequencing for longer travel windows.",
+      internationalPhoneFormat: `${NRI_PHONE_FORMAT} from Australia phones`,
+      commonQuestions: [
+        "Can I complete all early shortlisting before booking long-haul travel?",
+        "Can my Ahmedabad relatives inspect while I join from Australia by video?",
+        "Which ready or near-possession properties reduce long-distance risk?",
+      ],
+    },
     intro:
       "Australia-based NRI buyers usually need early shortlisting and documentation because India visits are less frequent and travel time is longer.",
     marketSignals: [
@@ -2716,7 +3093,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
           "Ready luxury apartments, large 4 BHK or 5 BHK homes, penthouses, villas, and legally clear plots are common choices depending on whether the goal is family use, investment, or future relocation.",
       },
     ],
-    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "ahmedabad-airport", "residential-plots-ahmedabad"],
+    relatedSlugs: ["buy-property-in-ahmedabad-from-abroad", "nri-property-purchase-process-india", "ahmedabad-airport", "residential-plots-ahmedabad"],
     bodyContent: [
       "### Australia-Based Buyer Planning",
       "Because Australia-India travel is less frequent for many families, the property search should be prepared before the trip. That means finalising budget, corridors, property type, legal checklist, and family decision-makers before inspections begin.",
@@ -2724,6 +3101,630 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "Ready or near-possession apartments, penthouses, villas, and clear-title plots reduce uncertainty for long-distance buyers. The right fit depends on whether the property is for parents, future return, investment, or a long-term family base.",
       "### Ground Partner Role",
       "PIKORUA Realty helps Australia-based NRIs by coordinating property discovery, virtual walkthroughs, neighbourhood context, document collection, local inspection support, and post-purchase handover planning.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "power-of-attorney-for-nri-property-purchase",
+    href: "/power-of-attorney-for-nri-property-purchase",
+    label: "NRI Power of Attorney",
+    eyebrow: "Legal Coordination",
+    title: "Power of Attorney for NRI Property Purchase",
+    h1: "Power of Attorney for NRI Property Purchase",
+    description:
+      "NRI guide to Power of Attorney for property purchase in India, including signing, attestation, registration, and buyer safeguards.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "Power of Attorney for NRI property purchase",
+      "NRI POA property India",
+      "power of attorney property Ahmedabad NRI",
+      "NRI property registration POA",
+    ],
+    collectionHref: "/contact?purpose=nri-poa",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "POA Coordination Checklist",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Lawyer-reviewed POA draft naming exact powers and limits",
+        "Consular, apostille, or local attestation proof where required",
+        "Representative identity, PAN, address proof, and relationship note",
+      ],
+      commonQuestions: [
+        "Can a POA holder sign, register, or take possession for me?",
+        "Should the POA be property-specific or broad?",
+        "Which attestation route applies in my current country?",
+      ],
+    },
+    intro:
+      "Power of Attorney is often the bridge between an NRI buyer and on-ground execution in Ahmedabad, but it should be drafted narrowly and reviewed before anyone signs or remits funds.",
+    marketSignals: [
+      "POA is most useful when the buyer cannot attend signing, bank paperwork, registration, possession, or handover steps.",
+      "Registrars, banks, developers, and sellers may apply different document requirements, so format verification matters before execution.",
+      "A property-specific POA is usually cleaner than a broad mandate for high-value transactions.",
+    ],
+    idealFor: [
+      "NRIs who cannot travel to Ahmedabad for every signing or registration step.",
+      "Families appointing a trusted parent, sibling, spouse, or local representative.",
+      "Buyers who want PIKORUA to coordinate with their lawyer and transaction counterparties.",
+    ],
+    faqs: [
+      {
+        question: "Do NRIs need Power of Attorney to buy property in India?",
+        answer:
+          "Not always. NRIs can participate directly, but POA is commonly used when the buyer cannot be present for signing, bank documentation, registration, possession, or handover. A lawyer should confirm the format and powers.",
+      },
+      {
+        question: "Who can be appointed as POA holder for NRI property purchase?",
+        answer:
+          "Many NRIs appoint a trusted family member or representative in India. The person should be reliable, available for registrar or bank visits, and clearly named in the lawyer-reviewed POA.",
+      },
+      {
+        question: "Can PIKORUA draft the Power of Attorney?",
+        answer:
+          "PIKORUA coordinates transaction context and documentation flow, but the POA draft should be prepared or reviewed by a qualified lawyer before execution.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-purchase-process-india",
+      "buy-property-in-ahmedabad-from-abroad",
+      "nri-property-consultant-ahmedabad",
+      "nre-vs-nro-property-payment",
+    ],
+    bodyContent: [
+      "### Why POA Matters for NRI Buyers",
+      "A Power of Attorney can allow a trusted representative to complete defined transaction steps when the buyer is outside India. It should not be treated as a casual formality. The powers, property details, representative identity, validity period, and revocation process should be clear.",
+      "### Where PIKORUA Helps",
+      "PIKORUA Realty helps align the property shortlist, developer or seller requirements, registrar expectations, and buyer timeline so the lawyer can prepare a practical POA. We do not replace legal advice; we coordinate the moving parts.",
+      "### Safeguards",
+      "Avoid broad powers unless a lawyer specifically advises them. Confirm whether the document needs consular attestation, apostille, adjudication, or local registration before the transaction date.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nre-vs-nro-property-payment",
+    href: "/nre-vs-nro-property-payment",
+    label: "NRE vs NRO Payment",
+    eyebrow: "Banking Guide",
+    title: "NRE versus NRO Payment for Property",
+    h1: "NRE versus NRO Payment for Property",
+    description:
+      "NRI banking guide comparing NRE and NRO payment routes for Indian property purchase, sale proceeds, and repatriation planning.",
+    heroImage: "/properties/eminence-96/eminence-96-3-pool.webp",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "NRE versus NRO payment for property",
+      "NRE account property purchase India",
+      "NRO account property purchase India",
+      "NRI property payment route",
+    ],
+    collectionHref: "/contact?purpose=nri-banking",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Banking Route Readiness",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Bank confirmation on permissible payment route and source of funds",
+        "Remittance advice, account statements, and tax-document trail",
+        "Repatriation intent note before deciding NRE, NRO, or inward remittance route",
+      ],
+      commonQuestions: [
+        "Should I pay from NRE, NRO, FCNR(B), or direct inward remittance?",
+        "Will my payment route affect future repatriation?",
+        "What proof should I preserve for bank and tax review?",
+      ],
+    },
+    intro:
+      "NRE and NRO choices affect documentation, source-of-funds proof, and future repatriation planning, so the bank route should be clarified before booking or signing.",
+    marketSignals: [
+      "RBI/FEMA guidance generally expects property payments through normal banking channels, including NRE, FCNR(B), or NRO where applicable.",
+      "The source of funds and account type can affect the evidence trail needed during resale or repatriation.",
+      "Bank, legal, and tax review should happen before money moves, not after a transaction is already committed.",
+    ],
+    idealFor: [
+      "NRIs choosing between overseas remittance, NRE, NRO, or FCNR(B)-linked funds.",
+      "Buyers who want future sale proceeds and repatriation to remain documentable.",
+      "Families coordinating payments across India and overseas accounts.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs use NRE or NRO accounts to buy property in India?",
+        answer:
+          "Yes, NRIs generally use compliant banking channels such as inward remittance, NRE, FCNR(B), or NRO accounts for property purchase. The exact route should be confirmed with the buyer's bank.",
+      },
+      {
+        question: "Is NRE better than NRO for property purchase?",
+        answer:
+          "There is no universal answer. NRE may be cleaner for overseas income and repatriation tracking, while NRO may be used for India-sourced funds. A bank and CA should review the buyer's source of funds.",
+      },
+      {
+        question: "Why preserve payment proof?",
+        answer:
+          "Payment proof can become important for registration, tax review, seller/builder records, loan files, and future repatriation after sale.",
+      },
+    ],
+    relatedSlugs: [
+      "repatriation-of-property-sale-proceeds-nri",
+      "nri-property-purchase-process-india",
+      "tds-on-property-purchase-by-nri",
+      "buy-property-in-ahmedabad-from-usa",
+    ],
+    bodyContent: [
+      "### Banking Route Before Booking",
+      "For NRI buyers, the payment route is not only a convenience issue. It creates the evidence trail for source of funds, bank compliance, tax review, and possible future repatriation. This is why payment planning belongs near the start of the buying process.",
+      "### NRE, NRO, FCNR(B), and Inward Remittance",
+      "A buyer may use overseas remittance or eligible NRE, NRO, or FCNR(B) funds depending on the source of money and bank guidance. The buyer should ask the bank to confirm the permissible route, required documentation, and whether any remittance certificate or declaration will be needed.",
+      "### PIKORUA Coordination Role",
+      "PIKORUA Realty coordinates property timelines, payment schedule, developer or seller requirements, and document collection so the buyer's bank and CA can advise before money is moved.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nri-home-loans-india",
+    href: "/nri-home-loans-india",
+    label: "NRI Home Loans",
+    eyebrow: "Finance Guide",
+    title: "NRI Home Loans in India",
+    h1: "NRI Home Loans in India",
+    description:
+      "Guide to NRI home loans in India for Ahmedabad property buyers, covering eligibility, documents, POA, income proof, and bank coordination.",
+    heroImage: "/properties/anurita/anurita-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "NRI home loans in India",
+      "NRI home loan Ahmedabad property",
+      "home loan for NRI property purchase",
+      "NRI mortgage India",
+    ],
+    collectionHref: "/contact?purpose=nri-home-loan",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Loan-Ready Documentation",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Income proof, employment or business proof, overseas tax record where requested",
+        "Bank statements, credit profile documents, and loan eligibility estimate",
+        "POA format accepted by the lender if local signing is required",
+      ],
+      commonQuestions: [
+        "Which Indian banks finance NRI home purchases?",
+        "Can loan paperwork be handled through POA?",
+        "Should loan pre-check happen before property negotiation?",
+      ],
+    },
+    intro:
+      "NRI home loans can support Indian property purchases, but eligibility, documentation, currency, employment country, and POA requirements differ by lender.",
+    marketSignals: [
+      "Banks assess NRI income, residency country, property eligibility, repayment route, credit profile, and documentation completeness.",
+      "Loan pre-checks reduce the risk of negotiating a property that later fails bank criteria.",
+      "POA and local signing rules should be confirmed with the lender before final execution.",
+    ],
+    idealFor: [
+      "NRIs comparing self-funded purchase versus Indian home loan finance.",
+      "Buyers who want loan eligibility clarity before serious negotiation.",
+      "Families using a local representative for bank documentation or disbursement steps.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs get home loans in India?",
+        answer:
+          "Yes. Many Indian banks and housing finance companies offer NRI home loans subject to income, residency, credit, property eligibility, and documentation requirements.",
+      },
+      {
+        question: "Can NRI loan documents be signed through POA?",
+        answer:
+          "Some lenders permit defined loan steps through an approved POA, while others require buyer presence for certain actions. The buyer should confirm the lender's current policy.",
+      },
+      {
+        question: "When should an NRI check loan eligibility?",
+        answer:
+          "Loan eligibility should be checked before negotiation becomes serious so the property, payment schedule, and buyer contribution are aligned with lender expectations.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-purchase-process-india",
+      "power-of-attorney-for-nri-property-purchase",
+      "nre-vs-nro-property-payment",
+      "nri-property-investment-ahmedabad",
+    ],
+    bodyContent: [
+      "### Loan Planning Before Property Selection",
+      "NRI home loan planning should start before the buyer commits to a property. A lender may reject a property format, possession stage, document set, or borrower profile that otherwise looks attractive in a shortlist.",
+      "### Documentation and POA",
+      "Lenders usually ask for identity, residency, income, bank, and property documents. If a POA holder will coordinate locally, the bank's approved POA format should be checked before execution.",
+      "### Advisory Coordination",
+      "PIKORUA Realty aligns shortlisted properties with the buyer's expected loan process, document collection, valuation support, and payment schedule so lender review is practical.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "tds-on-property-purchase-by-nri",
+    href: "/tds-on-property-purchase-by-nri",
+    label: "TDS for NRI Property",
+    eyebrow: "Tax Guide",
+    title: "TDS on Property Purchase by NRI",
+    h1: "TDS on Property Purchase by NRI",
+    description:
+      "NRI property TDS guide for Indian real estate transactions, including buyer duties, seller residency, forms, timing, and CA review.",
+    heroImage: "/properties/ikebana/ikebana1.png",
+    categories: ["apartment", "penthouse", "villa", "plot", "investment"],
+    matchKeywords: [
+      "TDS on property purchase by NRI",
+      "NRI property TDS India",
+      "TDS property buyer NRI",
+      "property purchase TDS Ahmedabad NRI",
+    ],
+    collectionHref: "/contact?purpose=nri-tds",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Tax Review Before Payment",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Seller residency status, PAN, ownership share, and sale consideration details",
+        "CA note on applicable TDS section, rate, form, deadline, and certificate need",
+        "Payment schedule mapped to TDS deduction and deposit timing",
+      ],
+      commonQuestions: [
+        "Does TDS depend on whether the seller is resident or non-resident?",
+        "Which form, challan, or TAN/PAN process applies to my transaction date?",
+        "Should TDS be reviewed before token, agreement, or final payment?",
+      ],
+    },
+    intro:
+      "TDS on property purchase is a tax-compliance step that should be reviewed before payment, especially where seller residency, transaction value, or form requirements are unclear.",
+    marketSignals: [
+      "Buyer-side TDS duties can differ based on seller residency and the applicable tax provision.",
+      "Indian Income Tax systems reference property TDS reporting forms such as 26QB for certain resident-seller cases and newer transition forms from April 2026.",
+      "A CA should confirm the rate, form, deadline, and certificate process before the buyer releases payment.",
+    ],
+    idealFor: [
+      "NRI buyers purchasing Ahmedabad property from resident or non-resident sellers.",
+      "Families who need TDS clarity before agreement, registration, or final payment.",
+      "Overseas buyers coordinating CA, lawyer, bank, and seller documentation.",
+    ],
+    faqs: [
+      {
+        question: "Does TDS apply when an NRI buys property in India?",
+        answer:
+          "TDS may apply depending on the transaction, seller residency, value, and current tax law. The buyer should get CA advice before payment because the form and rate can change with facts.",
+      },
+      {
+        question: "Is Form 26QB always used for property TDS?",
+        answer:
+          "No. The Income Tax portal notes Form 26QB for certain immovable-property TDS cases, but it also notes this form is not applicable where the seller is non-resident and that newer transition forms apply from April 2026. A CA should confirm the correct process.",
+      },
+      {
+        question: "Can PIKORUA calculate TDS?",
+        answer:
+          "PIKORUA coordinates transaction documents and introduces the need for review, but TDS calculation, deposit, and return filing should be handled by a qualified CA or tax professional.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-purchase-process-india",
+      "nre-vs-nro-property-payment",
+      "selling-inherited-property-for-nris",
+      "repatriation-of-property-sale-proceeds-nri",
+    ],
+    bodyContent: [
+      "### TDS Needs Transaction-Specific Review",
+      "TDS cannot be handled responsibly with a generic rule. The buyer should confirm seller residency, ownership structure, sale consideration, transaction date, payment schedule, PAN/TAN requirements, and applicable form before releasing funds.",
+      "### Why Seller Residency Matters",
+      "The tax process can change materially if the seller is resident or non-resident. Public tax portals discuss different property TDS forms and note that some forms do not apply when the seller is non-resident, so professional review is necessary.",
+      "### PIKORUA Coordination Role",
+      "PIKORUA Realty keeps the transaction timeline, document set, and payment schedule organized so the buyer's CA and lawyer can give timely advice before agreement and registration.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "nri-property-inspection-service",
+    href: "/nri-property-inspection-service",
+    label: "NRI Property Inspection",
+    eyebrow: "Ground Verification",
+    title: "NRI Property Inspection Service in Ahmedabad",
+    h1: "NRI Property Inspection Service",
+    description:
+      "Ahmedabad property inspection support for NRIs, including site videos, neighbourhood checks, snag notes, documents, and handover review.",
+    heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "NRI property inspection service",
+      "property inspection Ahmedabad NRI",
+      "site visit assistance Ahmedabad NRI",
+      "NRI property verification Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=nri-inspection",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Inspection Scope",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Property brochure, floor plan, unit number, builder contact, and visit permission",
+        "Buyer priorities for layout, light, parking, amenities, neighbourhood, and defects",
+        "Inspection output format: photos, videos, notes, and next-step questions",
+      ],
+      commonQuestions: [
+        "Can you inspect a property before I travel?",
+        "Can family join the inspection by video call?",
+        "Can inspection notes include neighbourhood and approach-road context?",
+      ],
+    },
+    intro:
+      "An NRI property inspection should show more than brochure visuals: layout reality, approach road, light, noise, parking, amenities, handover condition, and nearby infrastructure.",
+    marketSignals: [
+      "Remote buyers need video evidence, not only sales claims, before shortlisting or booking.",
+      "Inspection value is highest when it covers both the unit and the surrounding micro-market.",
+      "Possession and resale properties need snag, maintenance, and society-level checks before final decisions.",
+    ],
+    idealFor: [
+      "NRIs who need a verified ground view before travelling to Ahmedabad.",
+      "Families comparing multiple shortlisted homes remotely.",
+      "Owners needing periodic inspection, possession, or resale-readiness checks.",
+    ],
+    faqs: [
+      {
+        question: "What does an NRI property inspection include?",
+        answer:
+          "It can include site visit videos, layout review, amenity and parking checks, neighbourhood context, snag notes, builder or seller questions, and document collection prompts.",
+      },
+      {
+        question: "Can inspection replace legal due diligence?",
+        answer:
+          "No. Physical inspection helps verify condition and context, but title, RERA, tax, and legal documents should be reviewed by qualified professionals.",
+      },
+      {
+        question: "Can PIKORUA inspect resale homes?",
+        answer:
+          "Yes, subject to seller access and scope. Resale inspections usually focus on condition, maintenance, society records, parking, utilities, and realistic resale pricing.",
+      },
+    ],
+    relatedSlugs: [
+      "virtual-property-tours-ahmedabad",
+      "buy-property-in-ahmedabad-from-abroad",
+      "nri-property-management-ahmedabad",
+      "nri-property-consultant-ahmedabad",
+    ],
+    bodyContent: [
+      "### Inspection Is Evidence Collection",
+      "For NRI buyers, inspection is not a casual site visit. It should produce evidence the buyer can review: videos, photos, commentary, builder or seller answers, neighbourhood observations, and next-step diligence items.",
+      "### What We Look For",
+      "The inspection can cover layout, light, ventilation, noise, approach road, parking, lift lobby, amenity readiness, construction quality, society maintenance, and practical livability. For plots or villas, boundary, access, and document checks become more important.",
+      "### After Inspection",
+      "The inspection output should decide whether to proceed, negotiate, request more documents, bring in a specialist, or remove the property from the shortlist.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "virtual-property-tours-ahmedabad",
+    href: "/virtual-property-tours-ahmedabad",
+    label: "Virtual Property Tours",
+    eyebrow: "Video Walkthroughs",
+    title: "Virtual Property Tours Ahmedabad for NRIs",
+    h1: "Virtual Property Tours Ahmedabad",
+    description:
+      "Private virtual property tours in Ahmedabad for NRIs, with live video walkthroughs, recorded reviews, neighbourhood context, and shortlist notes.",
+    heroImage: "/properties/vastrapur/vastrapur-3-facade.jpg",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "virtual property tours Ahmedabad",
+      "NRI virtual property tour Ahmedabad",
+      "video walkthrough Ahmedabad property",
+      "remote property viewing Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=virtual-tour",
+    nriDetails: {
+      ...NRI_BASE_DETAILS,
+      heading: "Virtual Tour Format",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Shortlist links, floor plans, buyer questions, and preferred tour time",
+        "Family members or advisors who should join the video consultation",
+        "Output preference: live call, recorded walkthrough, or both",
+      ],
+      commonQuestions: [
+        "Can the tour show approach road and neighbourhood context?",
+        "Can family members join from different countries?",
+        "Can I get a recorded walkthrough for later review?",
+      ],
+    },
+    intro:
+      "Virtual property tours help NRI buyers understand the real home, building, and neighbourhood before spending time on travel or paperwork.",
+    marketSignals: [
+      "A useful virtual tour covers route, entry, lobby, parking, view, light, room proportions, and amenity condition.",
+      "Recorded walkthroughs help families in different time zones make decisions asynchronously.",
+      "Virtual tours are strongest when paired with document review and a clear next-step checklist.",
+    ],
+    idealFor: [
+      "NRIs evaluating Ahmedabad property before an India visit.",
+      "Families with decision-makers split across India and overseas.",
+      "Buyers comparing multiple luxury residences in a short decision window.",
+    ],
+    faqs: [
+      {
+        question: "Can virtual tours replace an in-person visit?",
+        answer:
+          "They can reduce unnecessary visits and narrow the shortlist, but final decisions may still benefit from family inspection, legal review, and physical verification before payment.",
+      },
+      {
+        question: "What should a virtual tour cover?",
+        answer:
+          "A good tour covers the property, building entry, lift lobby, parking, amenities, views, noise, light, nearby roads, and practical neighbourhood context.",
+      },
+      {
+        question: "Can virtual tours be recorded?",
+        answer:
+          "Yes, subject to seller or developer permission. Recorded tours are useful when decision-makers are in different time zones.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-inspection-service",
+      "buy-property-in-ahmedabad-from-abroad",
+      "buy-property-in-ahmedabad-from-usa",
+      "buy-property-in-ahmedabad-from-singapore",
+    ],
+    bodyContent: [
+      "### More Than a Video Call",
+      "A serious virtual tour is structured. It should answer the buyer's practical questions: actual room scale, view, light, noise, privacy, parking access, lift quality, amenity condition, and route context.",
+      "### Live and Recorded Options",
+      "Some buyers need a live call with family members joining from multiple countries. Others need a recorded walkthrough they can review later. The right format depends on access, seller permission, and urgency.",
+      "### Decision Support",
+      "After the tour, PIKORUA Realty helps turn impressions into a clear next step: reject, recheck, request documents, negotiate, or schedule a final physical inspection.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "selling-inherited-property-for-nris",
+    href: "/selling-inherited-property-for-nris",
+    label: "Selling Inherited Property",
+    eyebrow: "Seller Guide",
+    title: "Selling Inherited Property for NRIs",
+    h1: "Selling Inherited Property for NRIs",
+    description:
+      "NRI guide to selling inherited property in Ahmedabad, including ownership documents, valuation, tax review, POA, buyer qualification, and repatriation.",
+    heroImage: "/properties/pashmina/pashmina.jpg",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "selling inherited property for NRIs",
+      "NRI inherited property sale India",
+      "sell inherited property Ahmedabad NRI",
+      "NRI property resale Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=nri-inherited-sale",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Inherited Sale Readiness",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Title deed, succession documents, will, probate, legal-heir certificate, or release deed where applicable",
+        "Property tax, society dues, utility dues, possession status, and tenant record",
+        "CA review of capital gains, TDS, and repatriation documents before sale",
+      ],
+      commonQuestions: [
+        "Can inherited property be sold through a POA holder?",
+        "What succession documents must be cleared before marketing?",
+        "How should sale proceeds be repatriated after tax compliance?",
+      ],
+    },
+    intro:
+      "Selling inherited property as an NRI requires ownership clarity before marketing, because unclear succession documents can derail even a strong buyer offer.",
+    marketSignals: [
+      "Inherited assets often need title, legal-heir, society, tax, and possession documents cleaned up before sale.",
+      "High-value NRI-owned property usually benefits from discreet buyer qualification rather than broad public exposure.",
+      "Capital gains, TDS, and repatriation planning should be reviewed before agreement terms are finalised.",
+    ],
+    idealFor: [
+      "NRIs who inherited an Ahmedabad apartment, bungalow, villa, plot, or family home.",
+      "Families needing valuation and private buyer access before sale.",
+      "Owners who want document readiness before public marketing or negotiation.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs sell inherited property in India?",
+        answer:
+          "Yes, NRIs can sell inherited property subject to clear title, succession documents, tax compliance, buyer due diligence, and applicable FEMA or bank requirements.",
+      },
+      {
+        question: "What documents matter for inherited property sale?",
+        answer:
+          "Documents may include title deed, death certificate, will, probate, legal-heir certificate, succession certificate, release deeds, society records, tax receipts, and identity documents. A lawyer should confirm the exact set.",
+      },
+      {
+        question: "Can PIKORUA sell inherited property privately?",
+        answer:
+          "PIKORUA can support valuation, buyer qualification, private introductions, document coordination, and negotiation, while legal and tax professionals handle formal advice.",
+      },
+    ],
+    relatedSlugs: [
+      "nri-property-management-ahmedabad",
+      "tds-on-property-purchase-by-nri",
+      "repatriation-of-property-sale-proceeds-nri",
+      "nri-property-consultant-ahmedabad",
+    ],
+    bodyContent: [
+      "### Clean Ownership Before Marketing",
+      "Inherited-property sales should begin with documents, not buyer calls. Ownership chain, succession proof, co-owner consent, society records, dues, and possession status must be reviewed before the property is positioned in the market.",
+      "### Valuation and Buyer Qualification",
+      "The value of an inherited apartment, bungalow, villa, plot, or land-backed property depends on location, title clarity, redevelopment potential, building condition, and buyer depth. Private qualification can protect pricing and family privacy.",
+      "### Tax and Repatriation",
+      "Capital gains, TDS, and repatriation requirements should be discussed with a CA and bank before agreement terms are finalised, especially when sale proceeds need to move outside India.",
+    ],
+  },
+  {
+    kind: "nri",
+    slug: "repatriation-of-property-sale-proceeds-nri",
+    href: "/repatriation-of-property-sale-proceeds-nri",
+    label: "Repatriation of Sale Proceeds",
+    eyebrow: "FEMA Guide",
+    title: "Repatriation of Property-Sale Proceeds for NRIs",
+    h1: "Repatriation of Property-Sale Proceeds",
+    description:
+      "NRI guide to repatriating Indian property-sale proceeds, with FEMA context, tax documents, banking trail, NRO limits, and CA review.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    categories: ["apartment", "penthouse", "villa", "bungalow", "plot", "investment"],
+    matchKeywords: [
+      "repatriation of property sale proceeds NRI",
+      "NRI repatriate property sale money India",
+      "send property sale proceeds abroad NRI",
+      "FEMA repatriation property sale NRI",
+    ],
+    collectionHref: "/contact?purpose=nri-repatriation",
+    nriDetails: {
+      ...NRI_LEGAL_DETAILS,
+      heading: "Repatriation Readiness",
+      documentationChecklist: [
+        ...NRI_COMMON_DOCUMENT_CHECKLIST,
+        "Original purchase payment proof and sale deed or agreement records",
+        "Tax payment proof, CA certificate or forms required by the bank",
+        "Bank confirmation on eligible account, annual limit, and permitted remittance route",
+      ],
+      commonQuestions: [
+        "Can I repatriate proceeds from more than one residential property?",
+        "Does my original payment source affect repatriation?",
+        "What does my bank need before sending funds abroad?",
+      ],
+    },
+    intro:
+      "Repatriation of Indian property-sale proceeds depends on FEMA rules, original payment source, tax compliance, bank documentation, and the type and number of properties sold.",
+    marketSignals: [
+      "RBI/FEMA guidance allows repatriation in defined cases, subject to acquisition compliance, payment-source limits, and bank documentation.",
+      "Residential property proceeds can carry specific restrictions, including limits around the number of residential properties in certain cases.",
+      "NRO balance remittance is commonly subject to annual limits and CA/bank documentation, so planning should begin before the sale closes.",
+    ],
+    idealFor: [
+      "NRIs selling Ahmedabad property and planning overseas transfer of proceeds.",
+      "Inherited-property sellers who need tax and bank-document clarity.",
+      "Families comparing sale, reinvestment, rental, and repatriation options.",
+    ],
+    faqs: [
+      {
+        question: "Can NRIs repatriate money after selling property in India?",
+        answer:
+          "Yes, NRIs can repatriate eligible sale proceeds subject to FEMA rules, tax compliance, bank documentation, source-of-funds proof, and limits that may apply to property type or account route.",
+      },
+      {
+        question: "Does original purchase funding matter for repatriation?",
+        answer:
+          "Yes. The original payment route and source of funds can affect the evidence trail and permitted repatriation amount. Buyers should preserve remittance and account records from the original purchase.",
+      },
+      {
+        question: "Should repatriation be planned before sale?",
+        answer:
+          "Yes. The seller should speak with their CA and bank before finalising sale terms so TDS, capital gains, forms, certificates, and remittance steps are sequenced correctly.",
+      },
+    ],
+    relatedSlugs: [
+      "selling-inherited-property-for-nris",
+      "nre-vs-nro-property-payment",
+      "tds-on-property-purchase-by-nri",
+      "nri-property-consultant-ahmedabad",
+    ],
+    bodyContent: [
+      "### Repatriation Is a Documentation Problem",
+      "The ability to move sale proceeds abroad depends heavily on the paper trail: how the property was acquired, how funds originally entered India, whether taxes are paid, and whether the bank has the required declarations or certificates.",
+      "### FEMA and Bank Review",
+      "RBI/FEMA guidance permits defined repatriation routes for eligible NRI property-sale proceeds, but restrictions and account-specific rules can apply. Residential property, inherited property, NRO balances, and rupee-funded purchases can each require a different review path.",
+      "### PIKORUA Coordination Role",
+      "PIKORUA Realty helps sellers organize transaction documents, buyer qualification, sale timeline, and professional coordination so CA and bank review happens before funds are expected abroad.",
     ],
   },
   {

@@ -473,6 +473,104 @@ export function LandingPageTemplate({
           </section>
         )}
 
+        {/* NRI execution details */}
+        {page.kind === "nri" && page.nriDetails && (
+          <section
+            className="border-b border-white/[0.06] bg-lux-black py-20 lg:py-24"
+            aria-labelledby="nri-execution-details-heading"
+          >
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
+              <div className="lg:col-span-4">
+                <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.25em] text-champagne-gold">
+                  Execution Details
+                </p>
+                <h2
+                  id="nri-execution-details-heading"
+                  className="font-display text-[clamp(1.45rem,2.6vw,2.15rem)] font-light uppercase leading-tight tracking-wider text-ivory"
+                >
+                  {page.nriDetails.heading ?? "NRI Property Centre Details"}
+                </h2>
+                {page.nriDetails.servicePromise && (
+                  <p className="mt-5 font-sans text-sm leading-relaxed text-ivory/65 sm:text-base">
+                    {page.nriDetails.servicePromise}
+                  </p>
+                )}
+                {page.nriDetails.reviewNote && (
+                  <p className="mt-5 border-l border-champagne-gold/35 pl-4 font-sans text-xs leading-relaxed text-ivory/50">
+                    {page.nriDetails.reviewNote}
+                  </p>
+                )}
+              </div>
+
+              <div className="lg:col-span-8">
+                <div className="grid grid-cols-1 border border-white/[0.07] md:grid-cols-2">
+                  {[
+                    { label: "Calling Window", value: page.nriDetails.callingHours },
+                    { label: "Time-Zone Contact", value: page.nriDetails.timeZoneContact },
+                    { label: "Video Consultation", value: page.nriDetails.videoConsultation },
+                    { label: "WhatsApp Format", value: page.nriDetails.whatsappFormat },
+                    { label: "International Phone", value: page.nriDetails.internationalPhoneFormat },
+                    { label: "Client References", value: page.nriDetails.testimonialsNote },
+                  ]
+                    .filter((detail): detail is { label: string; value: string } => Boolean(detail.value))
+                    .map((detail, index) => (
+                      <div
+                        key={detail.label}
+                        className={cn(
+                          "border-white/[0.07] p-5 sm:p-6",
+                          index % 2 === 0 ? "md:border-r" : "",
+                          index < 4 ? "border-b" : ""
+                        )}
+                      >
+                        <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
+                          {detail.label}
+                        </p>
+                        <p className="mt-3 font-sans text-sm leading-relaxed text-ivory/65">
+                          {detail.value}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+
+                {Boolean(page.nriDetails.documentationChecklist?.length || page.nriDetails.commonQuestions?.length) && (
+                  <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
+                    {page.nriDetails.documentationChecklist?.length ? (
+                      <div>
+                        <h3 className="font-sans text-[10px] uppercase tracking-[0.22em] text-champagne-gold">
+                          Documentation Checklist
+                        </h3>
+                        <ul className="mt-5 space-y-3">
+                          {page.nriDetails.documentationChecklist.map((item) => (
+                            <li key={item} className="flex gap-3 font-sans text-sm leading-relaxed text-ivory/62">
+                              <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-champagne-gold/65" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    {page.nriDetails.commonQuestions?.length ? (
+                      <div>
+                        <h3 className="font-sans text-[10px] uppercase tracking-[0.22em] text-champagne-gold">
+                          Common Questions
+                        </h3>
+                        <ul className="mt-5 space-y-3">
+                          {page.nriDetails.commonQuestions.map((item) => (
+                            <li key={item} className="border-l border-champagne-gold/25 pl-4 font-sans text-sm leading-relaxed text-ivory/62">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ─── MATCHING RESIDENCES ─── */}
         <section className="py-20 lg:py-28 border-b border-white/[0.06]" aria-labelledby="matching-properties-heading">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

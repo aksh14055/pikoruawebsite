@@ -41,6 +41,29 @@ const PROPERTY_ROOT_PATHS = [
   "/thaltej-properties",
 ];
 
+const NRI_ROOT_PATHS = [
+  "/nri-property-consultant-ahmedabad",
+  "/nri-property-investment-ahmedabad",
+  "/nri-buying-property-in-ahmedabad",
+  "/nri-home-buying-process-india",
+  "/nri-property-from-usa",
+  "/nri-property-from-uk",
+  "/nri-property-from-dubai",
+  "/nri-property-from-uae",
+  "/nri-property-from-canada",
+  "/nri-property-from-singapore",
+  "/nri-property-from-australia",
+  "/power-of-attorney-for-nri-property-purchase",
+  "/nre-vs-nro-property-payment",
+  "/nri-home-loans-india",
+  "/tds-on-property-purchase-by-nri",
+  "/nri-property-inspection-service",
+  "/virtual-property-tours-ahmedabad",
+  "/property-management-for-nris",
+  "/selling-inherited-property-for-nris",
+  "/repatriation-of-property-sale-proceeds-nri",
+];
+
 const PROPERTY_CATEGORIES = [
   { slug: "apartment", label: "Apartments", href: "/luxury-apartments-ahmedabad" },
   { slug: "penthouse", label: "Penthouses", href: "/penthouses-ahmedabad" },
@@ -164,7 +187,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                       pathname.startsWith("/locations") ||
                       PROPERTY_ROOT_PATHS.includes(pathname))) ||
                   (label === "NRI Advisory" &&
-                    (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
+                    (pathname.startsWith("/nri") || NRI_ROOT_PATHS.includes(pathname)));
 
                 if (label === "Properties") {
                   return (
@@ -401,7 +424,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   pathname.startsWith("/locations") ||
                   PROPERTY_ROOT_PATHS.includes(pathname))) ||
               (label === "NRI Advisory" &&
-                (pathname.startsWith("/nri") || pathname === "/nri-property-investment-ahmedabad"));
+                (pathname.startsWith("/nri") || NRI_ROOT_PATHS.includes(pathname)));
 
             if (label === "Properties") {
               return (
