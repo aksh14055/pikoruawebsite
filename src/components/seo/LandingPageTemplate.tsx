@@ -94,7 +94,7 @@ export function LandingPageTemplate({
     page.kind === "location"
       ? { label: "Locations", href: "/properties" }
       : page.kind === "nri"
-        ? { label: "NRI Advisory", href: "/nri/nri-property-consultant-ahmedabad" }
+        ? { label: "NRI Advisory", href: "/nri-property-consultant-ahmedabad" }
         : { label: "Properties", href: "/properties" };
   const primaryCtaLabel = isAdvisoryCta
     ? "Request Advisory"

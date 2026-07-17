@@ -61,7 +61,7 @@ const CATEGORIES: Category[] = [
     cta: "Discuss Land Opportunities",
     imageUrl: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
     location: "Bhadaj",
-    href: "/property-types/residential-plots-ahmedabad"
+    href: "/luxury-plots-ahmedabad"
   },
   { 
     slug: "investment", 
@@ -70,7 +70,7 @@ const CATEGORIES: Category[] = [
     cta: "Explore Investment Properties",
     imageUrl: "/properties/eminence-96/eminence-96-3-pool.webp",
     location: "Thaltej",
-    href: "/property-types/luxury-residential-investment-ahmedabad"
+    href: "/investment-property-ahmedabad"
   },
 ];
 

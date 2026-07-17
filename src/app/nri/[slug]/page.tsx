@@ -98,7 +98,7 @@ export default async function NriLandingPage({ params }: NriPageProps) {
         "@type": "ListItem",
         position: 2,
         name: "NRI Advisory",
-        item: absoluteUrl("/nri/nri-property-consultant-ahmedabad"),
+        item: absoluteUrl("/nri-property-consultant-ahmedabad"),
       },
       {
         "@type": "ListItem",

@@ -5,7 +5,7 @@ import { GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/properties", label: "Properties" },
-  { href: "/nri/nri-property-consultant-ahmedabad", label: "NRI Advisory" },
+  { href: "/nri-property-consultant-ahmedabad", label: "NRI Advisory" },
   { href: "/about", label: "About" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/blog", label: "Blog" },
@@ -13,7 +13,16 @@ const NAV_LINKS = [
 ];
 
 const FOOTER_LOCATION_LINKS = LOCATION_LANDING_PAGES.slice(0, 6);
-const FOOTER_TYPE_LINKS = PROPERTY_TYPE_LANDING_PAGES.slice(0, 5);
+const FOOTER_TYPE_LINK_SLUGS = [
+  "luxury-apartments-ahmedabad",
+  "penthouses-duplexes-ahmedabad",
+  "villas-bungalows-ahmedabad",
+  "luxury-bungalows-ahmedabad",
+  "residential-plots-ahmedabad",
+];
+const FOOTER_TYPE_LINKS = FOOTER_TYPE_LINK_SLUGS.map((slug) =>
+  PROPERTY_TYPE_LANDING_PAGES.find((page) => page.slug === slug)
+).filter((page): page is (typeof PROPERTY_TYPE_LANDING_PAGES)[number] => Boolean(page));
 
 interface FooterProps {
   googleMapsUrl?: string;

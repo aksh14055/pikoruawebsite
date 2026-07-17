@@ -8,7 +8,12 @@ import {
   getRootLandingPage,
   getRootLandingPages,
 } from "@/lib/data/geo";
-import { ENTITY_IDS, getNriAdvisoryServiceSchema } from "@/lib/entity-profile";
+import {
+  BUSINESS_LANGUAGES,
+  ENTITY_IDS,
+  getAhmedabadAreaServedSchema,
+  getNriAdvisoryServiceSchema,
+} from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { getExchangeRates } from "@/lib/exchange-rates";
 
@@ -74,20 +79,63 @@ function getCollectionAbout(page: GeoLandingPage, pageUrl: string) {
     ];
   }
 
+  if (page.collectionHref?.startsWith("/contact")) {
+    return [
+      {
+        "@id": ENTITY_IDS.realEstateAgent,
+      },
+      {
+        "@id": `${pageUrl}#service`,
+      },
+    ];
+  }
+
   return {
     "@id": ENTITY_IDS.realEstateAgent,
   };
 }
 
 function getServiceSchema(page: GeoLandingPage, pageUrl: string) {
-  if (page.kind !== "nri") return null;
+  if (page.kind === "nri") {
+    return getNriAdvisoryServiceSchema({
+      pageUrl,
+      name: page.title,
+      description: page.description,
+      serviceType: page.label,
+    });
+  }
 
-  return getNriAdvisoryServiceSchema({
-    pageUrl,
+  if (!page.collectionHref?.startsWith("/contact")) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
     name: page.title,
     description: page.description,
+    url: pageUrl,
     serviceType: page.label,
-  });
+    provider: {
+      "@id": ENTITY_IDS.realEstateAgent,
+    },
+    areaServed: getAhmedabadAreaServedSchema(),
+    audience: {
+      "@type": "Audience",
+      audienceType: "Luxury property buyers, sellers, NRIs, and real estate investors",
+    },
+    serviceOutput: [
+      "curated Ahmedabad property shortlist",
+      "corridor and micro-market comparison",
+      "developer and documentation review coordination",
+      "private site visit or virtual walkthrough planning",
+      "negotiation and transaction coordination",
+    ],
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: absoluteUrl("/contact"),
+      availableLanguage: [...BUSINESS_LANGUAGES],
+    },
+  };
 }
 
 export default async function RootLandingPage({ params }: RootLandingPageProps) {
@@ -136,7 +184,7 @@ export default async function RootLandingPage({ params }: RootLandingPageProps) 
         "@type": "ListItem",
         position: 2,
         name: page.kind === "nri" ? "NRI Advisory" : "Properties",
-        item: page.kind === "nri" ? absoluteUrl("/nri-property-investment-ahmedabad") : absoluteUrl("/properties"),
+        item: page.kind === "nri" ? absoluteUrl("/nri-property-consultant-ahmedabad") : absoluteUrl("/properties"),
       },
       {
         "@type": "ListItem",

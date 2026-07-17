@@ -262,12 +262,15 @@ Strict Guidelines:
    - Sindhu Bhavan Road → /sindhu-bhavan-road-properties
    - Iskon-Ambli Road OR Iscon Ambli Road → /iscon-ambli-road-properties
    - Thaltej → /thaltej-properties
-   - Shilaj → /shilaj-properties
-   - Vaishno Devi → /vaishno-devi-properties
+   - Shilaj → /locations/shilaj
+   - Vaishno Devi → /locations/vaishno-devi
    - SG Highway → /sg-highway-properties
    - NRI advisory OR NRI property investment → /nri-property-investment-ahmedabad
    - Luxury penthouses OR duplexes → /penthouses-ahmedabad
-   - Luxury villas OR bungalows → /villas-bungalows-ahmedabad
+   - Luxury villas → /luxury-villas-ahmedabad
+   - Luxury bungalows → /luxury-bungalows-ahmedabad
+   - Luxury plots OR residential land → /luxury-plots-ahmedabad
+   - Investment property OR rental yield property → /investment-property-ahmedabad
 
 Do not include any introductory text, explaining paragraphs, or markdown code blocks (e.g. do not wrap the JSON in \`\`\`json).
 Return ONLY a single, valid JSON object matching the following structure:

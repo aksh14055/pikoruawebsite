@@ -19,6 +19,16 @@ const PURPOSE_COPY: Record<string, { eyebrow: string; heading: string; sub: stri
     heading: "Let's talk\ninvestment.",
     sub: "Data-led selection in corridors that hold value and grow quietly.",
   },
+  "luxury-advisory": {
+    eyebrow: "Private Advisory",
+    heading: "Let's curate your\nluxury search.",
+    sub: "Private shortlisting, off-market access, and discreet negotiation for Ahmedabad's luxury segment.",
+  },
+  "real-estate-advisory": {
+    eyebrow: "Private Advisory",
+    heading: "Let's talk through\nyour requirement.",
+    sub: "Corridor comparison, buyer-fit discipline, and negotiation judgment from a private real estate advisory.",
+  },
   default: {
     eyebrow: "Private Advisory",
     heading: "Begin a private\nconversation.",

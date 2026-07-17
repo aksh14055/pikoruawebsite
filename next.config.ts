@@ -186,8 +186,23 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/nri-property-consultant-ahmedabad",
-        destination: "/nri/nri-property-consultant-ahmedabad",
+        source: "/nri/nri-property-consultant-ahmedabad",
+        destination: "/nri-property-consultant-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/property-types/residential-plots-ahmedabad",
+        destination: "/luxury-plots-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/property-types/luxury-residential-investment-ahmedabad",
+        destination: "/investment-property-ahmedabad",
+        permanent: true,
+      },
+      {
+        source: "/villas-bungalows-ahmedabad",
+        destination: "/luxury-villas-ahmedabad",
         permanent: true,
       },
       {

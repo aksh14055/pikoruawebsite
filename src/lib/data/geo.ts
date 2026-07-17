@@ -60,6 +60,17 @@ export interface GeoLandingPage {
   };
 }
 
+const BROAD_LUXURY_CATEGORIES: ResidentialCategory[] = [
+  "apartment",
+  "penthouse",
+  "duplex",
+  "villa",
+  "bungalow",
+  "plot",
+  "investment",
+  "residential-investment",
+];
+
 export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
@@ -1094,6 +1105,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "luxury apartment",
       "luxurious apartments",
     ],
+    seoKeywords: [
+      "Luxury apartments Ahmedabad",
+      "luxury flats Ahmedabad",
+      "premium apartments Ahmedabad",
+      "4 BHK luxury apartments Ahmedabad",
+      "5 BHK luxury apartments Ahmedabad",
+    ],
     intro:
       "Luxury apartment buying in Ahmedabad is no longer about size alone. The strongest residences combine privacy, arrival experience, floor plate quality, security, amenity depth, and corridor strength.",
     marketSignals: [
@@ -1128,7 +1146,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
           "Luxury 5 BHK apartments in Ahmedabad are available on Iskon-Ambli Road and select Sindhu Bhavan Road towers, typically as large-format floor plates of 4,000–6,000 sq.ft. These are among the rarest and most sought-after residential formats in the city. PIKORUA Realty can share current availability on request.",
       },
     ],
-    relatedSlugs: ["iskon-ambli", "sindhu-bhavan", "sg-highway"],
+    relatedSlugs: ["luxury-property-ahmedabad", "iskon-ambli", "sindhu-bhavan", "sg-highway"],
     bodyContent: [
       "### What Defines a Truly Luxury Apartment in Ahmedabad",
       "The definition of 'luxury apartment' in Ahmedabad has shifted materially over the past five years. Size alone is no longer sufficient. The strongest residences now compete on a different set of criteria: fewer apartments per floor (the best buildings have 2–4 per floor), private or semi-private lift lobbies, double-height living volumes with ceiling heights above 12 feet, wrap-around sundecks of 400–800 sq.ft., and clubhouse programming that includes sky-level pools, screening rooms, and professional-grade gyms. Buildings that were considered premium in 2018 may not qualify as true luxury by 2026 buyer standards.",
@@ -1151,7 +1169,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     description:
       "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
     heroImage: "/properties/maruti-360/maruti-360-view.jpg",
-    categories: ["apartment", "penthouse", "duplex", "villa", "bungalow", "plot", "investment"],
+    categories: BROAD_LUXURY_CATEGORIES,
     matchKeywords: [
       "luxury property Ahmedabad",
       "premium property Ahmedabad",
@@ -1200,6 +1218,8 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     ],
     relatedSlugs: [
       "nri-property-investment-ahmedabad",
+      "luxury-real-estate-ahmedabad",
+      "luxury-property-consultant-ahmedabad",
       "luxury-4bhk-ahmedabad",
       "luxury-5bhk-ahmedabad",
       "penthouses-duplexes-ahmedabad",
@@ -1214,6 +1234,369 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "For NRIs, the best luxury property is not always the largest home. It is the asset that can be verified remotely, maintained reliably, rented or held without friction, and sold later into a deep buyer pool. That means title, RERA alignment, payment route, POA feasibility, builder credibility, society quality, and micro-market demand should be checked before price negotiation.",
       "### PIKORUA Advisory View",
       "PIKORUA Realty works as a private luxury real estate advisory for Ahmedabad buyers, sellers, investors, and NRI families. We prioritize curated inventory, discreet seller access, document-led evaluation, and clear micro-market comparison over high-volume portal browsing.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-real-estate-ahmedabad",
+    href: "/luxury-real-estate-ahmedabad",
+    label: "Luxury Real Estate",
+    eyebrow: "Luxury Advisory",
+    title: "Luxury Real Estate Ahmedabad | PIKORUA Realty",
+    h1: "Luxury Real Estate in Ahmedabad",
+    description:
+      "Market-led luxury real estate advisory in Ahmedabad for HNI and NRI buyers comparing prime corridors, developers, and private inventory.",
+    heroImage: "/properties/maruti-360/maruti-360-view.jpg",
+    categories: BROAD_LUXURY_CATEGORIES,
+    matchKeywords: [
+      "luxury real estate Ahmedabad",
+      "luxury property Ahmedabad",
+      "premium real estate Ahmedabad",
+      "Ahmedabad luxury real estate",
+    ],
+    seoKeywords: [
+      "Luxury real estate Ahmedabad",
+      "Ahmedabad luxury real estate market",
+      "luxury residential real estate Ahmedabad",
+      "premium real estate advisory Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Luxury real estate in Ahmedabad is best understood through micro-market quality, not headline inventory count. The strongest opportunities combine corridor scarcity, developer credibility, privacy, and clean transaction readiness.",
+    marketSignals: [
+      "Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Bodakdev, and Vastrapur anchor most luxury buyer demand.",
+      "Large-format apartments, penthouses, villas, bungalows, and land-backed homes each need a different due-diligence lens.",
+      "NRI and HNI buyers increasingly value private advisory, verified documentation, and off-market access over public listing volume.",
+    ],
+    idealFor: [
+      "Families comparing Ahmedabad's premium residential corridors before shortlisting homes.",
+      "NRI buyers evaluating a long-term India base or investment property from abroad.",
+      "Investors and sellers who need market context before pricing, buying, or exiting a luxury asset.",
+    ],
+    faqs: [
+      {
+        question: "Which areas define luxury real estate in Ahmedabad?",
+        answer:
+          "Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, Bodakdev, Shilaj, and selected Vaishno Devi pockets are the most relevant luxury real estate corridors, depending on property format and budget.",
+      },
+      {
+        question: "What property types are included in Ahmedabad luxury real estate?",
+        answer:
+          "Ahmedabad luxury real estate includes large 4 BHK and 5 BHK apartments, penthouses, duplexes, villas, independent bungalows, residential plots, and selected investment-led residences.",
+      },
+      {
+        question: "How should NRIs evaluate Ahmedabad luxury real estate?",
+        answer:
+          "NRIs should evaluate legal clarity, RERA status where applicable, payment route, POA feasibility, maintenance support, rental demand, and exit liquidity before choosing a property.",
+      },
+    ],
+    relatedSlugs: [
+      "luxury-property-ahmedabad",
+      "luxury-property-consultant-ahmedabad",
+      "nri-property-investment-ahmedabad",
+      "iskon-ambli",
+      "sindhu-bhavan",
+    ],
+    bodyContent: [
+      "### Ahmedabad Luxury Real Estate: A Micro-Market Business",
+      "The search for luxury real estate Ahmedabad is broad, but the actual purchase decision is narrow. Buyers are not choosing a city; they are choosing a specific building, lane, developer, view, floor plate, society profile, and legal position. A home on Iscon-Ambli Road, a penthouse near Sindhu Bhavan Road, and a bungalow in Shilaj may all be luxury assets, but they carry different liquidity, maintenance, and appreciation profiles.",
+      "### What Serious Buyers Compare",
+      "Serious buyers compare more than price per sq.ft. They compare privacy, arrival experience, number of units per floor, construction quality, parking, service access, amenity governance, developer history, title clarity, and future buyer depth. This is where advisory quality matters: the strongest option is rarely the one with the loudest brochure.",
+      "### NRI and HNI Demand",
+      "NRI and HNI families drive a large part of Ahmedabad's upper-end residential demand. Many are buying for parents, future return, investment allocation, or a long-term family base. Their search needs remote walkthroughs, documented comparison notes, legal coordination, and a clear view of which corridors will remain desirable five to ten years from now.",
+      "### PIKORUA Advisory View",
+      "PIKORUA Realty works with luxury real estate as a private advisory category: curated shortlists, off-market access where relevant, corridor comparison, document-led evaluation, and discreet negotiation. The goal is not to show more options; it is to remove unsuitable options before the buyer spends time and capital.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-property-consultant-ahmedabad",
+    href: "/luxury-property-consultant-ahmedabad",
+    label: "Luxury Property Consultant",
+    eyebrow: "Private Advisory",
+    title: "Luxury Property Consultant Ahmedabad | PIKORUA",
+    h1: "Luxury Property Consultant in Ahmedabad",
+    description:
+      "Private luxury property consultant in Ahmedabad for curated homes, off-market access, due diligence, negotiation, and NRI buying support.",
+    heroImage: "/properties/capstone/capstone-1-courtyard.jpg",
+    categories: BROAD_LUXURY_CATEGORIES,
+    matchKeywords: [
+      "luxury property consultant Ahmedabad",
+      "luxury property advisor Ahmedabad",
+      "private property consultant Ahmedabad",
+      "luxury real estate consultant Ahmedabad",
+    ],
+    seoKeywords: [
+      "Luxury property consultant Ahmedabad",
+      "luxury property advisor Ahmedabad",
+      "private real estate advisory Ahmedabad",
+      "off market luxury property Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=luxury-advisory",
+    intro:
+      "A luxury property consultant should reduce noise, not multiply listings. PIKORUA Realty advises buyers and sellers through private shortlisting, corridor comparison, diligence coordination, and controlled transaction execution.",
+    marketSignals: [
+      "Many of Ahmedabad's strongest luxury homes are shared privately or selectively rather than placed on public portals.",
+      "Buyers need project-level checks on developer strength, title clarity, usable area, possession status, and society quality.",
+      "Sellers of high-value residences need qualified access and confidentiality to protect price context.",
+    ],
+    idealFor: [
+      "HNI families who want a curated luxury property search in Ahmedabad.",
+      "NRIs buying remotely and needing local representation before travel or signing.",
+      "Luxury sellers who want discreet access to serious, qualified buyers.",
+    ],
+    faqs: [
+      {
+        question: "What does a luxury property consultant in Ahmedabad do?",
+        answer:
+          "A luxury property consultant helps define the brief, compare corridors, shortlist relevant homes, coordinate site visits or virtual tours, review documents, support negotiation, and manage transaction coordination.",
+      },
+      {
+        question: "Why use PIKORUA instead of only browsing property portals?",
+        answer:
+          "Portals show visible inventory, but many high-value residences are selectively shared. PIKORUA filters suitability, diligence, privacy, and transaction readiness before recommending options.",
+      },
+      {
+        question: "Can a luxury property consultant help NRI buyers?",
+        answer:
+          "Yes. NRI buyers can use PIKORUA for remote shortlisting, video walkthroughs, RERA and title-check coordination, POA planning, payment-flow guidance, registration support, and handover coordination.",
+      },
+    ],
+    relatedSlugs: [
+      "real-estate-consultant-ahmedabad",
+      "nri-property-consultant-ahmedabad",
+      "luxury-real-estate-ahmedabad",
+      "luxury-property-ahmedabad",
+    ],
+    bodyContent: [
+      "### Why Luxury Advisory Is Different",
+      "A normal property search can tolerate volume. A luxury property search cannot. At Rs. 5 Crore, Rs. 10 Crore, or higher, every weak recommendation costs time, privacy, and negotiating leverage. The consultant's job is to filter options before the buyer sees them, not after.",
+      "### Buyer Representation",
+      "For buyers, the advisory process starts with intent: self-use, parents' residence, future return, rental income, capital preservation, or portfolio diversification. From there, PIKORUA Realty compares corridors, property types, possession stage, building density, developer credibility, and maintenance risk.",
+      "### Seller Representation",
+      "For sellers, luxury property advisory is about controlled access. Broad exposure can make a high-value property look over-available. PIKORUA works with qualified introductions, private buyer matching, and realistic pricing context so the seller's asset is not diluted by speculative enquiries.",
+      "### Advisory Outcome",
+      "The outcome should be a sharper decision: fewer properties, better reasons, cleaner documents, and a stronger sense of whether a transaction should proceed. That is the standard PIKORUA applies to Ahmedabad luxury property consulting.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "real-estate-consultant-ahmedabad",
+    href: "/real-estate-consultant-ahmedabad",
+    label: "Real Estate Consultant",
+    eyebrow: "Private Advisory",
+    title: "Best Real Estate Consultant Ahmedabad | PIKORUA",
+    h1: "Real Estate Consultant in Ahmedabad",
+    description:
+      "Trusted real estate consultant in Ahmedabad for luxury buyers, NRIs, investors, sellers, and families seeking private advisory.",
+    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    categories: BROAD_LUXURY_CATEGORIES,
+    matchKeywords: [
+      "best real estate consultant Ahmedabad",
+      "real estate consultant Ahmedabad",
+      "property consultant Ahmedabad",
+      "real estate advisor Ahmedabad",
+    ],
+    seoKeywords: [
+      "Best real estate consultant Ahmedabad",
+      "real estate consultant Ahmedabad",
+      "property consultant Ahmedabad",
+      "real estate advisory Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=real-estate-advisory",
+    intro:
+      "The right real estate consultant in Ahmedabad should combine local market intelligence, verified inventory access, buyer-fit discipline, legal coordination, and negotiation judgment.",
+    marketSignals: [
+      "Ahmedabad's premium market is fragmented across developers, private resale mandates, and corridor-specific opportunities.",
+      "Buyer confidence depends on clarity around title, RERA, possession, layout, maintenance, and true market pricing.",
+      "Advisory-led transactions are especially valuable for NRIs and HNIs who cannot evaluate every option directly.",
+    ],
+    idealFor: [
+      "Buyers comparing Ahmedabad real estate consultants before making a high-value purchase.",
+      "NRIs, HNIs, founders, and business families who need private, selective advisory.",
+      "Sellers who want pricing guidance and qualified buyer access without broad exposure.",
+    ],
+    faqs: [
+      {
+        question: "Who is a good real estate consultant in Ahmedabad for luxury property?",
+        answer:
+          "A good luxury real estate consultant should understand premium corridors, developer credibility, legal-document workflows, private inventory, pricing context, and negotiation strategy. PIKORUA Realty focuses on these advisory-led requirements.",
+      },
+      {
+        question: "Does PIKORUA work with both buyers and sellers?",
+        answer:
+          "Yes. PIKORUA advises qualified buyers, NRI families, investors, and selected sellers where the requirement benefits from private, curated, document-led real estate advisory.",
+      },
+      {
+        question: "Which Ahmedabad areas does PIKORUA advise on?",
+        answer:
+          "PIKORUA advises across Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, SG Highway, Vastrapur, Bodakdev, Shilaj, Vaishno Devi, and other premium western Ahmedabad corridors.",
+      },
+    ],
+    relatedSlugs: [
+      "luxury-property-consultant-ahmedabad",
+      "nri-property-consultant-ahmedabad",
+      "luxury-real-estate-ahmedabad",
+      "sg-highway",
+    ],
+    bodyContent: [
+      "### Choosing a Real Estate Consultant in Ahmedabad",
+      "The phrase best real estate consultant Ahmedabad is usually searched by buyers who have already understood one thing: the open market is noisy. Ahmedabad has strong opportunities, but it also has uneven information quality. A consultant must know which projects, resales, and corridors deserve attention, and which should be avoided despite attractive presentation.",
+      "### Advisory Beyond Listings",
+      "PIKORUA Realty's role is not limited to showing properties. Advisory includes requirement mapping, budget realism, corridor comparison, project and developer checks, title and RERA coordination, site-visit planning, negotiation, and handover support. This is especially important in the luxury segment where inventory is limited and mistakes are expensive.",
+      "### NRI and Investor Use Case",
+      "NRIs and investors need a ground team that can verify claims before travel, paperwork, or payment. A structured consultant process reduces risk by putting documentation, pricing, and property fit ahead of urgency.",
+      "### Seller Use Case",
+      "For sellers, the right consultant protects confidentiality and price context. Qualified buyer access matters more than public reach when the property sits in a high-value, low-liquidity segment.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "ultra-luxury-properties-ahmedabad",
+    href: "/ultra-luxury-properties-ahmedabad",
+    label: "Ultra Luxury Properties",
+    eyebrow: "Signature Residences",
+    title: "Ultra Luxury Properties in Ahmedabad | PIKORUA",
+    h1: "Ultra Luxury Properties in Ahmedabad",
+    description:
+      "Private advisory for ultra luxury properties in Ahmedabad: penthouses, sky villas, bungalows, and rare residences in prime corridors.",
+    heroImage: "/properties/ikebana/ikebana1.png",
+    categories: ["apartment", "penthouse", "duplex", "villa", "bungalow"],
+    matchKeywords: [
+      "ultra luxury properties Ahmedabad",
+      "ultra luxury homes Ahmedabad",
+      "signature residences Ahmedabad",
+      "sky villa",
+      "penthouse",
+      "duplex",
+      "bungalow",
+      "5 bhk",
+    ],
+    seoKeywords: [
+      "Ultra luxury properties Ahmedabad",
+      "ultra luxury homes Ahmedabad",
+      "signature residences Ahmedabad",
+      "premium penthouses Ahmedabad",
+      "luxury bungalows Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Ultra luxury properties in Ahmedabad are scarce assets where privacy, architecture, view, land control, floor plate, and buyer fit matter more than total listing count.",
+    marketSignals: [
+      "The strongest ultra-luxury demand is concentrated around Iscon-Ambli Road, Sindhu Bhavan Road, Bodakdev, Thaltej, and selected Shilaj pockets.",
+      "Top-tier inventory is often penthouse-led, sky-villa-led, bungalow-led, or selectively released by developers.",
+      "The highest-value transactions require deeper diligence around exclusivity, usable area, terrace rights, society profile, and title clarity.",
+    ],
+    idealFor: [
+      "Families seeking rare signature residences rather than standard premium homes.",
+      "NRIs and HNIs comparing penthouses, sky villas, and bungalows for long-term family use.",
+      "Sellers or buyers who need confidential introductions for high-value residences.",
+    ],
+    faqs: [
+      {
+        question: "What counts as ultra luxury property in Ahmedabad?",
+        answer:
+          "Ultra luxury property usually includes rare penthouses, duplexes, sky villas, large-format 5 BHK residences, private bungalows, and low-density homes in the city's highest-demand corridors.",
+      },
+      {
+        question: "Where are ultra luxury properties found in Ahmedabad?",
+        answer:
+          "Iscon-Ambli Road, Sindhu Bhavan Road, Bodakdev, Thaltej, Vastrapur, and selected Shilaj pockets are relevant starting points depending on whether the buyer wants vertical luxury or land-backed privacy.",
+      },
+      {
+        question: "Are ultra luxury homes usually publicly listed?",
+        answer:
+          "Some are publicly visible, but many serious ultra-luxury mandates are shared privately because sellers and developers prefer qualified buyer access and controlled confidentiality.",
+      },
+    ],
+    relatedSlugs: [
+      "penthouses-duplexes-ahmedabad",
+      "villas-bungalows-ahmedabad",
+      "luxury-bungalows-ahmedabad",
+      "iskon-ambli",
+      "sindhu-bhavan",
+    ],
+    bodyContent: [
+      "### What Ultra Luxury Means in Ahmedabad",
+      "Ultra luxury in Ahmedabad is not only a price band. It is a combination of scarcity, privacy, architecture, neighbourhood position, legal clarity, and social fit. The best assets are difficult to replace: a top-floor penthouse with documented terrace rights, a single-floor residence in a low-density tower, or a private bungalow in a mature western corridor.",
+      "### Vertical vs Land-Backed Ultra Luxury",
+      "Ahmedabad's ultra-luxury market divides into vertical and land-backed formats. Vertical assets include penthouses, duplexes, sky villas, and large 5 BHK homes in premium towers. Land-backed assets include independent bungalows, gated villas, and select plots that allow custom residential development.",
+      "### Why Private Access Matters",
+      "Public visibility is not always aligned with ultra-luxury selling. Many owners avoid broad exposure to preserve privacy and negotiating strength. Developers also release the strongest residences selectively when they want a buyer whose expectations match the building's profile.",
+      "### Advisory Filter",
+      "PIKORUA Realty filters ultra-luxury opportunities by corridor quality, construction standard, terrace and exclusive-area rights, resale demand, developer track record, and buyer purpose. The recommendation must justify both the asset and the premium.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "luxury-homes-ahmedabad",
+    href: "/luxury-homes-ahmedabad",
+    label: "Luxury Homes",
+    eyebrow: "Property Type",
+    title: "Luxury Homes in Ahmedabad | PIKORUA Realty",
+    h1: "Luxury Homes in Ahmedabad",
+    description:
+      "Curated luxury homes in Ahmedabad for families, HNIs, and NRIs across apartments, penthouses, villas, bungalows, and plots.",
+    heroImage: "/properties/anurita/anurita-1.jpg",
+    categories: BROAD_LUXURY_CATEGORIES,
+    matchKeywords: [
+      "luxury homes Ahmedabad",
+      "luxury home Ahmedabad",
+      "premium homes Ahmedabad",
+      "high end homes Ahmedabad",
+    ],
+    seoKeywords: [
+      "Luxury homes Ahmedabad",
+      "premium homes Ahmedabad",
+      "high end homes Ahmedabad",
+      "luxury family homes Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Luxury homes in Ahmedabad include managed apartments, penthouses, duplexes, villas, bungalows, and land-backed residences. The right home depends on family structure, maintenance appetite, privacy, and long-term utility.",
+    marketSignals: [
+      "Managed tower homes suit NRIs and families wanting security, amenities, and easier maintenance.",
+      "Villas and bungalows suit buyers prioritising land, privacy, staff access, and independent identity.",
+      "Plots suit long-horizon buyers who want to control design and construction over time.",
+    ],
+    idealFor: [
+      "Families comparing all luxury home formats before choosing an apartment, penthouse, villa, bungalow, or plot.",
+      "NRIs buying a future Ahmedabad base for parents, visits, or eventual return.",
+      "Buyers who want advisory across lifestyle fit, resale demand, legal clarity, and maintenance practicality.",
+    ],
+    faqs: [
+      {
+        question: "What are the best luxury home options in Ahmedabad?",
+        answer:
+          "The best luxury home option depends on the buyer. Apartments and penthouses suit managed living, villas and bungalows suit privacy, and plots suit long-term custom home planning.",
+      },
+      {
+        question: "Which areas are best for luxury homes in Ahmedabad?",
+        answer:
+          "Iscon-Ambli Road, Sindhu Bhavan Road, Thaltej, Vastrapur, Bodakdev, Shilaj, Vaishno Devi, and SG Highway pockets are relevant depending on home format and budget.",
+      },
+      {
+        question: "Can NRIs buy luxury homes in Ahmedabad remotely?",
+        answer:
+          "Yes. NRIs can buy luxury homes remotely when virtual tours, document checks, POA planning, payment routing, registration coordination, and handover support are properly managed.",
+      },
+    ],
+    relatedSlugs: [
+      "luxury-apartments-ahmedabad",
+      "penthouses-duplexes-ahmedabad",
+      "villas-bungalows-ahmedabad",
+      "residential-plots-ahmedabad",
+      "nri-property-investment-ahmedabad",
+    ],
+    bodyContent: [
+      "### Luxury Homes Are Not One Category",
+      "A luxury homes Ahmedabad search can mean very different briefs. One family may need a 4 BHK apartment near schools. Another may want a penthouse with a private terrace. A third may want a bungalow or plot that can hold a multi-generational home. The advisory process starts by identifying which home format actually fits the buyer's life.",
+      "### Managed Homes",
+      "Apartments, penthouses, and duplexes in premium buildings suit buyers who want security, amenities, easier maintenance, and stronger rental practicality. This is often the most practical route for NRIs and busy families who do not want the complexity of land or independent-home upkeep.",
+      "### Independent Homes",
+      "Villas and bungalows provide privacy, land control, parking flexibility, and stronger personal identity. They require deeper checks: title chain, construction permissions, plot measurement, access, service areas, and renovation scope.",
+      "### Long-Term Home Planning",
+      "Residential plots work for buyers who want to secure land before building a custom home. This is powerful for long-term family planning, but diligence around zoning, NA status, road access, and utilities is essential.",
     ],
   },
   {
@@ -1333,6 +1716,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     heroImage: "/properties/ikebana/ikebana1.png",
     categories: ["penthouse", "duplex"],
     matchKeywords: ["penthouse", "penthouses", "duplex", "duplex penthouse", "triplex penthouse", "sky villa"],
+    seoKeywords: [
+      "Penthouses Ahmedabad",
+      "luxury penthouses Ahmedabad",
+      "duplex homes Ahmedabad",
+      "sky villas Ahmedabad",
+      "penthouse for sale Ahmedabad",
+    ],
     intro:
       "Penthouses and duplex residences sit at the top end of Ahmedabad's vertical luxury market. The best opportunities are judged by privacy, ceiling height, terrace utility, view corridor, and building quality.",
     marketSignals: [
@@ -1367,7 +1757,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
           "Luxury duplex homes in Ahmedabad typically price between ₹4 Crore and ₹12 Crore depending on size, location, and specification. The most in-demand duplexes are in Iskon-Ambli Road towers, where 4,000–6,000 sq.ft. duplexes with private terraces trade at ₹6 Crore to ₹12 Crore.",
       },
     ],
-    relatedSlugs: ["luxury-apartments-ahmedabad", "sindhu-bhavan", "iskon-ambli"],
+    relatedSlugs: ["ultra-luxury-properties-ahmedabad", "luxury-apartments-ahmedabad", "sindhu-bhavan", "iskon-ambli"],
     bodyContent: [
       "### Penthouses and Duplexes: The Peak of Vertical Luxury in Ahmedabad",
       "Penthouses and duplex residences occupy a separate category within Ahmedabad's luxury market. They are not merely large apartments — they represent a fundamentally different quality of vertical living. The best penthouses in Ahmedabad offer 5,000–7,000 sq.ft. of single-floor internal space, private wrap-around terraces of 2,000–4,000 sq.ft., private plunge pools, and dedicated lobby access from a semi-private lift. They are, in essence, horizontally-oriented bungalows elevated above the city — combining land-backed lifestyle with tower-level security and panoramic views.",
@@ -1392,6 +1782,13 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     heroImage: "/properties/anurita/anurita-1.jpg",
     categories: ["villa", "bungalow"],
     matchKeywords: ["villa", "bungalow"],
+    seoKeywords: [
+      "Luxury villas Ahmedabad",
+      "luxury villa for sale Ahmedabad",
+      "gated villas Ahmedabad",
+      "luxury bungalows Ahmedabad",
+      "independent luxury homes Ahmedabad",
+    ],
     intro:
       "Luxury villas and bungalows in Ahmedabad are bought for privacy, land, identity, and long-term family utility. The right option depends as much on title and neighborhood maturity as it does on architecture.",
     marketSignals: [
@@ -1426,7 +1823,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
           "Luxury bungalows in Ahmedabad are primarily available in the lanes off Sindhu Bhavan Road, in select Shilaj pockets, and in established Bodakdev neighbourhoods. Independent bungalow estates on 2,000–5,000 sq.yd. plots are rare — PIKORUA Realty can connect qualified buyers with private bungalow mandates.",
       },
     ],
-    relatedSlugs: ["shilaj", "sindhu-bhavan", "residential-plots-ahmedabad"],
+    relatedSlugs: ["luxury-bungalows-ahmedabad", "shilaj", "sindhu-bhavan", "residential-plots-ahmedabad"],
     bodyContent: [
       "### Villas and Bungalows in Ahmedabad: What the Market Actually Offers",
       "Luxury villas and independent bungalows in Ahmedabad represent a distinct asset class from vertical apartments. They are bought primarily for three reasons: privacy (no shared walls, lobby, or elevator), land ownership (an asset class that compounds differently from built-up FSI), and identity (a custom-designed home is a personal statement in a way that even the finest apartment cannot be). Demand for quality independent homes has consistently outpaced supply in Ahmedabad's western corridors — the city's zoning structure and the speed of vertical development have made genuinely large private plots increasingly rare.",
@@ -1440,17 +1837,100 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   },
   {
     kind: "property-type",
-    slug: "residential-plots-ahmedabad",
-    href: "/property-types/residential-plots-ahmedabad",
-    label: "Residential Plots",
+    slug: "luxury-bungalows-ahmedabad",
+    href: "/luxury-bungalows-ahmedabad",
+    label: "Luxury Bungalows",
     eyebrow: "Property Type",
-    title: "Premium Residential Plots for Sale in Ahmedabad",
-    h1: "Premium Residential Plots in Ahmedabad",
+    title: "Luxury Bungalows in Ahmedabad | PIKORUA Realty",
+    h1: "Luxury Bungalows in Ahmedabad",
     description:
-      "Advisory on premium residential plots and luxury land for sale in Ahmedabad — including plots near Sindhu Bhavan Road, Thaltej, Shilaj, and the western corridor.",
+      "Private advisory for luxury bungalows in Ahmedabad, including off-market homes near Sindhu Bhavan Road, Bodakdev, Shilaj, and Thaltej.",
+    heroImage: "/properties/anurita/anurita-1.jpg",
+    categories: ["bungalow", "villa", "plot"],
+    matchKeywords: [
+      "luxury bungalow Ahmedabad",
+      "luxury bungalows Ahmedabad",
+      "bungalow",
+      "independent bungalow",
+      "private bungalow",
+      "villa",
+      "plot",
+    ],
+    seoKeywords: [
+      "Luxury bungalows Ahmedabad",
+      "luxury bungalow for sale Ahmedabad",
+      "independent bungalow Ahmedabad",
+      "premium bungalows Ahmedabad",
+      "off market bungalows Ahmedabad",
+    ],
+    collectionHref: "/properties",
+    intro:
+      "Luxury bungalows in Ahmedabad are land-backed residences where title, plot quality, privacy, access, construction permissions, and neighbourhood profile matter as much as interior specification.",
+    marketSignals: [
+      "Prime bungalow demand is strongest around Sindhu Bhavan Road lanes, Bodakdev, Shilaj, Thaltej, and selected western Ahmedabad pockets.",
+      "The best bungalows are often privately held, discreetly marketed, or transacted through relationship-led access.",
+      "Legal diligence must cover title chain, plot measurement, construction approvals, access road, utilities, and renovation scope.",
+    ],
+    idealFor: [
+      "Families wanting independent living, privacy, parking, garden space, and long-term land control.",
+      "NRIs securing a future Ahmedabad family base that can be used or renovated over time.",
+      "Sellers of premium bungalows who need qualified buyer access without broad public exposure.",
+    ],
+    faqs: [
+      {
+        question: "Where can I find luxury bungalows in Ahmedabad?",
+        answer:
+          "Luxury bungalows in Ahmedabad are most relevant around Sindhu Bhavan Road lanes, Bodakdev, Shilaj, Thaltej, and selected western residential pockets. Many quality options are shared privately.",
+      },
+      {
+        question: "What should buyers check before buying a bungalow?",
+        answer:
+          "Buyers should check title chain, plot area, construction approvals, zoning, road access, parking, utility connections, renovation feasibility, encumbrance status, and future resale demand.",
+      },
+      {
+        question: "Can NRIs buy bungalows in Ahmedabad?",
+        answer:
+          "Yes, NRIs can buy residential bungalows in Ahmedabad if the property is residential and legally clear. They should avoid agricultural land exposure and route payments through compliant banking channels.",
+      },
+    ],
+    relatedSlugs: [
+      "villas-bungalows-ahmedabad",
+      "residential-plots-ahmedabad",
+      "sindhu-bhavan",
+      "shilaj",
+      "luxury-property-consultant-ahmedabad",
+    ],
+    bodyContent: [
+      "### Why Bungalows Are a Separate Search Intent",
+      "A buyer searching for luxury bungalows Ahmedabad is not usually looking for the same product as a villa-community buyer. A bungalow is often about individual identity, land control, renovation freedom, private parking, staff access, and long-term family continuity. The search must be handled with more caution because the legal and physical diligence is deeper than apartment diligence.",
+      "### Prime Bungalow Pockets",
+      "The most relevant bungalow pockets sit across Sindhu Bhavan Road lanes, Bodakdev, Shilaj, Thaltej, and mature western Ahmedabad neighbourhoods. Each pocket behaves differently. Some offer address recall and social ecosystem; others offer larger plot sizes and better long-term redevelopment potential.",
+      "### Diligence Is the Value",
+      "Bungalow transactions require careful title-chain review, construction approval checks, plot survey verification, access-road clarity, and assessment of existing structural condition. Buyers should also evaluate renovation cost and whether the home can legally support the intended use.",
+      "### Private Access",
+      "Many premium bungalow owners prefer controlled introductions because broad public exposure can weaken price context and privacy. PIKORUA Realty's advisory process is designed for this type of discreet search and seller representation.",
+    ],
+  },
+  {
+    kind: "property-type",
+    slug: "residential-plots-ahmedabad",
+    href: "/luxury-plots-ahmedabad",
+    label: "Luxury Plots",
+    eyebrow: "Property Type",
+    title: "Luxury Plots in Ahmedabad | Premium Land Advisory",
+    h1: "Luxury Plots in Ahmedabad",
+    description:
+      "Advisory on luxury plots in Ahmedabad, premium residential land, NA-title checks, zoning, and western corridor opportunities.",
     heroImage: "/properties/kalrav-alpines/kalrav-alpines-1.jpg",
     categories: ["plot"],
-    matchKeywords: ["plot", "land"],
+    matchKeywords: ["plot", "plots", "land", "luxury plot", "residential plot", "premium land"],
+    seoKeywords: [
+      "Luxury plots Ahmedabad",
+      "luxury plot for sale Ahmedabad",
+      "premium residential plots Ahmedabad",
+      "residential land Ahmedabad",
+      "NA plots Ahmedabad",
+    ],
     intro:
       "Premium residential plots require more diligence than finished homes. The right parcel should balance title strength, access, permissible use, neighborhood maturity, infrastructure, and long-term family or investment plans.",
     marketSignals: [
@@ -1480,7 +1960,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
           "Luxury residential plots for sale in Ahmedabad are available in Shilaj, Vaishno Devi, and selected Bopal-Ambli pockets. Premium 400–1,000 sq.yd. plots with NA permissions and road access typically price from ₹2 Crore to ₹8 Crore depending on location and specification. PIKORUA Realty advises on plot purchases including full legal and development diligence.",
       },
     ],
-    relatedSlugs: ["shilaj", "vaishno-devi", "villas-bungalows-ahmedabad"],
+    relatedSlugs: ["luxury-bungalows-ahmedabad", "shilaj", "vaishno-devi", "villas-bungalows-ahmedabad"],
     bodyContent: [
       "### Residential Plots in Ahmedabad: Land as a Long-Term Asset",
       "Premium residential plots in Ahmedabad represent one of the most compelling long-term wealth preservation assets available to HNI and NRI buyers. Unlike an apartment — which depreciates through use and maintenance intensity — a correctly positioned residential plot appreciates through both land scarcity and infrastructure development. The western Ahmedabad belt (Shilaj, Vaishno Devi, Bopal-Ghuma, Sanand Road) has historically delivered land appreciation of 12–20% CAGR over 10-year horizons, significantly outperforming many equity benchmark periods on a risk-adjusted basis.",
@@ -1495,16 +1975,23 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "property-type",
     slug: "luxury-residential-investment-ahmedabad",
-    href: "/property-types/luxury-residential-investment-ahmedabad",
-    label: "Residential Investment",
+    href: "/investment-property-ahmedabad",
+    label: "Investment Property",
     eyebrow: "Property Type",
-    title: "Luxury Property Investment in Ahmedabad — NRI Advisory",
-    h1: "Luxury Residential Investment in Ahmedabad",
+    title: "Investment Property in Ahmedabad | NRI Advisory",
+    h1: "Investment Property in Ahmedabad",
     description:
-      "Investment advisory for luxury residential property in Ahmedabad — NRI property consultant, rental yield analysis, capital appreciation corridors, and buy-to-invest advisory.",
+      "Investment property advisory in Ahmedabad for NRIs and HNIs comparing rental yield, appreciation, legal clarity, and prime corridors.",
     heroImage: "/properties/eminence-96/eminence-96-3-pool.webp",
     categories: ["investment", "residential-investment", "apartment", "plot"],
-    matchKeywords: ["investment", "plot", "near-possession", "ready"],
+    matchKeywords: ["investment", "investment property", "rental yield", "plot", "near-possession", "ready"],
+    seoKeywords: [
+      "Investment property Ahmedabad",
+      "property investment Ahmedabad",
+      "NRI investment property Ahmedabad",
+      "rental yield property Ahmedabad",
+      "real estate investment Ahmedabad",
+    ],
     collectionHref: "/properties",
     intro:
       "Luxury residential investment in Ahmedabad works best when treated as a micro-market decision, not just a price-per-square-foot comparison. Corridor, scarcity, buyer depth, and exit profile matter.",
@@ -1608,7 +2095,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "nri",
     slug: "nri-property-consultant-ahmedabad",
-    href: "/nri/nri-property-consultant-ahmedabad",
+    href: "/nri-property-consultant-ahmedabad",
     label: "NRI Property Consultant",
     eyebrow: "NRI Advisory",
     title: "NRI Property Consultant in Ahmedabad",
@@ -1626,7 +2113,14 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
       "trusted property consultant for NRI Ahmedabad",
       "NRI luxury property Ahmedabad",
     ],
-    collectionHref: "/properties",
+    seoKeywords: [
+      "NRI property consultant Ahmedabad",
+      "NRI real estate consultant Ahmedabad",
+      "NRI property advisor Ahmedabad",
+      "property consultant for NRI Ahmedabad",
+      "NRI property buying support Ahmedabad",
+    ],
+    collectionHref: "/contact?purpose=nri",
     intro:
       "PIKORUA Realty is a private NRI advisory in Ahmedabad — shortlist curation, virtual walkthroughs, RERA and legal checks, negotiation, registration, and handover.",
     marketSignals: [

@@ -18,6 +18,8 @@ const PURPOSE_MAP: Record<string, LeadPurpose> = {
   nri:     "nri-purchase",
   invest:  "investment",
   explore: "exploring",
+  "luxury-advisory":     "exploring",
+  "real-estate-advisory": "exploring",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

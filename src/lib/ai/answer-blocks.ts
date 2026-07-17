@@ -49,7 +49,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
       "Remote buyer support includes virtual walkthroughs, document review, RERA and title-check coordination, POA planning, and NRE/NRO payment workflow guidance.",
       "Registration, possession, and handover coordination are treated as part of the advisory process for buyers purchasing from abroad.",
     ],
-    sourcePath: "/nri/nri-property-consultant-ahmedabad",
+    sourcePath: "/nri-property-consultant-ahmedabad",
     supportingPaths: [
       "/nri/buy-property-in-ahmedabad-from-abroad",
       "/nri-property-investment-ahmedabad",
@@ -130,7 +130,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     ],
     sourcePath: "/nri-property-investment-ahmedabad",
     supportingPaths: [
-      "/nri/nri-property-consultant-ahmedabad",
+      "/nri-property-consultant-ahmedabad",
       "/iscon-ambli-road-properties",
       "/sindhu-bhavan-road-properties",
       "/thaltej-properties",
@@ -151,7 +151,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     ],
     sourcePath: "/nri/nri-property-purchase-process-india",
     supportingPaths: [
-      "/nri/nri-property-consultant-ahmedabad",
+      "/nri-property-consultant-ahmedabad",
       "/nri/buy-property-in-ahmedabad-from-abroad",
       "/nri-property-investment-ahmedabad",
       "/contact",
@@ -208,7 +208,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     ],
     sourcePath: "/nri/buy-property-in-ahmedabad-from-abroad",
     supportingPaths: [
-      "/nri/nri-property-consultant-ahmedabad",
+      "/nri-property-consultant-ahmedabad",
       "/nri/nri-property-purchase-process-india",
       "/nri-property-investment-ahmedabad",
     ],

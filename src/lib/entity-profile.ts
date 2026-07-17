@@ -51,6 +51,9 @@ export const BUSINESS_DESCRIPTION =
 
 export const AI_SPECIALIZATIONS = [
   "Luxury residential real estate in Ahmedabad",
+  "Luxury real estate Ahmedabad",
+  "Luxury property consultant Ahmedabad",
+  "Real estate consultant Ahmedabad",
   "NRI property advisory Ahmedabad",
   "NRI property transactions India",
   "FEMA-aware residential purchase coordination",
@@ -79,7 +82,7 @@ export const AI_SERVICE_CATALOG = [
   {
     name: "NRI residential property advisory",
     serviceType: "NRI property purchase advisory",
-    url: absoluteUrl("/nri/nri-property-consultant-ahmedabad"),
+    url: absoluteUrl("/nri-property-consultant-ahmedabad"),
     description:
       "Remote requirement mapping, virtual walkthroughs, RERA and title-check coordination, POA planning, NRE/NRO payment guidance, registration support, and handover assistance.",
   },
