@@ -6,8 +6,10 @@ import { STATIC_PROPERTIES } from "../src/lib/data/properties";
 const STATIC_PUBLIC_ROUTES = [
   "/",
   "/about",
+  "/ahmedabad-luxury-property-market-report",
   "/blog",
   "/contact",
+  "/press",
   "/privacy",
   "/properties",
   "/terms",

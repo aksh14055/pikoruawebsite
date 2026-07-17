@@ -20,6 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/testimonials",
     "/blog",
     "/contact",
+    "/ahmedabad-luxury-property-market-report",
+    "/press",
     "/privacy",
     "/terms",
     "/llms.txt",

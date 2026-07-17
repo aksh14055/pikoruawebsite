@@ -40,6 +40,8 @@ export async function GET(req: NextRequest) {
     "/testimonials",
     "/blog",
     "/contact",
+    "/ahmedabad-luxury-property-market-report",
+    "/press",
     "/llms.txt",
     "/llms-full.txt",
     "/ai/facts.json",

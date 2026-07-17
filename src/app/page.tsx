@@ -23,13 +23,21 @@ import { createMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
-  const defaultTitle = "PIKORUA Realty | Luxury Property Consultant in Ahmedabad";
-  const defaultDesc = "Private luxury property advisory in Ahmedabad for 4/5 BHK apartments, penthouses, villas, and NRI buyers across Iscon-Ambli, SBR, Thaltej, and SG Highway.";
+  const defaultTitle = "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs";
+  const defaultDesc =
+    "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium property access.";
 
   return createMetadata({
     title: seo?.seoTitle || defaultTitle,
     description: seo?.seoDescription || defaultDesc,
     path: "/",
+    keywords: [
+      "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
+      "luxury real estate consultants Ahmedabad",
+      "HNI property consultant Ahmedabad",
+      "NRI property consultant Ahmedabad",
+      "private luxury property advisory Ahmedabad",
+    ],
   });
 }
 
@@ -52,7 +60,7 @@ export default async function HomePage() {
   // Dynamic hero content from database, falling back to static defaults
   const heroLines = homeContent?.heroHeadline1
     ? [homeContent.heroHeadline1, homeContent.heroHeadline2, homeContent.heroHeadline3].filter(Boolean)
-    : ["Trust what", "most luxury buyers", "have trusted."];
+    : ["Luxury Real Estate Consultants", "in Ahmedabad", "for HNIs and NRIs."];
 
   const heroVideo = homeContent?.heroVideoUrl || undefined;
   const heroPoster = "/images/hero-living.jpg";

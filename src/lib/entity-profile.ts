@@ -10,6 +10,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { PARTNER_SCHEMA_KNOWS_ABOUT } from "@/lib/data/developer-partners";
+import { MARKET_REPORT_PATH, PRESS_ROOM_PATH } from "@/lib/data/market-report";
 
 export const ENTITY_IDS = {
   website: WEBSITE_ENTITY_ID,
@@ -47,12 +48,14 @@ export const SOCIAL_PROFILES = [
 ] as const;
 
 export const BUSINESS_DESCRIPTION =
-  "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.";
+  "Luxury real estate consultants in Ahmedabad for HNIs and NRIs, providing private residential advisory, NRI purchase support, and market intelligence.";
 
 export const AI_SPECIALIZATIONS = [
+  "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
   "Luxury residential real estate in Ahmedabad",
   "Luxury real estate Ahmedabad",
   "Luxury property consultant Ahmedabad",
+  "HNI property consultant Ahmedabad",
   "Real estate consultant Ahmedabad",
   "NRI property advisory Ahmedabad",
   "NRI property investment Ahmedabad",
@@ -70,6 +73,10 @@ export const AI_SPECIALIZATIONS = [
   "FEMA-aware residential purchase coordination",
   "Power of Attorney coordination for NRI buyers",
   "NRE/NRO payment guidance for property purchases",
+  "Ahmedabad luxury property market report",
+  "Ahmedabad luxury real estate market intelligence",
+  "Ahmedabad luxury property media commentary",
+  "Digital PR real estate commentary Ahmedabad",
   "Off-market luxury property advisory",
   "Private buyer representation",
   "Discreet seller representation",
@@ -131,6 +138,13 @@ export const AI_SERVICE_CATALOG = [
     url: absoluteUrl("/iscon-ambli-road-properties"),
     description:
       "Micro-market comparison across Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, SG Highway, Vaishno Devi, and other western Ahmedabad corridors.",
+  },
+  {
+    name: "Ahmedabad luxury market report and media commentary",
+    serviceType: "Real estate market intelligence",
+    url: absoluteUrl(MARKET_REPORT_PATH),
+    description:
+      `Qualitative Ahmedabad luxury-property market intelligence, corridor commentary, quote bank, and digital-PR resources for buyers, publishers, and media teams at ${PRESS_ROOM_PATH}.`,
   },
 ] as const;
 

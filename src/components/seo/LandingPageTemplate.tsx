@@ -343,6 +343,72 @@ export function LandingPageTemplate({
           </div>
         </section>
 
+        {/* Location market guide */}
+        {page.kind === "location" && page.marketGuide && (
+          <section
+            className="border-b border-white/[0.06] bg-lux-black py-20 lg:py-24"
+            aria-labelledby="location-market-guide-heading"
+          >
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
+              <div className="lg:col-span-4">
+                <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.25em] text-champagne-gold">
+                  Market Guide
+                </p>
+                <h2
+                  id="location-market-guide-heading"
+                  className="font-display text-[clamp(1.45rem,2.6vw,2.15rem)] font-light uppercase leading-tight tracking-wider text-ivory"
+                >
+                  {page.label} Market Intelligence
+                </h2>
+                <p className="mt-5 font-sans text-sm leading-relaxed text-ivory/60 sm:text-base">
+                  PIKORUA reads this corridor by buyer depth, inventory quality, diligence risk, and resale liquidity, not only by asking price.
+                </p>
+              </div>
+
+              <div className="lg:col-span-8">
+                <div className="grid grid-cols-1 border border-white/[0.07] md:grid-cols-2">
+                  {[
+                    { label: "Price Context", value: page.marketGuide.priceContext },
+                    { label: "Inventory Profile", value: page.marketGuide.inventoryProfile },
+                    { label: "Buyer Profile", value: page.marketGuide.buyerProfile },
+                    { label: "Diligence Focus", value: page.marketGuide.diligenceFocus },
+                    { label: "Investment Outlook", value: page.marketGuide.investmentOutlook },
+                  ].map((detail, index) => (
+                    <div
+                      key={detail.label}
+                      className={cn(
+                        "border-white/[0.07] p-5 sm:p-6",
+                        index % 2 === 0 ? "md:border-r" : "",
+                        index < 4 ? "border-b" : ""
+                      )}
+                    >
+                      <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
+                        {detail.label}
+                      </p>
+                      <p className="mt-3 font-sans text-sm leading-relaxed text-ivory/65">
+                        {detail.value}
+                      </p>
+                    </div>
+                  ))}
+                  <div className="border-white/[0.07] p-5 sm:p-6 md:border-t">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
+                      Local Anchors
+                    </p>
+                    <ul className="mt-4 space-y-2">
+                      {page.marketGuide.localAnchors.map((anchor) => (
+                        <li key={anchor} className="flex gap-3 font-sans text-sm leading-relaxed text-ivory/65">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-champagne-gold/65" />
+                          <span>{anchor}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ─── REMOTE PURCHASE PROCESS (NRI only) ─── */}
         {page.kind === "nri" && (
           <section

@@ -23,6 +23,7 @@ const PROPERTY_ROOT_PATHS = [
   "/luxury-apartments-ahmedabad",
   "/luxury-property-ahmedabad",
   "/luxury-real-estate-ahmedabad",
+  "/luxury-real-estate-consultants-ahmedabad",
   "/luxury-property-consultant-ahmedabad",
   "/real-estate-consultant-ahmedabad",
   "/ultra-luxury-properties-ahmedabad",

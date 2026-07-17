@@ -44,7 +44,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
+    default: "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
     template: `%s | ${SITE_NAME}`,
   },
   icons: {
@@ -53,11 +53,12 @@ export const metadata: Metadata = {
     apple: "/logo-icon.png",
   },
   description:
-    "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
+    "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium property access.",
   keywords: [
     "luxury property Ahmedabad",
     "NRI property investment Ahmedabad",
-    "luxury real estate consultant Ahmedabad",
+    "luxury real estate consultants Ahmedabad",
+    "HNI property consultant Ahmedabad",
     "premium residential projects Ahmedabad",
     "Ahmedabad real estate developers",
     ...PARTNER_METADATA_KEYWORDS,
@@ -71,16 +72,16 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
+    title: "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
     description:
-      "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
+      "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium property access.",
     images: [{ url: absoluteUrl("/logo.png") }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Property in Ahmedabad | NRI Investment | PIKORUA",
+    title: "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
     description:
-      "Explore premium luxury properties in Ahmedabad. Trusted NRI real estate consultants offering high ROI investment opportunities.",
+      "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium property access.",
     images: [absoluteUrl("/logo.png")],
   },
   robots: {
@@ -121,7 +122,7 @@ const organizationSchema = {
       logo: absoluteUrl("/logo-icon.png"),
       image: absoluteUrl("/logo.png"),
       description:
-        "Private luxury residential real estate advisory for Ahmedabad buyers, sellers, investors, and NRI clients.",
+        "Luxury real estate consultants in Ahmedabad for HNIs and NRIs, providing private residential advisory, NRI purchase support, and market intelligence.",
       founder: {
         "@id": ENTITY_IDS.founder,
       },
@@ -137,8 +138,11 @@ const organizationSchema = {
         // Developer and project entity coverage
         ...PARTNER_SCHEMA_KNOWS_ABOUT,
         // Core luxury advisory
+        "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs",
         "Luxury real estate consultant Ahmedabad",
         "Luxury property consultant Ahmedabad",
+        "HNI property consultant Ahmedabad",
+        "HNI and NRI luxury real estate consultants Ahmedabad",
         "Luxury property broker Ahmedabad",
         "Luxury real estate broker Ahmedabad",
         "Luxury property dealer Ahmedabad",
@@ -249,6 +253,11 @@ const organizationSchema = {
         "Exclusive property listing Ahmedabad",
         "Find buyer for luxury property Ahmedabad",
         "Trusted property broker Ahmedabad",
+        // Market intelligence and media citation
+        "Ahmedabad luxury property market report",
+        "Ahmedabad luxury real estate market intelligence",
+        "Ahmedabad luxury property media commentary",
+        "Digital PR real estate commentary Ahmedabad",
       ],
 
       address: getPostalAddressSchema(),
@@ -348,6 +357,7 @@ const organizationSchema = {
         "Western Ahmedabad residential corridors",
         "High net worth individual real estate",
         "Private real estate consultation Gujarat",
+        "Ahmedabad luxury property market report",
       ],
       sameAs: [
         "https://www.instagram.com/pikorua.realty?igsh=MTN5d2NmNW1yY3Vvag==",

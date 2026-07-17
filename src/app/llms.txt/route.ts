@@ -16,6 +16,11 @@ import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { PARTNER_DEVELOPER_NAMES, PORTFOLIO_PROJECT_NAMES } from "@/lib/data/developer-partners";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import {
+  AHMEDABAD_LUXURY_MARKET_REPORT,
+  MARKET_REPORT_PATH,
+  PRESS_ROOM_PATH,
+} from "@/lib/data/market-report";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
@@ -66,6 +71,8 @@ export async function GET() {
     ``,
     `- [Full content index](${SITE_URL}/llms-full.txt)`,
     `- [Structured AI facts](${SITE_URL}/ai/facts.json)`,
+    `- [${AHMEDABAD_LUXURY_MARKET_REPORT.title}](${SITE_URL}${MARKET_REPORT_PATH})`,
+    `- [Media room](${SITE_URL}${PRESS_ROOM_PATH})`,
     ``,
     `## Entity Identity`,
     ``,
@@ -95,6 +102,8 @@ export async function GET() {
     ``,
     `- [Properties](${SITE_URL}/properties): Curated luxury property listings — 4 BHK & 5 BHK apartments, penthouses, villas, duplexes, and residential plots`,
     `- [Insights](${SITE_URL}/blog): Market reports, NRI advisory guides, and corridor analysis`,
+    `- [${AHMEDABAD_LUXURY_MARKET_REPORT.title}](${SITE_URL}${MARKET_REPORT_PATH}): ${AHMEDABAD_LUXURY_MARKET_REPORT.description}`,
+    `- [Media Room](${SITE_URL}${PRESS_ROOM_PATH}): Press resources, expert commentary topics, quote bank, and citation guidance`,
     `- [About](${SITE_URL}/about): About PIKORUA Realty and founder Jitendra`,
     `- [Testimonials](${SITE_URL}/testimonials): Client reviews from HNI buyers, NRI investors, and sellers`,
     `- [Contact](${SITE_URL}/contact): Private enquiry and advisory request`,

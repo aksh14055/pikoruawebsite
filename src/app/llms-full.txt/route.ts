@@ -25,6 +25,11 @@ import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { PARTNER_DEVELOPER_NAMES, PARTNER_SEARCH_PHRASES, PORTFOLIO_PROJECT_NAMES } from "@/lib/data/developer-partners";
 import { LOCATION_LANDING_PAGES, NRI_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "@/lib/data/geo";
+import {
+  AHMEDABAD_LUXURY_MARKET_REPORT,
+  MARKET_REPORT_PATH,
+  PRESS_ROOM_PATH,
+} from "@/lib/data/market-report";
 import { FAQ_ITEMS } from "@/lib/data/faq";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import {
@@ -79,6 +84,8 @@ export async function GET() {
   header.push(
     `- **Structured AI facts:** ${SITE_URL}/ai/facts.json`,
     `- **Summary AI index:** ${SITE_URL}/llms.txt`,
+    `- **Ahmedabad luxury market report:** ${SITE_URL}${MARKET_REPORT_PATH}`,
+    `- **Media room and citation guidance:** ${SITE_URL}${PRESS_ROOM_PATH}`,
     ``
   );
 
@@ -116,6 +123,31 @@ export async function GET() {
     `## Services`,
     ``,
     ...entity.services.map((service) => `- **${service.name}:** ${service.description}`),
+    ``,
+  ];
+
+  const marketReport = [
+    `## Ahmedabad Luxury Property Market Report`,
+    ``,
+    `- **URL:** ${SITE_URL}${MARKET_REPORT_PATH}`,
+    `- **Title:** ${AHMEDABAD_LUXURY_MARKET_REPORT.title}`,
+    `- **Last Updated:** ${AHMEDABAD_LUXURY_MARKET_REPORT.lastUpdated}`,
+    `- **Description:** ${AHMEDABAD_LUXURY_MARKET_REPORT.description}`,
+    `- **Media Room:** ${SITE_URL}${PRESS_ROOM_PATH}`,
+    ``,
+    `### Market Report Key Findings`,
+    ``,
+    ...AHMEDABAD_LUXURY_MARKET_REPORT.keyFindings.flatMap((finding) => [
+      `- **${finding.title}:** ${finding.insight}`,
+    ]),
+    ``,
+    `### Digital PR Story Angles`,
+    ``,
+    ...AHMEDABAD_LUXURY_MARKET_REPORT.prAngles.map((angle) => `- ${angle}`),
+    ``,
+    `### Market Report Methodology`,
+    ``,
+    ...AHMEDABAD_LUXURY_MARKET_REPORT.methodology.map((item) => `- ${item}`),
     ``,
   ];
 
@@ -313,6 +345,7 @@ export async function GET() {
     ...entityIdentity,
     ...about,
     ...services,
+    ...marketReport,
     ...developerEntities,
     ...directAnswers,
     ...corridors,
