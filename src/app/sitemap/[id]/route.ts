@@ -58,7 +58,9 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
+  const { id: rawId } = await params;
+  // Strip .xml extension — support both /sitemap/index and /sitemap/index.xml
+  const id = rawId.replace(/\.xml$/, "");
 
   // ── /sitemap/index.xml — sitemap index ────────────────────────────────────
   if (id === "index") {
