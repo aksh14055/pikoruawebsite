@@ -15,6 +15,7 @@ import { NextResponse } from "next/server";
 import { getComboSitemapBatch, getTotalComboBatches } from "@/lib/data/combo-seeder";
 import { ALL_GEO_LANDING_PAGES } from "@/lib/data/geo";
 import { STATIC_PROPERTIES } from "@/lib/data/properties";
+import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
 import { absoluteUrl } from "@/lib/seo";
 
 const BATCH_SIZE = 2500;
@@ -67,6 +68,9 @@ export async function GET(
     const totalBatches = getTotalComboBatches(BATCH_SIZE);
     const urls: string[] = [];
 
+    // Content hub sub-sitemap
+    urls.push(absoluteUrl("/sitemap/content.xml"));
+
     // GEO sub-sitemap
     urls.push(absoluteUrl("/sitemap/geo.xml"));
 
@@ -82,6 +86,21 @@ export async function GET(
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
         "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
+      },
+    });
+  }
+
+  // ── /sitemap/content.xml — content hub authority pages ─────────────────────
+  if (id === "content") {
+    const urls = ALL_CONTENT_HUB_PAGES.map((page) => ({
+      loc: absoluteUrl(page.href),
+      lastmod: LAST_MOD,
+      priority: "0.82",
+    }));
+    return new NextResponse(buildSitemapXml(urls), {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=86400",
       },
     });
   }
