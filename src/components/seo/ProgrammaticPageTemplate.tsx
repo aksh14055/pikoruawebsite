@@ -299,13 +299,8 @@ export function ProgrammaticPageTemplate({
 
   return (
     <>
-      <Header />
+      <Header alwaysSolid />
       <main id="main-content" className="prog-page">
-        {/* ── Breadcrumb ───────────────────────────────────────────── */}
-        <div className="prog-page__breadcrumb">
-          <Breadcrumb items={breadcrumbs} />
-        </div>
-
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <section className="prog-hero" aria-labelledby="prog-h1">
           <div className="prog-hero__image-wrap">
@@ -320,6 +315,9 @@ export function ProgrammaticPageTemplate({
             <div className="prog-hero__overlay" aria-hidden="true" />
           </div>
           <div className="prog-hero__content container">
+            <div className="prog-hero__breadcrumb mb-4">
+              <Breadcrumb items={breadcrumbs} />
+            </div>
             <p className="prog-hero__eyebrow">{page.eyebrow}</p>
             <h1 id="prog-h1" className="prog-hero__h1">
               {page.h1}
