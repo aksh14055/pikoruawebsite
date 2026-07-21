@@ -12,7 +12,6 @@ import { env } from "@/lib/env";
 import {
   ArrowRight,
   TrendingUp,
-  CheckCircle2,
   BookOpen,
   PhoneCall,
   ChevronRight,
@@ -22,164 +21,6 @@ import {
 interface ContentHubTemplateProps {
   page: ContentHubPage;
   relatedPages: ContentHubPage[];
-}
-
-// ─── Expert Summary Card ─────────────────────────────────────────────────────
-function ExpertSummaryCard({ takeaways }: { takeaways: string[] }) {
-  return (
-    <div className="hub-summary-card" role="region" aria-labelledby="summary-heading">
-      <div className="hub-summary-card__header">
-        <div className="hub-summary-card__icon-badge">
-          <Sparkles size={16} className="text-champagne-gold" aria-hidden="true" />
-        </div>
-        <div>
-          <h2 id="summary-heading" className="hub-summary-card__heading">
-            Executive Summary & Key Takeaways
-          </h2>
-          <p className="hub-summary-card__subheading">Key insights from PIKORUA's advisory team</p>
-        </div>
-      </div>
-      <ul className="hub-summary-card__list" role="list">
-        {takeaways.map((item, i) => (
-          <li key={i} className="hub-summary-card__item">
-            <span className="hub-summary-card__num" aria-hidden="true">0{i + 1}</span>
-            <div className="hub-summary-card__text">
-              <p>{item}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-// ─── Comparison Table ────────────────────────────────────────────────────────
-function ComparisonTable({
-  rows,
-  labelA,
-  labelB,
-}: {
-  rows: { label: string; a: string; b: string }[];
-  labelA: string;
-  labelB: string;
-}) {
-  return (
-    <div className="hub-compare-section">
-      <div className="hub-compare-section__header">
-        <h2 className="hub-compare-section__title">Side-by-Side Comparison</h2>
-        <p className="hub-compare-section__subtitle">Detailed evaluation across core investment parameters</p>
-      </div>
-      <div className="hub-compare-table-wrap" role="region" aria-label="Comparison table">
-        <table className="hub-compare-table">
-          <thead>
-            <tr>
-              <th className="hub-compare-table__header hub-compare-table__header--label">
-                Evaluation Metric
-              </th>
-              <th className="hub-compare-table__header hub-compare-table__header--a">
-                {labelA}
-              </th>
-              <th className="hub-compare-table__header hub-compare-table__header--b">
-                {labelB}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, i) => (
-              <tr key={i} className="hub-compare-table__row">
-                <td className="hub-compare-table__cell hub-compare-table__cell--label">
-                  {row.label}
-                </td>
-                <td className="hub-compare-table__cell hub-compare-table__cell--a">
-                  {row.a}
-                </td>
-                <td className="hub-compare-table__cell hub-compare-table__cell--b">
-                  {row.b}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-// ─── Body Sections ───────────────────────────────────────────────────────────
-function BodySections({ sections }: { sections: ContentHubPage["sections"] }) {
-  return (
-    <div className="hub-body">
-      {sections.map((section, i) => (
-        <section key={i} className="hub-body__section">
-          <h2 className="hub-body__section-heading">{section.heading}</h2>
-          <div className="hub-body__paras">
-            {section.body.map((para, j) => (
-              <p key={j} className="hub-body__para">{para}</p>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  );
-}
-
-// ─── Market Signals Bar ──────────────────────────────────────────────────────
-function MarketSignalsBar({ signals }: { signals: string[] }) {
-  return (
-    <div className="hub-signals" role="region" aria-label="Market data signals">
-      <div className="hub-signals__header">
-        <TrendingUp size={16} className="text-champagne-gold" aria-hidden="true" />
-        <span className="hub-signals__title">Market Intelligence Signals</span>
-      </div>
-      <div className="hub-signals__items">
-        {signals.map((sig, i) => (
-          <div key={i} className="hub-signals__item">
-            <span className="hub-signals__dot" aria-hidden="true" />
-            <span>{sig}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── Related Pages Cluster ───────────────────────────────────────────────────
-function RelatedPagesCluster({ pages }: { pages: ContentHubPage[] }) {
-  if (pages.length === 0) return null;
-  return (
-    <section className="hub-related" aria-labelledby="related-hub-heading">
-      <div className="hub-related__header">
-        <h2 id="related-hub-heading" className="hub-related__heading">
-          <BookOpen size={20} className="text-champagne-gold" aria-hidden="true" />
-          Related Market Intelligence &amp; Guides
-        </h2>
-        <p className="hub-related__sub">Deepen your knowledge of Ahmedabad real estate</p>
-      </div>
-      <div className="hub-related__grid">
-        {pages.map((page) => (
-          <Link key={page.slug} href={page.href} className="hub-related__card group">
-            <div className="hub-related__card-image">
-              <Image
-                src={page.heroImage}
-                alt={page.h1}
-                fill
-                sizes="(max-width:640px) 100vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="hub-related__card-overlay" aria-hidden="true" />
-            </div>
-            <div className="hub-related__card-body">
-              <p className="hub-related__card-eyebrow">{page.eyebrow}</p>
-              <h3 className="hub-related__card-title">{page.h1}</h3>
-              <span className="hub-related__card-cta">
-                Read guide <ArrowRight size={13} aria-hidden="true" />
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
 }
 
 // ─── Short title helper for clean breadcrumbs ─────────────────────────────────
@@ -238,141 +79,296 @@ export function ContentHubTemplate({ page, relatedPages }: ContentHubTemplatePro
   return (
     <>
       <Header alwaysSolid />
-      <main id="main-content" className="hub-page">
+      <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
 
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="hub-hero" aria-labelledby="hub-h1">
-          <div className="hub-hero__image-wrap">
-            <Image
-              src={page.heroImage}
-              alt={page.h1}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-            <div className="hub-hero__overlay" aria-hidden="true" />
-            <div className="hub-hero__top-shadow" aria-hidden="true" />
-          </div>
+        {/* ─── HERO ─── */}
+        <section className="relative min-h-[60vh] overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24 border-b border-champagne-gold/15">
+          <Image
+            src={page.heroImage}
+            alt={page.h1}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-lux-black via-lux-black/92 to-lux-black/55 sm:via-lux-black/88 sm:to-lux-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-lux-black/70 to-lux-black/30" />
 
-          <div className="hub-hero__content container">
-            {/* Breadcrumbs inside hero for clean layout below fixed header */}
-            <div className="hub-hero__breadcrumb">
+          {/* Centered PIKORUA Container */}
+          <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            
+            {/* Breadcrumbs */}
+            <div className="mb-6">
               <Breadcrumb items={breadcrumbs} />
             </div>
 
-            <div className="hub-hero__badge">
-              <span className="hub-hero__badge-dot" />
-              {formattedEyebrow}
+            {/* PIKORUA Standard Eyebrow with gold accent rule */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-8 bg-champagne-gold/60" aria-hidden="true" />
+              <p className="font-sans text-[11px] uppercase tracking-[0.25em] text-champagne-gold font-medium">
+                {formattedEyebrow}
+              </p>
             </div>
 
-            <h1 id="hub-h1" className="hub-hero__h1">
+            {/* PIKORUA Standard Display H1 Header */}
+            <h1 className="font-display text-[clamp(2rem,4.8vw,4rem)] font-light uppercase tracking-wider text-ivory leading-[1.08] mb-6 max-w-4xl">
               {page.h1}
             </h1>
 
-            <p className="hub-hero__intro">
+            {/* Intro Lead */}
+            <p className="font-sans text-base sm:text-lg text-ivory/75 leading-relaxed max-w-3xl mb-8">
               {page.intro}
             </p>
 
-            <div className="hub-hero__meta">
-              <span className="hub-hero__author-badge">PIKORUA Research</span>
-              <span className="hub-hero__dot">•</span>
-              <time dateTime={page.publishedAt} className="hub-hero__date">
+            {/* Meta bar */}
+            <div className="flex items-center gap-3 font-sans text-xs text-ivory/50 border-t border-white/10 pt-5">
+              <span className="font-medium text-champagne-gold uppercase tracking-wider text-[11px]">
+                PIKORUA Research
+              </span>
+              <span>•</span>
+              <time dateTime={page.publishedAt}>
                 Updated {new Date(page.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}
               </time>
             </div>
+
           </div>
         </section>
 
-        {/* ── Content Body Wrapper ────────────────────────── */}
-        <div className="hub-container container">
+        {/* ─── PAGE BODY CONTAINER (Centered mx-auto max-w-5xl) ─── */}
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20 space-y-16 sm:space-y-20">
 
-          {/* ── Market Signals Ticker ────────────────────────── */}
-          <MarketSignalsBar signals={page.marketSignals} />
-
-          {/* ── Expert Summary Card ──────────────────────────── */}
-          <ExpertSummaryCard takeaways={page.keyTakeaways} />
-
-          {/* ── Comparison Table (for compare pages) ─────────── */}
-          {page.comparisonTable && page.comparisonTable.length > 0 && (
-            <ComparisonTable
-              rows={page.comparisonTable}
-              labelA={compareLabels.a}
-              labelB={compareLabels.b}
-            />
+          {/* ─── Market Signals Ticker ─── */}
+          {page.marketSignals && page.marketSignals.length > 0 && (
+            <div className="rounded-sm border border-champagne-gold/20 bg-lux-black/60 p-5 sm:p-6 backdrop-blur-md">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp size={16} className="text-champagne-gold" aria-hidden="true" />
+                <span className="font-sans text-[11px] uppercase tracking-[0.2em] font-semibold text-champagne-gold">
+                  Market Data Signals
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-4 sm:gap-6">
+                {page.marketSignals.map((sig, i) => (
+                  <div key={i} className="flex items-center gap-2 font-sans text-xs sm:text-sm text-ivory/80">
+                    <span className="h-1.5 w-1.5 rounded-full bg-champagne-gold shrink-0" aria-hidden="true" />
+                    <span>{sig}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
-          {/* ── Main Editorial Body ─────────────────────────── */}
-          <BodySections sections={page.sections} />
+          {/* ─── Executive Summary Card ─── */}
+          <div className="rounded-sm border border-champagne-gold/25 bg-gradient-to-br from-soft-black/90 to-lux-black/95 overflow-hidden shadow-2xl">
+            <div className="flex items-center gap-3 px-6 py-5 bg-champagne-gold/[0.06] border-b border-champagne-gold/20">
+              <div className="flex items-center justify-center h-8 w-8 rounded-sm bg-champagne-gold/15 border border-champagne-gold/30 shrink-0">
+                <Sparkles size={16} className="text-champagne-gold" aria-hidden="true" />
+              </div>
+              <div>
+                <h2 className="font-display text-lg sm:text-xl uppercase tracking-wider text-ivory font-light">
+                  Executive Summary &amp; Key Takeaways
+                </h2>
+                <p className="font-sans text-xs text-champagne-gold/80 mt-0.5">
+                  Core insights synthesized by PIKORUA Advisory
+                </p>
+              </div>
+            </div>
+            <ul className="divide-y divide-white/[0.06]" role="list">
+              {page.keyTakeaways.map((item, i) => (
+                <li key={i} className="flex gap-4 sm:gap-6 p-6 sm:p-8 hover:bg-white/[0.015] transition-colors">
+                  <span className="font-display text-2xl font-light text-champagne-gold/40 shrink-0 min-w-[2ch]">
+                    0{i + 1}
+                  </span>
+                  <p className="font-sans text-sm sm:text-base text-ivory/85 leading-relaxed">
+                    {item}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* ── Related Listing Pills ────────────────────────── */}
+          {/* ─── Side-by-Side Comparison Table ─── */}
+          {page.comparisonTable && page.comparisonTable.length > 0 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="font-display text-2xl sm:text-3xl uppercase tracking-wider text-ivory font-light">
+                  Side-by-Side Comparison
+                </h2>
+                <p className="font-sans text-xs sm:text-sm text-ivory/60 mt-1">
+                  Detailed evaluation across key investment metrics
+                </p>
+              </div>
+              <div className="overflow-x-auto rounded-sm border border-white/10 bg-soft-black/40">
+                <table className="w-full text-left font-sans text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/[0.02]">
+                      <th className="p-4 sm:p-5 text-xs font-semibold uppercase tracking-[0.15em] text-ivory/50 w-[30%]">
+                        Metric
+                      </th>
+                      <th className="p-4 sm:p-5 text-xs font-semibold uppercase tracking-[0.15em] text-champagne-gold bg-champagne-gold/[0.06] w-[35%]">
+                        {compareLabels.a}
+                      </th>
+                      <th className="p-4 sm:p-5 text-xs font-semibold uppercase tracking-[0.15em] text-ivory/70 w-[35%]">
+                        {compareLabels.b}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/[0.05]">
+                    {page.comparisonTable.map((row, i) => (
+                      <tr key={i} className="hover:bg-white/[0.015] transition-colors">
+                        <td className="p-4 sm:p-5 text-xs sm:text-sm font-medium text-ivory/65">
+                          {row.label}
+                        </td>
+                        <td className="p-4 sm:p-5 text-xs sm:text-sm text-ivory/90 bg-champagne-gold/[0.02]">
+                          {row.a}
+                        </td>
+                        <td className="p-4 sm:p-5 text-xs sm:text-sm text-ivory/70">
+                          {row.b}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* ─── Main Editorial Article Body ─── */}
+          <article className="mx-auto max-w-4xl space-y-12 sm:space-y-16">
+            {page.sections.map((section, i) => (
+              <section key={i} className="space-y-5">
+                <h2 className="font-display text-2xl sm:text-3xl font-light uppercase tracking-wider text-ivory border-b border-champagne-gold/30 pb-3">
+                  {section.heading}
+                </h2>
+                <div className="space-y-5 font-sans text-base sm:text-lg text-ivory/75 leading-[1.85]">
+                  {section.body.map((para, j) => (
+                    <p key={j}>{para}</p>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </article>
+
+          {/* ─── Matching Shortlists ─── */}
           {page.relatedListingHrefs.length > 0 && (
-            <section className="hub-listings" aria-labelledby="hub-listings-heading">
-              <div className="hub-listings__header">
-                <h2 id="hub-listings-heading" className="hub-listings__heading">
+            <div className="rounded-sm border border-white/10 bg-soft-black/30 p-6 sm:p-8 space-y-4">
+              <div>
+                <h2 className="font-display text-xl sm:text-2xl uppercase tracking-wider text-ivory font-light">
                   Curated Property Shortlists
                 </h2>
-                <p className="hub-listings__sub">Explore verified listings matching this search profile</p>
+                <p className="font-sans text-xs sm:text-sm text-ivory/60 mt-1">
+                  Explore matching properties in PIKORUA's verified database
+                </p>
               </div>
-              <div className="hub-listings__pills">
+              <div className="flex flex-wrap gap-2.5 pt-2">
                 {page.relatedListingHrefs.map((href) => {
                   const label = href.replace("/p/", "").split("/").map((s) => s.replace(/-/g, " ")).join(" › ");
                   return (
-                    <Link key={href} href={href} className="hub-listings__pill">
-                      <ChevronRight size={14} className="text-champagne-gold" aria-hidden="true" />
+                    <Link
+                      key={href}
+                      href={href}
+                      className="inline-flex items-center gap-2 rounded-full border border-champagne-gold/30 bg-champagne-gold/10 px-4 py-2 font-sans text-xs uppercase tracking-wider text-champagne-gold transition-colors hover:bg-champagne-gold/20 hover:border-champagne-gold"
+                    >
+                      <ChevronRight size={13} aria-hidden="true" />
                       <span>{label}</span>
                     </Link>
                   );
                 })}
               </div>
-            </section>
+            </div>
           )}
 
-          {/* ── FAQ Section ──────────────────────────────────── */}
-          <section className="hub-faq" aria-labelledby="hub-faq-heading">
-            <div className="hub-faq__header">
-              <h2 id="hub-faq-heading" className="hub-faq__heading">
+          {/* ─── FAQ Section ─── */}
+          <div className="space-y-6 pt-4 border-t border-white/10">
+            <div>
+              <h2 className="font-display text-2xl sm:text-3xl uppercase tracking-wider text-ivory font-light">
                 Frequently Asked Questions
               </h2>
-              <p className="hub-faq__sub">Direct answers to key investment questions</p>
+              <p className="font-sans text-xs sm:text-sm text-ivory/60 mt-1">
+                Direct answers from our real estate advisory team
+              </p>
             </div>
             <FaqAccordion items={page.faqs} />
-          </section>
+          </div>
 
-          {/* ── Related Guides ───────────────────────────────── */}
-          <RelatedPagesCluster pages={relatedPages} />
+          {/* ─── Related Guides ─── */}
+          {relatedPages.length > 0 && (
+            <div className="space-y-6 pt-6 border-t border-white/10">
+              <div className="flex items-center gap-2">
+                <BookOpen size={20} className="text-champagne-gold" aria-hidden="true" />
+                <h2 className="font-display text-2xl uppercase tracking-wider text-ivory font-light">
+                  Related Market Intelligence
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedPages.map((rPage) => (
+                  <Link
+                    key={rPage.slug}
+                    href={rPage.href}
+                    className="group flex flex-col rounded-sm border border-white/10 bg-soft-black overflow-hidden transition-all duration-300 hover:border-champagne-gold/40 hover:-translate-y-1"
+                  >
+                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-lux-black/50">
+                      <Image
+                        src={rPage.heroImage}
+                        alt={rPage.h1}
+                        fill
+                        sizes="(max-width:640px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-transparent to-transparent opacity-80" />
+                    </div>
+                    <div className="p-5 flex flex-col flex-1 justify-between gap-3">
+                      <div>
+                        <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-champagne-gold mb-1.5">
+                          {cleanEyebrow(rPage.eyebrow)}
+                        </p>
+                        <h3 className="font-display text-sm font-normal uppercase tracking-wide text-ivory group-hover:text-champagne-gold transition-colors line-clamp-2">
+                          {rPage.h1}
+                        </h3>
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 font-sans text-xs uppercase tracking-wider text-champagne-gold/70 group-hover:text-champagne-gold">
+                        Read Guide <ArrowRight size={12} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
 
-        {/* ── Advisory CTA ─────────────────────────────────── */}
-        <section className="hub-cta" aria-labelledby="hub-cta-heading">
-          <div className="container hub-cta__inner">
-            <div className="hub-cta__text">
-              <p className="hub-cta__eyebrow">PIKORUA Private Advisory</p>
-              <h2 id="hub-cta-heading" className="hub-cta__heading">
-                Tailored Real Estate Advisory for HNIs &amp; NRIs
-              </h2>
-              <p className="hub-cta__body">
-                Our advisors provide end-to-end support for high-ticket property acquisitions in Ahmedabad — from off-market discovery to legal due diligence.
-              </p>
-            </div>
-            <div className="hub-cta__actions">
+        {/* ─── ADVISORY CTA (Matches PIKORUA site footer CTA style) ─── */}
+        <section className="border-t border-champagne-gold/20 bg-gradient-to-b from-lux-black via-soft-black to-lux-black py-16 sm:py-24">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <p className="font-sans text-[10px] uppercase tracking-[0.28em] text-champagne-gold font-medium">
+              PIKORUA Private Advisory
+            </p>
+            <h2 className="font-display text-2xl sm:text-4xl uppercase tracking-wider text-ivory font-light max-w-2xl mx-auto">
+              Tailored Real Estate Advisory for HNIs &amp; NRIs
+            </h2>
+            <p className="font-sans text-sm sm:text-base text-ivory/65 leading-relaxed max-w-xl mx-auto">
+              Our team provides confidential, high-touch advisory for premium property acquisitions in Ahmedabad — from off-market search to title &amp; FEMA compliance.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hub-cta__btn hub-cta__btn--primary"
-                aria-label="WhatsApp PIKORUA Realty"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-champagne-gold px-8 py-3.5 font-sans text-xs uppercase tracking-[0.18em] text-lux-black font-medium transition-all hover:bg-antique-gold"
               >
-                <PhoneCall size={18} aria-hidden="true" />
-                Connect on WhatsApp
+                <PhoneCall size={16} aria-hidden="true" />
+                WhatsApp Advisory
               </a>
-              <Link href="/contact" className="hub-cta__btn hub-cta__btn--secondary">
-                Request Advisory Call <ArrowRight size={16} aria-hidden="true" />
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-white/20 bg-white/[0.03] px-8 py-3.5 font-sans text-xs uppercase tracking-[0.18em] text-ivory transition-all hover:border-champagne-gold/50 hover:text-champagne-gold"
+              >
+                Schedule Private Consultation <ArrowRight size={14} aria-hidden="true" />
               </Link>
             </div>
           </div>
         </section>
+
       </main>
       <Footer />
     </>

@@ -300,43 +300,52 @@ export function ProgrammaticPageTemplate({
   return (
     <>
       <Header alwaysSolid />
-      <main id="main-content" className="prog-page">
+      <main id="main-content" className="bg-lux-black text-ivory min-h-screen">
         {/* ── Hero ─────────────────────────────────────────────────── */}
-        <section className="prog-hero" aria-labelledby="prog-h1">
-          <div className="prog-hero__image-wrap">
-            <Image
-              src={page.heroImage}
-              alt={page.h1}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-            <div className="prog-hero__overlay" aria-hidden="true" />
-          </div>
-          <div className="prog-hero__content container">
-            <div className="prog-hero__breadcrumb mb-4">
+        <section className="relative min-h-[55vh] overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24 border-b border-champagne-gold/15" aria-labelledby="prog-h1">
+          <Image
+            src={page.heroImage}
+            alt={page.h1}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-lux-black via-lux-black/92 to-lux-black/55 sm:via-lux-black/88 sm:to-lux-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-lux-black/70 to-lux-black/30" />
+
+          <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-6">
               <Breadcrumb items={breadcrumbs} />
             </div>
-            <p className="prog-hero__eyebrow">{page.eyebrow}</p>
-            <h1 id="prog-h1" className="prog-hero__h1">
+            
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-8 bg-champagne-gold/60" aria-hidden="true" />
+              <p className="font-sans text-[11px] uppercase tracking-[0.25em] text-champagne-gold font-medium">
+                {page.eyebrow}
+              </p>
+            </div>
+
+            <h1 id="prog-h1" className="font-display text-[clamp(2rem,4.5vw,3.8rem)] font-light uppercase tracking-wider text-ivory leading-[1.08] mb-6 max-w-4xl">
               {page.h1}
             </h1>
-            <p className="prog-hero__intro">{page.intro}</p>
-            <div className="prog-hero__actions">
+            <p className="font-sans text-base sm:text-lg text-ivory/75 leading-relaxed max-w-3xl mb-8">
+              {page.intro}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="prog-hero__cta prog-hero__cta--primary"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-sm bg-champagne-gold px-6 py-3 font-sans text-xs uppercase tracking-[0.16em] text-lux-black transition-colors hover:bg-antique-gold"
                 aria-label="WhatsApp PIKORUA for this search"
               >
-                <PhoneCall size={18} aria-hidden="true" />
-                Get a Shortlist on WhatsApp
+                <PhoneCall size={16} className="mr-2" aria-hidden="true" />
+                Shortlist on WhatsApp
               </a>
               <Link
                 href="/contact"
-                className="prog-hero__cta prog-hero__cta--secondary"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-sm border border-white/20 bg-white/[0.03] px-6 py-3 font-sans text-xs uppercase tracking-[0.16em] text-ivory transition-colors hover:border-champagne-gold/50 hover:text-champagne-gold"
               >
                 Send Enquiry
               </Link>
@@ -344,120 +353,118 @@ export function ProgrammaticPageTemplate({
           </div>
         </section>
 
-        {/* ── Active Filters ───────────────────────────────────────── */}
-        <div className="container">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+          {/* ── Active Filters ───────────────────────────────────────── */}
           <ActiveFilterBar page={page} />
-        </div>
 
-        {/* ── Price Insights Strip ─────────────────────────────────── */}
-        <div className="container">
+          {/* ── Price Insights Strip ─────────────────────────────────── */}
           <PriceInsightsStrip page={page} />
-        </div>
 
-        {/* ── Listings ─────────────────────────────────────────────── */}
-        <section className="container prog-listings" aria-labelledby="listings-heading">
-          <h2 id="listings-heading" className="prog-listings__heading">
-            {properties.length > 0
-              ? `${properties.length} Verified ${page.combo.type?.pluralLabel ?? "Properties"} in ${page.combo.location?.label}`
-              : `${page.combo.type?.pluralLabel ?? "Properties"} in ${page.combo.location?.label}`}
-          </h2>
+          {/* ── Listings ─────────────────────────────────────────────── */}
+          <section className="space-y-6" aria-labelledby="listings-heading">
+            <h2 id="listings-heading" className="font-display text-2xl uppercase tracking-wider text-ivory font-light border-b border-white/10 pb-3">
+              {properties.length > 0
+                ? `${properties.length} Verified ${page.combo.type?.pluralLabel ?? "Properties"} in ${page.combo.location?.label}`
+                : `${page.combo.type?.pluralLabel ?? "Properties"} in ${page.combo.location?.label}`}
+            </h2>
 
-          {properties.length > 0 ? (
-            <div className="prog-listings__grid">
-              {properties.map((p) => (
-                <PropertyCard key={p.slug} property={p} />
+            {properties.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {properties.map((p) => (
+                  <PropertyCard key={p.slug} property={p} />
+                ))}
+              </div>
+            ) : (
+              <NoResultsCta page={page} />
+            )}
+          </section>
+
+          {/* ── Market Signals ───────────────────────────────────────── */}
+          <section className="space-y-4" aria-labelledby="signals-heading">
+            <h2 id="signals-heading" className="font-display text-2xl uppercase tracking-wider text-ivory font-light">
+              Market Intelligence
+            </h2>
+            <ul className="grid grid-cols-1 gap-3" role="list">
+              {page.marketSignals.map((signal, i) => (
+                <li key={i} className="flex items-start gap-3 rounded-sm border border-white/10 bg-soft-black/40 p-4 font-sans text-sm text-ivory/80">
+                  <TrendingUp size={18} className="text-champagne-gold shrink-0 mt-0.5" aria-hidden="true" />
+                  <p>{signal}</p>
+                </li>
               ))}
+            </ul>
+          </section>
+
+          {/* ── Body Content ─────────────────────────────────────────── */}
+          <section className="space-y-6 pt-4 border-t border-white/10" aria-labelledby="body-heading">
+            <h2 id="body-heading" className="font-display text-2xl sm:text-3xl uppercase tracking-wider text-ivory font-light">
+              {`${page.combo.type?.pluralLabel ?? "Property"} Guide — ${page.combo.location?.label}`}
+            </h2>
+            <div className="mx-auto max-w-4xl space-y-5 font-sans text-base text-ivory/75 leading-relaxed">
+              {page.bodyContent.map((para, i) => {
+                if (para.startsWith("### ")) {
+                  return (
+                    <h3 key={i} className="font-display text-xl uppercase tracking-wider text-champagne-gold pt-3">
+                      {para.replace("### ", "")}
+                    </h3>
+                  );
+                }
+                return <p key={i}>{para}</p>;
+              })}
             </div>
-          ) : (
-            <NoResultsCta page={page} />
-          )}
-        </section>
+          </section>
 
-        {/* ── Market Signals ───────────────────────────────────────── */}
-        <section className="container prog-signals" aria-labelledby="signals-heading">
-          <h2 id="signals-heading" className="prog-signals__heading">
-            Market Intelligence
-          </h2>
-          <ul className="prog-signals__list" role="list">
-            {page.marketSignals.map((signal, i) => (
-              <li key={i} className="prog-signals__item">
-                <TrendingUp size={18} className="prog-signals__icon" aria-hidden="true" />
-                <p>{signal}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
+          {/* ── Ideal For ────────────────────────────────────────────── */}
+          <section className="space-y-4" aria-labelledby="ideal-heading">
+            <h2 id="ideal-heading" className="font-display text-2xl uppercase tracking-wider text-ivory font-light">
+              Who Is This For?
+            </h2>
+            <ul className="grid grid-cols-1 gap-2.5" role="list">
+              {page.idealFor.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 font-sans text-sm text-ivory/80">
+                  <span className="text-champagne-gold font-bold shrink-0">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
 
-        {/* ── Body Content ─────────────────────────────────────────── */}
-        <section className="container prog-body" aria-labelledby="body-heading">
-          <h2 id="body-heading" className="prog-body__heading">
-            {`${page.combo.type?.pluralLabel ?? "Property"} Guide — ${page.combo.location?.label}`}
-          </h2>
-          <div className="prog-body__content">
-            {page.bodyContent.map((para, i) => {
-              if (para.startsWith("### ")) {
-                return (
-                  <h3 key={i} className="prog-body__subheading">
-                    {para.replace("### ", "")}
-                  </h3>
-                );
-              }
-              return <p key={i} className="prog-body__para">{para}</p>;
-            })}
+          {/* ── FAQs ─────────────────────────────────────────────────── */}
+          <section className="space-y-6 pt-4 border-t border-white/10" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="font-display text-2xl uppercase tracking-wider text-ivory font-light">
+              Frequently Asked Questions
+            </h2>
+            <FaqAccordion items={page.faqs} />
+          </section>
+
+          {/* ── Related Internal Links ───────────────────────────────── */}
+          <div className="pt-4 border-t border-white/10">
+            <RelatedLinksSection clusters={relatedLinks} />
           </div>
-        </section>
-
-        {/* ── Ideal For ────────────────────────────────────────────── */}
-        <section className="container prog-ideal" aria-labelledby="ideal-heading">
-          <h2 id="ideal-heading" className="prog-ideal__heading">
-            Who Is This For?
-          </h2>
-          <ul className="prog-ideal__list" role="list">
-            {page.idealFor.map((item, i) => (
-              <li key={i} className="prog-ideal__item">
-                <span className="prog-ideal__bullet" aria-hidden="true">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* ── FAQs ─────────────────────────────────────────────────── */}
-        <section className="container prog-faq" aria-labelledby="faq-heading">
-          <h2 id="faq-heading" className="prog-faq__heading">
-            Frequently Asked Questions
-          </h2>
-          <FaqAccordion items={page.faqs} />
-        </section>
-
-        {/* ── Related Internal Links ───────────────────────────────── */}
-        <div className="container">
-          <RelatedLinksSection clusters={relatedLinks} />
         </div>
 
         {/* ── Bottom CTA ───────────────────────────────────────────── */}
-        <section className="prog-bottom-cta" aria-labelledby="bottom-cta-heading">
-          <div className="container prog-bottom-cta__inner">
-            <h2 id="bottom-cta-heading" className="prog-bottom-cta__heading">
+        <section className="border-t border-champagne-gold/20 bg-gradient-to-b from-lux-black via-soft-black to-lux-black py-16 sm:py-20" aria-labelledby="bottom-cta-heading">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <h2 id="bottom-cta-heading" className="font-display text-2xl sm:text-4xl uppercase tracking-wider text-ivory font-light max-w-2xl mx-auto">
               Need a curated shortlist?
             </h2>
-            <p className="prog-bottom-cta__body">
+            <p className="font-sans text-sm sm:text-base text-ivory/65 leading-relaxed max-w-xl mx-auto">
               PIKORUA Realty's advisory team maintains private access to
               off-market inventory in {page.combo.location?.label}. Share your
               requirements — we respond within 24 hours.
             </p>
-            <div className="prog-bottom-cta__actions">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="prog-bottom-cta__btn prog-bottom-cta__btn--primary"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-champagne-gold px-8 py-3.5 font-sans text-xs uppercase tracking-[0.18em] text-lux-black font-medium transition-all hover:bg-antique-gold"
               >
-                <PhoneCall size={18} aria-hidden="true" />
+                <PhoneCall size={16} aria-hidden="true" />
                 WhatsApp PIKORUA
               </a>
-              <Link href="/contact" className="prog-bottom-cta__btn prog-bottom-cta__btn--secondary">
-                Send Enquiry <ArrowRight size={16} aria-hidden="true" />
+              <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-sm border border-white/20 bg-white/[0.03] px-8 py-3.5 font-sans text-xs uppercase tracking-[0.18em] text-ivory transition-all hover:border-champagne-gold/50 hover:text-champagne-gold">
+                Send Enquiry <ArrowRight size={14} aria-hidden="true" />
               </Link>
             </div>
           </div>
