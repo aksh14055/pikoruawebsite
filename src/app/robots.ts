@@ -55,7 +55,10 @@ export default function robots(): MetadataRoute.Robots {
         disallow: PROTECTED_PATHS,
       },
     ],
-    sitemap: absoluteUrl("/sitemap.xml"),
+    sitemap: [
+      absoluteUrl("/sitemap.xml"),        // core pages (home, properties, blog…)
+      absoluteUrl("/sitemap/index.xml"),  // programmatic index → geo + combo + properties
+    ],
     host: absoluteUrl(),
   };
 }
