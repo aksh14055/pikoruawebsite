@@ -182,10 +182,21 @@ function RelatedPagesCluster({ pages }: { pages: ContentHubPage[] }) {
   );
 }
 
+// ─── Short title helper for clean breadcrumbs ─────────────────────────────────
+function getShortTitle(h1: string): string {
+  const clean = h1
+    .replace(/\s*—.*$/, "")
+    .replace(/\s*:\s*.*$/, "")
+    .replace(/\s+in Ahmedabad.*$/i, "")
+    .replace(/\s+2026.*$/i, "")
+    .trim();
+  return clean.length > 32 ? clean.slice(0, 30) + "…" : clean;
+}
+
 // ─── Breadcrumb builder ───────────────────────────────────────────────────────
 function buildBreadcrumbs(page: ContentHubPage) {
   const prefixLabels: Record<string, string> = {
-    compare: "Compare",
+    compare: "Comparisons",
     invest: "Investment Guides",
     learn: "Property Education",
     "gift-city": "GIFT City",
@@ -193,8 +204,16 @@ function buildBreadcrumbs(page: ContentHubPage) {
   return [
     { label: "Home", href: "/" },
     { label: prefixLabels[page.prefix] ?? page.prefix, href: `/${page.prefix}` },
-    { label: page.h1, href: page.href },
+    { label: getShortTitle(page.h1), href: page.href },
   ];
+}
+
+// ─── Clean eyebrow helper ──────────────────────────────────────────────────────
+function cleanEyebrow(eyebrow: string): string {
+  return eyebrow
+    .replace(/\s*·\s*PIKORUA.*/i, "")
+    .replace(/\s*·\s*Advisory.*/i, "")
+    .trim();
 }
 
 // ─── Extract comparison labels from H1 ───────────────────────────────────────
@@ -210,6 +229,7 @@ function extractCompareLabels(h1: string): { a: string; b: string } {
 export function ContentHubTemplate({ page, relatedPages }: ContentHubTemplateProps) {
   const breadcrumbs = buildBreadcrumbs(page);
   const compareLabels = extractCompareLabels(page.h1);
+  const formattedEyebrow = cleanEyebrow(page.eyebrow);
   const whatsappUrl = buildWhatsAppUrl(
     env.WHATSAPP_NUMBER,
     `Hi PIKORUA, I read your guide on "${page.h1}" and would like to discuss my investment options.`
@@ -243,7 +263,7 @@ export function ContentHubTemplate({ page, relatedPages }: ContentHubTemplatePro
 
             <div className="hub-hero__badge">
               <span className="hub-hero__badge-dot" />
-              {page.eyebrow}
+              {formattedEyebrow}
             </div>
 
             <h1 id="hub-h1" className="hub-hero__h1">
@@ -255,7 +275,7 @@ export function ContentHubTemplate({ page, relatedPages }: ContentHubTemplatePro
             </p>
 
             <div className="hub-hero__meta">
-              <span className="hub-hero__author-badge">PIKORUA Advisory Research</span>
+              <span className="hub-hero__author-badge">PIKORUA Research</span>
               <span className="hub-hero__dot">•</span>
               <time dateTime={page.publishedAt} className="hub-hero__date">
                 Updated {new Date(page.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}
