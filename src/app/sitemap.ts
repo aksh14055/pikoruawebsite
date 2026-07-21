@@ -2,81 +2,70 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import type { MetadataRoute } from "next";
-import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
-import { ALL_GEO_LANDING_PAGES } from "@/lib/data/geo";
-import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { absoluteUrl } from "@/lib/seo";
-import { getSupabaseAllPropertySlugsWithDates, getSupabaseBlogs } from "@/lib/supabase/queries";
-import type { BlogPost } from "@/types/blog";
+import { getTotalComboBatches } from "@/lib/data/combo-seeder";
 
+/**
+ * Sitemap index — lists all sub-sitemaps.
+ *
+ * Google accepts sitemap index files at /sitemap.xml.
+ * Each sub-sitemap contains up to 2,500 URLs (well under the 50,000 limit).
+ *
+ * Sub-sitemaps:
+ *   /sitemap/geo.xml        — 90+ GEO landing pages
+ *   /sitemap/properties.xml — property detail pages
+ *   /sitemap/p-0.xml        — first 2,500 combo pages (highest priority)
+ *   /sitemap/p-1.xml …      — remaining combo batches
+ *
+ * The actual URL lists are generated in /sitemap/[id]/route.ts.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
+  const lastModified = new Date("2026-07-21T12:00:00Z");
+  const totalBatches = getTotalComboBatches(2500);
 
-  // Core static pages
-  const coreRoutes = [
-    "",
-    "/properties",
-    "/about",
-    "/testimonials",
-    "/blog",
-    "/contact",
-    "/ahmedabad-luxury-property-market-report",
-    "/press",
-    "/privacy",
-    "/terms",
-    "/llms.txt",
-    "/llms-full.txt",
-    "/ai/facts.json",
-  ].map((route) => ({
-    url: absoluteUrl(route),
-    lastModified,
-    changeFrequency: "weekly" as const,
-    priority: route === "" ? 1.0 : route.startsWith("/llms") || route.startsWith("/ai/") ? 0.65 : 0.8,
-  }));
+  const sitemapUrls: MetadataRoute.Sitemap = [
+    // Core pages
+    { url: absoluteUrl(""), lastModified, changeFrequency: "weekly", priority: 1.0 },
+    { url: absoluteUrl("/properties"), lastModified, changeFrequency: "weekly", priority: 0.9 },
+    { url: absoluteUrl("/about"), lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/testimonials"), lastModified, changeFrequency: "monthly", priority: 0.75 },
+    { url: absoluteUrl("/contact"), lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/blog"), lastModified, changeFrequency: "weekly", priority: 0.7 },
+    {
+      url: absoluteUrl("/ahmedabad-luxury-property-market-report"),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    { url: absoluteUrl("/press"), lastModified, changeFrequency: "monthly", priority: 0.6 },
+    { url: absoluteUrl("/privacy"), lastModified, changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/terms"), lastModified, changeFrequency: "yearly", priority: 0.3 },
+    // Sub-sitemap references (helps some crawlers discover split sitemaps)
+    {
+      url: absoluteUrl("/sitemap/index.xml"),
+      lastModified,
+      changeFrequency: "daily",
+      priority: 0.5,
+    },
+    {
+      url: absoluteUrl("/sitemap/geo.xml"),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: absoluteUrl("/sitemap/properties.xml"),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    ...Array.from({ length: totalBatches }, (_, i) => ({
+      url: absoluteUrl(`/sitemap/p-${i}.xml`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    })),
+  ];
 
-  const geoRoutes = ALL_GEO_LANDING_PAGES.map((page) => ({
-    url: absoluteUrl(page.href),
-    lastModified: new Date("2026-07-17T12:00:00Z"),
-    changeFrequency: "monthly" as const,
-    priority: 0.72,
-  }));
-
-  // Dynamic property details from Supabase & fallback static
-  let dbSlugsWithDates: { slug: string; updatedAt: string }[] = [];
-  try {
-    dbSlugsWithDates = await getSupabaseAllPropertySlugsWithDates();
-  } catch (err) {
-    console.error("Error fetching slugs for sitemap:", err);
-  }
-
-  const dateBySlug = new Map(dbSlugsWithDates.map((p) => [p.slug, p.updatedAt]));
-  const staticSlugs = STATIC_PROPERTIES.map((p) => p.slug);
-  const propertySlugs = Array.from(new Set([...dbSlugsWithDates.map((p) => p.slug), ...staticSlugs]));
-
-  const propertyRoutes = Array.from(new Set(propertySlugs)).map((slug) => {
-    const updatedAt = dateBySlug.get(slug);
-    return {
-      url: absoluteUrl(`/properties/${slug}`),
-      lastModified: updatedAt ? new Date(updatedAt) : lastModified,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    };
-  });
-
-  let dbPosts: BlogPost[] = [];
-  try {
-    dbPosts = await getSupabaseBlogs(true);
-  } catch (err) {
-    console.error("Error fetching blog slugs for sitemap:", err);
-  }
-
-  const blogPosts = dbPosts.length > 0 ? dbPosts : STATIC_BLOG_POSTS;
-  const blogRoutes = blogPosts.map((post) => ({
-    url: absoluteUrl(`/blog/${post.slug}`),
-    lastModified: post.publishedAt ? new Date(post.publishedAt) : lastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.55,
-  }));
-
-  return [...coreRoutes, ...geoRoutes, ...propertyRoutes, ...blogRoutes];
+  return sitemapUrls;
 }

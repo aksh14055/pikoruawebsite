@@ -2,6 +2,9 @@ import type { LocationSlug, ResidentialCategory } from "@/types";
 import type { StaticProperty } from "@/lib/data/properties";
 import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
 import { PARTNER_SEARCH_PHRASES } from "@/lib/data/developer-partners";
+import { ALL_AHMEDABAD_SEO_PAGES, AHMEDABAD_TYPE_PAGES, AHMEDABAD_FILTER_PAGES, AHMEDABAD_LONGTAIL_PAGES } from "@/lib/data/ahmedabad-seo-pages";
+import { NRI_GEO_PAGES } from "@/lib/data/nri-geo-pages";
+import { AHMEDABAD_LOCATION_PAGES } from "@/lib/data/ahmedabad-location-pages";
 
 export type LandingPageKind = "location" | "property-type" | "nri";
 
@@ -4401,7 +4404,33 @@ export const ALL_GEO_LANDING_PAGES = [
   ...LOCATION_LANDING_PAGES,
   ...PROPERTY_TYPE_LANDING_PAGES,
   ...NRI_LANDING_PAGES,
+  // ── 10x Programmatic SEO Expansion ──────────────────────────────────────
+  ...ALL_AHMEDABAD_SEO_PAGES,   // /ahmedabad/[type] + /ahmedabad/[type]/[filter] + long-tail
+  ...AHMEDABAD_LOCATION_PAGES,  // /ahmedabad/[location]/[type]
+  ...NRI_GEO_PAGES,             // /nri/[country]/[slug]
 ];
+
+// ── 10x SEO helper exports ─────────────────────────────────────────────────
+export { AHMEDABAD_TYPE_PAGES, AHMEDABAD_FILTER_PAGES, AHMEDABAD_LONGTAIL_PAGES };
+export { AHMEDABAD_LOCATION_PAGES };
+export { NRI_GEO_PAGES };
+
+/** Lookup a page from the Ahmedabad /[type] or /[type]/[filter] layer by slug. */
+export function getAhmedabadTypePage(slug: string): GeoLandingPage | undefined {
+  return [...AHMEDABAD_TYPE_PAGES, ...AHMEDABAD_FILTER_PAGES, ...AHMEDABAD_LONGTAIL_PAGES].find(
+    (page) => page.slug === slug
+  );
+}
+
+/** Lookup a page from the Ahmedabad micro-location layer (/ahmedabad/[location]/[type]) by slug. */
+export function getAhmedabadLocationPage(slug: string): GeoLandingPage | undefined {
+  return AHMEDABAD_LOCATION_PAGES.find((page) => page.slug === slug);
+}
+
+/** Lookup a page from the NRI geo layer (/nri/[country]/[slug]) by slug. */
+export function getNriGeoPage(slug: string): GeoLandingPage | undefined {
+  return NRI_GEO_PAGES.find((page) => page.slug === slug);
+}
 
 export function getLocationLandingPage(slug: string): GeoLandingPage | undefined {
   return LOCATION_LANDING_PAGES.find((page) => page.slug === slug);
