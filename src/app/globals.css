@@ -1602,5 +1602,64 @@ h1, h2, h3, h4, h5, h6, .font-display {
 }
 
 
+/* ─── Content Protection ─────────────────────────────────────────────────── */
 
+/* Disable text selection globally */
+body,
+body * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
+/* Allow selection inside inputs and textareas (UX necessity) */
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Hide the selection highlight so even if JS fails, nothing looks selected */
+::selection {
+  background: transparent;
+  color: inherit;
+}
+::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
+/* Block image dragging */
+img,
+svg {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+/* Re-enable pointer events for interactive images (links / buttons) */
+a img,
+button img,
+[role="button"] img {
+  pointer-events: auto;
+}
+
+/* ─── Print Protection ───────────────────────────────────────────────────── */
+/* Blank the page when someone tries to print or "Save as PDF" */
+@media print {
+  body {
+    display: none !important;
+  }
+  html::after {
+    content: "This content is protected and cannot be printed.";
+    display: block;
+    padding: 4rem;
+    text-align: center;
+    font-size: 1.25rem;
+    color: #333;
+  }
+}

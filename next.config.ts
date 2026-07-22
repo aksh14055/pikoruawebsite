@@ -38,6 +38,7 @@ const securityHeaders = [
       "media-src 'self' https://cdn.sanity.io https://rwtueiruyktjzvsgdcoh.supabase.co",
       "connect-src 'self' https://*.supabase.co https://api.sanity.io https://cdn.sanity.io https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://open.er-api.com https://www.clarity.ms https://*.clarity.ms",
       "frame-src https://www.youtube.com https://youtube.com https://www.google.com https://maps.google.com",
+      "frame-ancestors 'self'",
     ].join("; "),
   },
 ];

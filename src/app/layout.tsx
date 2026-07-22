@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { Preloader } from "@/components/ui/Preloader";
 import { LazyLeadCapturePopup } from "@/components/ui/LazyLeadCapturePopup";
+import { ContentGuard } from "@/components/ui/ContentGuard";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
@@ -410,6 +411,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }}
         />
+        <ContentGuard />
         <Preloader />
         <LazyLeadCapturePopup />
         <a href="#main-content" className="skip-to-content">
