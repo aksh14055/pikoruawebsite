@@ -16,7 +16,7 @@ import { getSupabaseProperties } from "@/lib/supabase/queries";
 import { absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 export const runtime = "nodejs";
 
 function countBy<T>(items: T[], getKey: (item: T) => string) {

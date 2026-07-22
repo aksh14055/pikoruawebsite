@@ -813,8 +813,11 @@ export default function AdminDashboard({
 
     setActionLoading(true);
     try {
-      const contentArray = editingBlog.content
-        ? editingBlog.content.split("\n\n").map((p: string) => p.trim()).filter((p: string) => p !== "")
+      const rawContent = editingBlog.content;
+      const contentArray = rawContent
+        ? (Array.isArray(rawContent)
+            ? rawContent
+            : (rawContent as string).split("\n\n").map((p: string) => p.trim()).filter((p: string) => p !== ""))
         : [];
 
       const categoryLabels: Record<string, string> = {
@@ -824,7 +827,8 @@ export default function AdminDashboard({
         "corridor-spotlight": "Corridor Spotlight",
       };
       
-      const generatedExcerpt = editingBlog.excerpt || generateAutoExcerpt(editingBlog.content || "");
+      const contentStr = Array.isArray(rawContent) ? rawContent.join("\n\n") : (rawContent || "");
+      const generatedExcerpt = editingBlog.excerpt || generateAutoExcerpt(contentStr);
 
       const payload = {
         ...editingBlog,

@@ -23,7 +23,7 @@ import { STATIC_BLOG_POSTS } from "@/lib/data/blog";
 import { getSupabaseBlogs } from "@/lib/supabase/queries";
 import { absoluteUrl, SITE_URL, SITE_NAME } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 export const runtime = "nodejs";
 
 function escapeXml(str: string): string {

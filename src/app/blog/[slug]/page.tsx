@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 
 // ISR: re-render at most every hour. Tag-based invalidation in admin/actions.ts
 // (revalidateTag("blogs")) flushes this cache immediately when a post is approved.
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;

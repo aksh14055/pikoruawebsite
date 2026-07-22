@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // ISR: re-render at most every hour.
 // Admin actions call revalidatePath("/testimonials") on every save, so the cache
 // is flushed immediately whenever testimonials actually change.
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 const STATIC_TESTIMONIALS: Testimonial[] = [
   {

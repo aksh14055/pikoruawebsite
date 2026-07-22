@@ -215,7 +215,6 @@ export async function createOrUpdateProperty(property: any) {
   }
 
   // Revalidate frontend caches
-  revalidatePath("/");
   revalidatePath("/properties");
   revalidatePath(`/properties/${property.slug}`);
 
@@ -268,7 +267,6 @@ export async function deleteProperty(id: string, slug: string) {
   }
 
   // Revalidate frontend caches
-  revalidatePath("/");
   revalidatePath("/properties");
   revalidatePath(`/properties/${slug}`);
 
@@ -307,7 +305,6 @@ export async function createOrUpdateTestimonial(testimonial: any) {
   }
 
   revalidatePath("/testimonials");
-  revalidatePath("/");
 
   return { success: true };
 }
@@ -330,7 +327,6 @@ export async function deleteTestimonial(id: string) {
   }
 
   revalidatePath("/testimonials");
-  revalidatePath("/");
 
   return { success: true };
 }
@@ -471,7 +467,6 @@ export async function createOrUpdateBlogPost(blog: any) {
   // Revalidate frontend caches
   revalidatePath("/blog");
   revalidatePath(`/blog/${blog.slug}`);
-  revalidatePath("/");
 
   // Trigger Google Indexing API ping in background
   const absoluteUrl = `https://pikorua.in/blog/${cleanSlug}`;
@@ -504,7 +499,6 @@ export async function approveBlogDraft(id: string) {
   revalidatePath("/blog");
   if (data?.slug) revalidatePath(`/blog/${data.slug}`);
   revalidatePath("/blog/feed.xml");
-  revalidatePath("/");
   // Flush ISR cache so blog listing and post pages regenerate immediately
   revalidateTag("blogs");
 
@@ -541,7 +535,6 @@ export async function deleteBlogPost(id: string, slug: string) {
   // Revalidate frontend caches
   revalidatePath("/blog");
   revalidatePath(`/blog/${slug}`);
-  revalidatePath("/");
 
   // Trigger Google Indexing API deletion in background
   const absoluteUrl = `https://pikorua.in/blog/${slug}`;

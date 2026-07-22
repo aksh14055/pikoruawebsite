@@ -25,7 +25,7 @@ interface ComboPageProps {
 // ISR: render on first request, cache for 24 hours.
 // SSG top-500 seeded combos are pre-rendered at build time.
 export const dynamicParams = true;
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 export function generateStaticParams() {
   return ALL_STATIC_COMBO_PARAMS;

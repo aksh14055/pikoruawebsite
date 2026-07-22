@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 // ISR: re-render at most every hour. Tag-based invalidation in admin/actions.ts
 // (revalidateTag("blogs")) flushes this cache immediately when a post is approved.
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export default async function BlogListingPage() {
   let posts = await getSupabaseBlogs(true);

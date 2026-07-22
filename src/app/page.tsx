@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const revalidate = 300;
+export const revalidate = 86400;
 
 export default async function HomePage() {
   if (!env.SITE_LIVE) {

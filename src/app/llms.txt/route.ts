@@ -26,7 +26,7 @@ import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
 
-export const revalidate = 3600; // Cache on CDN/edge for 1 hour (ISR) to protect database
+export const revalidate = 86400; // Cache on CDN/edge for 24 hours (ISR) to protect database
 export const runtime = "nodejs";
 
 export async function GET() {
