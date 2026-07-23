@@ -16,7 +16,7 @@ const FOOTER_LOCATION_LINKS = LOCATION_LANDING_PAGES.slice(0, 6);
 const FOOTER_TYPE_LINK_SLUGS = [
   "luxury-apartments-ahmedabad",
   "penthouses-duplexes-ahmedabad",
-  "villas-bungalows-ahmedabad",
+  "luxury-villas-ahmedabad",
   "luxury-bungalows-ahmedabad",
   "residential-plots-ahmedabad",
 ];

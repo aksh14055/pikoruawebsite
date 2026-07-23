@@ -162,6 +162,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      // /app/sitemap/[id]/route.ts had to move to /app/xml-sitemap/[id]/route.ts
+      // because Next.js reserves the "sitemap" folder name for its own sitemap
+      // metadata-route convention, which collided with the sibling sitemap.ts
+      // file. This rewrite keeps the public /sitemap/*.xml URLs unchanged.
+      {
+        source: "/sitemap/:id",
+        destination: "/xml-sitemap/:id",
+      },
+    ];
+  },
   async redirects() {
     return [
       {
@@ -179,6 +191,20 @@ const nextConfig: NextConfig = {
         // Ikebana: corrected configuration/size, old slug embedded outdated figures
         source: "/properties/4-5-bhk-penthouse-duplex-7300-15500-sindhu-bhavan",
         destination: "/properties/5-bhk-3300-6300-sindhu-bhavan",
+        permanent: true,
+      },
+      {
+        // Consolidated: cannibalized /luxury-property-consultant-ahmedabad and
+        // /real-estate-consultant-ahmedabad for the same consultant intent.
+        source: "/luxury-real-estate-consultants-ahmedabad",
+        destination: "/luxury-property-consultant-ahmedabad",
+        permanent: true,
+      },
+      {
+        // Consolidated: cannibalized /luxury-real-estate-ahmedabad and
+        // /luxury-homes-ahmedabad for the same umbrella-category intent.
+        source: "/luxury-property-ahmedabad",
+        destination: "/luxury-real-estate-ahmedabad",
         permanent: true,
       },
       {

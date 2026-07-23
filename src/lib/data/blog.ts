@@ -33,7 +33,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
       "### Long-Term Outlook: 2026 and Beyond",
       "With the Ahmedabad Metro Phase II east-west extension proposed to reach the Thaltej-Makarba junction (within 3 km of the corridor) by 2028, connectivity improvements are expected to further solidify the corridor's accessibility without diluting its residential character. The commercial expansion of the Prahlad Nagar and Science City Road belts creates additional employer anchors within 15 minutes of Iskon-Ambli, sustaining the pool of senior executive-level residents who form the core buyer profile. The fundamental case — scarce supply, proven appreciation, deep buyer pool — remains intact.",
     ],
-    relatedLandingSlugs: ["iskon-ambli", "villas-bungalows-ahmedabad"],
+    relatedLandingSlugs: ["iskon-ambli", "luxury-villas-ahmedabad"],
   },
   {
     id: "discretion-in-high-value-transactions",
@@ -66,7 +66,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
       "### The Future of High-Value Property Transactions",
       "As Ahmedabad's luxury market matures and the pool of genuinely high-net-worth buyers deepens, the shift towards private, advisory-led transactions will only accelerate. The next generation of HNI buyers — second-generation business families, GIFT City professionals, and returning NRIs — are increasingly skeptical of public portal processes and expect the same quality of curated service they receive in other wealth management categories. The days of listing a ₹10 Crore home on a portal alongside a ₹60 Lakh apartment are numbered.",
     ],
-    relatedLandingSlugs: ["luxury-residential-investment-ahmedabad", "villas-bungalows-ahmedabad"],
+    relatedLandingSlugs: ["luxury-residential-investment-ahmedabad", "luxury-villas-ahmedabad"],
   },
   {
     id: "rise-of-single-floor-penthouses",
@@ -269,7 +269,7 @@ const ALL_STATIC_BLOG_POSTS: BlogPost[] = [
       "### How to Access SBR's Best Inventory",
       "The most desirable apartments and penthouses on Sindhu Bhavan Road are not publicly listed. Sellers at this price point prefer controlled introductions to verified, financially qualified buyers. PIKORUA Realty maintains an active private advisory presence on this corridor — including off-market mandates from sellers who have never listed publicly. Buyers who register a private brief with our advisory desk gain access to this inventory before it enters the public market, if it ever does.",
     ],
-    relatedLandingSlugs: ["sindhu-bhavan", "villas-bungalows-ahmedabad", "penthouses-duplexes-ahmedabad"],
+    relatedLandingSlugs: ["sindhu-bhavan", "luxury-villas-ahmedabad", "penthouses-duplexes-ahmedabad"],
   },
   {
     id: "5-bhk-vs-penthouse-ahmedabad",

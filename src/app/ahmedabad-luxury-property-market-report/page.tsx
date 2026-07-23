@@ -380,7 +380,7 @@ export default function AhmedabadLuxuryPropertyMarketReportPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/luxury-real-estate-consultants-ahmedabad"
+                href="/luxury-property-consultant-ahmedabad"
                 className="inline-flex min-h-[46px] items-center justify-center rounded-sm border border-white/18 px-6 py-3 text-xs font-medium uppercase tracking-[0.2em] text-ivory transition-colors hover:border-champagne-gold hover:text-champagne-gold"
               >
                 Luxury Consultancy

@@ -23,9 +23,9 @@ import { createMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("home");
-  const defaultTitle = "Luxury Real Estate Consultants in Ahmedabad for HNIs and NRIs";
+  const defaultTitle = "Luxury Real Estate Consultants Ahmedabad";
   const defaultDesc =
-    "Private luxury real estate consultants in Ahmedabad for HNIs and NRIs seeking curated homes, discreet advisory, and verified premium property access.";
+    "Curated luxury properties in Ahmedabad for HNIs and NRIs. Private advisory for 4-5 BHK homes, penthouses, villas, plots and investments.";
 
   return createMetadata({
     title: seo?.seoTitle || defaultTitle,

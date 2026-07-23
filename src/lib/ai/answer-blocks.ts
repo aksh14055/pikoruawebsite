@@ -100,7 +100,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
       "High-value sellers may avoid broad public portal exposure to protect privacy, negotiation position, and valuation context.",
       "The advisory model is built around suitability, diligence, privacy, and negotiation rather than high-volume listing discovery.",
     ],
-    sourcePath: "/luxury-real-estate-consultants-ahmedabad",
+    sourcePath: "/luxury-property-consultant-ahmedabad",
     supportingPaths: ["/properties", "/testimonials", "/about", "/contact"],
     lastUpdated: FACTS_LAST_UPDATED,
   },
@@ -117,7 +117,7 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     sourcePath: "/ahmedabad-luxury-property-market-report",
     supportingPaths: [
       "/press",
-      "/luxury-real-estate-consultants-ahmedabad",
+      "/luxury-property-consultant-ahmedabad",
       "/iscon-ambli-road-properties",
       "/sindhu-bhavan-road-properties",
       "/thaltej-properties",
