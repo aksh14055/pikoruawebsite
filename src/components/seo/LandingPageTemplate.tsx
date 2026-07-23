@@ -369,17 +369,25 @@ export function LandingPageTemplate({
                 <div className="grid grid-cols-1 border border-white/[0.07] md:grid-cols-2">
                   {[
                     { label: "Price Context", value: page.marketGuide.priceContext },
-                    { label: "Inventory Profile", value: page.marketGuide.inventoryProfile },
+                    { label: "Luxury Property Formats", value: page.marketGuide.inventoryProfile },
+                    { label: "New Launch vs Ready", value: page.marketGuide.newVsReady },
                     { label: "Buyer Profile", value: page.marketGuide.buyerProfile },
+                    { label: "Schools & Hospitals", value: page.marketGuide.schoolsAndHospitals },
+                    { label: "Clubs & Restaurants", value: page.marketGuide.clubsAndDining },
+                    { label: "Business Connectivity", value: page.marketGuide.businessConnectivity },
+                    { label: "Airport & Highway Access", value: page.marketGuide.airportAndHighwayAccess },
+                    { label: "Traffic & Infrastructure", value: page.marketGuide.trafficAndInfrastructure },
                     { label: "Diligence Focus", value: page.marketGuide.diligenceFocus },
                     { label: "Investment Outlook", value: page.marketGuide.investmentOutlook },
-                  ].map((detail, index) => (
+                  ]
+                    .filter((detail): detail is { label: string; value: string } => Boolean(detail.value))
+                    .map((detail, index) => (
                     <div
                       key={detail.label}
                       className={cn(
                         "border-white/[0.07] p-5 sm:p-6",
                         index % 2 === 0 ? "md:border-r" : "",
-                        index < 4 ? "border-b" : ""
+                        "border-b"
                       )}
                     >
                       <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
@@ -390,7 +398,7 @@ export function LandingPageTemplate({
                       </p>
                     </div>
                   ))}
-                  <div className="border-white/[0.07] p-5 sm:p-6 md:border-t">
+                  <div className="border-white/[0.07] p-5 sm:p-6 md:border-r">
                     <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
                       Local Anchors
                     </p>
@@ -403,7 +411,51 @@ export function LandingPageTemplate({
                       ))}
                     </ul>
                   </div>
+                  {page.marketGuide.notableProjects?.length ? (
+                    <div className="border-white/[0.07] p-5 sm:p-6">
+                      <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
+                        Best-Project Shortlist
+                      </p>
+                      <ul className="mt-4 space-y-2">
+                        {page.marketGuide.notableProjects.map((item) => (
+                          <li key={item} className="flex gap-3 font-sans text-sm leading-relaxed text-ivory/65">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-champagne-gold/65" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>
+
+                {page.marketGuide.alternatives?.length ? (
+                  <div className="mt-6 border border-white/[0.07] p-5 sm:p-6">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-champagne-gold/75">
+                      Alternatives to Compare
+                    </p>
+                    <ul className="mt-4 grid gap-3 md:grid-cols-2">
+                      {page.marketGuide.alternatives.map((item) => (
+                        <li key={item} className="flex gap-3 font-sans text-sm leading-relaxed text-ivory/65">
+                          <ArrowRight className="mt-0.5 h-4 w-4 flex-shrink-0 text-champagne-gold/65" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {page.marketGuide.mapQuery ? (
+                  <div className="mt-6 overflow-hidden border border-white/[0.07]">
+                    <iframe
+                      title={`${page.label} map`}
+                      src={`https://www.google.com/maps?q=${encodeURIComponent(page.marketGuide.mapQuery)}&output=embed`}
+                      className="h-[360px] w-full border-0 grayscale-[20%]"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
           </section>

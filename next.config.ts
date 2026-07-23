@@ -208,6 +208,32 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // Consolidated into the new, richer /locations/[slug] location network page.
+        source: "/sindhu-bhavan-road-properties",
+        destination: "/locations/sindhu-bhavan",
+        permanent: true,
+      },
+      {
+        source: "/iscon-ambli-road-properties",
+        destination: "/locations/iskon-ambli",
+        permanent: true,
+      },
+      {
+        source: "/thaltej-properties",
+        destination: "/locations/thaltej",
+        permanent: true,
+      },
+      {
+        source: "/sg-highway-properties",
+        destination: "/locations/sg-highway",
+        permanent: true,
+      },
+      {
+        source: "/vastrapur-properties",
+        destination: "/locations/vastrapur",
+        permanent: true,
+      },
+      {
         source: "/nri-investment-ahmedabad",
         destination: "/nri-property-investment-ahmedabad",
         permanent: true,

@@ -3,22 +3,37 @@
 import Link from "next/link";
 import { useScrollReveal, revealClasses } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
-import type { LocationSlug } from "@/types";
-
 interface LocationItem {
-  slug: Exclude<LocationSlug, "other">;
+  slug: string;
   href: string;
   label: string;
   descriptor: string;
 }
 
 const LOCATIONS: LocationItem[] = [
-  { slug: "sg-highway",    href: "/sg-highway-properties",          label: "SG Highway",    descriptor: "Ahmedabad's premier luxury spine" },
-  { slug: "sindhu-bhavan", href: "/sindhu-bhavan-road-properties",  label: "Sindhu Bhavan", descriptor: "Wide boulevards, luxury towers, prime connectivity" },
-  { slug: "iskon-ambli",   href: "/iscon-ambli-road-properties",    label: "Iskon-Ambli",   descriptor: "West Corridor's established prestige address" },
-  { slug: "thaltej",       href: "/thaltej-properties",             label: "Thaltej",        descriptor: "Quiet residential charm with premium neighbours" },
-  { slug: "shilaj",        href: "/locations/shilaj",               label: "Shilaj",         descriptor: "Expanding luxury at Ahmedabad's growing edge" },
-  { slug: "vaishno-devi",  href: "/locations/vaishno-devi",         label: "Vaishno Devi",  descriptor: "Upcoming corridor with exceptional value" },
+  { slug: "sindhu-bhavan", href: "/locations/sindhu-bhavan", label: "Sindhu Bhavan Road", descriptor: "Lifestyle-led luxury high street" },
+  { slug: "iskon-ambli", href: "/locations/iskon-ambli", label: "Iskon–Ambli Road", descriptor: "Large-format ultra-luxury towers" },
+  { slug: "bodakdev", href: "/locations/bodakdev", label: "Bodakdev", descriptor: "Mature HNI neighbourhood" },
+  { slug: "thaltej", href: "/locations/thaltej", label: "Thaltej", descriptor: "Metro-linked residential depth" },
+  { slug: "vastrapur", href: "/locations/vastrapur", label: "Vastrapur", descriptor: "Central, lake-side urban living" },
+  { slug: "satellite", href: "/locations/satellite", label: "Satellite", descriptor: "Connected and immediately liveable" },
+  { slug: "prahlad-nagar", href: "/locations/prahlad-nagar", label: "Prahlad Nagar", descriptor: "Executive live-near-work market" },
+  { slug: "ambawadi", href: "/locations/ambawadi", label: "Ambawadi", descriptor: "Central legacy residential address" },
+  { slug: "nehru-nagar", href: "/locations/nehru-nagar", label: "Nehrunagar", descriptor: "Compact central-west connector" },
+  { slug: "cg-road", href: "/locations/cg-road", label: "CG Road", descriptor: "Retail and professional-city core" },
+  { slug: "navrangpura", href: "/locations/navrangpura", label: "Navrangpura", descriptor: "Institution-rich central neighbourhood" },
+  { slug: "science-city", href: "/locations/science-city", label: "Science City", descriptor: "Newer family housing corridor" },
+  { slug: "shilaj", href: "/locations/shilaj", label: "Shilaj", descriptor: "Villas, plots and larger homes" },
+  { slug: "nandoli", href: "/locations/nandoli", label: "Nandoli", descriptor: "Privacy-led plotted growth" },
+  { slug: "hebatpur", href: "/locations/hebatpur", label: "Hebatpur", descriptor: "Emerging Science City neighbour" },
+  { slug: "bhadaj", href: "/locations/bhadaj", label: "Bhadaj", descriptor: "Space-led north-west expansion" },
+  { slug: "rancharda", href: "/locations/rancharda", label: "Rancharda", descriptor: "Institution-anchored plotted market" },
+  { slug: "vaishno-devi", href: "/locations/vaishno-devi", label: "Vaishno Devi Circle", descriptor: "North-west highway gateway" },
+  { slug: "sg-highway", href: "/locations/sg-highway", label: "SG Highway", descriptor: "Ahmedabad's employment spine" },
+  { slug: "sp-ring-road", href: "/locations/sp-ring-road", label: "SP Ring Road", descriptor: "Regional growth arc" },
+  { slug: "shela", href: "/locations/shela", label: "Shela", descriptor: "Gated south-west family market" },
+  { slug: "sanand", href: "/locations/sanand", label: "Sanand", descriptor: "Manufacturing-linked growth" },
+  { slug: "nalsarovar-belt", href: "/locations/nalsarovar-belt", label: "Nalsarovar Belt", descriptor: "Conservation-sensitive retreat market" },
 ];
 
 export function LocationGrid() {
@@ -35,8 +50,11 @@ export function LocationGrid() {
             id="locations-heading"
             className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-normal text-ivory leading-tight uppercase tracking-wider"
           >
-            Six corridors we know intimately
+            Ahmedabad&apos;s complete luxury location network
           </h2>
+          <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ivory/50">
+            Compare established western neighbourhoods with emerging villa, plot and growth corridors—each with its own buyer profile, access reality and investment case.
+          </p>
         </div>
 
         <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-champagne-gold/[0.08]">

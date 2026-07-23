@@ -4,6 +4,7 @@ import { propertyMatchesCategoryIntent } from "@/lib/propertyFilters";
 import { ALL_AHMEDABAD_SEO_PAGES, AHMEDABAD_TYPE_PAGES, AHMEDABAD_FILTER_PAGES, AHMEDABAD_LONGTAIL_PAGES } from "@/lib/data/ahmedabad-seo-pages";
 import { NRI_GEO_PAGES } from "@/lib/data/nri-geo-pages";
 import { AHMEDABAD_LOCATION_PAGES } from "@/lib/data/ahmedabad-location-pages";
+import { PRIORITY_LOCATION_PAGES } from "@/lib/data/location-network";
 
 export type LandingPageKind = "location" | "property-type" | "nri";
 
@@ -33,6 +34,15 @@ export interface LocationMarketGuide {
   diligenceFocus: string;
   investmentOutlook: string;
   localAnchors: string[];
+  newVsReady?: string;
+  schoolsAndHospitals?: string;
+  clubsAndDining?: string;
+  businessConnectivity?: string;
+  airportAndHighwayAccess?: string;
+  trafficAndInfrastructure?: string;
+  notableProjects?: string[];
+  alternatives?: string[];
+  mapQuery?: string;
 }
 
 export interface GeoLandingPage {
@@ -139,7 +149,7 @@ const NRI_LEGAL_DETAILS: NriExecutionDetails = {
   reviewNote: NRI_LEGAL_TAX_REVIEW_NOTE,
 };
 
-export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
+const LEGACY_LOCATION_LANDING_PAGES: GeoLandingPage[] = [
   {
     kind: "location",
     slug: "sindhu-bhavan",
@@ -1275,6 +1285,13 @@ export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
       "Prahlad Nagar suits two distinct buyer profiles: senior executives who want to eliminate commute time entirely, and investors who prioritise rental yield and tenant stability over lifestyle prestige. It is generally not the first choice for buyers seeking a quiet, family-oriented address — those buyers are typically better served by Bodakdev, Satellite, or Sindhu Bhavan Road, all of which remain within a short drive of Prahlad Nagar's employment base.",
     ],
   },
+];
+
+export const LOCATION_LANDING_PAGES: GeoLandingPage[] = [
+  ...PRIORITY_LOCATION_PAGES,
+  ...LEGACY_LOCATION_LANDING_PAGES.filter(
+    (page) => !PRIORITY_LOCATION_PAGES.some((priority) => priority.slug === page.slug)
+  ),
 ];
 
 export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
