@@ -98,15 +98,22 @@ export function LandingPageTemplate({
   const parentCrumb =
     page.kind === "location"
       ? { label: "Locations", href: "/properties" }
+      : page.kind === "private-client"
+        ? { label: "Private Client Advisory", href: "/private-client-advisory" }
       : page.kind === "nri"
         ? { label: "NRI Advisory", href: "/nri-property-consultant-ahmedabad" }
         : { label: "Properties", href: "/properties" };
   const primaryCtaLabel = isAdvisoryCta
     ? "Request Advisory"
+    : page.kind === "private-client"
+      ? "View Relevant Residences"
     : page.kind === "nri"
       ? "View Matching Properties"
       : "View Properties";
-  const secondaryCtaLabel = page.kind === "nri" ? "Request Private Advisory" : "Private Advisory";
+  const secondaryCtaLabel =
+    page.kind === "nri" || page.kind === "private-client"
+      ? "Request Private Advisory"
+      : "Private Advisory";
 
   return (
     <>

@@ -31,6 +31,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl("/contact"), lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: absoluteUrl("/blog"), lastModified, changeFrequency: "weekly", priority: 0.7 },
     {
+      url: absoluteUrl("/private-client-advisory"),
+      lastModified: new Date("2026-07-23T12:00:00Z"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: absoluteUrl("/ahmedabad-luxury-property-market-report"),
       lastModified,
       changeFrequency: "monthly",

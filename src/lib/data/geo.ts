@@ -6,8 +6,9 @@ import { NRI_GEO_PAGES } from "@/lib/data/nri-geo-pages";
 import { AHMEDABAD_LOCATION_PAGES } from "@/lib/data/ahmedabad-location-pages";
 import { PRIORITY_LOCATION_PAGES } from "@/lib/data/location-network";
 import { NRI_SERVICE_PROMISE } from "@/lib/data/nri-centre";
+import { PRIVATE_CLIENT_PAGES } from "@/lib/data/private-client-advisory";
 
-export type LandingPageKind = "location" | "property-type" | "nri";
+export type LandingPageKind = "location" | "property-type" | "nri" | "private-client";
 
 export interface LandingFaq {
   question: string;
@@ -1567,6 +1568,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "nri-property-consultant-ahmedabad",
       "luxury-real-estate-ahmedabad",
       "ultra-luxury-properties-ahmedabad",
+      "private-real-estate-advisory-ahmedabad",
     ],
     bodyContent: [
       "### Why Luxury Advisory Is Different",
@@ -1760,6 +1762,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
       "luxury-5bhk-ahmedabad",
       "iskon-ambli",
       "sindhu-bhavan",
+      "ultra-luxury-property-ahmedabad",
     ],
     bodyContent: [
       "### What Ultra Luxury Means in Ahmedabad",
@@ -2067,7 +2070,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
           "No. A penthouse qualifies as ultra luxury only when it adds genuine scarcity beyond its floor position — documented exclusive-use terrace rights, being the sole unit on its floor, or a private pool. A standard top-floor unit without those features is still a strong luxury asset, but sits a tier below the ultra-luxury bracket on both price and resale rarity.",
       },
     ],
-    relatedSlugs: ["ultra-luxury-properties-ahmedabad", "luxury-apartments-ahmedabad", "luxury-5bhk-ahmedabad", "sindhu-bhavan", "iskon-ambli"],
+    relatedSlugs: ["ultra-luxury-properties-ahmedabad", "luxury-apartments-ahmedabad", "luxury-5bhk-ahmedabad", "sindhu-bhavan", "iskon-ambli", "luxury-penthouses-ahmedabad"],
     bodyContent: [
       "### Penthouses and Duplexes: The Peak of Vertical Luxury in Ahmedabad",
       "Penthouses and duplex residences occupy a separate category within Ahmedabad's luxury market. They are not merely large apartments — they represent a fundamentally different quality of vertical living. The best penthouses in Ahmedabad offer 5,000–7,000 sq.ft. of single-floor internal space, private wrap-around terraces of 2,000–4,000 sq.ft., private plunge pools, and dedicated lobby access from a semi-private lift. They are, in essence, horizontally-oriented bungalows elevated above the city — combining land-backed lifestyle with tower-level security and panoramic views.",
@@ -4363,6 +4366,7 @@ export const ALL_GEO_LANDING_PAGES = [
   ...LOCATION_LANDING_PAGES,
   ...PROPERTY_TYPE_LANDING_PAGES,
   ...NRI_LANDING_PAGES,
+  ...PRIVATE_CLIENT_PAGES,
   // ── 10x Programmatic SEO Expansion ──────────────────────────────────────
   ...ALL_AHMEDABAD_SEO_PAGES,   // /ahmedabad/[type] + /ahmedabad/[type]/[filter] + long-tail
   ...AHMEDABAD_LOCATION_PAGES,  // /ahmedabad/[location]/[type]
