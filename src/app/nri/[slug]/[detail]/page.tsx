@@ -6,7 +6,6 @@ import {
   getNriGeoPage,
   getLandingProperties,
   NRI_GEO_PAGES,
-  type GeoLandingPage,
 } from "@/lib/data/geo";
 import { getKeywordClusterTermsForSlug } from "@/lib/data/keyword-clusters";
 import {
@@ -17,31 +16,31 @@ import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/se
 import { getExchangeRates } from "@/lib/exchange-rates";
 
 interface NriGeoPageProps {
-  params: Promise<{ country: string; slug: string }>;
+  params: Promise<{ slug: string; detail: string }>;
 }
 
 export const dynamicParams = false;
 
 /**
- * Generates static params for all /nri/[country]/[slug] pages.
+ * Generates static params for all /nri/[slug]/[detail] pages.
  *
- * NRI_GEO_PAGES have hrefs like:
- *   /nri/usa/luxury-flats-ahmedabad   → country=usa, slug=luxury-flats-ahmedabad
- *   /nri/dubai/property-investment-ahmedabad
+ * The first segment shares the `slug` name used by /nri/[slug]. On these
+ * two-segment routes it represents the country, while `detail` represents the
+ * country-specific landing-page slug.
  */
 export function generateStaticParams() {
   return NRI_GEO_PAGES.map((page) => {
     const withoutPrefix = page.href.replace(/^\/nri\//, "");
     const slashIndex = withoutPrefix.indexOf("/");
-    const country = withoutPrefix.slice(0, slashIndex);
-    const slug = withoutPrefix.slice(slashIndex + 1);
-    return { country, slug };
+    const slug = withoutPrefix.slice(0, slashIndex);
+    const detail = withoutPrefix.slice(slashIndex + 1);
+    return { slug, detail };
   });
 }
 
 export async function generateMetadata({ params }: NriGeoPageProps): Promise<Metadata> {
-  const { country, slug } = await params;
-  const pageSlug = pageSlugFromSegments(country, slug);
+  const { slug: country, detail } = await params;
+  const pageSlug = pageSlugFromSegments(country, detail);
   const page = getNriGeoPage(pageSlug);
   if (!page) return {};
 
@@ -60,9 +59,8 @@ export async function generateMetadata({ params }: NriGeoPageProps): Promise<Met
   });
 }
 
-/** Build the internal page slug from country + slug URL segments. */
-function pageSlugFromSegments(country: string, slug: string): string {
-  return `${country}-${slug}`;
+function pageSlugFromSegments(country: string, detail: string): string {
+  return `${country}-${detail}`;
 }
 
 function getCountryLabel(country: string): string {
@@ -79,8 +77,8 @@ function getCountryLabel(country: string): string {
 }
 
 export default async function NriGeoLandingPage({ params }: NriGeoPageProps) {
-  const { country, slug } = await params;
-  const pageSlug = pageSlugFromSegments(country, slug);
+  const { slug: country, detail } = await params;
+  const pageSlug = pageSlugFromSegments(country, detail);
   const page = getNriGeoPage(pageSlug);
   const { rates, isLive } = await getExchangeRates();
 
@@ -90,7 +88,6 @@ export default async function NriGeoLandingPage({ params }: NriGeoPageProps) {
   const pageUrl = absoluteUrl(page.href);
   const countryLabel = getCountryLabel(country);
 
-  // NRI service schema — consistent with existing /nri/[slug] schema structure
   const serviceSchema = getNriAdvisoryServiceSchema({
     pageUrl,
     name: page.title,
@@ -169,7 +166,12 @@ export default async function NriGeoLandingPage({ params }: NriGeoPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
       />
-      <LandingPageTemplate page={page} properties={properties} initialRates={rates} initialIsLive={isLive} />
+      <LandingPageTemplate
+        page={page}
+        properties={properties}
+        initialRates={rates}
+        initialIsLive={isLive}
+      />
     </>
   );
 }

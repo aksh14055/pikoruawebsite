@@ -3,7 +3,10 @@
  *
  * 10x Programmatic SEO — Layer 6: NRI Geo Pages (Country × Intent)
  *
- * URL pattern:  /nri/[country]/[slug]
+ * URL pattern:  /nri/[country]/[slug] (served by src/app/nri/[slug]/[detail]/page.tsx —
+ *               the folder's own param names are [slug]/[detail] to satisfy Next.js's
+ *               requirement that sibling dynamic routes share a param name, but the
+ *               public URL shape is still country/slug)
  * Examples:     /nri/usa/luxury-flats-ahmedabad
  *               /nri/dubai/property-investment-ahmedabad
  *
