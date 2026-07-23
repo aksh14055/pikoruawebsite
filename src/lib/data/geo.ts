@@ -5,6 +5,7 @@ import { ALL_AHMEDABAD_SEO_PAGES, AHMEDABAD_TYPE_PAGES, AHMEDABAD_FILTER_PAGES, 
 import { NRI_GEO_PAGES } from "@/lib/data/nri-geo-pages";
 import { AHMEDABAD_LOCATION_PAGES } from "@/lib/data/ahmedabad-location-pages";
 import { PRIORITY_LOCATION_PAGES } from "@/lib/data/location-network";
+import { NRI_SERVICE_PROMISE } from "@/lib/data/nri-centre";
 
 export type LandingPageKind = "location" | "property-type" | "nri";
 
@@ -118,10 +119,7 @@ const NRI_COMMON_DOCUMENT_CHECKLIST = [
 ];
 
 const NRI_LEGAL_TAX_REVIEW_NOTE =
-  "Last editorial update: July 17, 2026. This page is for advisory education only and should be reviewed by a qualified Indian lawyer, chartered accountant, or bank officer before any legal, tax, remittance, or registration action.";
-
-const NRI_SERVICE_PROMISE =
-  "One trusted Ahmedabad team for project shortlisting, video inspections, developer verification, negotiation support, documentation coordination, registration assistance and post-purchase property management.";
+  "Last editorial update: July 23, 2026. Professional review status: transaction-specific review required. This guide is educational and is not a legal, tax, banking, FEMA, or registration opinion. A qualified Indian lawyer, chartered accountant, and authorised-dealer bank should confirm the current position before action.";
 
 const NRI_REFERENCE_NOTE =
   "Country-specific client references are shared privately only where clients have approved. Public reviews remain available on the testimonials page.";

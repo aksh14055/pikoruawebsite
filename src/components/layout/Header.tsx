@@ -14,7 +14,7 @@ const NAV_LINKS = [
   { href: "/properties", label: "Properties" },
   { href: "/about", label: "About" },
   { href: "/testimonials", label: "Testimonials" },
-  { href: "/nri-property-consultant-ahmedabad", label: "NRI Advisory" },
+  { href: "/nri-property-investment-ahmedabad", label: "NRI Centre" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -185,7 +185,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                       pathname.startsWith("/property-types") ||
                       pathname.startsWith("/locations") ||
                       PROPERTY_ROOT_PATHS.includes(pathname))) ||
-                  (label === "NRI Advisory" &&
+                  (label === "NRI Centre" &&
                     (pathname.startsWith("/nri") || NRI_ROOT_PATHS.includes(pathname)));
 
                 if (label === "Properties") {
@@ -422,7 +422,7 @@ export function Header({ alwaysSolid = false }: HeaderProps) {
                   pathname.startsWith("/property-types") ||
                   pathname.startsWith("/locations") ||
                   PROPERTY_ROOT_PATHS.includes(pathname))) ||
-              (label === "NRI Advisory" &&
+              (label === "NRI Centre" &&
                 (pathname.startsWith("/nri") || NRI_ROOT_PATHS.includes(pathname)));
 
             if (label === "Properties") {

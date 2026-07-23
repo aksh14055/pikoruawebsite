@@ -14,6 +14,11 @@ import { buildWhatsAppUrl, cn } from "@/lib/utils";
 import { ArrowRight, PhoneCall, MapPin, ShieldCheck, Landmark, FileText, CheckCircle2 } from "lucide-react";
 import { NriCurrencyConverter } from "./NriCurrencyConverter";
 import type { ExchangeRates } from "@/lib/exchange-rates";
+import {
+  NRI_CENTRE_SECTIONS,
+  NRI_OFFICIAL_RESOURCES,
+  NRI_SERVICE_PROMISE,
+} from "@/lib/data/nri-centre";
 
 const NRI_TIMELINE_STEPS = [
   {
@@ -461,6 +466,87 @@ export function LandingPageTemplate({
           </section>
         )}
 
+        {page.slug === "nri-property-investment-ahmedabad" && (
+          <section
+            className="border-b border-white/[0.06] bg-soft-black/30 py-20 lg:py-28"
+            aria-labelledby="nri-centre-heading"
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="max-w-3xl">
+                <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.25em] text-champagne-gold">
+                  Complete NRI Property Centre
+                </p>
+                <h2
+                  id="nri-centre-heading"
+                  className="font-display text-[clamp(1.6rem,3vw,2.6rem)] font-light uppercase tracking-wider text-ivory"
+                >
+                  Buy, Execute and Manage from Abroad
+                </h2>
+                <p className="mt-5 text-sm leading-relaxed text-ivory/65 sm:text-base">
+                  {NRI_SERVICE_PROMISE}
+                </p>
+              </div>
+
+              <div className="mt-12 space-y-12">
+                {NRI_CENTRE_SECTIONS.map((section) => (
+                  <div key={section.title}>
+                    <div className="mb-5 border-l border-champagne-gold/35 pl-4">
+                      <h3 className="font-display text-xl uppercase tracking-wide text-ivory">
+                        {section.title}
+                      </h3>
+                      <p className="mt-2 font-sans text-sm text-ivory/50">
+                        {section.description}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                      {section.links.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="group border border-white/[0.07] bg-lux-black/45 p-5 transition-colors hover:border-champagne-gold/35"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <h4 className="font-sans text-sm font-medium text-ivory transition-colors group-hover:text-champagne-gold">
+                              {item.label}
+                            </h4>
+                            <ArrowRight className="mt-0.5 h-4 w-4 flex-shrink-0 text-champagne-gold/45 transition-transform group-hover:translate-x-0.5" />
+                          </div>
+                          <p className="mt-3 font-sans text-xs leading-relaxed text-ivory/45">
+                            {item.description}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-14 border border-amber-300/20 bg-amber-300/[0.04] p-6">
+                <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-amber-200/80">
+                  Legal and Tax Review Standard
+                </p>
+                <p className="mt-3 max-w-4xl font-sans text-sm leading-relaxed text-ivory/60">
+                  Legal, tax, banking, FEMA and registration guides are dated and educational. Transaction-specific advice must be confirmed by a qualified Indian lawyer, chartered accountant and authorised-dealer bank before money, documents or authority are committed.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-x-7 gap-y-3">
+                  {NRI_OFFICIAL_RESOURCES.map((resource) => (
+                    <a
+                      key={resource.href}
+                      href={resource.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={resource.description}
+                      className="font-sans text-xs text-champagne-gold/75 transition-colors hover:text-champagne-gold"
+                    >
+                      {resource.label} &rarr;
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ─── REMOTE PURCHASE PROCESS (NRI only) ─── */}
         {page.kind === "nri" && (
           <section
@@ -628,7 +714,7 @@ export function LandingPageTemplate({
                     { label: "Video Consultation", value: page.nriDetails.videoConsultation },
                     { label: "WhatsApp Format", value: page.nriDetails.whatsappFormat },
                     { label: "International Phone", value: page.nriDetails.internationalPhoneFormat },
-                    { label: "Client References", value: page.nriDetails.testimonialsNote },
+                    { label: "Regional Client Proof", value: page.nriDetails.testimonialsNote },
                   ]
                     .filter((detail): detail is { label: string; value: string } => Boolean(detail.value))
                     .map((detail, index) => (

@@ -43,10 +43,16 @@ export function NRIAdvisory() {
               <span className="text-lux-black/35">We hold the ground for you.</span>
             </h2>
             <p className="text-lux-black/50 font-sans text-base leading-relaxed mb-8 max-w-md">
-              Distance shouldn't mean compromise. We represent NRI buyers with the
+              Distance shouldn&apos;t mean compromise. We represent NRI buyers with the
               same rigour as those who are here — virtually, legally, and personally.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/nri-property-investment-ahmedabad"
+                className="inline-flex items-center justify-center px-7 py-3.5 text-xs font-sans uppercase tracking-[0.2em] text-ivory bg-lux-black hover:bg-soft-black transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-black min-h-[48px]"
+              >
+                Explore the NRI Centre
+              </Link>
               <Link
                 href="/contact?purpose=nri"
                 className="inline-flex items-center justify-center px-7 py-3.5 text-xs font-sans uppercase tracking-[0.2em] text-lux-black bg-champagne-gold hover:bg-antique-gold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne-gold min-h-[48px]"

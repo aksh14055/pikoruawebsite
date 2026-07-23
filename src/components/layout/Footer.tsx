@@ -5,7 +5,7 @@ import { GOOGLE_BUSINESS_PROFILE_URL } from "@/lib/seo";
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/properties", label: "Properties" },
-  { href: "/nri-property-consultant-ahmedabad", label: "NRI Advisory" },
+  { href: "/nri-property-investment-ahmedabad", label: "NRI Property Centre" },
   { href: "/about", label: "About" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/blog", label: "Blog" },
