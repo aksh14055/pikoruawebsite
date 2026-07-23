@@ -352,22 +352,21 @@ h1, h2, h3, h4, h5, h6, .font-display {
 }
 
 .prose-blog ul li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.625rem;
+  position: relative;
+  padding-left: 1.1rem;
   margin-bottom: 0.5rem;
   color: rgba(255, 248, 235, 0.7);
 }
 
 .prose-blog ul li::before {
   content: '';
-  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0.65em;
   width: 5px;
   height: 5px;
-  min-width: 5px;
   border-radius: 50%;
   background-color: rgba(200, 160, 90, 0.7);
-  margin-top: 0.6rem;
 }
 
 .prose-blog ol {
