@@ -22,6 +22,83 @@ export const PRIVATE_CLIENT_AUDIENCES = [
   "Discerning homebuyers",
 ];
 
+export const PUBLIC_FIGURES_ADVISORY_PAGE: GeoLandingPage = {
+  kind: "private-client",
+  slug: "private-property-advisory-public-figures",
+  href: "/private-property-advisory-public-figures",
+  label: "Private Property Advisory for Public Figures",
+  eyebrow: "Confidential Residential Representation",
+  title: "Private Property Advisory for Public Figures",
+  h1: "Private Property Advisory for Public Figures",
+  description:
+    "Discreet Ahmedabad property representation for public figures and privacy-sensitive households, with controlled access, restricted sharing and confidential coordination.",
+  heroImage: HEROES.advisory,
+  categories: ["apartment", "penthouse", "duplex", "villa", "bungalow", "plot"],
+  matchKeywords: ["private advisory", "off market", "security", "confidential"],
+  seoKeywords: [
+    "private property advisory public figures",
+    "confidential property consultant Ahmedabad",
+    "discreet home search Ahmedabad",
+  ],
+  collectionHref: "/contact?purpose=private-client",
+  intro:
+    "The service is designed around confidentiality rather than publicity. Client identity, property details and appointment information are restricted to the people required for evaluation and execution, while all lawful transaction disclosures remain fully observed.",
+  marketSignals: [
+    "Property information and identities are released progressively, with consent and a defined need to know.",
+    "Private appointments, attendee limits and tour protocols reduce unnecessary exposure.",
+    "Off-market sourcing means controlled introductions—not unverified inventory or guaranteed access.",
+  ],
+  idealFor: [
+    "Public figures and their authorised representatives.",
+    "Business leaders and families managing a privacy-sensitive move.",
+    "Households requiring security, staff and access coordination during a property search.",
+  ],
+  relatedSlugs: [
+    "off-market-property-ahmedabad",
+    "private-real-estate-advisory-ahmedabad",
+    "discreet-property-sale-ahmedabad",
+    "property-acquisition-for-hnis",
+  ],
+  faqs: [
+    {
+      question: "Will PIKORUA disclose the names of public-figure clients?",
+      answer:
+        "No client name, image, endorsement, transaction detail or property address is published without specific written consent and the necessary usage rights.",
+    },
+    {
+      question: "How are private property tours controlled?",
+      answer:
+        "Appointments can use limited attendee lists, identity confirmation, no-photography instructions, staff coordination and agreed arrival or access procedures.",
+    },
+    {
+      question: "Does confidential sourcing avoid legal documentation?",
+      answer:
+        "No. Confidentiality controls circulation; it never replaces identity, title, banking, registration, tax or other lawful transaction requirements.",
+    },
+    {
+      question: "Can an authorised representative manage the search?",
+      answer:
+        "Yes. A family-office, legal, security, staff or other authorised representative can coordinate defined parts of the process while decision authority and disclosure boundaries remain clear.",
+    },
+  ],
+  bodyContent: [
+    "### Confidentiality by Design",
+    "The engagement begins by defining who may know about the search, who may receive addresses or documents, and who may attend appointments. Information is shared progressively rather than circulated as a broad client brief.",
+    "### Restricted Sharing and Identity Protection",
+    "Names, contact details, schedules and personal requirements are limited to necessary participants. Sellers and developers receive only the information needed at each stage, subject to mandatory identity and transaction disclosures.",
+    "### Private Appointments and Controlled Tours",
+    "Tours may be coordinated around restricted time windows, attendee limits, discreet arrival, photography rules, building access, staff movement and security requirements. A private tour is never represented as a way to bypass community or property protocols.",
+    "### Staff, Security and Access Coordination",
+    "Where authorised, PIKORUA can coordinate with household staff, security teams, family offices, lawyers or executive assistants. Roles are established in advance so sensitive instructions do not spread across an unnecessary group.",
+    "### Off-Market Sourcing",
+    "Select owners prefer a controlled introduction instead of public advertising. Access remains subject to owner consent, buyer suitability and verification; off-market does not mean below-market, risk-free or exempt from diligence.",
+    "### Documentation Without Publicity",
+    "PIKORUA coordinates document collection, negotiation and registration logistics with the client's appointed professionals. Confidential handling does not alter legal, banking, tax, KYC or registration obligations.",
+    "### No Implied Endorsements",
+    "PIKORUA does not publish client names, photographs, purchase details, property addresses or testimonials without written consent and appropriate usage rights. Service positioning is based on process and capability—not invented celebrity associations.",
+  ],
+};
+
 export const PRIVATE_CLIENT_PAGES: GeoLandingPage[] = [
   {
     kind: "private-client",
@@ -423,4 +500,3 @@ export function getPrivateClientPage(slug: string): GeoLandingPage | undefined {
 export function getPrivateClientPageByUrlSlug(urlSlug: string): GeoLandingPage | undefined {
   return PRIVATE_CLIENT_PAGES.find((page) => page.href === `/private-client-advisory/${urlSlug}`);
 }
-

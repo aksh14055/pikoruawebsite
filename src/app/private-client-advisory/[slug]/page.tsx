@@ -6,6 +6,7 @@ import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getLandingProperties } from "@/lib/data/geo";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { BUSINESS_LANGUAGES, ENTITY_IDS, getAhmedabadAreaServedSchema } from "@/lib/entity-profile";
+import { getPriorityKeywordsForPath } from "@/lib/data/six-month-priority-keywords";
 
 interface PrivateClientPageProps {
   params: Promise<{ slug: string }>;
@@ -26,7 +27,12 @@ export async function generateMetadata({ params }: PrivateClientPageProps): Prom
     description: page.description,
     path: page.href,
     image: page.heroImage,
-    keywords: [page.label, page.title, ...(page.seoKeywords ?? [])],
+    keywords: [
+      page.label,
+      page.title,
+      ...(page.seoKeywords ?? []),
+      ...getPriorityKeywordsForPath(page.href),
+    ],
   });
 }
 
@@ -107,4 +113,3 @@ export default async function PrivateClientPage({ params }: PrivateClientPagePro
     </>
   );
 }
-

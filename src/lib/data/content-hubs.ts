@@ -17,6 +17,8 @@
  * as if written by a senior PIKORUA advisor, not a content farm.
  */
 
+import { PHASE_14_CONTENT_PAGES } from "@/lib/data/phase14-content";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1071,6 +1073,7 @@ export const ALL_CONTENT_HUB_PAGES: ContentHubPage[] = [
   ...INVESTMENT_PAGES,
   ...EDUCATION_PAGES,
   ...GIFT_CITY_PAGES,
+  ...PHASE_14_CONTENT_PAGES,
 ];
 
 export const CONTENT_HUB_MAP = new Map(

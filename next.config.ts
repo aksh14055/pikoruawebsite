@@ -98,24 +98,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/properties/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/blog/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
         source: "/videos/:path*",
         headers: [
           {
@@ -291,11 +273,6 @@ const nextConfig: NextConfig = {
       {
         source: "/nri/buy-property-in-ahmedabad-from-australia",
         destination: "/nri-property-from-australia",
-        permanent: true,
-      },
-      {
-        source: "/iskon-ambli-road-properties",
-        destination: "/iscon-ambli-road-properties",
         permanent: true,
       },
     ];

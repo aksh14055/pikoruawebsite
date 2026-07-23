@@ -44,8 +44,16 @@ const INFINITY_SENTENCE =
 const ARRIVAL_SENTENCE_PATTERN =
   /(At PIKORUA Realty,\s+luxury isn['’]t just where you live\s*[-—]\s*it's how you feel when you arrive home\.)/;
 
-const withCelebritiesAudience = (paragraph: string) =>
-  paragraph.replace("HNWIs, NRIs, and elite families", "HNWIs, NRIs, celebrities, and elite families");
+const withApprovedAudienceLanguage = (paragraph: string) =>
+  paragraph
+    .replace(
+      /HNWIs,\s*NRIs,\s*(?:celebrities,\s*)?and elite families/gi,
+      "business leaders, public figures, NRIs and discerning families"
+    )
+    .replace(
+      /Trusted by Elites,\s*Celebrities\s*&\s*NRIs\.?/gi,
+      "Trusted by business leaders, public figures, NRIs and discerning families."
+    );
 
 const PRINCIPLES = [
   {
@@ -99,7 +107,7 @@ export default async function AboutPage() {
   const heroTitle = dbContent?.heroTitle || DEFAULT_HERO_TITLE;
   const founderAvatar = dbContent?.founderAvatar || MEDIA.founder;
   const founderStory = (dbContent?.founderStory || DEFAULT_FOUNDER_STORY).map((paragraph, index) =>
-    index === 0 ? ABOUT_INTRO_COPY : withCelebritiesAudience(paragraph)
+    index === 0 ? ABOUT_INTRO_COPY : withApprovedAudienceLanguage(paragraph)
   );
   const principles = (dbContent?.principles && dbContent.principles.length > 0)
     ? dbContent.principles

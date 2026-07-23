@@ -1,10 +1,8 @@
 import { cn } from "@/lib/utils";
 import { MEDIA } from "@/lib/media";
-import { HeroDesktopVideo } from "./HeroDesktopVideo";
 
 interface HeroSectionProps {
   headlineLines?: string[];
-  videoUrl?: string;
   posterUrl?: string;
   mobilePosterUrl?: string;
   posterBlur?: string;
@@ -12,7 +10,6 @@ interface HeroSectionProps {
 
 export function HeroSection({
   headlineLines = ["Private luxury", "residences,", "quietly curated."],
-  videoUrl = MEDIA.videos.bg,
   posterUrl,
   mobilePosterUrl,
 }: HeroSectionProps) {
@@ -46,8 +43,6 @@ export function HeroSection({
           aria-hidden="true"
         />
       </picture>
-
-      <HeroDesktopVideo videoUrl={videoUrl} />
 
       <div
         className="absolute inset-0 bg-gradient-to-r from-lux-black/70 via-lux-black/35 to-transparent"

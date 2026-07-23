@@ -29,6 +29,9 @@ import {
 } from "@/lib/data/developer-partners";
 import "./globals.css";
 
+const isVercelPreview =
+  Boolean(process.env.VERCEL_ENV) && process.env.VERCEL_ENV !== "production";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -86,9 +89,9 @@ export const metadata: Metadata = {
     images: [absoluteUrl("/logo.png")],
   },
   robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
+    index: !isVercelPreview,
+    follow: !isVercelPreview,
+    googleBot: { index: !isVercelPreview, follow: !isVercelPreview },
   },
   verification: {
     google: "google91c2c9a5f53b75d8.html",

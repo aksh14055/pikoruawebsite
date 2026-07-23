@@ -25,6 +25,8 @@ import { getKeywordClusterSummaryForSlug } from "@/lib/data/keyword-clusters";
 import { getAiEntitySnapshot } from "@/lib/entity-profile";
 import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries";
 import { SITE_URL } from "@/lib/seo";
+import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
+import { SIX_MONTH_PRIORITY_KEYWORDS } from "@/lib/data/six-month-priority-keywords";
 
 export const revalidate = 86400; // Cache on CDN/edge for 24 hours (ISR) to protect database
 export const runtime = "nodejs";
@@ -83,6 +85,7 @@ export async function GET() {
     `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,
     `- **Address:** ${entity.address.streetAddress}, ${entity.address.addressLocality}, ${entity.address.addressRegion} ${entity.address.postalCode}, India`,
     `- **Contact:** ${entity.contact.email}; ${entity.contact.telephone}`,
+    `- **RERA disclosure:** ${entity.reraRegistration.disclosure}`,
     `- **Languages:** ${entity.contact.languages.join(", ")}`,
     `- **SameAs:** ${entity.sameAs.join(" | ")}`,
     `- **Core Services:** ${entity.services.map((service) => service.name).join(" | ")}`,
@@ -97,6 +100,18 @@ export async function GET() {
     ``,
     ...AI_ANSWER_BLOCKS.map(
       (block) => `- ${block.question} Key fact: ${block.citationFacts[0]} Source: ${SITE_URL}${block.sourcePath}`
+    ),
+    ``,
+    `## Decision Guides`,
+    ``,
+    ...ALL_CONTENT_HUB_PAGES.map(
+      (page) => `- [${page.h1}](${SITE_URL}${page.href}): ${page.intro}`
+    ),
+    ``,
+    `## Six-Month Priority Query Map`,
+    ``,
+    ...SIX_MONTH_PRIORITY_KEYWORDS.map(
+      (target) => `- ${target.keyword} -> ${SITE_URL}${target.canonicalPath} (${target.window})`
     ),
     ``,
     `## Key Pages`,

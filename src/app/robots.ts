@@ -28,29 +28,48 @@ const AI_ALLOW_PATHS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      // Default rule: allow all crawlers on public pages
+      // Default rule: public pages remain available to conventional crawlers.
       {
         userAgent: "*",
         allow: "/",
         disallow: PROTECTED_PATHS,
       },
-      // Explicitly welcome AI search crawlers and grant them priority access
-      // to the pages most valuable for synthesised answer citations
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: PROTECTED_PATHS,
+      },
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+        disallow: PROTECTED_PATHS,
+      },
+      // Search and user-requested retrieval crawlers are distinct from
+      // training-focused crawlers and are explicitly allowed.
+      {
+        userAgent: ["OAI-SearchBot", "ChatGPT-User"],
+        allow: AI_ALLOW_PATHS,
+        disallow: PROTECTED_PATHS,
+      },
       {
         userAgent: [
-          "OAI-SearchBot",     // OpenAI / ChatGPT Search
-          "GPTBot",            // OpenAI model-training crawler
-          "ChatGPT-User",      // ChatGPT user-triggered retrieval
           "Claude-SearchBot",  // Claude search indexing
           "Claude-User",       // Claude user-triggered retrieval
           "PerplexityBot",     // Perplexity AI
           "Google-Extended",   // Google Gemini / Bard training & search
           "ClaudeBot",         // Anthropic Claude search
           "Applebot",          // Apple Siri / Spotlight AI
-          "Bingbot",           // Bing / Microsoft Copilot
           "anthropic-ai",      // Anthropic general crawler
           "cohere-ai",         // Cohere AI platform
         ],
+        allow: AI_ALLOW_PATHS,
+        disallow: PROTECTED_PATHS,
+      },
+      // GPTBot is a training-focused crawler. It is currently permitted as an
+      // explicit business setting and can be changed independently of
+      // OAI-SearchBot without affecting ChatGPT search eligibility.
+      {
+        userAgent: "GPTBot",
         allow: AI_ALLOW_PATHS,
         disallow: PROTECTED_PATHS,
       },

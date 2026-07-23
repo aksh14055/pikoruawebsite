@@ -22,6 +22,9 @@ export const BUSINESS_EMAIL = "connect@pikorua.in";
 export const BUSINESS_PHONE_DISPLAY = "+91 6354 359 222";
 export const BUSINESS_PHONE_E164 = `+${env.WHATSAPP_NUMBER}`;
 export const BUSINESS_MAP_URL = GOOGLE_BUSINESS_PROFILE_URL;
+export const BUSINESS_RERA_REGISTRATION = null;
+export const BUSINESS_RERA_DISCLOSURE =
+  "PIKORUA Realty's business RERA registration number has not been supplied for public display. Project-specific GujRERA registration details are verified and shared where applicable.";
 
 export const BUSINESS_ADDRESS = {
   streetAddress: "Iskon-Ambli Road",
@@ -135,7 +138,7 @@ export const AI_SERVICE_CATALOG = [
   {
     name: "Ahmedabad luxury corridor advisory",
     serviceType: "Residential market advisory",
-    url: absoluteUrl("/iscon-ambli-road-properties"),
+    url: absoluteUrl("/locations/iskon-ambli"),
     description:
       "Micro-market comparison across Iskon-Ambli Road, Sindhu Bhavan Road, Thaltej, Shilaj, SG Highway, Vaishno Devi, and other western Ahmedabad corridors.",
   },
@@ -355,6 +358,11 @@ export function getAiEntitySnapshot() {
       internationalNriMarkets: [...INTERNATIONAL_SERVICE_AREAS],
     },
     services: AI_SERVICE_CATALOG,
+    reraRegistration: {
+      registrationNumber: BUSINESS_RERA_REGISTRATION,
+      disclosure: BUSINESS_RERA_DISCLOSURE,
+      projectRegistry: "https://gujrera.gujarat.gov.in/",
+    },
     specializations: [...AI_SPECIALIZATIONS],
   };
 }

@@ -20,6 +20,8 @@ const DEFAULT_METADATA_KEYWORDS = [
   "premium residential projects Ahmedabad",
   "Ahmedabad real estate developers",
 ];
+const IS_VERCEL_PREVIEW =
+  Boolean(process.env.VERCEL_ENV) && process.env.VERCEL_ENV !== "production";
 
 /**
  * Google Business Profile URL — used in the organization schema's sameAs
@@ -99,7 +101,7 @@ export function createMetadata({
       description: metaDescription,
       images: [imageUrl],
     },
-    robots: noIndex
+    robots: noIndex || IS_VERCEL_PREVIEW
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
   };

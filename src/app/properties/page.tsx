@@ -10,6 +10,7 @@ import { getSupabaseProperties, getPageSeoData, getSupabaseGeneralFaqs } from "@
 import { ENTITY_IDS } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd } from "@/lib/seo";
 import type { GeneralFaq } from "@/types";
+import { getPriorityKeywordsForPath } from "@/lib/data/six-month-priority-keywords";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeoData("properties");
@@ -20,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: seo?.seoTitle || defaultTitle,
     description: seo?.seoDescription || defaultDesc,
     path: "/properties",
+    keywords: getPriorityKeywordsForPath("/properties"),
   });
 }
 

@@ -30,11 +30,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl("/testimonials"), lastModified, changeFrequency: "monthly", priority: 0.75 },
     { url: absoluteUrl("/contact"), lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: absoluteUrl("/blog"), lastModified, changeFrequency: "weekly", priority: 0.7 },
+    { url: absoluteUrl("/compare"), lastModified, changeFrequency: "monthly", priority: 0.72 },
+    { url: absoluteUrl("/invest"), lastModified, changeFrequency: "monthly", priority: 0.75 },
+    { url: absoluteUrl("/learn"), lastModified, changeFrequency: "monthly", priority: 0.72 },
     {
       url: absoluteUrl("/private-client-advisory"),
       lastModified: new Date("2026-07-23T12:00:00Z"),
       changeFrequency: "monthly",
       priority: 0.85,
+    },
+    {
+      url: absoluteUrl("/private-property-advisory-public-figures"),
+      lastModified: new Date("2026-07-23T12:00:00Z"),
+      changeFrequency: "monthly",
+      priority: 0.78,
     },
     {
       url: absoluteUrl("/ahmedabad-luxury-property-market-report"),

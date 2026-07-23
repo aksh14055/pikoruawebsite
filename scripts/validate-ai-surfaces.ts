@@ -3,6 +3,8 @@ import { ALL_GEO_LANDING_PAGES, PROPERTY_TYPE_LANDING_PAGES } from "../src/lib/d
 import { STATIC_BLOG_POSTS } from "../src/lib/data/blog";
 import { STATIC_PROPERTIES } from "../src/lib/data/properties";
 import { PROPERTY_TYPE_KEYWORD_CLUSTERS } from "../src/lib/data/keyword-clusters";
+import { ALL_CONTENT_HUB_PAGES } from "../src/lib/data/content-hubs";
+import { SIX_MONTH_PRIORITY_KEYWORDS } from "../src/lib/data/six-month-priority-keywords";
 
 const STATIC_PUBLIC_ROUTES = [
   "/",
@@ -11,6 +13,8 @@ const STATIC_PUBLIC_ROUTES = [
   "/blog",
   "/contact",
   "/press",
+  "/private-client-advisory",
+  "/private-property-advisory-public-figures",
   "/privacy",
   "/properties",
   "/terms",
@@ -54,6 +58,7 @@ function buildKnownPublicRoutes() {
   return new Set<string>([
     ...STATIC_PUBLIC_ROUTES,
     ...ALL_GEO_LANDING_PAGES.map((page) => page.href),
+    ...ALL_CONTENT_HUB_PAGES.map((page) => page.href),
     ...STATIC_PROPERTIES.map((property) => `/properties/${property.slug}`),
     ...STATIC_BLOG_POSTS.map((post) => `/blog/${post.slug}`),
   ]);
@@ -64,6 +69,32 @@ function main() {
   const knownPublicRoutes = buildKnownPublicRoutes();
   const blockIds = new Set<string>();
   const keywordClusterSlugs = new Set(Object.keys(PROPERTY_TYPE_KEYWORD_CLUSTERS));
+  const priorityKeywords = new Set<string>();
+
+  if (SIX_MONTH_PRIORITY_KEYWORDS.length !== 38) {
+    addFailure(
+      failures,
+      `Expected 38 six-month priority keywords. Found ${SIX_MONTH_PRIORITY_KEYWORDS.length}.`
+    );
+  }
+
+  for (const target of SIX_MONTH_PRIORITY_KEYWORDS) {
+    const normalizedKeyword = target.keyword.toLowerCase();
+    if (priorityKeywords.has(normalizedKeyword)) {
+      addFailure(failures, `Six-month priority keyword is duplicated: ${target.keyword}`);
+    }
+    priorityKeywords.add(normalizedKeyword);
+    assertRoutePath(target.canonicalPath, `Priority keyword "${target.keyword}" canonicalPath`, failures);
+    if (!knownPublicRoutes.has(target.canonicalPath)) {
+      addFailure(
+        failures,
+        `Priority keyword "${target.keyword}" targets an unknown route: ${target.canonicalPath}`
+      );
+    }
+    if (target.canonicalPath === "/") {
+      addFailure(failures, `Priority keyword "${target.keyword}" must not target the homepage.`);
+    }
+  }
 
   if (AI_ANSWER_BLOCKS.length < 10) {
     addFailure(

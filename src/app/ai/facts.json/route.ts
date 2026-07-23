@@ -15,6 +15,11 @@ import { STATIC_PROPERTIES } from "@/lib/data/properties";
 import { getSupabaseProperties } from "@/lib/supabase/queries";
 import { absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { PROPERTY_STATUS_LABELS, RESIDENTIAL_CATEGORY_LABELS } from "@/types";
+import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
+import {
+  SIX_MONTH_KEYWORD_GUARDRAILS,
+  SIX_MONTH_PRIORITY_KEYWORDS,
+} from "@/lib/data/six-month-priority-keywords";
 
 export const revalidate = 86400;
 export const runtime = "nodejs";
@@ -133,6 +138,21 @@ export async function GET() {
         locations: LOCATION_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
         propertyTypes: PROPERTY_TYPE_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
         nriAdvisory: NRI_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
+      },
+      decisionGuides: ALL_CONTENT_HUB_PAGES.map((page) => ({
+        category: page.category,
+        questionOrDecision: page.h1,
+        url: absoluteUrl(page.href),
+        directAnswer: page.intro,
+        keyTakeaways: page.keyTakeaways,
+        updated: page.publishedAt,
+      })),
+      sixMonthKeywordProgramme: {
+        targets: SIX_MONTH_PRIORITY_KEYWORDS.map((target) => ({
+          ...target,
+          canonicalUrl: absoluteUrl(target.canonicalPath),
+        })),
+        guardrails: SIX_MONTH_KEYWORD_GUARDRAILS,
       },
       categoryKeywordClusters: RESIDENTIAL_CATEGORY_KEYWORD_CLUSTERS,
       properties,

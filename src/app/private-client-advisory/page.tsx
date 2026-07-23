@@ -7,6 +7,7 @@ import {
   PRIVATE_CLIENT_AUDIENCES,
   PRIVATE_CLIENT_PAGES,
   PRIVATE_CLIENT_SERVICE_PROMISE,
+  PUBLIC_FIGURES_ADVISORY_PAGE,
 } from "@/lib/data/private-client-advisory";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { ENTITY_IDS, getAhmedabadAreaServedSchema } from "@/lib/entity-profile";
@@ -137,7 +138,7 @@ export default function PrivateClientAdvisoryPage() {
               </p>
             </div>
             <div className="mt-12 grid gap-px bg-white/[0.06] md:grid-cols-2 lg:grid-cols-3">
-              {PRIVATE_CLIENT_PAGES.map((page) => (
+              {[...PRIVATE_CLIENT_PAGES, PUBLIC_FIGURES_ADVISORY_PAGE].map((page) => (
                 <Link
                   key={page.href}
                   href={page.href}
@@ -166,4 +167,3 @@ export default function PrivateClientAdvisoryPage() {
     </>
   );
 }
-

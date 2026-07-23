@@ -39,6 +39,11 @@ import {
   getSupabaseAllTestimonials,
 } from "@/lib/supabase/queries";
 import { SITE_URL, SITE_NAME } from "@/lib/seo";
+import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
+import {
+  SIX_MONTH_KEYWORD_GUARDRAILS,
+  SIX_MONTH_PRIORITY_KEYWORDS,
+} from "@/lib/data/six-month-priority-keywords";
 
 export const revalidate = 86400; // Cache on CDN/edge for 24 hours (ISR) to protect database
 export const runtime = "nodejs";
@@ -98,6 +103,7 @@ export async function GET() {
     `- **Type:** ${entity.type.join(", ")}`,
     `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,
     `- **Address:** ${entity.address.streetAddress}, ${entity.address.addressLocality}, ${entity.address.addressRegion} ${entity.address.postalCode}, India`,
+    `- **RERA disclosure:** ${entity.reraRegistration.disclosure}`,
     `- **Contact:** ${entity.contact.email}; ${entity.contact.telephone}`,
     `- **Languages:** ${entity.contact.languages.join(", ")}`,
     `- **SameAs:** ${entity.sameAs.join(" | ")}`,
@@ -358,6 +364,29 @@ export async function GET() {
     ``,
   ];
 
+  const decisionGuides = [
+    `## Decision-Oriented Buyer Guides`,
+    ``,
+    ...ALL_CONTENT_HUB_PAGES.map(
+      (page) =>
+        `- [${page.h1}](${SITE_URL}${page.href}): ${page.intro} Updated: ${page.publishedAt}.`
+    ),
+    ``,
+  ];
+
+  const priorityKeywordProgramme = [
+    `## Six-Month Priority Query Map`,
+    ``,
+    ...SIX_MONTH_PRIORITY_KEYWORDS.map(
+      (target) => `- **${target.keyword}** -> ${SITE_URL}${target.canonicalPath} (${target.window})`
+    ),
+    ``,
+    `### Publishing Guardrails`,
+    ``,
+    ...SIX_MONTH_KEYWORD_GUARDRAILS.map((guardrail) => `- ${guardrail}`),
+    ``,
+  ];
+
   const allLines = [
     ...header,
     ...entityIdentity,
@@ -366,6 +395,8 @@ export async function GET() {
     ...marketReport,
     ...developerEntities,
     ...directAnswers,
+    ...decisionGuides,
+    ...priorityKeywordProgramme,
     ...corridors,
     ...propertyTypes,
     ...nriAdvisoryPages,

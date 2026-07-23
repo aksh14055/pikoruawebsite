@@ -17,6 +17,7 @@ import {
 } from "@/lib/entity-profile";
 import { absoluteUrl, createMetadata, serializeJsonLd, SITE_URL } from "@/lib/seo";
 import { getExchangeRates } from "@/lib/exchange-rates";
+import { getPriorityKeywordsForPath } from "@/lib/data/six-month-priority-keywords";
 
 interface RootLandingPageProps {
   params: Promise<{ slug: string }>;
@@ -44,6 +45,7 @@ export async function generateMetadata({ params }: RootLandingPageProps): Promis
       ...(page.matchKeywords ?? []),
       ...(page.seoKeywords ?? []),
       ...getKeywordClusterTermsForSlug(page.slug, { limit: 80 }),
+      ...getPriorityKeywordsForPath(page.href),
     ],
   });
 }

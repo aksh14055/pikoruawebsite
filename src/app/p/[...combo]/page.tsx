@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: ComboPageProps): Promise<Meta
   if (!parsed?.location) return {};
 
   const page = generateComboPage(parsed);
+  const properties = matchProperties(parsed);
 
   return createMetadata({
     title: page.title,
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: ComboPageProps): Promise<Meta
       ...(parsed.intent ? [parsed.intent.label] : []),
     ],
     // Apply noindex if no properties match — set after property matching below
-    noIndex: parsed ? undefined : true,
+    noIndex: properties.length === 0,
   });
 }
 
@@ -201,12 +202,6 @@ export default async function ComboPage({ params }: ComboPageProps) {
 
   return (
     <>
-      {page.noindex && (
-        // Robots noindex for zero-result pages (prevents thin-content penalty)
-        // Note: ideally set via generateMetadata robots field, but this is a
-        // fallback for ISR pages where metadata runs before property matching.
-        <meta name="robots" content="noindex, follow" />
-      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(serviceSchema) }}
