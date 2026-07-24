@@ -27,6 +27,7 @@ import { getSupabaseBlogs, getSupabaseProperties } from "@/lib/supabase/queries"
 import { SITE_URL } from "@/lib/seo";
 import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
 import { SIX_MONTH_PRIORITY_KEYWORDS } from "@/lib/data/six-month-priority-keywords";
+import { BRAND_MISSPELLING_KEYWORDS } from "@/lib/data/brand-keywords";
 
 export const revalidate = 86400; // Cache on CDN/edge for 24 hours (ISR) to protect database
 export const runtime = "nodejs";
@@ -80,6 +81,7 @@ export async function GET() {
     `## Entity Identity`,
     ``,
     `- **Canonical Entity:** ${entity.name}`,
+    `- **Brand Search Aliases:** ${BRAND_MISSPELLING_KEYWORDS.join(" | ")}`,
     `- **Entity ID:** ${entity.entityId}`,
     `- **Type:** ${entity.type.join(", ")}`,
     `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,

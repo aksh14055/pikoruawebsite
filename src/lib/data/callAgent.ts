@@ -1,0 +1,3 @@
+export const CALL_AGENT_NAME = "Maya";
+export const CALL_AGENT_PHONE_E164 = "+917948501161";
+export const CALL_AGENT_PHONE_DISPLAY = "+91 79485 01161";

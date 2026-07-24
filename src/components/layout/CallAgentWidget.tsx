@@ -6,7 +6,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getCallAgentContext } from "@/lib/callAgentContext";
-import { CallAgentPopup, CALL_AGENT_NAME } from "./CallAgentPopup";
+import { CALL_AGENT_NAME } from "@/lib/data/callAgent";
+import { CallAgentPopup } from "./CallAgentPopup";
 
 // Auto-open the popup once per browsing session — either once the visitor
 // has scrolled well into the page, or the moment they show exit intent

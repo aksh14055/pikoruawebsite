@@ -39,6 +39,7 @@ import {
   getSupabaseAllTestimonials,
 } from "@/lib/supabase/queries";
 import { SITE_URL, SITE_NAME } from "@/lib/seo";
+import { BRAND_MISSPELLING_KEYWORDS } from "@/lib/data/brand-keywords";
 import { ALL_CONTENT_HUB_PAGES } from "@/lib/data/content-hubs";
 import {
   SIX_MONTH_KEYWORD_GUARDRAILS,
@@ -99,6 +100,7 @@ export async function GET() {
     `## Entity Identity`,
     ``,
     `- **Canonical Entity:** ${entity.name}`,
+    `- **Brand Search Aliases:** ${BRAND_MISSPELLING_KEYWORDS.join(" | ")}`,
     `- **Entity ID:** ${entity.entityId}`,
     `- **Type:** ${entity.type.join(", ")}`,
     `- **Founder:** ${entity.founder.name} (${entity.founder.url})`,

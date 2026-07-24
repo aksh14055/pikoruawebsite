@@ -28,6 +28,7 @@ import {
   PARTNER_SCHEMA_KNOWS_ABOUT,
   PORTFOLIO_PROJECT_NAMES,
 } from "@/lib/data/developer-partners";
+import { BRAND_MISSPELLING_KEYWORDS } from "@/lib/data/brand-keywords";
 import "./globals.css";
 
 const isVercelPreview =
@@ -66,6 +67,7 @@ export const metadata: Metadata = {
     "HNI property consultant Ahmedabad",
     "premium residential projects Ahmedabad",
     "Ahmedabad real estate developers",
+    ...BRAND_MISSPELLING_KEYWORDS,
     ...PARTNER_METADATA_KEYWORDS,
   ],
   metadataBase: new URL(SITE_URL),
@@ -123,6 +125,7 @@ const organizationSchema = {
       "@type": ["Organization", "RealEstateAgent", "LocalBusiness"],
       "@id": ENTITY_IDS.realEstateAgent,
       name: SITE_NAME,
+      alternateName: BRAND_MISSPELLING_KEYWORDS,
       url: SITE_URL,
       logo: absoluteUrl("/logo-icon.png"),
       image: absoluteUrl("/logo.png"),

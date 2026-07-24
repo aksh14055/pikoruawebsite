@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Phone } from "lucide-react";
-
-export const CALL_AGENT_NAME = "Maya";
-export const CALL_AGENT_PHONE_E164 = "+917948501161";
-export const CALL_AGENT_PHONE_DISPLAY = "+91 79485 01161";
+import {
+  CALL_AGENT_NAME,
+  CALL_AGENT_PHONE_E164,
+  CALL_AGENT_PHONE_DISPLAY,
+} from "@/lib/data/callAgent";
 
 function getGreeting(): string {
   const hour = new Date().getHours();

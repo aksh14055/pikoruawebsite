@@ -5,6 +5,10 @@ import { STATIC_PROPERTIES } from "../src/lib/data/properties";
 import { PROPERTY_TYPE_KEYWORD_CLUSTERS } from "../src/lib/data/keyword-clusters";
 import { ALL_CONTENT_HUB_PAGES } from "../src/lib/data/content-hubs";
 import { SIX_MONTH_PRIORITY_KEYWORDS } from "../src/lib/data/six-month-priority-keywords";
+import {
+  BRAND_MISSPELLING_CLUSTER,
+  BRAND_MISSPELLING_KEYWORDS,
+} from "../src/lib/data/brand-keywords";
 
 const STATIC_PUBLIC_ROUTES = [
   "/",
@@ -17,6 +21,7 @@ const STATIC_PUBLIC_ROUTES = [
   "/private-property-advisory-public-figures",
   "/privacy",
   "/properties",
+  "/property-types",
   "/terms",
   "/testimonials",
   "/ai/facts.json",
@@ -70,6 +75,32 @@ function main() {
   const blockIds = new Set<string>();
   const keywordClusterSlugs = new Set(Object.keys(PROPERTY_TYPE_KEYWORD_CLUSTERS));
   const priorityKeywords = new Set<string>();
+
+  if (BRAND_MISSPELLING_CLUSTER.canonicalPath !== "/") {
+    addFailure(failures, "Brand misspelling cluster must resolve to the canonical homepage.");
+  }
+
+  if (BRAND_MISSPELLING_KEYWORDS.length < 20) {
+    addFailure(
+      failures,
+      `Brand misspelling cluster is too thin. Expected at least 20 unique aliases; found ${BRAND_MISSPELLING_KEYWORDS.length}.`
+    );
+  }
+
+  const normalizedBrandAliases = new Set<string>();
+  for (const alias of BRAND_MISSPELLING_KEYWORDS) {
+    const normalizedAlias = alias.trim().toLowerCase();
+    if (!normalizedAlias) {
+      addFailure(failures, "Brand misspelling cluster contains an empty alias.");
+    } else if (normalizedBrandAliases.has(normalizedAlias)) {
+      addFailure(failures, `Brand misspelling alias is duplicated: ${alias}`);
+    }
+    normalizedBrandAliases.add(normalizedAlias);
+  }
+
+  if (!normalizedBrandAliases.has("pikora")) {
+    addFailure(failures, 'Brand misspelling cluster must include the observed query "pikora".');
+  }
 
   if (SIX_MONTH_PRIORITY_KEYWORDS.length !== 38) {
     addFailure(

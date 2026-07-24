@@ -20,6 +20,10 @@ import {
   SIX_MONTH_KEYWORD_GUARDRAILS,
   SIX_MONTH_PRIORITY_KEYWORDS,
 } from "@/lib/data/six-month-priority-keywords";
+import {
+  BRAND_MISSPELLING_CLUSTER,
+  BRAND_MISSPELLING_KEYWORDS,
+} from "@/lib/data/brand-keywords";
 
 export const revalidate = 86400;
 export const runtime = "nodejs";
@@ -114,6 +118,12 @@ export async function GET() {
         sameAs: entity.sameAs,
       },
       entity,
+      brandSearchAliases: {
+        ...BRAND_MISSPELLING_CLUSTER,
+        aliases: BRAND_MISSPELLING_KEYWORDS,
+        resolution:
+          "All aliases resolve to the canonical PIKORUA Realty entity and homepage; no typo-specific pages are used.",
+      },
       entityGraph: {
         realEstateAgent: getRealEstateAgentSchema(),
       },
