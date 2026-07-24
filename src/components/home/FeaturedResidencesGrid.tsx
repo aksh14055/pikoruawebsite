@@ -653,7 +653,10 @@ function StaticPropertyCard({ property, isExpanded, onToggle }: StaticPropertyCa
         <div className="space-y-2.5">
           <h3 className="font-display text-[13px] sm:text-[14px] lg:text-[15px] font-normal tracking-wide text-ivory group-hover:text-champagne-gold transition-colors duration-300 uppercase leading-snug">
             <span className="block">{property.configuration}</span>
-            {property.floor && (
+            {property.floor &&
+              !property.configuration
+                .toLocaleLowerCase("en-IN")
+                .includes(property.floor.toLocaleLowerCase("en-IN")) && (
               <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.floor}</span>
             )}
           </h3>

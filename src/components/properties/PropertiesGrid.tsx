@@ -621,7 +621,10 @@ function PropertyCard({ property, isExpanded, onToggle }: PropertyCardProps) {
         <div className="mb-2.5">
           <h2 className="font-display text-[14px] lg:text-[15px] font-normal text-ivory leading-tight group-hover:text-champagne-gold transition-colors duration-200 uppercase tracking-wider">
             <span className="block">{property.configuration}</span>
-            {property.floor && (
+            {property.floor &&
+              !property.configuration
+                .toLocaleLowerCase("en-IN")
+                .includes(property.floor.toLocaleLowerCase("en-IN")) && (
               <span className="block text-xs font-sans text-champagne-gold/90 mt-1.5 normal-case tracking-normal">{property.floor}</span>
             )}
           </h2>
