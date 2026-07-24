@@ -83,6 +83,11 @@ export function Footer({
                 </a>
               </li>
               <li>
+                <a href="tel:07948501161" className="hover:text-ivory transition-colors duration-150">
+                  07948501161
+                </a>
+              </li>
+              <li>
                 <a href={`tel:${CALL_AGENT_PHONE_E164}`} className="hover:text-ivory transition-colors duration-150">
                   {CALL_AGENT_PHONE_DISPLAY}
                 </a>
