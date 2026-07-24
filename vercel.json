@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/cron/index-now",
-      "schedule": "0 6 * * 1"
+      "schedule": "0 6 * * 1,3,5"
     },
     {
       "path": "/api/cron/auto-blog",
@@ -11,7 +11,7 @@
     },
     {
       "path": "/api/cron/url-inspection",
-      "schedule": "0 7 * * 1"
+      "schedule": "0 7 * * 1,3,5"
     }
   ]
 }

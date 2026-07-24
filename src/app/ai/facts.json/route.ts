@@ -135,6 +135,9 @@ export async function GET() {
       },
       landingPages,
       landingPageGroups: {
+        locationsIndex: absoluteUrl("/locations"),
+        propertyTypesIndex: absoluteUrl("/property-types"),
+        giftCityIndex: absoluteUrl("/gift-city"),
         locations: LOCATION_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
         propertyTypes: PROPERTY_TYPE_LANDING_PAGES.map((page) => absoluteUrl(page.href)),
         nriAdvisory: NRI_LANDING_PAGES.map((page) => absoluteUrl(page.href)),

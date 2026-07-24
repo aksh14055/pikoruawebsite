@@ -1,6 +1,6 @@
 /**
- * Weekly cron job: inspect a rotating sample of live URLs via Google Search
- * Console's URL Inspection API and email an alert only if something's
+ * 3x Weekly cron job (Monday, Wednesday, Friday): inspect a rotating sample of live URLs
+ * via Google Search Console's URL Inspection API and email an alert only if something's
  * actually wrong (not indexed, blocked, canonical mismatch, fetch failure).
  *
  * This is distinct from /api/cron/index-now (which only PUSHES "please
@@ -62,11 +62,11 @@ export async function GET(req: NextRequest) {
 
   const rotatingPool = [...geoUrls, ...propertyUrls, ...blogUrls];
 
-  // Deterministic weekly rotation — cycles through the whole pool over
+  // Deterministic 3x weekly rotation — cycles through the whole pool over
   // successive runs instead of re-checking the same URLs every time.
   const totalBatches = Math.max(1, Math.ceil(rotatingPool.length / ROTATING_BATCH_SIZE));
-  const weekIndex = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
-  const batchIndex = weekIndex % totalBatches;
+  const runIndex = Math.floor(Date.now() / (2 * 24 * 60 * 60 * 1000));
+  const batchIndex = runIndex % totalBatches;
   const rotatingBatch = rotatingPool.slice(
     batchIndex * ROTATING_BATCH_SIZE,
     batchIndex * ROTATING_BATCH_SIZE + ROTATING_BATCH_SIZE

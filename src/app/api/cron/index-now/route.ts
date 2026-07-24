@@ -1,5 +1,5 @@
 /**
- * Weekly cron job: submit all live site URLs to IndexNow.
+ * 3x Weekly cron job (Monday, Wednesday, Friday): submit all live site URLs to IndexNow.
  *
  * Vercel calls this route on the schedule defined in vercel.json.
  * Secured by CRON_SECRET which Vercel sets automatically and sends
@@ -7,7 +7,7 @@
  *
  * This is a safety net — the revalidate webhook already handles
  * per-URL submissions on content publish. This catches anything missed
- * and keeps the full sitemap fresh in Bing's index weekly.
+ * and keeps the full sitemap fresh in Bing's index 3 times a week.
  */
 
 import { NextRequest, NextResponse } from "next/server";
