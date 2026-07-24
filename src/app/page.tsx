@@ -62,6 +62,7 @@ export default async function HomePage() {
     ? [homeContent.heroHeadline1, homeContent.heroHeadline2, homeContent.heroHeadline3].filter(Boolean)
     : ["Luxury Real Estate Consultants", "in Ahmedabad", "for HNIs and NRIs."];
 
+  const heroVideo = homeContent?.heroVideoUrl || undefined;
   const heroPoster = "/images/hero-living.jpg";
   const stats = homeContent?.stats || undefined;
   const tours = homeContent?.virtualTours || undefined;
@@ -245,6 +246,7 @@ export default async function HomePage() {
         {/* bg video */}
         <HeroSection
           headlineLines={heroLines}
+          videoUrl={heroVideo}
           posterUrl={heroPoster}
           mobilePosterUrl="/images/hero-mobile.jpg"
         />
