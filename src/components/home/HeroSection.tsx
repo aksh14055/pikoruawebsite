@@ -81,15 +81,6 @@ export function HeroSection({
         </h1>
       </div>
 
-      <div
-        className="absolute bottom-8 right-8 flex flex-col items-center gap-2.5 opacity-100 lg:right-12"
-        aria-hidden="true"
-      >
-        <div className="h-10 w-px animate-[scrollCue_2s_ease-in-out_infinite] bg-gradient-to-b from-champagne-gold/50 to-transparent" />
-        <span className="origin-center translate-x-4 rotate-90 font-sans text-[9px] uppercase tracking-[0.3em] text-ivory/25">
-          Scroll
-        </span>
-      </div>
     </section>
   );
 }
