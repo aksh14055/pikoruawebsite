@@ -16,13 +16,13 @@ const PURPOSES: { id: LeadPurpose; label: string; sub: string }[] = [
 ];
 
 const CATEGORIES: { id: ResidentialCategory; label: string }[] = [
-  { id: "apartment",              label: "4 BHK, 5BHK apartment" },
-  { id: "penthouse",              label: "penthouse/ duplex" },
-  { id: "villa",                  label: "Villa/ Bunglow" },
+  { id: "apartment",              label: "4 BHK or 5 BHK Apartment" },
+  { id: "penthouse",              label: "Penthouse or Duplex" },
+  { id: "villa",                  label: "Villa or Bungalow" },
   { id: "plot",                   label: "Premium Plot" },
-  { id: "residential-investment", label: "Investment" },
-  { id: "office",                 label: "office" },
-  { id: "showroom",               label: "showroom" },
+  { id: "residential-investment", label: "Investment Property" },
+  { id: "office",                 label: "Office" },
+  { id: "showroom",               label: "Showroom" },
 ];
 
 const LOCATION_OPTIONS: { id: LocationSlug; label: string }[] = [
@@ -613,9 +613,9 @@ export function DiscoveryForm({ initialPurpose = "", id = "discovery" }: Discove
                   id={`${uid}-time`}
                   value={form.preferredCallbackTime}
                   onChange={(e) => set("preferredCallbackTime", e.target.value)}
-                  className="w-full px-4 py-3 pr-10 text-sm font-sans text-ivory bg-soft-black border border-white/[0.10] focus:border-champagne-gold/55 outline-none transition-colors duration-150 appearance-none cursor-pointer"
+                  className="mobile-friendly-select w-full px-4 py-3 pr-10 text-sm font-sans text-ivory bg-soft-black border border-white/[0.10] focus:border-champagne-gold/55 outline-none transition-colors duration-150 appearance-none cursor-pointer"
                 >
-                  <option value="">Select a time window</option>
+                  <option value="">Select a Time Window</option>
                   {CALLBACK_SLOTS.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}

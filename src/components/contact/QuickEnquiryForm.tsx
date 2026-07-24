@@ -137,15 +137,16 @@ export function QuickEnquiryForm() {
       <Field label="Preferred callback time" error={undefined}>
         <div className="relative">
           <select
+            aria-label="Preferred callback time"
             value={form.preferredCallbackTime}
             onChange={(e) => set("preferredCallbackTime", e.target.value)}
-            className="w-full px-4 py-3 bg-soft-black border border-white/[0.10] text-ivory text-sm font-sans rounded-sm focus:outline-none focus:border-champagne-gold/55 transition-colors duration-200 appearance-none cursor-pointer pr-10"
+            className="mobile-friendly-select w-full px-4 py-3 bg-soft-black border border-white/[0.10] text-ivory text-sm font-sans rounded-sm focus:outline-none focus:border-champagne-gold/55 transition-colors duration-200 appearance-none cursor-pointer pr-10"
           >
-            <option value="">Select a time window</option>
+            <option value="">Select a Time Window</option>
             <option value="Morning (9 AM – 12 PM)">Morning (9 AM – 12 PM)</option>
             <option value="Afternoon (12 PM – 4 PM)">Afternoon (12 PM – 4 PM)</option>
             <option value="Evening (5 PM – 8 PM)">Evening (5 PM – 8 PM)</option>
-            <option value="Flexible / Any time">Flexible / Any time</option>
+            <option value="Flexible / Any time">Flexible / Anytime</option>
           </select>
           <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-champagne-gold/60">
             <svg

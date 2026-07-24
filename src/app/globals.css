@@ -1632,6 +1632,39 @@ textarea,
   color: inherit;
 }
 
+/*
+ * Native selects inside dialogs need mobile-specific sizing. A 16px font
+ * prevents iOS Safari zoom, while the 44px target and stable option palette
+ * keep Android and iOS pickers usable inside dark popups.
+ */
+.popup-mobile-surface {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.popup-mobile-surface select,
+.mobile-friendly-select {
+  max-width: 100%;
+  color-scheme: dark;
+  touch-action: manipulation;
+  text-overflow: ellipsis;
+}
+
+.popup-mobile-surface select option,
+.mobile-friendly-select option {
+  color: #f5f0e8;
+  background-color: #111;
+}
+
+@media (max-width: 767px) {
+  .popup-mobile-surface select,
+  .mobile-friendly-select {
+    min-height: 44px;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+}
+
 /* Block image dragging */
 img,
 svg {

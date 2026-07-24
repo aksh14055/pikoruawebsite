@@ -30,10 +30,10 @@ export function DiscoveryPanel() {
               className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-normal text-lux-black leading-tight uppercase tracking-wider mb-6"
             >
               Tell us what you seek.<br />
-              <span className="text-lux-black/35">We'll curate the rest.</span>
+              <span className="text-lux-black/35">We&rsquo;ll curate the rest.</span>
             </h2>
             <p className="text-lux-black/50 font-sans text-base leading-relaxed max-w-md">
-              Answer a few thoughtful questions. We'll match you with residences
+              Answer a few thoughtful questions. We&rsquo;ll match you with residences
               that fit — not a list, but a shortlist worth your time.
             </p>
           </div>

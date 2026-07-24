@@ -449,7 +449,7 @@ export function ProgrammaticPageTemplate({
               Need a curated shortlist?
             </h2>
             <p className="font-sans text-sm sm:text-base text-ivory/65 leading-relaxed max-w-xl mx-auto">
-              PIKORUA Realty's advisory team maintains private access to
+              PIKORUA Realty&rsquo;s advisory team maintains private access to
               off-market inventory in {page.combo.location?.label}. Share your
               requirements — we respond within 24 hours.
             </p>

@@ -38,13 +38,13 @@ interface FieldError {
 }
 
 const CATEGORIES = [
-  { value: "apartment", label: "4 BHK, 5BHK apartment" },
-  { value: "penthouse", label: "penthouse/ duplex" },
-  { value: "villa", label: "Villa/ Bunglow" },
+  { value: "apartment", label: "4 BHK or 5 BHK Apartment" },
+  { value: "penthouse", label: "Penthouse or Duplex" },
+  { value: "villa", label: "Villa or Bungalow" },
   { value: "plot", label: "Premium Plot" },
-  { value: "residential-investment", label: "Investment" },
-  { value: "office", label: "office" },
-  { value: "showroom", label: "showroom" },
+  { value: "residential-investment", label: "Investment Property" },
+  { value: "office", label: "Office" },
+  { value: "showroom", label: "Showroom" },
 ];
 
 const BUDGETS = [
@@ -225,10 +225,10 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[8001] flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-[8001] flex items-start sm:items-center justify-center p-4 overflow-y-auto pointer-events-none"
           >
             <div
-              className="relative w-full max-w-[420px] pointer-events-auto bg-soft-black border border-white/[0.06] rounded-md overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
+              className="popup-mobile-surface relative w-full max-w-[420px] max-h-[calc(100dvh-2rem)] pointer-events-auto bg-soft-black border border-white/[0.06] rounded-md overflow-x-hidden overflow-y-auto shadow-[0_40px_100px_rgba(0,0,0,0.85)]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
@@ -309,6 +309,8 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                       <div className="relative">
                         <select
                           id="popup-category"
+                          aria-label="Property type"
+                          aria-invalid={Boolean(fieldErrors.category?.length)}
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           className={cn(
@@ -316,7 +318,7 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                             !category ? "text-ivory/40" : "text-ivory"
                           )}
                         >
-                          <option value="" disabled>What are you looking for?</option>
+                          <option value="" disabled>Select a Property Type</option>
                           {CATEGORIES.map((c) => (
                             <option key={c.value} value={c.value}>{c.label}</option>
                           ))}
@@ -332,6 +334,8 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                       <div className="relative">
                         <select
                           id="popup-budget"
+                          aria-label="Budget range in Indian rupees"
+                          aria-invalid={Boolean(fieldErrors.budgetBand?.length)}
                           value={budgetBand}
                           onChange={(e) => setBudgetBand(e.target.value)}
                           className={cn(
@@ -339,7 +343,7 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
                             !budgetBand ? "text-ivory/40" : "text-ivory"
                           )}
                         >
-                          <option value="" disabled>What budget are you comfortable with? (INR)</option>
+                          <option value="" disabled>Select Your Budget (INR)</option>
                           {BUDGETS.map((b) => (
                             <option key={b.value} value={b.value}>{b.label}</option>
                           ))}

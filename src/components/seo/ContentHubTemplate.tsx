@@ -256,7 +256,7 @@ export function ContentHubTemplate({ page, relatedPages }: ContentHubTemplatePro
                   Curated Property Shortlists
                 </h2>
                 <p className="font-sans text-xs sm:text-sm text-ivory/60 mt-1">
-                  Explore matching properties in PIKORUA's verified database
+                  Explore matching properties in PIKORUA&rsquo;s verified database
                 </p>
               </div>
               <div className="flex flex-wrap gap-2.5 pt-2">

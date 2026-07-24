@@ -138,7 +138,7 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
         <div className="space-y-6">
           {/* INR Value Selector */}
           <div>
-            <label className="block text-[10px] font-sans uppercase tracking-wider text-ivory/50 mb-3">
+            <label htmlFor="nri-home-currency" className="block text-[10px] font-sans uppercase tracking-wider text-ivory/50 mb-3">
               Property Value (INR)
             </label>
             <div className="relative">
@@ -179,9 +179,10 @@ export function NriCurrencyConverter({ initialRates, initialIsLive = false }: Nr
             </label>
             <div className="relative">
               <select
+                id="nri-home-currency"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="w-full bg-lux-black border border-white/[0.08] rounded-sm px-4 py-3 pr-10 text-sm font-sans text-white focus:border-champagne-gold/60 focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 appearance-none cursor-pointer"
+                className="mobile-friendly-select w-full bg-lux-black border border-white/[0.08] rounded-sm px-4 py-3 pr-10 text-sm font-sans text-white focus:border-champagne-gold/60 focus:outline-none focus:ring-1 focus:ring-champagne-gold/30 appearance-none cursor-pointer"
               >
                 {Object.keys(FALLBACK_EXCHANGE_RATES).map((key) => (
                   <option key={key} value={key} className="bg-lux-black text-white">

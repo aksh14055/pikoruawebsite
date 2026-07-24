@@ -1542,7 +1542,7 @@ export default function AdminDashboard({
           <option value="underline">Underline</option>
           <option value="strike">Strike</option>
           <option value="uppercase">Uppercase</option>
-          <option value="tracking">Letter Spac</option>
+          <option value="tracking">Letter Spacing</option>
         </select>
       </div>
     );
@@ -3339,7 +3339,7 @@ export default function AdminDashboard({
       {selectedLead && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedLead(null)} />
-          <div className="relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90vh] overflow-y-auto z-10 shadow-2xl">
+          <div className="popup-mobile-surface relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90dvh] overflow-y-auto z-10 shadow-2xl">
             <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6">
               <div>
                 <h3 className="font-display text-base tracking-widest uppercase text-white">
@@ -3605,7 +3605,7 @@ export default function AdminDashboard({
       {isPropertyModalOpen && editingProperty && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsPropertyModalOpen(false)} />
-          <div className="relative w-full max-w-3xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90vh] overflow-y-auto z-10 shadow-2xl">
+          <div className="popup-mobile-surface relative w-full max-w-3xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90dvh] overflow-y-auto z-10 shadow-2xl">
             <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6">
               <h3 className="font-display text-base tracking-widest uppercase text-white">
                 {editingProperty.name ? `Edit: ${editingProperty.name}` : "Add New Curated Property"}
@@ -3620,7 +3620,7 @@ export default function AdminDashboard({
 
             <form onSubmit={handleSaveProperty} className="space-y-6 text-xs font-sans">
               {/* Row 1 */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Property Name*</label>
                   <input
@@ -3649,7 +3649,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Row 2 */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Category*</label>
                   <select
@@ -3717,7 +3717,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Row 3 */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Configuration*</label>
                   <input
@@ -3757,7 +3757,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Row 4 */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Development Status*</label>
                   <select
@@ -3848,7 +3848,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Highlights & Description */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">
                     Property Description (One paragraph per line)
@@ -4143,7 +4143,7 @@ export default function AdminDashboard({
       {isTestimonialModalOpen && editingTestimonial && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsTestimonialModalOpen(false)} />
-          <div className="relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90vh] overflow-y-auto z-10 shadow-2xl">
+          <div className="popup-mobile-surface relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90dvh] overflow-y-auto z-10 shadow-2xl">
             <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6">
               <h3 className="font-display text-base tracking-widest uppercase text-white">
                 {editingTestimonial.id ? "Edit Review" : "Add Client Testimonial"}
@@ -4157,7 +4157,7 @@ export default function AdminDashboard({
             </div>
 
             <form onSubmit={handleSaveTestimonial} className="space-y-5 text-xs font-sans">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Client Name / Initial*</label>
                   <input
@@ -4194,7 +4194,7 @@ export default function AdminDashboard({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-[9px] uppercase tracking-wider text-ivory/40">Source</label>
                   <select
@@ -4679,7 +4679,7 @@ export default function AdminDashboard({
       {isGeneralFaqModalOpen && editingGeneralFaq && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsGeneralFaqModalOpen(false)} />
-          <div className="relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 z-10 shadow-2xl">
+          <div className="popup-mobile-surface relative w-full max-w-xl bg-soft-black border border-white/[0.08] rounded-lg p-6 sm:p-8 max-h-[90dvh] overflow-y-auto z-10 shadow-2xl">
             <div className="flex justify-between items-start border-b border-white/[0.06] pb-4 mb-6 font-sans">
               <h3 className="font-display text-base tracking-widest uppercase text-white">
                 {editingGeneralFaq.id && !editingGeneralFaq.id.startsWith("0.") ? "Edit General FAQ" : "Add General FAQ"}

@@ -125,7 +125,7 @@ export function PropertyEnquiryForm({
         />
 
         <div>
-          <label className="block text-[10px] font-sans uppercase tracking-[0.12em] text-ivory/50 mb-1.5">
+          <label htmlFor="property-callback-time" className="block text-[10px] font-sans uppercase tracking-[0.12em] text-ivory/50 mb-1.5">
             Your Name <span className="text-champagne-gold">*</span>
           </label>
           <input
@@ -186,15 +186,16 @@ export function PropertyEnquiryForm({
           </label>
           <div className="relative">
             <select
+              id="property-callback-time"
               value={form.preferredCallbackTime}
               onChange={(e) => set("preferredCallbackTime", e.target.value)}
-              className="w-full px-4 py-3 bg-lux-black border border-white/[0.08] text-ivory text-xs font-sans rounded-sm focus:outline-none focus:border-champagne-gold/50 transition-colors duration-200 appearance-none cursor-pointer pr-10"
+              className="mobile-friendly-select w-full px-4 py-3 bg-lux-black border border-white/[0.08] text-ivory text-xs font-sans rounded-sm focus:outline-none focus:border-champagne-gold/50 transition-colors duration-200 appearance-none cursor-pointer pr-10"
             >
-              <option value="">Select a time window</option>
+              <option value="">Select a Time Window</option>
               <option value="Morning (9 AM – 12 PM)">Morning (9 AM – 12 PM)</option>
               <option value="Afternoon (12 PM – 4 PM)">Afternoon (12 PM – 4 PM)</option>
               <option value="Evening (5 PM – 8 PM)">Evening (5 PM – 8 PM)</option>
-              <option value="Flexible / Any time">Flexible / Any time</option>
+              <option value="Flexible / Any time">Flexible / Anytime</option>
             </select>
             <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-champagne-gold/60">
               <svg
