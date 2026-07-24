@@ -79,12 +79,12 @@ function matchProperties(parsed: ParsedCombo) {
     // Type match
     if (type && p.category) {
       const typeMap: Record<string, string[]> = {
-        "luxury-flats": ["apartment"],
-        "penthouses": ["penthouse"],
-        "villas": ["villa", "bungalow"],
-        "duplex": ["duplex"],
-        "office-space": ["commercial-office", "office"],
-        "retail-space": ["commercial-retail", "retail"],
+        "luxury-flats": ["apartment", "condo", "condominium"],
+        "penthouses": ["penthouse", "penthouse-suite"],
+        "villas": ["villa", "bungalow", "townhouse", "townhome", "row-house", "estate"],
+        "duplex": ["duplex", "duplex-condo"],
+        "office-space": ["commercial-office", "office", "office-condo"],
+        "retail-space": ["commercial-retail", "retail", "showroom"],
         "commercial-plots": ["commercial-plot", "plot"],
         "warehouse": ["warehouse"],
       };

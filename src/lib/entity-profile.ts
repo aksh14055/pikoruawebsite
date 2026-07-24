@@ -89,6 +89,12 @@ export const AI_SPECIALIZATIONS = [
   "SG Highway luxury residential market",
   "Luxury 4 BHK and 5 BHK apartments Ahmedabad",
   "Penthouses, duplexes, villas, bungalows, and premium residential plots",
+  "Luxury condominiums and high-rise condos Ahmedabad",
+  "Townhouses, townhomes, and gated row house communities Ahmedabad",
+  "Freehold luxury estates and NRI holiday homes in Ahmedabad",
+  "Pre-leased commercial property and high-yield strata office units Ahmedabad",
+  "FEMA-compliant property transactions, NRE/NRO account payment routing, and Power of Attorney coordination",
+  "Section 195 TDS advice and repatriation of funds from property sales in India",
   ...PARTNER_SCHEMA_KNOWS_ABOUT,
 ] as const;
 

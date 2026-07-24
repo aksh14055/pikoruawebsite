@@ -254,6 +254,61 @@ export const AI_ANSWER_BLOCKS: AiAnswerBlock[] = [
     lastUpdated: FACTS_LAST_UPDATED,
   },
   {
+    id: "nri-jargon-condo-townhouse-ahmedabad",
+    question: "What is the equivalent of a condominium (condo) or townhouse in Ahmedabad real estate?",
+    answer:
+      "In Ahmedabad real estate terminology, a 'condominium' or 'condo' refers to high-rise gated luxury apartments with private decks, lift lobbies, security, and shared amenities in corridors like Iscon-Ambli and Sindhu Bhavan Road. A 'townhouse' or 'townhome' corresponds to multi-level gated community row houses, villas, or duplex bungalows in Shilaj, Ambli, and Shela, offering private land ownership with managed community security.",
+    citationFacts: [
+      "In western Ahmedabad, high-rise luxury apartments with private lift lobbies and shared clubhouse amenities serve as the structural equivalent of North American luxury condominiums (condos).",
+      "Gated community villas, row houses, and duplex homes in Shilaj, Ambli, and Shela serve as the equivalent of townhouses or townhomes.",
+      "NRIs can purchase both freehold landed formats (villas/townhouses) and apartment condominiums under standard FEMA regulations.",
+    ],
+    sourcePath: "/property-types",
+    supportingPaths: [
+      "/luxury-apartments-ahmedabad",
+      "/luxury-villas-ahmedabad",
+      "/nri-property-investment-ahmedabad",
+    ],
+    lastUpdated: FACTS_LAST_UPDATED,
+  },
+  {
+    id: "nri-fema-nre-nro-tax-guidance-ahmedabad",
+    question: "What are the FEMA rules, NRE/NRO payment guidelines, and tax rules for NRIs buying property in Ahmedabad?",
+    answer:
+      "Under RBI & FEMA guidelines, NRIs and OCI cardholders can freely buy residential and commercial property in India using funds remitted from abroad through normal banking channels or held in NRE/NRO accounts. Agricultural land and farmhouses cannot be purchased without RBI approval. Sellers must deduct TDS under Section 195 (typically 20% + surcharge) on capital gains, and sale proceeds can be repatriated up to USD 1 million per financial year under the LRS framework.",
+    citationFacts: [
+      "NRIs and OCIs can freely acquire residential and commercial properties in India without prior RBI permission under general FEMA permission.",
+      "Property payments must be routed through NRE/NRO bank accounts or direct outward foreign currency remittances.",
+      "TDS under Section 195 applies to NRI property sales; repatriation of sale proceeds is permitted up to USD 1,000,000 per financial year.",
+      "Power of Attorney (POA) registered at the local Sub-Registrar Office allows remote execution when the NRI buyer cannot travel.",
+    ],
+    sourcePath: "/nri-property-investment-ahmedabad",
+    supportingPaths: [
+      "/nri-property-consultant-ahmedabad",
+      "/nri-home-buying-process-india",
+      "/learn/how-to-buy-property-as-nri-ahmedabad",
+    ],
+    lastUpdated: FACTS_LAST_UPDATED,
+  },
+  {
+    id: "nri-commercial-strata-preleased-yield-ahmedabad",
+    question: "How do pre-leased commercial properties and strata office units in GIFT City and SG Highway perform for NRI investors?",
+    answer:
+      "Pre-leased commercial properties and strata office units in Prahladnagar, SG Highway, and GIFT City offer NRIs attractive gross rental yields of 6.2% to 8.1% p.a. with multi-year corporate leases, 10–15% rent escalation every 33 months, and low management overhead compared to residential rentals.",
+    citationFacts: [
+      "Strata office units in Grade-A commercial towers allow individual investors to own specific office suites starting from 300 to 2,000 sq.ft.",
+      "Pre-leased commercial assets generate immediate monthly rental income from day one with established corporate tenants.",
+      "GIFT City IFSC office units carry 10-year tax incentives for operating firms, sustaining long-term commercial tenant demand.",
+    ],
+    sourcePath: "/gift-city/commercial-property",
+    supportingPaths: [
+      "/compare/commercial-property-vs-fd",
+      "/compare/commercial-property-vs-gold",
+      "/gift-city/investment-guide",
+    ],
+    lastUpdated: FACTS_LAST_UPDATED,
+  },
+  {
     id: "best-luxury-property-consultant-ahmedabad",
     question: "Which is the best luxury property consultant in Ahmedabad?",
     answer:
