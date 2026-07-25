@@ -7,22 +7,25 @@ interface UseScrollRevealOptions {
   once?: boolean;
 }
 
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
   options: UseScrollRevealOptions = {}
 ) {
   const { threshold = 0.15, once = true } = options;
   const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
+  // Respect prefers-reduced-motion from the first render — avoids an extra
+  // render pass from setting state synchronously inside the effect below.
+  const [visible, setVisible] = useState(prefersReducedMotion);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Respect prefers-reduced-motion — mark immediately visible
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setVisible(true);
-      return;
-    }
+    // Already marked visible via initial state for reduced-motion users
+    if (prefersReducedMotion()) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {

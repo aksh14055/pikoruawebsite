@@ -798,7 +798,7 @@ const LEGACY_LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Luxury Property near Rajpath Club",
     description:
       "Premium residences and luxury properties near Rajpath Club — Ahmedabad's most prestigious social club address on SG Highway.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     intro:
       "Rajpath Club on SG Highway is Ahmedabad's most prestigious social address. Properties within 1–2 km of the club carry a distinct prestige premium, attracting HNI buyers who value both lifestyle access and the social cachet of a Rajpath Club-adjacent address.",
     marketSignals: [
@@ -1186,7 +1186,7 @@ const LEGACY_LOCATION_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Luxury Property in Satellite",
     description:
       "Curated luxury apartments and premium homes in Satellite, Ahmedabad — one of western Ahmedabad's most well-connected and established residential neighbourhoods.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     intro:
       "Satellite is a central-western Ahmedabad residential neighbourhood with strong connectivity to CG Road, Prahlad Nagar, and the SG Highway belt. It houses a mix of premium apartments, established bungalows, and well-serviced residential buildings that attract both end-users and investment buyers.",
     marketSignals: [
@@ -1304,7 +1304,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Luxury Apartments in Ahmedabad",
     description:
       "Curated luxury 4 BHK and 5 BHK apartments in Ahmedabad across Iscon-Ambli, Sindhu Bhavan Road, Thaltej, and SG Highway. Private HNI/NRI advisory.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     categories: ["apartment"],
     matchKeywords: [
       "apartment",
@@ -1597,7 +1597,7 @@ export const PROPERTY_TYPE_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Real Estate Consultant in Ahmedabad",
     description:
       "Trusted real estate consultant in Ahmedabad for luxury buyers, NRIs, investors, sellers, and families seeking private advisory.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     categories: BROAD_LUXURY_CATEGORIES,
     matchKeywords: [
       "best real estate consultant Ahmedabad",
@@ -2945,7 +2945,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Ahmedabad Property for NRIs in USA",
     description:
       "Guide for USA-based NRIs buying property in Ahmedabad, covering remote shortlisting, time zones, POA, NRE/NRO payments, and luxury corridors.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     categories: ["apartment", "penthouse", "villa", "plot", "investment"],
     matchKeywords: [
       "buy property in Ahmedabad from USA",
@@ -3331,7 +3331,7 @@ export const NRI_LANDING_PAGES: GeoLandingPage[] = [
     h1: "Ahmedabad Property for NRIs in Singapore",
     description:
       "Singapore NRI guide for Ahmedabad property buying, covering SGD budgets, time-zone calls, POA, virtual tours, and luxury corridors.",
-    heroImage: "/properties/swati-senor/swati-senor-1.jpg",
+    heroImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     categories: ["apartment", "penthouse", "villa", "plot", "investment"],
     matchKeywords: [
       "Ahmedabad property for NRIs in Singapore",

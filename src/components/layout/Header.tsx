@@ -34,10 +34,6 @@ const PROPERTY_ROOT_PATHS = [
   "/luxury-plots-ahmedabad",
   "/investment-property-ahmedabad",
   "/commercial-property-ahmedabad",
-  "/sg-highway-properties",
-  "/sindhu-bhavan-road-properties",
-  "/iscon-ambli-road-properties",
-  "/thaltej-properties",
 ];
 
 const NRI_ROOT_PATHS = [

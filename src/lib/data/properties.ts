@@ -143,7 +143,7 @@ const ALL_STATIC_PROPERTIES: StaticProperty[] = [
     coverImage: "/properties/swati-senor/swati-senor-2-hall.jpg",
     images: [
       "/properties/swati-senor/swati-senor-2-hall.jpg",
-      "/properties/swati-senor/swati-senor-3-daining-area.jpg",
+      "/properties/swati-senor/swati-senor-3-dining-area.jpg",
       "/properties/swati-senor/swati-senor-4-gallery.jpg",
       "/properties/swati-senor/swati-senor-5-bedroom.jpg",
       "/properties/swati-senor/swati-senor-6-pool.jpg",
