@@ -9,12 +9,9 @@ import { getCallAgentContext } from "@/lib/callAgentContext";
 import { CALL_AGENT_NAME } from "@/lib/data/callAgent";
 import { CallAgentPopup } from "./CallAgentPopup";
 
-// Auto-open the popup once per browsing session — either once the visitor
-// has scrolled well into the page, or the moment they show exit intent
-// (cursor heading for the tab/URL bar), whichever happens first.
-const AUTO_SHOWN_KEY = "pikorua_call_agent_auto_shown";
-const SCROLL_TRIGGER_RATIO = 0.6;
-// Fires earlier than the auto-open, as a quieter "notice me" nudge.
+// Quiet "notice me" nudge on the FAB button once the visitor has scrolled
+// a bit into the page. The popup itself only opens on an explicit click —
+// no auto-open triggers.
 const PULSE_TRIGGER_RATIO = 0.25;
 
 export function CallAgentWidget() {
@@ -23,20 +20,10 @@ export function CallAgentWidget() {
   const [showLabel, setShowLabel] = useState(false);
   const [pulsed, setPulsed] = useState(false);
   const hasPulsed = useRef(false);
-  const hasAutoTriggered = useRef(false);
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) return;
     if (typeof window === "undefined") return;
-
-    const autoOpenDone = Boolean(sessionStorage.getItem(AUTO_SHOWN_KEY));
-
-    const triggerAutoOpen = () => {
-      if (autoOpenDone || hasAutoTriggered.current) return;
-      hasAutoTriggered.current = true;
-      sessionStorage.setItem(AUTO_SHOWN_KEY, "1");
-      setVisible(true);
-    };
 
     const onScroll = () => {
       const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -48,21 +35,11 @@ export function CallAgentWidget() {
         setPulsed(true);
         setTimeout(() => setPulsed(false), 2200);
       }
-
-      if (scrolled >= SCROLL_TRIGGER_RATIO) triggerAutoOpen();
-    };
-
-    // Exit intent — cursor leaving through the top of the viewport, headed
-    // for the tab/URL bar, is the classic "about to leave" signal.
-    const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) triggerAutoOpen();
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("mouseleave", onMouseLeave);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [pathname]);
 
