@@ -143,6 +143,7 @@ async function runSideEffects(
 
   await Promise.allSettled([
     notifyTeamEmail(serverEnv, leadId, source, data),
+    sendLeadToBrevo(serverEnv, leadId, source, data),
     pushToCrm(serverEnv, leadId, data),
   ]);
 }
@@ -283,6 +284,198 @@ async function notifyTeamEmail(
   `;
 
   await sendNotificationEmail({ subject, html: htmlContent, to: serverEnv.TEAM_NOTIFICATION_EMAIL });
+}
+
+async function sendLeadToBrevo(
+  serverEnv: ReturnType<typeof getServerEnv>,
+  leadId: string,
+  source: string,
+  data: Record<string, unknown>
+) {
+  if (!serverEnv.BREVO_API_KEY) return;
+
+  // Map source to human-readable form type
+  const SOURCE_LABELS: Record<string, string> = {
+    discovery: "CONTENT FORM",
+    enquiry: "PROPERTY ENQUIRY FORM",
+    callback: "CALLBACK REQUEST",
+    consultation: "CONSULTATION BOOKING",
+    contact: "CONTACT FORM",
+    whatsapp: "WHATSAPP",
+  };
+
+  const formType = SOURCE_LABELS[source] || source.toUpperCase();
+
+  // Budget and location label maps
+  const BUDGET_LABELS: Record<string, string> = {
+    "1-2cr": "₹1 Cr – ₹2 Cr",
+    "3-4cr": "₹3 Cr – ₹4 Cr",
+    "5-7cr": "₹5 Cr – ₹7 Cr",
+    "8-10cr": "₹8 Cr – ₹10 Cr",
+    "10cr-plus": "₹10 Cr and above",
+  };
+
+  const LOCATION_LABELS: Record<string, string> = {
+    "iskon-ambli": "Iskon–Ambli",
+    "sindhu-bhavan": "Sindhu Bhavan",
+    "thaltej": "Thaltej",
+    "shilaj": "Shilaj",
+    "vaishno-devi": "Vaishno Devi",
+    "sg-highway": "SG Highway",
+    "other": "Open to suggestions",
+  };
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    "apartment": "Apartment",
+    "penthouse": "Penthouse",
+    "villa": "Villa",
+    "bungalow": "Bungalow",
+    "plot": "Premium Plot",
+    "residential-investment": "Residential Investment",
+  };
+
+  // Format subject with PIKORUA WEB prefix
+  const subject = `PIKORUA WEB — ${formType} Lead: ${data.name ?? "Unknown"}`;
+
+  // Build formatted rows for email
+  const rows: { label: string; value: string }[] = [
+    { label: "Lead ID", value: leadId },
+    { label: "Source", value: formType },
+    { label: "Name", value: (data.name as string) || "Unknown" },
+    { label: "Phone", value: (data.phone as string) || "N/A" },
+  ];
+
+  if (data.whatsapp) {
+    rows.push({ label: "WhatsApp", value: data.whatsapp as string });
+  }
+  if (data.email) {
+    rows.push({ label: "Email", value: data.email as string });
+  }
+
+  const rawCategory = data.category as string | undefined;
+  if (rawCategory) {
+    const formattedCategory = CATEGORY_LABELS[rawCategory] || rawCategory;
+    rows.push({ label: "Property Type", value: formattedCategory });
+  }
+
+  const rawBudget = (data.budgetBand || data.budget_band) as string | undefined;
+  if (rawBudget) {
+    const formattedBudget = BUDGET_LABELS[rawBudget] || rawBudget;
+    rows.push({ label: "Budget", value: formattedBudget });
+  }
+
+  let formattedLocation: string | undefined = undefined;
+  const rawLocation = data.locations || data.location;
+  if (rawLocation) {
+    if (Array.isArray(rawLocation)) {
+      formattedLocation = rawLocation.map((loc) => LOCATION_LABELS[loc] || loc).join(", ");
+    } else {
+      formattedLocation = LOCATION_LABELS[rawLocation as string] || (rawLocation as string);
+    }
+    rows.push({ label: "Location Preference", value: formattedLocation });
+  }
+
+  if (data.purpose) {
+    rows.push({ label: "Purpose", value: (data.purpose as string).charAt(0).toUpperCase() + (data.purpose as string).slice(1) });
+  }
+
+  if (data.timeline) {
+    rows.push({ label: "Timeline", value: (data.timeline as string).replace(/-/g, " ").charAt(0).toUpperCase() + (data.timeline as string).slice(1).replace(/-/g, " ") });
+  }
+
+  if (data.preferredCallbackTime || data.preferred_callback_time) {
+    const callbackTime = (data.preferredCallbackTime || data.preferred_callback_time) as string;
+    rows.push({ label: "Preferred Callback Time", value: callbackTime });
+  }
+
+  if (data.propertyRef || data.property_ref) {
+    const propRef = (data.propertyRef || data.property_ref) as string;
+    rows.push({ label: "Property Reference", value: propRef });
+  }
+
+  if (data.preferredDate || data.preferred_date) {
+    const prefDate = (data.preferredDate || data.preferred_date) as string;
+    rows.push({ label: "Preferred Date", value: prefDate });
+  }
+
+  if (data.preferredTimeSlot || data.preferred_time_slot) {
+    const timeSlot = (data.preferredTimeSlot || data.preferred_time_slot) as string;
+    rows.push({ label: "Preferred Time Slot", value: timeSlot });
+  }
+
+  if (data.message) {
+    rows.push({ label: "Message", value: data.message as string });
+  }
+
+  if (data.notes) {
+    rows.push({ label: "Notes", value: data.notes as string });
+  }
+
+  if (data.interest) {
+    rows.push({ label: "Interest", value: data.interest as string });
+  }
+
+  // Build HTML table rows
+  const tableRowsHtml = rows
+    .map((row, index) => {
+      const isEven = index % 2 === 0;
+      const bg = isEven ? "background-color: #f5f5f5;" : "background-color: #ffffff;";
+      return `
+        <tr style="${bg}">
+          <td style="padding: 12px 15px; font-weight: 600; width: 160px; font-size: 13px; border-bottom: 1px solid #e8e8e8; color: #333333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${row.label}:</td>
+          <td style="padding: 12px 15px; font-size: 13px; border-bottom: 1px solid #e8e8e8; color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${row.value}</td>
+        </tr>
+      `;
+    })
+    .join("");
+
+  // Build HTML email
+  const htmlContent = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #0B0B0B; color: #C8A45D; padding: 20px; border-radius: 5px 5px 0 0; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: 700;">PIKORUA REALTY</h1>
+        <p style="margin: 8px 0 0 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">New Lead Submission</p>
+      </div>
+
+      <div style="background-color: #ffffff; padding: 20px; border-radius: 0 0 5px 5px; border: 1px solid #e8e8e8; border-top: none;">
+        <p style="margin: 0 0 15px 0; font-size: 14px; color: #555555;">
+          <strong>Source:</strong> <span style="color: #C8A45D; font-weight: 600;">${formType}</span>
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e8e8e8;">
+          ${tableRowsHtml}
+        </table>
+
+        <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #C8A45D; margin-top: 20px;">
+          <p style="margin: 0; font-size: 12px; color: #666666; font-style: italic;">
+            This lead was submitted via PIKORUA website. Lead ID: ${leadId}
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  try {
+    await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": serverEnv.BREVO_API_KEY,
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: {
+          name: serverEnv.BREVO_SENDER_NAME,
+          email: serverEnv.BREVO_SENDER_EMAIL,
+        },
+        to: [{ email: "luxuryrealestateahmedabad@gmail.com" }],
+        subject,
+        htmlContent,
+      }),
+    });
+  } catch (err) {
+    console.error("[leads] Brevo lead email send failed:", err);
+  }
 }
 
 async function pushToCrm(
