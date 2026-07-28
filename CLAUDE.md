@@ -6,7 +6,7 @@
 - **CMS**: Sanity v3 — Studio at `/studio`, schemas in `src/sanity/schemas/`
 - **Database**: Supabase (Postgres) — leads + transactional data, plus the About page singleton (`pages` table, id `"about"`, managed via the custom `/admin` panel — `src/app/admin/actions.ts`). All other content lives in Sanity.
 - **Hosting**: Vercel — ISR revalidated via Sanity webhook at `/api/revalidate`
-- **Email**: Resend
+- **Email**: Brevo (primary) + Resend (fallback) — Team notifications via `TEAM_NOTIFICATION_EMAIL`, lead notifications to `luxuryrealestateahmedabad@gmail.com` with source tracking
 - **Validation**: Zod v4 — shared schemas in `src/lib/validations/lead.ts` used on both client and server
 
 ## Two non-negotiable constraints (from PRD)
@@ -19,7 +19,11 @@
 Use `renderListGuard()` from `src/lib/utils.ts` whenever rendering a list of properties or testimonials. This makes it structurally impossible to render an empty grid — the fallback must be an `EmptyStateRedirect` component. Never render "No Properties Found."
 
 ### Lead pipeline
-All form submissions → `POST /api/leads` → Zod validate → honeypot check → rate limit → Supabase write → team email (Resend) → CRM push (Zoho/HubSpot) → client redirected to `/thank-you?source=X&purpose=Y`.
+All form submissions → `POST /api/leads` → Zod validate → honeypot check → rate limit → Supabase write → Audit trail (lead_events) → **Side effects (non-blocking)**:
+  1. Team email to `TEAM_NOTIFICATION_EMAIL` (Resend/Brevo fallback)
+  2. Lead email to `luxuryrealestateahmedabad@gmail.com` via Brevo with source tracking (CONTENT FORM, PROPERTY ENQUIRY FORM, POPUP, etc.)
+  3. CRM push to Zoho/HubSpot (placeholder for implementation)
+→ Client redirected to `/thank-you?source=X&purpose=Y`.
 
 ### ISR revalidation
 Sanity publishes content → POST to `/api/revalidate?secret=<SANITY_WEBHOOK_SECRET>` → `revalidateTag()` for the relevant data type. Queries in `src/lib/sanity/queries.ts` use `{ next: { tags: [...] } }` to opt into this.
@@ -34,6 +38,15 @@ Always use `next/image` with explicit `width` + `height` to avoid CLS. Use `sani
 - Public vars (`NEXT_PUBLIC_*`): accessed via `env` export from `src/lib/env.ts`
 - Server-only vars: accessed via `getServerEnv()` from `src/lib/env.ts` — only call inside Route Handlers, Server Actions, or Server Components
 - `SUPABASE_SERVICE_ROLE_KEY` is **never** exposed to the client. Supabase RLS denies all public access to the `leads` table.
+
+#### Required for lead email pipeline:
+```env
+BREVO_API_KEY=sk_live_xxx           # Get from Brevo dashboard (Settings > SMTP & API)
+BREVO_SENDER_EMAIL=noreply@pikorua.in
+BREVO_SENDER_NAME=PIKORUA Realty
+TEAM_NOTIFICATION_EMAIL=connect@pikorua.in  # Where team emails go
+# Lead emails automatically go to: luxuryrealestateahmedabad@gmail.com via sendLeadToBrevo()
+```
 
 ### Supabase client
 - `createServerSupabaseClient()` — server-side, uses service role key, bypasses RLS. Use in API routes only.
