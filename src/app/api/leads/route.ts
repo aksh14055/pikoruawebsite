@@ -109,8 +109,20 @@ export async function POST(req: NextRequest) {
       .select("id")
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("[leads/route] Supabase insert error:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      throw error;
+    }
+    if (!inserted) {
+      throw new Error("No lead ID returned from Supabase insert");
+    }
     leadId = inserted.id as string;
+    console.log(`[leads/route] Lead ${leadId} created successfully (source: ${source})`);
 
     // Audit trail
     await supabase.from("lead_events").insert({
@@ -119,7 +131,7 @@ export async function POST(req: NextRequest) {
       payload: { source, ip },
     });
   } catch (err) {
-    console.error("[leads/route] Supabase write failed:", err);
+    console.error("[leads/route] Supabase write failed:", err instanceof Error ? err.message : err);
     return NextResponse.json(
       { error: "Could not save your enquiry. Please try again or contact us directly." },
       { status: 500 }
