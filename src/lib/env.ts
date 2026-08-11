@@ -49,7 +49,7 @@ export function getServerEnv() {
   return {
     SUPABASE_SERVICE_ROLE_KEY: requireEnv("SUPABASE_SERVICE_ROLE_KEY"),
     SANITY_API_READ_TOKEN: optionalEnv("SANITY_API_READ_TOKEN"),
-    SANITY_WEBHOOK_SECRET: requireEnv("SANITY_WEBHOOK_SECRET"),
+    SANITY_WEBHOOK_SECRET: optionalEnv("SANITY_WEBHOOK_SECRET"),
     RESEND_API_KEY: optionalEnv("RESEND_API_KEY"),
     BREVO_API_KEY: optionalEnv("BREVO_API_KEY", optionalEnv("BRAVE_API_KEY")),
     BREVO_SENDER_EMAIL: optionalEnv("BREVO_SENDER_EMAIL", "noreply@pikorua.in"),
