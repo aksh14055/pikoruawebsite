@@ -178,6 +178,17 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
           setFormState("idle");
           return;
         }
+        // If leadId is present, lead was saved successfully despite status error
+        if (json.leadId) {
+          setFormState("success");
+          trackLeadSubmit("popup");
+          clearReshowTimer();
+          localStorage.setItem(SUBMITTED_KEY, String(Date.now()));
+          setTimeout(() => {
+            setVisible(false);
+          }, 3200);
+          return;
+        }
         throw new Error(json.error ?? "Submission failed");
       }
 
