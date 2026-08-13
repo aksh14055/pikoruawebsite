@@ -9,9 +9,9 @@ const DeferredLeadCapturePopup = dynamic(
 );
 
 // Start loading the popup JS bundle after this idle period
-const PASSIVE_PRELOAD_DELAY_MS = 5000;
+const PASSIVE_PRELOAD_DELAY_MS = 3000;
 // Show the popup this many ms after first page load (first visit only)
-const FIRST_VISIT_SHOW_DELAY_MS = 7000;
+const FIRST_VISIT_SHOW_DELAY_MS = 5500;
 
 export function LazyLeadCapturePopup() {
   const [loadMode, setLoadMode] = useState<"idle" | "open" | null>(null);
@@ -38,7 +38,7 @@ export function LazyLeadCapturePopup() {
       idleWindow.requestIdleCallback?.(loadIdle, { timeout: PASSIVE_PRELOAD_DELAY_MS }) ??
       window.setTimeout(loadIdle, PASSIVE_PRELOAD_DELAY_MS);
 
-    // Auto-show after 15 seconds on the first visit
+    // Auto-show shortly after the visitor lands on the website.
     const showTimer = window.setTimeout(loadOpen, FIRST_VISIT_SHOW_DELAY_MS);
 
     return () => {

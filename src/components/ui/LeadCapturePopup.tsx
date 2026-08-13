@@ -8,14 +8,13 @@ import { X, CheckCircle, ChevronDown } from "lucide-react";
 import { cn, extractUtm } from "@/lib/utils";
 import { trackLeadSubmit } from "@/lib/analytics";
 
-// Once a visitor actually submits the form, never bother them again.
-// Until then, the popup resurfaces every visit and keeps nagging every
-// RESHOW_DELAY_MS if they dismiss without submitting.
+// Keep the popup from repeating inside the same browser session after submit.
+// A fresh visit/session should still see it again after the configured delay.
 const SUBMITTED_KEY = "pikorua_popup_submitted";
 const RESHOW_DELAY_MS = 2 * 60 * 1000; // 2 minutes
 
 function hasSubmittedBefore(): boolean {
-  return localStorage.getItem(SUBMITTED_KEY) !== null;
+  return sessionStorage.getItem(SUBMITTED_KEY) !== null;
 }
 
 const DISMISSED_KEY = "pikorua_popup_dismissed_at";
@@ -184,7 +183,7 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
       setFormState("success");
       trackLeadSubmit("popup");
       clearReshowTimer();
-      localStorage.setItem(SUBMITTED_KEY, String(Date.now()));
+      sessionStorage.setItem(SUBMITTED_KEY, String(Date.now()));
 
       setTimeout(() => {
         setVisible(false);
