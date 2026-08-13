@@ -1,57 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import { LeadCapturePopup } from "./LeadCapturePopup";
 
-const DeferredLeadCapturePopup = dynamic(
-  () => import("./LeadCapturePopup").then((mod) => mod.LeadCapturePopup),
-  { ssr: false }
-);
-
-// Start loading the popup JS bundle after this idle period
-const PASSIVE_PRELOAD_DELAY_MS = 3000;
-// Show the popup this many ms after first page load (first visit only)
+// Keep the popup mounted and only delay its visibility so opening is reliable.
 const FIRST_VISIT_SHOW_DELAY_MS = 5500;
 
 export function LazyLeadCapturePopup() {
-  const [loadMode, setLoadMode] = useState<"idle" | "open" | null>(null);
+  const [shouldOpen, setShouldOpen] = useState(false);
 
   useEffect(() => {
     if (window.location.pathname.startsWith("/admin")) return;
 
-    let cancelled = false;
-    const idleWindow = window as Window & {
-      requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-
-    const loadIdle = () => {
-      if (!cancelled) setLoadMode((current) => current ?? "idle");
-    };
-
-    const loadOpen = () => {
-      if (!cancelled) setLoadMode("open");
-    };
-
-    // Preload the bundle quietly after a short idle window
-    const idleHandle =
-      idleWindow.requestIdleCallback?.(loadIdle, { timeout: PASSIVE_PRELOAD_DELAY_MS }) ??
-      window.setTimeout(loadIdle, PASSIVE_PRELOAD_DELAY_MS);
-
     // Auto-show shortly after the visitor lands on the website.
-    const showTimer = window.setTimeout(loadOpen, FIRST_VISIT_SHOW_DELAY_MS);
+    const showTimer = window.setTimeout(() => setShouldOpen(true), FIRST_VISIT_SHOW_DELAY_MS);
 
     return () => {
-      cancelled = true;
       window.clearTimeout(showTimer);
-      if (idleWindow.cancelIdleCallback && typeof idleHandle === "number") {
-        idleWindow.cancelIdleCallback(idleHandle);
-      } else {
-        window.clearTimeout(idleHandle as number);
-      }
     };
   }, []);
 
-  if (!loadMode) return null;
-  return <DeferredLeadCapturePopup openOnMount={loadMode === "open"} />;
+  return <LeadCapturePopup openOnMount={shouldOpen} />;
 }
