@@ -8,11 +8,10 @@ import { cn } from "@/lib/utils";
 import { getCallAgentContext } from "@/lib/callAgentContext";
 import { CallAgentPopup, CALL_AGENT_NAME } from "./CallAgentPopup";
 
-// Auto-open the popup once per browsing session — either once the visitor
-// has scrolled well into the page, or the moment they show exit intent
-// (cursor heading for the tab/URL bar), whichever happens first.
+// Auto-open the popup once per browsing session after the visitor reaches
+// the midpoint of the page. The floating button remains available earlier.
 const AUTO_SHOWN_KEY = "pikorua_call_agent_auto_shown";
-const SCROLL_TRIGGER_RATIO = 0.6;
+const SCROLL_TRIGGER_RATIO = 0.5;
 // Fires earlier than the auto-open, as a quieter "notice me" nudge.
 const PULSE_TRIGGER_RATIO = 0.25;
 
@@ -51,17 +50,9 @@ export function CallAgentWidget() {
       if (scrolled >= SCROLL_TRIGGER_RATIO) triggerAutoOpen();
     };
 
-    // Exit intent — cursor leaving through the top of the viewport, headed
-    // for the tab/URL bar, is the classic "about to leave" signal.
-    const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) triggerAutoOpen();
-    };
-
     window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("mouseleave", onMouseLeave);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [pathname]);
 
