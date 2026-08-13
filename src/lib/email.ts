@@ -1,4 +1,4 @@
-import { getServerEnv } from "@/lib/env";
+import { getLeadDeliveryEnv } from '@/lib/env';
 
 /**
  * Sends a notification email via Brevo, falling back to Resend if Brevo
@@ -9,8 +9,8 @@ export async function sendNotificationEmail(opts: {
   subject: string;
   html: string;
   to?: string;
-}): Promise<void> {
-  const serverEnv = getServerEnv();
+}): Promise<'brevo' | 'resend'> {
+  const serverEnv = getLeadDeliveryEnv();
   const to = opts.to || serverEnv.TEAM_NOTIFICATION_EMAIL;
 
   if (serverEnv.BREVO_API_KEY) {
@@ -36,7 +36,7 @@ export async function sendNotificationEmail(opts: {
       if (!res.ok) {
         throw new Error(`Brevo SMTP API status ${res.status}: ${await res.text()}`);
       }
-      return;
+      return 'brevo';
     } catch (err) {
       console.error("[email] Brevo send failed:", err);
       // Fall through to Resend if also present
@@ -62,8 +62,10 @@ export async function sendNotificationEmail(opts: {
       if (!res.ok) {
         throw new Error(`Resend ${res.status}`);
       }
+      return 'resend';
     } catch (err) {
       console.error("[email] Resend send failed:", err);
     }
   }
+  throw new Error('No email provider could deliver the notification');
 }

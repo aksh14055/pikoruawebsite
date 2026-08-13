@@ -158,7 +158,7 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          source: "contact",
+          source: "popup",
           name: fullName,
           phone,
           email,

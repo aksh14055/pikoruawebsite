@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ZodError } from "zod";
+import { ZodError, type ZodTypeAny } from "zod";
 import {
   discoverySchema,
   propertyEnquirySchema,
@@ -7,23 +7,59 @@ import {
   consultationSchema,
   contactSchema,
 } from "@/lib/validations/lead";
-import { createServerSupabaseClient } from "@/lib/supabase/client";
-import { getServerEnv } from "@/lib/env";
-import { sendNotificationEmail } from "@/lib/email";
+import { getLeadDeliveryEnv } from "@/lib/env";
 import { getClientIdentifier, leadRateLimit } from "@/lib/rate-limit";
 import type { LeadSource } from "@/types";
 
-// Map of source → Zod schema
-const SCHEMAS: Record<string, typeof discoverySchema> = {
-  discovery: discoverySchema as never,
-  enquiry: propertyEnquirySchema as never,
-  callback: callbackSchema as never,
-  consultation: consultationSchema as never,
-  contact: contactSchema as never,
+const SCHEMAS: Record<string, ZodTypeAny> = {
+  discovery: discoverySchema,
+  enquiry: propertyEnquirySchema,
+  callback: callbackSchema,
+  consultation: consultationSchema,
+  contact: contactSchema,
+  popup: contactSchema,
+};
+
+const SOURCE_LABELS: Record<string, string> = {
+  discovery: "CONTENT FORM",
+  enquiry: "PROPERTY ENQUIRY FORM",
+  callback: "CALLBACK REQUEST",
+  consultation: "CONSULTATION BOOKING",
+  contact: "CONTACT FORM",
+  popup: "POPUP LEAD FORM",
+  whatsapp: "WHATSAPP",
+};
+
+const BUDGET_LABELS: Record<string, string> = {
+  "1-2cr": "INR 1 Cr - INR 2 Cr",
+  "3-4cr": "INR 3 Cr - INR 4 Cr",
+  "5-7cr": "INR 5 Cr - INR 7 Cr",
+  "8-10cr": "INR 8 Cr - INR 10 Cr",
+  "10cr-plus": "INR 10 Cr and above",
+};
+
+const LOCATION_LABELS: Record<string, string> = {
+  "iskon-ambli": "Iskon-Ambli",
+  "sindhu-bhavan": "Sindhu Bhavan",
+  thaltej: "Thaltej",
+  shilaj: "Shilaj",
+  "vaishno-devi": "Vaishno Devi",
+  "sg-highway": "SG Highway",
+  other: "Open to suggestions",
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  apartment: "Apartment",
+  penthouse: "Penthouse",
+  villa: "Villa",
+  bungalow: "Bungalow",
+  plot: "Premium Plot",
+  "residential-investment": "Residential Investment",
+  office: "Office",
+  showroom: "Showroom",
 };
 
 export async function POST(req: NextRequest) {
-  // ── Rate limiting ──────────────────────────────────────────────────────
   const ip = getClientIdentifier(req);
   const rl = leadRateLimit(ip);
   if (!rl.allowed) {
@@ -36,7 +72,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── Parse body ─────────────────────────────────────────────────────────
   let body: unknown;
   try {
     body = await req.json();
@@ -47,21 +82,18 @@ export async function POST(req: NextRequest) {
   const raw = body as Record<string, unknown>;
   const source = (raw.source ?? "contact") as LeadSource;
 
-  // ── Honeypot check ─────────────────────────────────────────────────────
   if (raw.honeypot && String(raw.honeypot).length > 0) {
-    // Silent success to bot — don't reveal we detected it
     return NextResponse.json({ ok: true });
   }
 
-  // ── Zod validation ─────────────────────────────────────────────────────
   const schema = SCHEMAS[source];
   if (!schema) {
     return NextResponse.json({ error: "Unknown submission source" }, { status: 400 });
   }
 
-  let data: ReturnType<typeof schema.parse>;
+  let data: Record<string, unknown>;
   try {
-    data = schema.parse(raw);
+    data = schema.parse(raw) as Record<string, unknown>;
   } catch (err) {
     if (err instanceof ZodError) {
       return NextResponse.json(
@@ -72,433 +104,215 @@ export async function POST(req: NextRequest) {
     throw err;
   }
 
-  // ── Write to Supabase ──────────────────────────────────────────────────
-  let leadId: string;
+  const leadId = crypto.randomUUID();
+
   try {
-    const serverEnv = getServerEnv();
-    const supabase = createServerSupabaseClient();
-    void serverEnv; // used implicitly via createServerSupabaseClient env vars
-
-    let dbCategory = (data as { category?: string }).category ?? null;
-    if (dbCategory === "office" || dbCategory === "showroom") {
-      dbCategory = "residential-investment";
-    }
-
-    const leadRow = {
-      source,
-      name: (data as { name: string }).name,
-      phone: (data as { phone: string }).phone,
-      whatsapp: (data as { whatsapp?: string }).whatsapp ?? null,
-      email: (data as { email?: string }).email ?? null,
-      category: dbCategory,
-      location: (data as { locations?: string[] }).locations?.[0] ?? null,
-      budget_band: (data as { budgetBand?: string }).budgetBand ?? null,
-      purpose: (data as { purpose?: string }).purpose ?? null,
-      timeline: (data as { timeline?: string }).timeline ?? null,
-      preferred_callback_time:
-        (data as { preferredCallbackTime?: string }).preferredCallbackTime ?? null,
-      property_ref: (data as { propertyRef?: string }).propertyRef ?? null,
-      message: (data as { message?: string }).message ?? null,
-      utm: (data as { utm?: Record<string, string> }).utm ?? null,
-      consent: true,
-    };
-
-    const { data: inserted, error } = await supabase
-      .from("leads")
-      .insert(leadRow)
-      .select("id")
-      .single();
-
-    if (error) {
-      console.error("[leads/route] Supabase insert error:", {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-      });
-      throw error;
-    }
-    if (!inserted) {
-      throw new Error("No lead ID returned from Supabase insert");
-    }
-    leadId = inserted.id as string;
-    console.log(`[leads/route] Lead ${leadId} created successfully (source: ${source})`);
-
-    // Audit trail
-    await supabase.from("lead_events").insert({
-      lead_id: leadId,
-      type: "created",
-      payload: { source, ip },
-    });
+    await deliverLead(leadId, source, data);
   } catch (err) {
-    console.error("[leads/route] Supabase write failed:", err instanceof Error ? err.message : err);
-    return NextResponse.json(
-      { error: "Could not save your enquiry. Please try again or contact us directly." },
-      { status: 500 }
-    );
+    console.error("[leads/route] Brevo lead delivery failed:", err);
   }
-
-  // ── Side effects (non-blocking) ────────────────────────────────────────
-  // These run after the response is sent; failures are logged but don't
-  // affect the user's confirmation.
-  void runSideEffects(leadId, source, data as Record<string, unknown>);
 
   return NextResponse.json({ ok: true, leadId });
 }
 
-async function runSideEffects(
-  leadId: string,
-  source: string,
-  data: Record<string, unknown>
-) {
-  const serverEnv = getServerEnv();
+async function deliverLead(leadId: string, source: string, data: Record<string, unknown>) {
+  const serverEnv = getLeadDeliveryEnv();
 
-  await Promise.allSettled([
-    notifyTeamEmail(serverEnv, leadId, source, data),
-    sendLeadToBrevo(serverEnv, leadId, source, data),
-    pushToCrm(serverEnv, leadId, data),
-  ]);
+  if (!serverEnv.BREVO_API_KEY) {
+    throw new Error("BREVO_API_KEY is not configured");
+  }
+
+  await syncBrevoContact(serverEnv, leadId, source, data);
+  await sendBrevoLeadEmail(serverEnv, leadId, source, data);
+  await pushToCrm(serverEnv, leadId, data);
 }
 
-async function notifyTeamEmail(
-  serverEnv: ReturnType<typeof getServerEnv>,
+async function syncBrevoContact(
+  serverEnv: ReturnType<typeof getLeadDeliveryEnv>,
   leadId: string,
   source: string,
   data: Record<string, unknown>
 ) {
-  const subject = `New ${source} lead — ${data.name ?? "Unknown"}`;
+  const email = typeof data.email === "string" ? data.email.trim() : "";
+  if (!email) return;
 
-  // Format labels nicely
-  const BUDGET_LABELS: Record<string, string> = {
-    "1-2cr": "₹1 Cr – ₹2 Cr",
-    "3-4cr": "₹3 Cr – ₹4 Cr",
-    "5-7cr": "₹5 Cr – ₹7 Cr",
-    "8-10cr": "₹8 Cr – ₹10 Cr",
-    "10cr-plus": "₹10 Cr and above",
-  };
+  const nameParts = String(data.name ?? "").trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts.shift() ?? "";
+  const lastName = nameParts.join(" ");
+  const phone = normalizePhone(data.phone);
+  const listIds = serverEnv.BREVO_LIST_IDS
+    .split(",")
+    .map((value) => Number(value.trim()))
+    .filter((value) => Number.isInteger(value) && value > 0);
 
-  const CATEGORY_LABELS: Record<string, string> = {
-    "apartment": "Apartment",
-    "penthouse": "Penthouse",
-    "villa": "Villa",
-    "bungalow": "Bungalow",
-    "plot": "Premium Plot",
-    "residential-investment": "Residential Investment",
-  };
+  const attributes: Record<string, string> = {};
+  if (firstName) attributes.FIRSTNAME = firstName;
+  if (lastName) attributes.LASTNAME = lastName;
+  if (phone) attributes.SMS = phone;
 
-  const LOCATION_LABELS: Record<string, string> = {
-    "iskon-ambli": "Iskon–Ambli",
-    "sindhu-bhavan": "Sindhu Bhavan",
-    "thaltej": "Thaltej",
-    "shilaj": "Shilaj",
-    "vaishno-devi": "Vaishno Devi",
-    "sg-highway": "SG Highway",
-    "other": "Open to suggestions",
-  };
+  const response = await fetch("https://api.brevo.com/v3/contacts", {
+    method: "POST",
+    headers: {
+      "api-key": serverEnv.BREVO_API_KEY,
+      "Content-Type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      attributes,
+      ...(listIds.length > 0 ? { listIds } : {}),
+      updateEnabled: true,
+    }),
+  });
 
-  const rawBudget = (data.budgetBand || data.budget_band) as string | undefined;
-  const formattedBudget = rawBudget ? (BUDGET_LABELS[rawBudget] || rawBudget) : undefined;
-
-  const rawCategory = data.category as string | undefined;
-  const formattedCategory = rawCategory ? (CATEGORY_LABELS[rawCategory] || rawCategory) : undefined;
-
-  let formattedLocation: string | undefined = undefined;
-  const rawLocation = data.locations || data.location;
-  if (rawLocation) {
-    if (Array.isArray(rawLocation)) {
-      formattedLocation = rawLocation.map((loc) => LOCATION_LABELS[loc] || loc).join(", ");
-    } else {
-      formattedLocation = LOCATION_LABELS[rawLocation as string] || (rawLocation as string);
-    }
+  if (!response.ok) {
+    console.error("[leads/route] Brevo contact sync failed:", {
+      leadId,
+      source,
+      status: response.status,
+      error: await response.text(),
+    });
   }
-
-  const preferredCallbackTime = (data.preferredCallbackTime || data.preferred_callback_time) as string | undefined;
-  const propertyRef = (data.propertyRef || data.property_ref) as string | undefined;
-  const preferredDate = (data.preferredDate || data.preferred_date) as string | undefined;
-  const preferredTimeSlot = (data.preferredTimeSlot || data.preferred_time_slot) as string | undefined;
-  const notes = (data.notes || data.notes) as string | undefined;
-
-  // Build rows dynamically to only display populated details
-  const rows: { label: string; value: string; capitalize?: boolean }[] = [
-    { label: "Lead ID", value: leadId },
-    { label: "Source", value: source, capitalize: true },
-    { label: "Name", value: (data.name as string) || "Unknown" },
-    { label: "Phone", value: (data.phone as string) || "N/A" },
-  ];
-
-  if (data.whatsapp) {
-    rows.push({ label: "WhatsApp", value: data.whatsapp as string });
-  }
-  if (data.email) {
-    rows.push({ label: "Email", value: data.email as string });
-  }
-  if (formattedCategory) {
-    rows.push({ label: "Category", value: formattedCategory });
-  }
-  if (formattedBudget) {
-    rows.push({ label: "Budget", value: formattedBudget });
-  }
-  if (formattedLocation) {
-    rows.push({ label: "Location Pref", value: formattedLocation, capitalize: true });
-  }
-  if (data.purpose) {
-    rows.push({ label: "Purpose", value: data.purpose as string, capitalize: true });
-  }
-  if (data.timeline) {
-    rows.push({ label: "Timeline", value: data.timeline as string, capitalize: true });
-  }
-  if (preferredCallbackTime) {
-    rows.push({ label: "Preferred Callback Time", value: preferredCallbackTime });
-  }
-  if (propertyRef) {
-    rows.push({ label: "Property Reference", value: propertyRef });
-  }
-  if (preferredDate) {
-    rows.push({ label: "Preferred Date", value: preferredDate });
-  }
-  if (preferredTimeSlot) {
-    rows.push({ label: "Preferred Time Slot", value: preferredTimeSlot });
-  }
-  if (data.message) {
-    rows.push({ label: "Message", value: data.message as string });
-  } else if (notes) {
-    rows.push({ label: "Message / Notes", value: notes });
-  }
-
-  const tableRowsHtml = rows
-    .map((row, index) => {
-      const isEven = index % 2 === 0;
-      const bg = isEven ? "background-color: #f9f9f9;" : "background-color: #ffffff;";
-      const textStyle = row.capitalize ? "text-transform: capitalize;" : "";
-      return `
-        <tr style="${bg}">
-          <td style="padding: 10px 12px; font-weight: bold; width: 180px; font-size: 13px; border-bottom: 1px solid #eeeeee; color: #555555; font-family: sans-serif;">${row.label}:</td>
-          <td style="padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #eeeeee; color: #111111; font-family: sans-serif; ${textStyle}">${row.value}</td>
-        </tr>
-      `;
-    })
-    .join("");
-
-  const htmlContent = `
-    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px; background-color: #fafafa;">
-      <h2 style="color: #c5a880; border-bottom: 2px solid #c5a880; padding-bottom: 10px; margin-top: 0; font-family: sans-serif;">New Lead Submission — PIKORUA Realty</h2>
-      <p style="font-size: 14px; color: #333333; font-family: sans-serif;">A new lead has been submitted on the website.</p>
-      
-      <table style="width: 100%; border-collapse: collapse; margin-top: 15px; border: 1px solid #eeeeee;">
-        ${tableRowsHtml}
-      </table>
-      
-      <div style="margin-top: 25px; padding: 15px; background-color: #1a1a1a; color: #ffffff; border-radius: 4px; font-size: 11px; font-family: sans-serif;">
-        <strong>Full Lead JSON Payload:</strong>
-        <pre style="margin-top: 10px; font-family: monospace; white-space: pre-wrap; overflow-x: auto; color: #a5e1ad; background: #000000; padding: 10px; border-radius: 3px;">${JSON.stringify(data, null, 2)}</pre>
-      </div>
-    </div>
-  `;
-
-  await sendNotificationEmail({ subject, html: htmlContent, to: serverEnv.TEAM_NOTIFICATION_EMAIL });
 }
 
-async function sendLeadToBrevo(
-  serverEnv: ReturnType<typeof getServerEnv>,
+async function sendBrevoLeadEmail(
+  serverEnv: ReturnType<typeof getLeadDeliveryEnv>,
   leadId: string,
   source: string,
   data: Record<string, unknown>
 ) {
-  if (!serverEnv.BREVO_API_KEY) return;
-
-  // Map source to human-readable form type
-  const SOURCE_LABELS: Record<string, string> = {
-    discovery: "CONTENT FORM",
-    enquiry: "PROPERTY ENQUIRY FORM",
-    callback: "CALLBACK REQUEST",
-    consultation: "CONSULTATION BOOKING",
-    contact: "CONTACT FORM",
-    whatsapp: "WHATSAPP",
-  };
-
   const formType = SOURCE_LABELS[source] || source.toUpperCase();
+  const subject = `PIKORUA WEB - ${formType} Lead: ${String(data.name ?? "Unknown")}`;
+  const rows = buildLeadRows(leadId, formType, data);
 
-  // Budget and location label maps
-  const BUDGET_LABELS: Record<string, string> = {
-    "1-2cr": "₹1 Cr – ₹2 Cr",
-    "3-4cr": "₹3 Cr – ₹4 Cr",
-    "5-7cr": "₹5 Cr – ₹7 Cr",
-    "8-10cr": "₹8 Cr – ₹10 Cr",
-    "10cr-plus": "₹10 Cr and above",
-  };
-
-  const LOCATION_LABELS: Record<string, string> = {
-    "iskon-ambli": "Iskon–Ambli",
-    "sindhu-bhavan": "Sindhu Bhavan",
-    "thaltej": "Thaltej",
-    "shilaj": "Shilaj",
-    "vaishno-devi": "Vaishno Devi",
-    "sg-highway": "SG Highway",
-    "other": "Open to suggestions",
-  };
-
-  const CATEGORY_LABELS: Record<string, string> = {
-    "apartment": "Apartment",
-    "penthouse": "Penthouse",
-    "villa": "Villa",
-    "bungalow": "Bungalow",
-    "plot": "Premium Plot",
-    "residential-investment": "Residential Investment",
-  };
-
-  // Format subject with PIKORUA WEB prefix
-  const subject = `PIKORUA WEB — ${formType} Lead: ${data.name ?? "Unknown"}`;
-
-  // Build formatted rows for email
-  const rows: { label: string; value: string }[] = [
-    { label: "Lead ID", value: leadId },
-    { label: "Source", value: formType },
-    { label: "Name", value: (data.name as string) || "Unknown" },
-    { label: "Phone", value: (data.phone as string) || "N/A" },
-  ];
-
-  if (data.whatsapp) {
-    rows.push({ label: "WhatsApp", value: data.whatsapp as string });
-  }
-  if (data.email) {
-    rows.push({ label: "Email", value: data.email as string });
-  }
-
-  const rawCategory = data.category as string | undefined;
-  if (rawCategory) {
-    const formattedCategory = CATEGORY_LABELS[rawCategory] || rawCategory;
-    rows.push({ label: "Property Type", value: formattedCategory });
-  }
-
-  const rawBudget = (data.budgetBand || data.budget_band) as string | undefined;
-  if (rawBudget) {
-    const formattedBudget = BUDGET_LABELS[rawBudget] || rawBudget;
-    rows.push({ label: "Budget", value: formattedBudget });
-  }
-
-  let formattedLocation: string | undefined = undefined;
-  const rawLocation = data.locations || data.location;
-  if (rawLocation) {
-    if (Array.isArray(rawLocation)) {
-      formattedLocation = rawLocation.map((loc) => LOCATION_LABELS[loc] || loc).join(", ");
-    } else {
-      formattedLocation = LOCATION_LABELS[rawLocation as string] || (rawLocation as string);
-    }
-    rows.push({ label: "Location Preference", value: formattedLocation });
-  }
-
-  if (data.purpose) {
-    rows.push({ label: "Purpose", value: (data.purpose as string).charAt(0).toUpperCase() + (data.purpose as string).slice(1) });
-  }
-
-  if (data.timeline) {
-    rows.push({ label: "Timeline", value: (data.timeline as string).replace(/-/g, " ").charAt(0).toUpperCase() + (data.timeline as string).slice(1).replace(/-/g, " ") });
-  }
-
-  if (data.preferredCallbackTime || data.preferred_callback_time) {
-    const callbackTime = (data.preferredCallbackTime || data.preferred_callback_time) as string;
-    rows.push({ label: "Preferred Callback Time", value: callbackTime });
-  }
-
-  if (data.propertyRef || data.property_ref) {
-    const propRef = (data.propertyRef || data.property_ref) as string;
-    rows.push({ label: "Property Reference", value: propRef });
-  }
-
-  if (data.preferredDate || data.preferred_date) {
-    const prefDate = (data.preferredDate || data.preferred_date) as string;
-    rows.push({ label: "Preferred Date", value: prefDate });
-  }
-
-  if (data.preferredTimeSlot || data.preferred_time_slot) {
-    const timeSlot = (data.preferredTimeSlot || data.preferred_time_slot) as string;
-    rows.push({ label: "Preferred Time Slot", value: timeSlot });
-  }
-
-  if (data.message) {
-    rows.push({ label: "Message", value: data.message as string });
-  }
-
-  if (data.notes) {
-    rows.push({ label: "Notes", value: data.notes as string });
-  }
-
-  if (data.interest) {
-    rows.push({ label: "Interest", value: data.interest as string });
-  }
-
-  // Build HTML table rows
   const tableRowsHtml = rows
     .map((row, index) => {
-      const isEven = index % 2 === 0;
-      const bg = isEven ? "background-color: #f5f5f5;" : "background-color: #ffffff;";
-      return `
-        <tr style="${bg}">
-          <td style="padding: 12px 15px; font-weight: 600; width: 160px; font-size: 13px; border-bottom: 1px solid #e8e8e8; color: #333333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${row.label}:</td>
-          <td style="padding: 12px 15px; font-size: 13px; border-bottom: 1px solid #e8e8e8; color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${row.value}</td>
-        </tr>
-      `;
+      const bg = index % 2 === 0 ? "#f5f5f5" : "#ffffff";
+      return `<tr style="background-color:${bg}"><td style="padding:12px 15px;font-weight:600;width:165px;font-size:13px;border-bottom:1px solid #e8e8e8;color:#333;font-family:Arial,sans-serif;">${escapeHtml(row.label)}:</td><td style="padding:12px 15px;font-size:13px;border-bottom:1px solid #e8e8e8;color:#000;font-family:Arial,sans-serif;">${escapeHtml(row.value)}</td></tr>`;
     })
     .join("");
 
-  // Build HTML email
   const htmlContent = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px;">
-      <div style="background-color: #0B0B0B; color: #C8A45D; padding: 20px; border-radius: 5px 5px 0 0; text-align: center;">
-        <h1 style="margin: 0; font-size: 24px; font-weight: 700;">PIKORUA REALTY</h1>
-        <p style="margin: 8px 0 0 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">New Lead Submission</p>
+    <div style="font-family:Arial,sans-serif;max-width:650px;margin:0 auto;padding:20px;">
+      <div style="background-color:#0B0B0B;color:#C8A45D;padding:20px;border-radius:5px 5px 0 0;text-align:center;">
+        <h1 style="margin:0;font-size:24px;font-weight:700;">PIKORUA REALTY</h1>
+        <p style="margin:8px 0 0 0;font-size:12px;letter-spacing:1px;text-transform:uppercase;">New Lead Submission</p>
       </div>
-
-      <div style="background-color: #ffffff; padding: 20px; border-radius: 0 0 5px 5px; border: 1px solid #e8e8e8; border-top: none;">
-        <p style="margin: 0 0 15px 0; font-size: 14px; color: #555555;">
-          <strong>Source:</strong> <span style="color: #C8A45D; font-weight: 600;">${formType}</span>
-        </p>
-
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e8e8e8;">
-          ${tableRowsHtml}
-        </table>
-
-        <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #C8A45D; margin-top: 20px;">
-          <p style="margin: 0; font-size: 12px; color: #666666; font-style: italic;">
-            This lead was submitted via PIKORUA website. Lead ID: ${leadId}
-          </p>
+      <div style="background-color:#fff;padding:20px;border-radius:0 0 5px 5px;border:1px solid #e8e8e8;border-top:none;">
+        <p style="margin:0 0 15px 0;font-size:14px;color:#555;"><strong>Source:</strong> <span style="color:#C8A45D;font-weight:600;">${escapeHtml(formType)}</span></p>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;border:1px solid #e8e8e8;">${tableRowsHtml}</table>
+        <div style="background-color:#f9f9f9;padding:15px;border-left:4px solid #C8A45D;margin-top:20px;">
+          <p style="margin:0;font-size:12px;color:#666;font-style:italic;">Lead ID: ${escapeHtml(leadId)}</p>
         </div>
       </div>
     </div>
   `;
 
-  try {
-    await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "api-key": serverEnv.BREVO_API_KEY,
-        "Content-Type": "application/json",
-        accept: "application/json",
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": serverEnv.BREVO_API_KEY,
+      "Content-Type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        name: serverEnv.BREVO_SENDER_NAME,
+        email: serverEnv.BREVO_SENDER_EMAIL,
       },
-      body: JSON.stringify({
-        sender: {
-          name: serverEnv.BREVO_SENDER_NAME,
-          email: serverEnv.BREVO_SENDER_EMAIL,
-        },
-        to: [{ email: "luxuryrealestateahmedabad@gmail.com" }],
-        subject,
-        htmlContent,
-      }),
-    });
-  } catch (err) {
-    console.error("[leads] Brevo lead email send failed:", err);
+      to: [{ email: serverEnv.TEAM_NOTIFICATION_EMAIL }],
+      subject,
+      htmlContent,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Brevo SMTP API status ${response.status}: ${await response.text()}`);
   }
 }
 
+function buildLeadRows(leadId: string, formType: string, data: Record<string, unknown>) {
+  const rows: { label: string; value: string }[] = [
+    { label: "Lead ID", value: leadId },
+    { label: "Source", value: formType },
+    { label: "Name", value: String(data.name ?? "Unknown") },
+    { label: "Phone", value: String(data.phone ?? "N/A") },
+  ];
+
+  addRow(rows, "WhatsApp", data.whatsapp);
+  addRow(rows, "Email", data.email);
+  addRow(rows, "Property Type", labelValue(data.category, CATEGORY_LABELS));
+  addRow(rows, "Budget", labelValue(data.budgetBand ?? data.budget_band, BUDGET_LABELS));
+  addRow(rows, "Location Preference", formatLocation(data.locations ?? data.location));
+  addRow(rows, "Purpose", humanize(data.purpose));
+  addRow(rows, "Timeline", humanize(data.timeline));
+  addRow(rows, "Preferred Callback Time", data.preferredCallbackTime ?? data.preferred_callback_time);
+  addRow(rows, "Property Reference", data.propertyRef ?? data.property_ref);
+  addRow(rows, "Preferred Date", data.preferredDate ?? data.preferred_date);
+  addRow(rows, "Preferred Time Slot", data.preferredTimeSlot ?? data.preferred_time_slot);
+  addRow(rows, "Interest", data.interest);
+  addRow(rows, "Message", data.message);
+  addRow(rows, "Notes", data.notes);
+
+  const utm = data.utm;
+  if (utm && typeof utm === "object") {
+    addRow(rows, "UTM", JSON.stringify(utm));
+  }
+
+  return rows;
+}
+
+function addRow(rows: { label: string; value: string }[], label: string, value: unknown) {
+  if (value === undefined || value === null || value === "") return;
+  rows.push({ label, value: String(value) });
+}
+
+function labelValue(value: unknown, labels: Record<string, string>) {
+  if (typeof value !== "string" || !value) return undefined;
+  return labels[value] || value;
+}
+
+function formatLocation(value: unknown) {
+  if (Array.isArray(value)) {
+    return value.map((item) => labelValue(item, LOCATION_LABELS) || String(item)).join(", ");
+  }
+  return labelValue(value, LOCATION_LABELS);
+}
+
+function humanize(value: unknown) {
+  if (typeof value !== "string" || !value) return undefined;
+  return value.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function normalizePhone(value: unknown) {
+  const rawPhone = String(value ?? "").replace(/[^\d+]/g, "");
+  return /^\d{10}$/.test(rawPhone) ? `+91${rawPhone}` : rawPhone;
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (char) => {
+    switch (char) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      default:
+        return "&#39;";
+    }
+  });
+}
+
 async function pushToCrm(
-  serverEnv: ReturnType<typeof getServerEnv>,
+  serverEnv: ReturnType<typeof getLeadDeliveryEnv>,
   leadId: string,
   data: Record<string, unknown>
 ) {
-  // Zoho CRM push — implement when CRM credentials are ready
   if (!serverEnv.ZOHO_CRM_REFRESH_TOKEN && !serverEnv.HUBSPOT_API_KEY) return;
 
-  // TODO: implement Zoho/HubSpot push using leadId + data
   void leadId;
   void data;
   console.log("[leads] CRM push: credentials present but integration not yet wired.");
