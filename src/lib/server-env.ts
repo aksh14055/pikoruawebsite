@@ -7,7 +7,8 @@ function optionalEnv(name: string, fallback = "") {
 export function getLeadDeliveryEnv() {
   return {
     RESEND_API_KEY: optionalEnv("RESEND_API_KEY"),
-    BREVO_API_KEY: optionalEnv("BREVO_API_KEY"),
+    // Keep the legacy typo as a compatibility fallback for existing hosting envs.
+    BREVO_API_KEY: optionalEnv("BREVO_API_KEY", optionalEnv("BRAVE_API_KEY")),
     BREVO_SENDER_EMAIL: optionalEnv("BREVO_SENDER_EMAIL", "noreply@pikorua.in"),
     BREVO_SENDER_NAME: optionalEnv("BREVO_SENDER_NAME", "PIKORUA Realty"),
     BREVO_LIST_IDS: optionalEnv("BREVO_LIST_IDS"),
