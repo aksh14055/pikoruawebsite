@@ -11,7 +11,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/client";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { fetchRealEstateNews, generateBlogDraftFromNews } from "@/lib/ai/blogAutomation";
 import { sendNotificationEmail } from "@/lib/email";
 import { pickPlaceholderCover } from "@/lib/data/blogPlaceholders";
@@ -23,7 +23,7 @@ export const maxDuration = 60;
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -1,4 +1,4 @@
-import { getLeadDeliveryEnv } from '@/lib/env';
+import { getLeadDeliveryEnv } from '@/lib/server-env';
 
 /**
  * Sends a notification email via Brevo, falling back to Resend if Brevo

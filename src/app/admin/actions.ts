@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag as _revalidateTag } from "next/cache";
 // Next.js 16 added a second `profile` arg to revalidateTag — cast to the
 // traditional single-argument signature for standard ISR tag invalidation.
 const revalidateTag = _revalidateTag as (tag: string) => void;
-import { createServerSupabaseClient } from "@/lib/supabase/client";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { fetchRealEstateNews, generateBlogDraftFromNews } from "@/lib/ai/blogAutomation";
 import { submitToIndexNow } from "@/lib/index-now";
 import { notifyGoogleIndexing } from "@/lib/google-indexing";
@@ -15,7 +15,7 @@ import crypto, { createHash } from "crypto";
 
 // Get admin email and password from environment variables
 const getAdminEmail = () => process.env.ADMIN_EMAIL || "pikoruarealtymarketing@gmail.com";
-const getAdminPassword = () => process.env.ADMIN_PASSWORD || "@PIKORUA REALTY 21";
+const getAdminPassword = () => process.env.ADMIN_PASSWORD || "";
 
 // Generate a stable session token from credentials
 const getSessionToken = () => {
@@ -30,6 +30,10 @@ const getSessionToken = () => {
 export async function loginAction(email: string, password: string) {
   const adminEmail = getAdminEmail();
   const adminPassword = getAdminPassword();
+
+  if (!adminPassword) {
+    return { success: false, error: "Admin login is not configured." };
+  }
   
   if (email === adminEmail && password === adminPassword) {
     const cookieStore = await cookies();

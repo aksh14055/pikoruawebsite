@@ -7,7 +7,7 @@ import {
   consultationSchema,
   contactSchema,
 } from "@/lib/validations/lead";
-import { getLeadDeliveryEnv } from "@/lib/env";
+import { getLeadDeliveryEnv } from "@/lib/server-env";
 import { getClientIdentifier, leadRateLimit } from "@/lib/rate-limit";
 import type { LeadSource } from "@/types";
 
@@ -170,7 +170,6 @@ async function syncBrevoContact(
       leadId,
       source,
       status: response.status,
-      error: await response.text(),
     });
   }
 }
@@ -227,7 +226,7 @@ async function sendBrevoLeadEmail(
   });
 
   if (!response.ok) {
-    throw new Error(`Brevo SMTP API status ${response.status}: ${await response.text()}`);
+    throw new Error(`Brevo SMTP API status ${response.status}`);
   }
 }
 
