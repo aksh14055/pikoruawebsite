@@ -178,6 +178,7 @@ export type LeadSource =
   | "callback"
   | "consultation"
   | "whatsapp"
+  | "popup"
   | "contact";
 
 export type LeadPurpose =
