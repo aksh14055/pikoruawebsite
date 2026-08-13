@@ -219,7 +219,7 @@ async function sendBrevoLeadEmail(
         name: serverEnv.BREVO_SENDER_NAME,
         email: serverEnv.BREVO_SENDER_EMAIL,
       },
-      to: [{ email: serverEnv.TEAM_NOTIFICATION_EMAIL }],
+      to: [{ email: serverEnv.LEAD_NOTIFICATION_EMAIL }],
       subject,
       htmlContent,
     }),
