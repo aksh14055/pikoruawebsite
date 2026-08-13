@@ -185,9 +185,10 @@ export function LeadCapturePopup({ openOnMount = false }: LeadCapturePopupProps)
       clearReshowTimer();
       sessionStorage.setItem(SUBMITTED_KEY, String(Date.now()));
 
-      setTimeout(() => {
-        setVisible(false);
-      }, 3200);
+      // Give the confirmation a moment, then return the visitor to the website.
+      window.setTimeout(() => {
+        window.location.assign("/");
+      }, 1400);
     } catch (err) {
       setErrorMsg(
         err instanceof Error ? err.message : "Something went wrong. Please try again."
